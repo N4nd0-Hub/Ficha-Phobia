@@ -9867,7 +9867,7 @@ body.time-night .sheet-ui-font-card.active{border-color:#96ff45;box-shadow:inset
 #characterPage .deck-cassette-label{min-width:0;min-height:0;display:grid;align-content:center;gap:3px;padding:3px clamp(12px,4cqi,20px) 5px;overflow:hidden;text-align:left}
 #characterPage .deck-cassette-label b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;white-space:normal;border-bottom:1px solid #b7b2a8;padding-bottom:3px;font:900 clamp(14px,4.4cqi,22px)/1.15 'Trebuchet MS',Tahoma,sans-serif;color:#171614;letter-spacing:-.3px}
 #characterPage .deck-cassette-label small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 clamp(8px,2.4cqi,11px)/1.2 'Courier New',monospace;color:#625c50}
-#characterPage .deck-cassette-rainbow{display:grid;place-items:center;height:clamp(41px,13cqi,68px);background:var(--spell-color,#ef2b97);background:linear-gradient(to bottom,color-mix(in srgb,var(--spell-color,#ef2b97) 42%,#fffaf0) 0 20%,color-mix(in srgb,var(--spell-color,#ef2b97) 72%,#fffaf0) 20% 40%,var(--spell-color,#ef2b97) 40% 60%,color-mix(in srgb,var(--spell-color,#ef2b97) 78%,#171614) 60% 80%,color-mix(in srgb,var(--spell-color,#ef2b97) 52%,#171614) 80% 100%)}
+#characterPage .deck-cassette-rainbow{display:grid;place-items:center;height:clamp(41px,13cqi,68px);background-color:var(--cassette-band-3,#ef2b97);background-image:linear-gradient(to bottom,var(--cassette-band-1,#ef2b97) 0 20%,var(--cassette-band-2,#ef2b97) 20% 40%,var(--cassette-band-3,#ef2b97) 40% 60%,var(--cassette-band-4,#ef2b97) 60% 80%,var(--cassette-band-5,#ef2b97) 80% 100%)}
 #characterPage .deck-cassette-mechanism{display:grid;grid-template-columns:clamp(25px,10cqi,50px) minmax(0,1fr) clamp(25px,10cqi,50px);align-items:center;gap:5%;width:72%;height:100%;padding:5px 9px;border-radius:clamp(6px,2.5cqi,13px);background:#151412;box-shadow:inset 0 0 0 1px #2a2825}
 #characterPage .deck-cassette-wheel{position:relative;display:block;width:100%;aspect-ratio:1;border:2px solid #070707;border-radius:50%;background:linear-gradient(145deg,#f4f4ef,#b3b3ae);box-shadow:inset 0 0 0 2px #a2a29d,0 1px 2px #000}
 #characterPage .deck-cassette-wheel::before{content:"";position:absolute;inset:12%;background:#e9e9e5;clip-path:polygon(40% 0,60% 0,60% 12%,77% 21%,87% 15%,97% 33%,87% 40%,87% 60%,97% 67%,87% 85%,77% 79%,60% 88%,60% 100%,40% 100%,40% 88%,23% 79%,13% 85%,3% 67%,13% 60%,13% 40%,3% 33%,13% 15%,23% 21%,40% 12%)}
@@ -9900,6 +9900,21 @@ body.time-night .sheet-ui-font-card.active{border-color:#96ff45;box-shadow:inset
 #characterPage .deck-cassette-controls button:disabled{opacity:.4;cursor:default}
 #characterPage .deck-cassette-controls button:not(:disabled):hover{background:var(--deck-cyan);color:var(--deck-deep)}
 #characterPage .deck-cassette-controls .deck-remove{color:#b52b4c}
+#characterPage .deck-cassette-controls .deck-palette-toggle{display:flex;align-items:center;gap:6px;width:auto;padding:0 9px;margin-right:auto;font:900 10px 'Courier New',monospace}
+#characterPage .deck-palette-preview{display:block;width:15px;height:15px;border:1px solid currentColor;background:linear-gradient(to bottom,var(--cassette-band-1) 0 20%,var(--cassette-band-2) 20% 40%,var(--cassette-band-3) 40% 60%,var(--cassette-band-4) 60% 80%,var(--cassette-band-5) 80% 100%)}
+#characterPage .deck-palette-panel{display:grid;gap:9px;min-width:0;padding:11px;border:1px solid var(--deck-line);border-radius:4px;background:var(--deck-paper);color:var(--deck-ink)}
+#characterPage .deck-palette-panel[hidden]{display:none}
+#characterPage .deck-palette-heading{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;font:900 10px 'Courier New',monospace}
+#characterPage .deck-palette-heading small{font:700 8px 'Courier New',monospace;color:var(--deck-muted)}
+#characterPage .deck-palette-swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+#characterPage .deck-palette-swatches label{display:grid;gap:4px;min-width:0;font:900 9px 'Courier New',monospace;text-align:center;color:var(--deck-ink)}
+#characterPage .deck-palette-swatches input[type="color"]{display:block;width:100%;min-width:0;height:32px;min-height:32px;margin:0;padding:2px;border:1px solid var(--deck-line);border-radius:2px;background:var(--deck-paper);cursor:pointer}
+#characterPage .deck-palette-swatches input::-webkit-color-swatch-wrapper{padding:0}
+#characterPage .deck-palette-swatches input::-webkit-color-swatch{border:0;border-radius:1px}
+#characterPage .deck-palette-panel p{margin:0;font:700 10px/1.4 Tahoma,Verdana,sans-serif;color:var(--deck-muted)}
+#characterPage .deck-palette-actions{display:flex;flex-wrap:wrap;gap:6px}
+#characterPage .deck-palette-actions button{flex:1;min-height:30px;padding:6px;border:1px solid var(--deck-line);background:var(--deck-surface);color:var(--deck-ink);font:900 9px 'Courier New',monospace;cursor:pointer}
+#characterPage .deck-palette-actions button:hover{background:var(--deck-cyan);color:var(--deck-deep)}
 @container(max-width:300px){#characterPage .deck-cassette-window{aspect-ratio:1.45}#characterPage .deck-cassette-rainbow{height:38px}#characterPage .deck-cassette-label b{font-size:14px}}
 #characterPage .deck-dropzone{margin:0 13px 13px;padding:13px 10px;text-align:center;border:2px dashed color-mix(in srgb,var(--deck-cyan) 65%,var(--deck-line) 35%);background:color-mix(in srgb,var(--deck-paper) 88%,var(--deck-cyan) 12%);font:800 11px/1.4 Tahoma,Verdana,sans-serif;color:var(--deck-ink)}
 #characterPage .deck-dropzone b{display:block;font:1000 13px/1.4 'Trebuchet MS',sans-serif}
@@ -18280,6 +18295,54 @@ const deckLabUi={source:'deck',index:0,spellId:null,drag:null};
 const deckLabSpell=m=>m?.libraryId?spellById(m.libraryId)||m:m;
 const deckLabColor=s=>GRIMOIRE_CATEGORY_COLORS[s?.category||s?.type]||'var(--theme-accent)';
 const deckLabIcon=s=>GRIMOIRE_ICONS[s?.category||s?.type]||'✦';
+const DECK_CLASSIC_BANDS=['#ea5274','#f08350','#ede86a','#25824c','#268ec4'];
+function deckLabHexColor(value){
+  if(typeof value!=='string')return null;
+  const match=/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(value.trim());if(!match)return null;
+  const hex=match[1].length===3?[...match[1]].map(c=>c+c).join(''):match[1];
+  return '#'+hex.toLowerCase();
+}
+function deckLabMixColor(color,other,weight){
+  const channel=(hex,offset)=>parseInt(hex.slice(offset,offset+2),16);
+  return '#'+[1,3,5].map(offset=>Math.round(channel(color,offset)*weight+channel(other,offset)*(1-weight)).toString(16).padStart(2,'0')).join('');
+}
+function deckLabElementBands(spell){
+  const category=normalizeSearchText(spell?.category||spell?.type||'');
+  const key=Object.keys(GRIMOIRE_CATEGORY_COLORS).find(name=>normalizeSearchText(name)===category);
+  const color=deckLabHexColor(GRIMOIRE_CATEGORY_COLORS[key])||'#ef2b97';
+  return [deckLabMixColor(color,'#fffaf0',.42),deckLabMixColor(color,'#fffaf0',.72),color,deckLabMixColor(color,'#171614',.78),deckLabMixColor(color,'#171614',.52)];
+}
+function deckLabCustomBands(slot){
+  const colors=slot?.cassetteBands;
+  if(!Array.isArray(colors)||colors.length!==5)return null;
+  const safe=colors.map(deckLabHexColor);return safe.every(Boolean)?safe:null;
+}
+function deckLabBands(slot,spell=deckLabSpell(slot)){
+  return deckLabCustomBands(slot)||deckLabElementBands(spell);
+}
+function deckLabBandStyle(colors){
+  return colors.map((color,i)=>`--cassette-band-${i+1}:${color}`).join(';');
+}
+function deckLabPaintBands(index,slot){
+  const colors=deckLabBands(slot),row=document.querySelector(`.deck-lab-cassette[data-deck-index="${index}"]`);if(!row)return;
+  colors.forEach((color,i)=>row.style.setProperty(`--cassette-band-${i+1}`,color));
+  row.querySelectorAll('[data-deck-band]').forEach(input=>{input.value=colors[Number(input.dataset.deckBand)]});
+  const status=row.querySelector('[data-deck-palette-status]');if(status)status.textContent=deckLabCustomBands(slot)?'PERSONALIZADA':'COR DO ELEMENTO';
+}
+function deckLabSetBand(index,band,value,persist=false){
+  index=Number(index);band=Number(band);const color=deckLabHexColor(value);
+  if(!Number.isInteger(index)||!Number.isInteger(band)||band<0||band>4||!color)return;
+  const slots=getFilledMagicSlots(),slot=slots[index];if(!slot)return;
+  const colors=deckLabBands(slot);colors[band]=color;slot.cassetteBands=colors;
+  state.charSheet.magicSlots=[...slots,emptyMagicSlot()];deckLabPaintBands(index,slot);
+  if(persist)saveState(true);
+}
+function deckLabResetBands(index,classic=false){
+  index=Number(index);if(!Number.isInteger(index))return;
+  const slots=getFilledMagicSlots(),slot=slots[index];if(!slot)return;
+  if(classic)slot.cassetteBands=[...DECK_CLASSIC_BANDS];else delete slot.cassetteBands;
+  state.charSheet.magicSlots=[...slots,emptyMagicSlot()];deckLabPaintBands(index,slot);saveState(true);
+}
 function deckLabFocus(source,index,spellId){
   deckLabUi.source=source;
   deckLabUi.index=Number(index)||0;
@@ -18382,7 +18445,8 @@ function renderMagicDeck(){
   if(mix)mix.innerHTML=slots.length?slots.map((m,i)=>`<button type="button" data-deck-select="${i}" class="${deckLabUi.source==='deck'&&deckLabUi.index===i?'active':''}" style="--spell-color:${deckLabColor(deckLabSpell(m))}" title="Fita ${i+1}: ${esc(m.name)}">${i+1}</button>`).join(''):'<span class="deck-mixline-empty">[ LADO A VAZIO · INICIE SUA MIXTAPE ]</span>';
   box.innerHTML=slots.length?slots.map((m,i)=>{
     const s=deckLabSpell(m),category=s.category||m.type||'Personalizada',selected=deckLabUi.source==='deck'&&deckLabUi.index===i;
-    return `<article role="listitem" tabindex="0" draggable="true" class="deck-lab-cassette ${selected?'selected':''}" data-deck-index="${i}" style="--spell-color:${deckLabColor(s)}">
+    const bands=deckLabBands(m,s);
+    return `<article role="listitem" tabindex="0" draggable="true" class="deck-lab-cassette ${selected?'selected':''}" data-deck-index="${i}" style="--spell-color:${deckLabColor(s)};${deckLabBandStyle(bands)}">
       <button type="button" class="deck-cassette-window" data-deck-select="${i}" aria-label="Inspecionar magia ${esc(s.name||m.name)}">
         <span class="deck-cassette-screws" aria-hidden="true"><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i></span>
         <span class="deck-cassette-paper">
@@ -18394,9 +18458,18 @@ function renderMagicDeck(){
         <span class="deck-cassette-base" aria-hidden="true"><i class="deck-cassette-screw"></i><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b></span>
       </button>
       <div class="deck-cassette-controls">
+        <button type="button" class="deck-palette-toggle" data-deck-palette-toggle="${i}" aria-expanded="false" aria-controls="deckPalette${i}" aria-label="Personalizar cores da fita ${esc(s.name||m.name)}"><span class="deck-palette-preview" aria-hidden="true"></span>CORES</button>
         <button type="button" title="Mover para cima" aria-label="Mover ${esc(s.name||m.name)} para cima" data-deck-move="${i}:-1" ${i===0?'disabled':''}>↑</button>
         <button type="button" title="Mover para baixo" aria-label="Mover ${esc(s.name||m.name)} para baixo" data-deck-move="${i}:1" ${i===slots.length-1?'disabled':''}>↓</button>
         <button type="button" class="deck-remove" title="Remover magia" aria-label="Remover ${esc(s.name||m.name)}" data-deck-remove="${i}">×</button>
+      </div>
+      <div class="deck-palette-panel" id="deckPalette${i}" data-deck-palette-editor hidden>
+        <div class="deck-palette-heading"><b>CORES DA FITA</b><small data-deck-palette-status>${deckLabCustomBands(m)?'PERSONALIZADA':'COR DO ELEMENTO'}</small></div>
+        <div class="deck-palette-swatches" role="group" aria-label="Cores das cinco faixas de ${esc(s.name||m.name)}">
+          ${bands.map((color,band)=>`<label>FAIXA ${band+1}<input type="color" value="${color}" data-deck-palette-index="${i}" data-deck-band="${band}" aria-label="Cor da faixa ${band+1} da fita ${esc(s.name||m.name)}" draggable="false" autocomplete="off"></label>`).join('')}
+        </div>
+        <p>Faixas de cima para baixo. As cores ficam salvas na ficha.</p>
+        <div class="deck-palette-actions"><button type="button" data-deck-palette-reset="${i}">COR DO ELEMENTO</button><button type="button" data-deck-palette-classic="${i}">ARCO-ÍRIS CLÁSSICO</button></div>
       </div>
     </article>`;
   }).join(''):`<div class="deck-lab-empty" role="status">♪ <b>SEU DECK AINDA ESTÁ VAZIO.</b><br>Explore o Grimório, escolha uma magia e clique em <b>＋ ADICIONAR</b>. As fitas aparecerão aqui.</div>`;
@@ -18462,6 +18535,9 @@ function bindGrimoire(){
   get('grimoireMore')?.addEventListener('click',()=>{grimoireUi.limit+=12;renderGrimoire()});
   document.addEventListener('click',e=>{
     const button=e.target.closest('button');if(!button||!button.closest('#magicLab'))return;
+    if(button.hasAttribute('data-deck-palette-toggle')){const panel=get(button.getAttribute('aria-controls'));if(panel){panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden))}return}
+    if(button.hasAttribute('data-deck-palette-reset')){deckLabResetBands(button.dataset.deckPaletteReset);return}
+    if(button.hasAttribute('data-deck-palette-classic')){deckLabResetBands(button.dataset.deckPaletteClassic,true);return}
     if(button.hasAttribute('data-deck-jump')){get(button.dataset.deckJump)?.scrollIntoView({behavior:'smooth',block:'start'});return}
     if(button.hasAttribute('data-deck-sort')){deckLabSort();return}
     if(button.hasAttribute('data-deck-custom')){deckLabCustom();return}
@@ -18475,6 +18551,8 @@ function bindGrimoire(){
     if(button.hasAttribute('data-deck-category')){grimoireUi.category=button.dataset.deckCategory;grimoireUi.limit=12;renderGrimoire();return}
   });
   document.addEventListener('change',e=>{
+    const palette=e.target.closest('input[data-deck-palette-index][data-deck-band]');
+    if(palette){deckLabSetBand(palette.dataset.deckPaletteIndex,palette.dataset.deckBand,palette.value,true);return}
     const field=e.target.closest('[data-deck-edit]');if(!field)return;
     const slots=getFilledMagicSlots();const slot=slots[deckLabUi.index];if(!slot||slot.libraryId)return;
     const k=field.dataset.deckEdit;slot[k]=k==='tier'?Number(field.value):k==='name'?(field.value.trim()||'Nova Magia'):field.value;
@@ -18482,6 +18560,8 @@ function bindGrimoire(){
     renderMagicDeck();renderGrimoire();
   });
   document.addEventListener('input',e=>{
+    const palette=e.target.closest('input[data-deck-palette-index][data-deck-band]');
+    if(palette){deckLabSetBand(palette.dataset.deckPaletteIndex,palette.dataset.deckBand,palette.value);return}
     const field=e.target.closest('[data-deck-edit]');if(!field)return;
     // A blank name during Ctrl+A/retyping must not remove the slot mid-edit.
     if(field.dataset.deckEdit==='name')return;
@@ -18491,10 +18571,12 @@ function bindGrimoire(){
     // The full preview is refreshed on change/blur so typing never loses focus.
   });
   document.addEventListener('keydown',e=>{
+    if(e.target.closest('button,input,textarea,select,[data-deck-palette-editor]'))return;
     const row=e.target.closest('[data-deck-index]');
     if(row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();deckLabFocus('deck',row.dataset.deckIndex)}
   });
   document.addEventListener('dragstart',e=>{
+    if(e.target.closest('[data-deck-palette-editor]')){e.preventDefault();return}
     const lib=e.target.closest('[data-deck-library-id]');
     if(lib){const id=lib.dataset.deckLibraryId,s=spellById(id);if(!s||Number(s.tier)>availableMagicTierNumber()||spellInDeck(id)){e.preventDefault();return}
       deckLabUi.drag={kind:'library',id};e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text/plain','phobia-spell:'+id);return}
