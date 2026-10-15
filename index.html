@@ -13450,11 +13450,11 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
 
               <section class="deck-window deck-library-panel" id="deckLibrary" aria-labelledby="deckLibraryTitle">
                 <div class="deck-window-title"><div><small>TRACK 02 // LIBRARY</small><b id="deckLibraryTitle">GRIMÓRIO DE MAGIAS</b></div><div class="deck-window-actions"><button type="button" id="grimoireClearFilters">LIMPAR FILTROS</button></div></div>
-                <div class="deck-library-controls">
-                  <label>BUSCAR MAGIA<input id="grimoireSearch" type="search" placeholder="Nome, efeito, alvo..." autocomplete="off"></label>
+                <form id="grimoireSearchForm" class="deck-library-controls" role="search" aria-label="Buscar magias no Grimório" autocomplete="off" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
+                  <label for="grimoireSearch">BUSCAR MAGIA<input id="grimoireSearch" name="spell-query" type="search" inputmode="search" enterkeyhint="search" placeholder="Nome, efeito, alvo..." autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true"></label>
                   <label>TIPO DE MAGIA<select id="grimoireCategory"></select></label>
                   <label>TIER<select id="grimoireTier"><option value="all">TODOS</option><option value="1">I</option><option value="2">II</option><option value="3">III</option><option value="4">IV</option><option value="5">V</option></select></label>
-                </div>
+                </form>
                 <div class="deck-library-switches"><label><input type="checkbox" id="grimoireAvailableOnly" checked> SOMENTE MAGIAS DISPONÍVEIS PARA MEU PNv.</label><small style="font:800 10px 'Courier New',monospace;color:var(--deck-muted)">◉ ARQUIVO DE MAGIAS</small></div>
                 <div class="deck-type-chips" id="deckTypeChips" aria-label="Filtros rápidos por família"></div>
                 <div class="deck-library-count"><b id="grimoireResultCount">0 MAGIAS</b><span id="grimoireSourceNote">GRIMÓRIO / CATÁLOGO COMPLETO</span></div>
@@ -18447,6 +18447,7 @@ function removeMagicFromDeck(index){deckLabRemove(index)}
 function bindGrimoire(){
   if(document.body.dataset.grimoireBound)return;document.body.dataset.grimoireBound='1';
   const get=id=>document.getElementById(id);
+  get('grimoireSearchForm')?.addEventListener('submit',e=>e.preventDefault());
   get('grimoireSearch')?.addEventListener('input',e=>{grimoireUi.query=e.target.value;grimoireUi.limit=12;renderGrimoire()});
   get('grimoireCategory')?.addEventListener('change',e=>{grimoireUi.category=e.target.value;grimoireUi.limit=12;renderGrimoire()});
   get('grimoireTier')?.addEventListener('change',e=>{grimoireUi.tier=e.target.value;grimoireUi.limit=12;renderGrimoire()});
