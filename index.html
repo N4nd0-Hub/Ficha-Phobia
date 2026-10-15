@@ -9852,25 +9852,55 @@ body.time-night .sheet-ui-font-card.active{border-color:#96ff45;box-shadow:inset
 #characterPage .deck-mixline button{width:24px;height:25px;border:1px solid var(--deck-line);background:linear-gradient(90deg,var(--spell-color,#ef2b97) 0 5px,var(--deck-deep) 5px 100%);color:var(--deck-deep-ink);font:1000 9px 'Courier New',monospace;transition:transform .12s}
 #characterPage .deck-mixline button.active,#characterPage .deck-mixline button:hover{transform:translateY(-4px);outline:2px solid var(--deck-cyan)}
 #characterPage .deck-mixline-empty{font:900 10px 'Courier New',monospace;color:var(--deck-muted)}
-#characterPage .cassette-grid.deck-lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;padding:13px;align-items:stretch}
-#characterPage .deck-lab-cassette{position:relative;min-width:0;display:grid;grid-template-rows:auto 1fr;gap:8px;padding:9px;border:2px solid color-mix(in srgb,var(--spell-color,#ef2b97) 64%,var(--deck-line) 36%);border-radius:7px;background:linear-gradient(155deg,color-mix(in srgb,var(--spell-color,#ef2b97) 9%,var(--deck-paper) 91%),var(--deck-surface) 80%);box-shadow:3px 3px 0 color-mix(in srgb,var(--deck-line) 22%,transparent);cursor:grab}
-#characterPage .deck-lab-cassette:hover,#characterPage .deck-lab-cassette.selected{border-color:var(--deck-pink);box-shadow:inset 0 0 0 1px var(--deck-cyan),4px 4px 0 color-mix(in srgb,var(--deck-line) 22%,transparent)}
+#characterPage .cassette-grid.deck-lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:17px 14px;padding:16px;align-items:start}
+#characterPage .deck-lab-cassette{position:relative;container-type:inline-size;min-width:0;display:grid;gap:8px;padding:0;border:0;background:none;box-shadow:none;cursor:grab}
+#characterPage .deck-lab-cassette:hover .deck-cassette-window{box-shadow:inset 0 0 0 1px #080807,inset 0 -3px 0 #34322f,0 4px 0 #080807,0 7px 12px #17161426}
+#characterPage .deck-lab-cassette.selected .deck-cassette-window{outline:2px solid var(--deck-pink);outline-offset:2px}
+#characterPage .deck-lab-cassette:focus-visible,#characterPage .deck-cassette-window:focus-visible{outline:3px solid var(--deck-cyan);outline-offset:4px;border-radius:15px}
 #characterPage .deck-lab-cassette[draggable="true"]:active{cursor:grabbing}
 #characterPage .deck-lab-cassette.drag-target{outline:3px dashed var(--deck-pink);outline-offset:3px}
-#characterPage .deck-cassette-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
-#characterPage .deck-cassette-top>small{min-width:0;font:900 9px 'Courier New',monospace;color:var(--deck-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#characterPage .deck-cassette-top>span{display:grid;place-items:center;min-width:33px;height:23px;background:var(--deck-deep);color:var(--deck-deep-ink);font:1000 10px monospace;border:1px solid var(--deck-line)}
-#characterPage .deck-cassette-window{display:grid;grid-template-columns:32px minmax(0,1fr) 32px;align-items:center;gap:7px;padding:9px 6px;min-height:78px;border:2px solid var(--deck-line);border-radius:5px;background:linear-gradient(160deg,color-mix(in srgb,var(--spell-color,#ef2b97) 20%,var(--deck-paper) 80%),var(--deck-paper));cursor:pointer;color:var(--deck-ink)}
-#characterPage .deck-cassette-window:hover{background:color-mix(in srgb,var(--deck-paper) 78%,var(--spell-color,#ef2b97) 22%)}
-#characterPage .deck-cassette-wheel{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;border:2px solid var(--deck-line);background:repeating-conic-gradient(from 0deg,var(--deck-paper) 0 30deg,var(--spell-color,#ef2b97) 30deg 47deg,var(--deck-paper) 47deg 90deg);box-shadow:inset 0 0 0 7px var(--deck-surface)}
-#characterPage .deck-cassette-label{min-width:0;text-align:center}
-#characterPage .deck-cassette-label small{display:block;font:900 9px/1.35 'Courier New',monospace;color:var(--deck-muted)}
-#characterPage .deck-cassette-label b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:1000 15px/1.3 'Trebuchet MS',sans-serif;color:var(--deck-ink)}
-#characterPage .deck-cassette-bottom{display:flex;align-items:center;justify-content:space-between;gap:5px;flex-wrap:wrap}
-#characterPage .deck-cassette-cost{font:1000 11px 'Courier New',monospace;color:var(--deck-ink);background:color-mix(in srgb,var(--deck-paper) 74%,var(--spell-color,#ef2b97) 26%);border:1px solid var(--deck-line);padding:4px 7px}
-#characterPage .deck-cassette-controls{display:flex;gap:4px}
-#characterPage .deck-cassette-controls button{display:grid;place-items:center;min-width:28px;min-height:27px;border:1px solid var(--deck-line);background:var(--deck-paper);color:var(--deck-ink);font:1000 13px monospace}
+#characterPage .deck-cassette-window{position:relative;isolation:isolate;display:block;width:100%;aspect-ratio:1.6;min-height:0;padding:0;overflow:hidden;border:2px solid #3b3936;border-radius:clamp(12px,4cqi,20px);background:linear-gradient(160deg,#292724,#171614 30%,#171614 80%,#211f1c);box-shadow:inset 0 0 0 1px #080807,inset 0 -3px 0 #34322f,0 3px 0 #080807;color:#171614;cursor:pointer;text-align:left}
+#characterPage .deck-cassette-paper{position:absolute;inset:7.5% 5.5% 25%;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;overflow:hidden;border:1px solid #b8b1a4;border-radius:clamp(7px,2.4cqi,13px);background:#fffaf0;box-shadow:0 2px 0 #696760,0 4px 0 #393836}
+#characterPage .deck-cassette-top{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:clamp(5px,1.5cqi,8px) clamp(12px,4cqi,20px) 0}
+#characterPage .deck-cassette-top>small{min-width:0;font:900 clamp(8px,2.3cqi,11px)/1.2 'Courier New',monospace;letter-spacing:.7px;color:#696356;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#characterPage .deck-cassette-top>span{display:grid;place-items:center;width:17px;height:15px;background:none;color:var(--spell-color,#171614);font:1000 13px/1 'Trebuchet MS',sans-serif}
+#characterPage .deck-cassette-label{min-width:0;min-height:0;display:grid;align-content:center;gap:3px;padding:3px clamp(12px,4cqi,20px) 5px;overflow:hidden;text-align:left}
+#characterPage .deck-cassette-label b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;white-space:normal;border-bottom:1px solid #b7b2a8;padding-bottom:3px;font:900 clamp(14px,4.4cqi,22px)/1.15 'Trebuchet MS',Tahoma,sans-serif;color:#171614;letter-spacing:-.3px}
+#characterPage .deck-cassette-label small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 clamp(8px,2.4cqi,11px)/1.2 'Courier New',monospace;color:#625c50}
+#characterPage .deck-cassette-rainbow{display:grid;place-items:center;height:clamp(41px,13cqi,68px);background:linear-gradient(to bottom,#ea5274 0 20%,#f08350 20% 40%,#ede86a 40% 60%,#25824c 60% 80%,#268ec4 80% 100%)}
+#characterPage .deck-cassette-mechanism{display:grid;grid-template-columns:clamp(25px,10cqi,50px) minmax(0,1fr) clamp(25px,10cqi,50px);align-items:center;gap:5%;width:72%;height:100%;padding:5px 9px;border-radius:clamp(6px,2.5cqi,13px);background:#151412;box-shadow:inset 0 0 0 1px #2a2825}
+#characterPage .deck-cassette-wheel{position:relative;display:block;width:100%;aspect-ratio:1;border:2px solid #070707;border-radius:50%;background:linear-gradient(145deg,#f4f4ef,#b3b3ae);box-shadow:inset 0 0 0 2px #a2a29d,0 1px 2px #000}
+#characterPage .deck-cassette-wheel::before{content:"";position:absolute;inset:12%;background:#e9e9e5;clip-path:polygon(40% 0,60% 0,60% 12%,77% 21%,87% 15%,97% 33%,87% 40%,87% 60%,97% 67%,87% 85%,77% 79%,60% 88%,60% 100%,40% 100%,40% 88%,23% 79%,13% 85%,3% 67%,13% 60%,13% 40%,3% 33%,13% 15%,23% 21%,40% 12%)}
+#characterPage .deck-cassette-tape{position:relative;display:block;height:70%;overflow:hidden;border:1px solid #171210;border-radius:1px;background:radial-gradient(ellipse 75% 145% at -40% 50%,#352726 0 99%,transparent 100%),radial-gradient(ellipse 75% 145% at 140% 50%,#352726 0 99%,transparent 100%),linear-gradient(90deg,#cfccc8,#edece8 50%,#cfccc8)}
+#characterPage .deck-cassette-tape::after{content:"";position:absolute;left:8%;right:8%;top:calc(50% - 1px);height:2px;background:#8f8984}
+#characterPage .deck-cassette-tape i{position:absolute;inset:35% 8%;background:repeating-linear-gradient(90deg,#8f8984 0 2px,transparent 2px 20%)}
+#characterPage .deck-cassette-bottom{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:clamp(5px,1.8cqi,9px) clamp(12px,4cqi,20px);color:#171614}
+#characterPage .deck-cassette-cost{max-width:42%;font:900 clamp(11px,3.8cqi,18px)/1.1 'Courier New',monospace;overflow-wrap:anywhere;color:#171614;background:none;border:0;padding:0}
+#characterPage .deck-cassette-target{min-width:0;max-width:58%;font:700 clamp(8px,2.3cqi,11px)/1.15 Tahoma,Verdana,sans-serif;color:#171614;text-align:left}
+#characterPage .deck-cassette-target small{display:block;font:700 8px/1.2 'Courier New',monospace;letter-spacing:.8px;color:#696356}
+#characterPage .deck-cassette-target b{display:block;font:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#171614}
+#characterPage .deck-cassette-screws{position:absolute;inset:0;pointer-events:none}
+#characterPage .deck-cassette-screw{position:absolute;z-index:1;width:clamp(9px,2.7cqi,14px);aspect-ratio:1;border:1px solid #8c7969;border-radius:50%;background:linear-gradient(140deg,#f4dfc5,#ae927c 70%,#ddc3a6);box-shadow:0 0 0 1px #080807}
+#characterPage .deck-cassette-screw::before,#characterPage .deck-cassette-screw::after{content:"";position:absolute;left:21%;top:41%;width:58%;height:18%;border-radius:2px;background:#796050;transform:rotate(45deg)}
+#characterPage .deck-cassette-screw::after{transform:rotate(-45deg)}
+#characterPage .deck-cassette-screws .deck-cassette-screw:nth-child(1){left:1.9%;top:2.8%}
+#characterPage .deck-cassette-screws .deck-cassette-screw:nth-child(2){right:1.9%;top:2.8%}
+#characterPage .deck-cassette-screws .deck-cassette-screw:nth-child(3){left:1.9%;bottom:3%}
+#characterPage .deck-cassette-screws .deck-cassette-screw:nth-child(4){right:1.9%;bottom:3%}
+#characterPage .deck-cassette-base{position:absolute;left:14%;right:14%;bottom:0;height:19%;background:#45433f;clip-path:polygon(7% 0,93% 0,100% 100%,0 100%)}
+#characterPage .deck-cassette-base::before{content:"";position:absolute;inset:2px 0 0;background:#0d0d0c;clip-path:polygon(7% 0,93% 0,100% 100%,0 100%)}
+#characterPage .deck-cassette-base .deck-cassette-screw{left:50%;top:12%;transform:translateX(-50%);width:clamp(8px,2.7cqi,13px)}
+#characterPage .deck-cassette-hole{position:absolute;z-index:1;bottom:14%;width:6%;aspect-ratio:1;border-radius:50%;background:#f6f3e9;box-shadow:inset 0 2px 1px #7a776f}
+#characterPage .deck-cassette-hole:nth-of-type(1){left:12%}
+#characterPage .deck-cassette-hole:nth-of-type(2){left:32%;bottom:27%;width:5%;border-radius:25%}
+#characterPage .deck-cassette-hole:nth-of-type(3){right:32%;bottom:27%;width:5%;border-radius:25%}
+#characterPage .deck-cassette-hole:nth-of-type(4){right:12%}
+#characterPage .deck-cassette-controls{display:flex;justify-content:flex-end;gap:5px;padding:0 2px}
+#characterPage .deck-cassette-controls button{display:grid;place-items:center;width:30px;min-height:28px;padding:0;border:1px solid var(--deck-line);border-radius:3px;background:var(--deck-paper);color:var(--deck-ink);font:1000 14px monospace;box-shadow:none;cursor:pointer}
+#characterPage .deck-cassette-controls button:disabled{opacity:.4;cursor:default}
+#characterPage .deck-cassette-controls button:not(:disabled):hover{background:var(--deck-cyan);color:var(--deck-deep)}
 #characterPage .deck-cassette-controls .deck-remove{color:#b52b4c}
+@container(max-width:300px){#characterPage .deck-cassette-window{aspect-ratio:1.45}#characterPage .deck-cassette-rainbow{height:38px}#characterPage .deck-cassette-label b{font-size:14px}}
 #characterPage .deck-dropzone{margin:0 13px 13px;padding:13px 10px;text-align:center;border:2px dashed color-mix(in srgb,var(--deck-cyan) 65%,var(--deck-line) 35%);background:color-mix(in srgb,var(--deck-paper) 88%,var(--deck-cyan) 12%);font:800 11px/1.4 Tahoma,Verdana,sans-serif;color:var(--deck-ink)}
 #characterPage .deck-dropzone b{display:block;font:1000 13px/1.4 'Trebuchet MS',sans-serif}
 #characterPage .deck-dropzone.drag-target{background:color-mix(in srgb,var(--deck-paper) 63%,var(--deck-pink) 37%);border-style:solid;transform:scale(.99)}
@@ -18353,14 +18383,21 @@ function renderMagicDeck(){
   box.innerHTML=slots.length?slots.map((m,i)=>{
     const s=deckLabSpell(m),category=s.category||m.type||'Personalizada',selected=deckLabUi.source==='deck'&&deckLabUi.index===i;
     return `<article role="listitem" tabindex="0" draggable="true" class="deck-lab-cassette ${selected?'selected':''}" data-deck-index="${i}" style="--spell-color:${deckLabColor(s)}">
-      <div class="deck-cassette-top"><small>FITA ${String(i+1).padStart(2,'0')} · ${esc(category)} / T${romanTier(s.tier||m.tier)}</small><span>${deckLabIcon(s)}</span></div>
-      <button type="button" class="deck-cassette-window" data-deck-select="${i}" aria-label="Inspecionar magia ${esc(s.name)}">
-        <i class="deck-cassette-wheel" aria-hidden="true"></i><span class="deck-cassette-label"><small>${esc(s.target||'—')}</small><b>${esc(s.name||m.name)}</b></span><i class="deck-cassette-wheel" aria-hidden="true"></i>
+      <button type="button" class="deck-cassette-window" data-deck-select="${i}" aria-label="Inspecionar magia ${esc(s.name||m.name)}">
+        <span class="deck-cassette-screws" aria-hidden="true"><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i></span>
+        <span class="deck-cassette-paper">
+          <span class="deck-cassette-top"><small>FITA ${String(i+1).padStart(2,'0')} · TIER ${romanTier(s.tier||m.tier)}</small><span aria-hidden="true">${deckLabIcon(s)}</span></span>
+          <span class="deck-cassette-label"><b>${esc(s.name||m.name)}</b><small>${esc(category)}</small></span>
+          <span class="deck-cassette-rainbow" aria-hidden="true"><span class="deck-cassette-mechanism"><i class="deck-cassette-wheel"></i><span class="deck-cassette-tape"><i></i></span><i class="deck-cassette-wheel"></i></span></span>
+          <span class="deck-cassette-bottom"><span class="deck-cassette-cost">${esc(s.cost||m.cost||'SEM CUSTO')}</span><span class="deck-cassette-target"><small>ALVO</small><b>${esc(s.target||m.target||'—')}</b></span></span>
+        </span>
+        <span class="deck-cassette-base" aria-hidden="true"><i class="deck-cassette-screw"></i><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b></span>
       </button>
-      <div class="deck-cassette-bottom"><span class="deck-cassette-cost">${esc(s.cost||m.cost||'SEM CUSTO')}</span><div class="deck-cassette-controls">
-      <button type="button" title="Mover para cima" data-deck-move="${i}:-1" ${i===0?'disabled':''}>↑</button>
-      <button type="button" title="Mover para baixo" data-deck-move="${i}:1" ${i===slots.length-1?'disabled':''}>↓</button>
-      <button type="button" class="deck-remove" title="Remover magia" data-deck-remove="${i}">×</button></div></div>
+      <div class="deck-cassette-controls">
+        <button type="button" title="Mover para cima" aria-label="Mover ${esc(s.name||m.name)} para cima" data-deck-move="${i}:-1" ${i===0?'disabled':''}>↑</button>
+        <button type="button" title="Mover para baixo" aria-label="Mover ${esc(s.name||m.name)} para baixo" data-deck-move="${i}:1" ${i===slots.length-1?'disabled':''}>↓</button>
+        <button type="button" class="deck-remove" title="Remover magia" aria-label="Remover ${esc(s.name||m.name)}" data-deck-remove="${i}">×</button>
+      </div>
     </article>`;
   }).join(''):`<div class="deck-lab-empty" role="status">♪ <b>SEU DECK AINDA ESTÁ VAZIO.</b><br>Explore o Grimório, escolha uma magia e clique em <b>＋ ADICIONAR</b>. As fitas aparecerão aqui.</div>`;
   deckLabPreview();
