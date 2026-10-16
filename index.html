@@ -11834,6 +11834,358 @@ body.time-night #characterPage #socialTierMonitorSection .social-monitor-tab sma
 
 
 
+
+/* DESPERTARES — ESCOLHA DE APRESENTAÇÃO */
+#characterPage #awClassicArchive[hidden],#characterPage #awRefinedArchive[hidden]{display:none!important}
+#characterPage #awLayoutPicker{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 18px;padding:12px 16px;border:1px solid var(--theme-muted,#665e57);border-radius:8px;background:var(--theme-surface-2,#f7efd8);color:var(--theme-ink,#171417);font:500 14px/1.4 "Barlow","Segoe UI",Arial,sans-serif;--sheet-custom-font:"Barlow","Segoe UI",Arial,sans-serif}
+#characterPage #awLayoutPicker .aw-layout-options{display:flex;gap:4px;flex-shrink:0;padding:3px;border:1px solid var(--theme-muted,#665e57);border-radius:7px;background:var(--theme-input,#fff9e9)}
+#characterPage #awLayoutPicker button{min-height:36px;padding:7px 17px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--theme-ink,#171417);font:600 14px/1.3 "Barlow","Segoe UI",Arial,sans-serif;letter-spacing:normal;cursor:pointer}
+#characterPage #awLayoutPicker button[aria-pressed="true"]{border-color:var(--theme-muted,#665e57);background:var(--theme-surface-3,#fff3d2);box-shadow:inset 0 -2px var(--theme-accent,#ef2b97)}
+#characterPage #awLayoutPicker button:focus-visible{outline:2px solid var(--theme-accent,#ef2b97);outline-offset:2px}
+#characterPage #awRefinedArchive{--bg:var(--theme-surface,#efe6cf);--panel:var(--theme-surface-2,#f7efd8);--raised:var(--theme-surface-3,#fff3d2);--inset:var(--theme-input,#fff9e9);--text:var(--theme-ink,#171417);--muted:var(--theme-muted,#665e57);--line:color-mix(in srgb,var(--muted) 45%,var(--panel) 55%);--pink:var(--theme-accent,#ef2b97);--cyan:color-mix(in srgb,var(--theme-accent-2,#6ce6ff) 60%,var(--text) 40%);--green:color-mix(in srgb,#74b654 60%,var(--text) 40%);--amber:color-mix(in srgb,#d7a360 60%,var(--text) 40%);--on-accent:#090b10;--shadow:0 9px 25px #00000012;--aw-font:"Barlow","Segoe UI",Arial,sans-serif;--sheet-custom-font:var(--aw-font);border:1px solid var(--line);border-radius:12px;overflow:clip;font-family:var(--aw-font)!important}
+#characterPage #awRefinedArchive *{font-family:var(--aw-font)!important}
+@media(max-width:480px){#characterPage #awLayoutPicker{align-items:flex-start;flex-direction:column;gap:9px;padding:12px}#characterPage #awLayoutPicker>span{font-size:13px}}
+
+#characterPage #awRefinedArchive *{box-sizing:border-box}
+#characterPage #awRefinedArchive{margin:0;background:radial-gradient(ellipse at 90% 0,#e82c8e0a,transparent 38%),var(--bg);color:var(--text);font-size:15px!important;line-height:1.5!important}
+#characterPage #awRefinedArchive button,#characterPage #awRefinedArchive input,#characterPage #awRefinedArchive select,#characterPage #awRefinedArchive textarea{font:inherit;color:inherit}
+#characterPage #awRefinedArchive button{cursor:pointer;touch-action:manipulation}
+#characterPage #awRefinedArchive button:disabled{cursor:not-allowed}
+#characterPage #awRefinedArchive button,#characterPage #awRefinedArchive input,#characterPage #awRefinedArchive select,#characterPage #awRefinedArchive textarea,#characterPage #awRefinedArchive a,#characterPage #awRefinedArchive summary{-webkit-tap-highlight-color:transparent}
+#characterPage #awRefinedArchive :focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+#characterPage #awRefinedArchive [hidden]{display:none!important}
+#characterPage #awRefinedArchive button svg,#characterPage #awRefinedArchive summary svg{flex-shrink:0}
+#characterPage #awRefinedArchive svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+#characterPage #awRefinedArchive h1,#characterPage #awRefinedArchive h2,#characterPage #awRefinedArchive h3,#characterPage #awRefinedArchive h4,#characterPage #awRefinedArchive p,#characterPage #awRefinedArchive figure{margin:0}
+#characterPage #awRefinedArchive button{border:0;background:none;text-align:left}
+#characterPage #awRefinedArchive select,#characterPage #awRefinedArchive input[type="number"],#characterPage #awRefinedArchive textarea{width:100%;border:1px solid var(--line);border-radius:7px;background:var(--inset);padding:10px 12px}
+#characterPage #awRefinedArchive select{min-height:43px;font-size:14px!important}
+#characterPage #awRefinedArchive textarea{resize:vertical;min-height:144px;line-height:1.65!important;font-size:15px!important}
+#characterPage #awRefinedArchive .af-skip-link{position:fixed;top:-80px;left:20px;z-index:50;padding:12px;background:var(--cyan);color:var(--bg)}
+#characterPage #awRefinedArchive .af-skip-link:focus{top:12px}
+#characterPage #awRefinedArchive .af-shell{max-width:1480px;margin:auto;padding:26px 32px 32px}
+#characterPage #awRefinedArchive .af-topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-brand{display:flex;align-items:center;gap:12px;font-weight:700!important;font-size:16px!important;letter-spacing:.03em}
+#characterPage #awRefinedArchive .af-brand-mark{display:grid;place-items:center;width:34px;height:34px;background:var(--pink);color:var(--on-accent);clip-path:polygon(10% 0,100% 0,100% 90%,90% 100%,0 100%,0 10%)}
+#characterPage #awRefinedArchive .af-brand-mark svg{width:23px;height:23px}
+#characterPage #awRefinedArchive .af-brand em{color:var(--muted);font-size:13px!important;font-weight:400!important;font-style:normal;margin-left:6px}
+#characterPage #awRefinedArchive .af-top-actions{display:flex;gap:10px;align-items:center}
+#characterPage #awRefinedArchive .af-preview-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);padding:5px 9px;border-radius:30px;color:var(--muted);font-size:11px!important;letter-spacing:.08em;font-weight:600!important;white-space:nowrap}
+#characterPage #awRefinedArchive .af-preview-pill::before{content:"";width:5px;height:5px;background:var(--cyan);border-radius:50%}
+#characterPage #awRefinedArchive .af-quiet-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:7px 10px;border:1px solid transparent;border-radius:7px;font-size:13px!important;font-weight:500!important;color:var(--muted)}
+#characterPage #awRefinedArchive .af-quiet-button:hover{border-color:var(--line);color:var(--text);background:var(--raised)}
+#characterPage #awRefinedArchive .af-quiet-button svg{width:17px;height:17px}
+#characterPage #awRefinedArchive .af-page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin:30px 0}
+#characterPage #awRefinedArchive .af-eyebrow{display:block;font-weight:600!important;font-size:10px!important;line-height:1.4!important;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+#characterPage #awRefinedArchive .af-page-head .af-eyebrow{color:var(--pink);margin-bottom:9px}
+#characterPage #awRefinedArchive h1{font-size:clamp(30px,3.2vw,46px)!important;line-height:1.03!important;letter-spacing:-.035em;font-weight:800!important}
+#characterPage #awRefinedArchive .af-page-head p{margin-top:9px;color:var(--muted);font-size:15px!important}
+#characterPage #awRefinedArchive .af-file-index{color:var(--line);font-size:64px!important;font-weight:700!important;line-height:.85!important;letter-spacing:-.05em}
+#characterPage #awRefinedArchive .af-dashboard{display:grid;grid-template-columns:214px minmax(0,1fr);gap:26px;align-items:start}
+#characterPage #awRefinedArchive .af-sidebar{position:sticky;top:22px;border:1px solid var(--line);border-radius:12px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
+#characterPage #awRefinedArchive .af-identity{padding:20px 18px 18px}
+#characterPage #awRefinedArchive .af-card-art{width:148px;aspect-ratio:.665;margin:0 auto 17px;filter:drop-shadow(0 8px 10px #00000035)}
+#characterPage #awRefinedArchive .af-card-art img{display:block;width:100%;height:100%;object-fit:contain}
+#characterPage #awRefinedArchive .af-arcana-title{margin-bottom:17px}
+#characterPage #awRefinedArchive .af-arcana-title .af-eyebrow{font-size:10px!important}
+#characterPage #awRefinedArchive .af-arcana-title h2{font-size:24px!important;line-height:1.2!important;letter-spacing:-.02em;font-weight:600!important;margin-top:3px}
+#characterPage #awRefinedArchive .af-field-label{display:grid;gap:7px;font-size:11px!important;line-height:1.4!important;font-weight:600!important;color:var(--muted);letter-spacing:.045em}
+#characterPage #awRefinedArchive .af-field-label select,#characterPage #awRefinedArchive .af-field-label input{letter-spacing:normal;font-weight:500!important;color:var(--text)}
+#characterPage #awRefinedArchive .af-pnv-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+#characterPage #awRefinedArchive .af-pnv-row label{font-size:12px!important;font-weight:500!important;color:var(--muted)}
+#characterPage #awRefinedArchive .af-stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:7px;background:var(--inset);overflow:hidden}
+#characterPage #awRefinedArchive .af-stepper button{display:grid;place-items:center;width:28px;height:34px;color:var(--muted);font-size:18px!important;text-align:center}
+#characterPage #awRefinedArchive .af-stepper button:hover{background:var(--raised);color:var(--text)}
+#characterPage #awRefinedArchive .af-stepper input{width:39px;min-height:34px;border:0;padding:0;text-align:center;background:transparent;font-size:15px!important;font-weight:600!important;appearance:textfield;-moz-appearance:textfield}
+#characterPage #awRefinedArchive .af-stepper input::-webkit-inner-spin-button{appearance:none}
+#characterPage #awRefinedArchive .af-side-tools{border-top:1px solid var(--line);padding:0 18px}
+#characterPage #awRefinedArchive .af-side-tools>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;font-size:12px!important;font-weight:500!important;color:var(--muted);list-style:none;cursor:pointer}
+#characterPage #awRefinedArchive .af-side-tools .af-field-label{margin:4px 0 15px}
+#characterPage #awRefinedArchive .af-side-tools input[type="number"]{font-size:14px!important}
+#characterPage #awRefinedArchive .af-check-label{display:flex;gap:9px;align-items:flex-start;font-size:12px!important;line-height:1.5!important;color:var(--muted);margin-bottom:16px}
+#characterPage #awRefinedArchive .af-check-label input{accent-color:var(--pink);margin-top:3px;flex-shrink:0}
+#characterPage #awRefinedArchive .af-sidebar-foot{padding:13px 18px;border-top:1px solid var(--line);font-size:11px!important;color:var(--muted);line-height:1.5!important}
+#characterPage #awRefinedArchive .af-sidebar-foot svg{height:12px;width:12px;margin-right:3px;color:var(--cyan)}
+#characterPage #awRefinedArchive .af-workspace{min-width:0}
+#characterPage #awRefinedArchive .af-budget{display:grid;grid-template-columns:1fr auto;gap:12px 24px;padding:18px 22px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+#characterPage #awRefinedArchive .af-budget-stats{display:flex;gap:32px;align-items:center}
+#characterPage #awRefinedArchive .af-budget-stat{display:flex;align-items:center;gap:10px}
+#characterPage #awRefinedArchive .af-budget-stat b{font-size:30px!important;line-height:1!important;font-weight:600!important;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+#characterPage #awRefinedArchive .af-budget-stat .af-eyebrow{font-size:10px!important;letter-spacing:.08em;max-width:88px}
+#characterPage #awRefinedArchive .af-budget-stat.af-available b{color:var(--pink)}
+#characterPage #awRefinedArchive .af-budget-stat.af-available .af-eyebrow{color:var(--text)}
+#characterPage #awRefinedArchive .af-budget-stat.af-over b{color:var(--amber)}
+#characterPage #awRefinedArchive .af-budget-help{font-size:12px!important;line-height:1.5!important;color:var(--muted);max-width:218px;align-self:center;text-align:right}
+#characterPage #awRefinedArchive .af-point-track{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;grid-column:1/-1}
+#characterPage #awRefinedArchive .af-point-track i{height:4px;background:var(--line);border-radius:5px}
+#characterPage #awRefinedArchive .af-point-track i.af-earned{background:var(--cyan)}
+#characterPage #awRefinedArchive .af-point-track i.af-spent{background:var(--pink)}
+#characterPage #awRefinedArchive .af-budget-warning{grid-column:1/-1;border-top:1px solid var(--line);padding-top:9px;font-size:12px!important;color:var(--amber)}
+#characterPage #awRefinedArchive .af-view-tabs{display:flex;gap:24px;margin:24px 0 22px;border-bottom:1px solid var(--line);overflow:auto;scrollbar-width:thin}
+#characterPage #awRefinedArchive .af-view-tab{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;padding:0 2px 13px;font-size:14px!important;font-weight:500!important;color:var(--muted);border-bottom:2px solid transparent}
+#characterPage #awRefinedArchive .af-view-tab[aria-selected="true"]{border-color:var(--pink);color:var(--text)}
+#characterPage #awRefinedArchive .af-view-tab svg{width:18px;height:18px}
+#characterPage #awRefinedArchive .af-view-tab[aria-selected="true"] svg{color:var(--pink)}
+#characterPage #awRefinedArchive .af-trama-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;align-items:start}
+#characterPage #awRefinedArchive .af-path-rail{min-width:0}
+#characterPage #awRefinedArchive .af-rail-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+#characterPage #awRefinedArchive .af-rail-heading h2{font-size:13px!important;font-weight:600!important}
+#characterPage #awRefinedArchive .af-filter-button{font-size:11px!important;color:var(--muted);padding:4px 6px;border-radius:4px;background:var(--raised)}
+#characterPage #awRefinedArchive .af-filter-button[aria-pressed="true"]{color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+#characterPage #awRefinedArchive .af-path-list{display:grid;gap:7px}
+#characterPage #awRefinedArchive .af-path-button{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;min-width:0;min-height:71px;padding:12px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--muted);transition:border-color .15s,background .15s}
+#characterPage #awRefinedArchive .af-path-button:hover{background:var(--raised);color:var(--text)}
+#characterPage #awRefinedArchive .af-path-button[aria-pressed="true"]{border-color:var(--pink);background:#ec288c0a;box-shadow:inset 3px 0 var(--pink);color:var(--text)}
+#characterPage #awRefinedArchive .af-path-symbol{width:28px;height:28px;display:grid;place-items:center;color:var(--muted)}
+#characterPage #awRefinedArchive .af-path-button[aria-pressed="true"] .af-path-symbol{color:var(--pink)}
+#characterPage #awRefinedArchive .af-path-symbol svg{width:24px;height:24px}
+#characterPage #awRefinedArchive .af-path-copy{display:block;min-width:0}
+#characterPage #awRefinedArchive .af-path-copy b{display:block;font-size:14px!important;line-height:1.2!important;font-weight:600!important}
+#characterPage #awRefinedArchive .af-path-copy small{display:block;font-size:12px!important;font-weight:400!important;line-height:1.35!important;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+#characterPage #awRefinedArchive .af-path-status{align-self:start;margin-top:2px;display:grid;place-items:center;width:16px;color:var(--muted)}
+#characterPage #awRefinedArchive .af-path-status svg{width:14px;height:14px}
+#characterPage #awRefinedArchive .af-path-status.af-owned{color:var(--green)}
+#characterPage #awRefinedArchive .af-rail-foot{font-size:11px!important;color:var(--muted);margin-top:15px;padding:0 2px;line-height:1.65!important}
+#characterPage #awRefinedArchive .af-detail-panel{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+#characterPage #awRefinedArchive .af-detail-top{padding:24px 26px 21px;border-bottom:1px solid var(--line);background:linear-gradient(115deg,#f62c9a07,transparent 65%)}
+#characterPage #awRefinedArchive .af-detail-kicker{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+#characterPage #awRefinedArchive .af-detail-kicker .af-eyebrow{color:var(--pink);font-size:10px!important;letter-spacing:.1em}
+#characterPage #awRefinedArchive .af-state-label{display:inline-flex;gap:5px;align-items:center;font-size:11px!important;color:var(--muted);white-space:nowrap}
+#characterPage #awRefinedArchive .af-state-label svg{width:13px;height:13px}
+#characterPage #awRefinedArchive .af-state-label.af-owned{color:var(--green)}
+#characterPage #awRefinedArchive .af-detail-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+#characterPage #awRefinedArchive .af-detail-title-row h2{font-size:clamp(24px,2.15vw,31px)!important;line-height:1.14!important;font-weight:600!important;letter-spacing:-.025em;overflow-wrap:anywhere}
+#characterPage #awRefinedArchive .af-detail-subtitle{font-size:12px!important;color:var(--muted);margin-top:9px}
+#characterPage #awRefinedArchive .af-primary-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;min-height:40px;padding:10px 14px;border:1px solid var(--pink);border-radius:6px;background:var(--pink);color:var(--on-accent);font-size:13px!important;font-weight:600!important;line-height:1.25!important}
+#characterPage #awRefinedArchive .af-primary-button svg{width:16px;height:16px}
+#characterPage #awRefinedArchive .af-primary-button:hover:not(:disabled){filter:brightness(1.1)}
+#characterPage #awRefinedArchive .af-primary-button.af-is-owned{background:transparent;color:var(--green);border-color:var(--line)}
+#characterPage #awRefinedArchive .af-primary-button:disabled{background:var(--raised);border-color:var(--line);color:var(--muted)}
+#characterPage #awRefinedArchive .af-purchase-hint{font-size:12px!important;color:var(--muted);line-height:1.5!important;margin-top:12px}
+#characterPage #awRefinedArchive .af-purchase-hint.af-locked{color:var(--amber)}
+#characterPage #awRefinedArchive .af-detail-body{padding:23px 26px 25px}
+#characterPage #awRefinedArchive .af-section-overline{display:flex;gap:8px;align-items:center;font-size:10px!important;font-weight:600!important;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+#characterPage #awRefinedArchive .af-section-overline::before{content:"";width:14px;height:1px;background:var(--cyan)}
+#characterPage #awRefinedArchive .af-rule-text{font-size:15.5px!important;line-height:1.75!important;font-weight:400!important;overflow-wrap:anywhere}
+#characterPage #awRefinedArchive .af-rule-text>p{margin:0 0 15px;max-width:75ch}
+#characterPage #awRefinedArchive .af-rule-text>:last-child{margin-bottom:0}
+#characterPage #awRefinedArchive .af-rule-term{font-weight:600!important;color:var(--text)}
+#characterPage #awRefinedArchive .af-rule-note{margin:18px 0 0;padding:13px 15px;border-left:2px solid var(--cyan);background:var(--inset);font-size:13.5px!important;line-height:1.7!important;color:var(--muted)}
+#characterPage #awRefinedArchive .af-rule-note .af-rule-term{font-weight:500!important;color:inherit}
+#characterPage #awRefinedArchive .af-rule-steps{display:grid;gap:0;margin:18px 0;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+#characterPage #awRefinedArchive .af-rule-steps>div{display:grid;grid-template-columns:85px minmax(0,1fr);gap:14px;padding:10px 14px;background:var(--inset);font-size:13.5px!important;line-height:1.55!important}
+#characterPage #awRefinedArchive .af-rule-steps>div+div{border-top:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-rule-steps dt{font-weight:600!important;color:var(--cyan)}
+#characterPage #awRefinedArchive .af-rule-steps dd{margin:0}
+#characterPage #awRefinedArchive .af-rule-list{padding-left:23px;margin:16px 0}
+#characterPage #awRefinedArchive .af-rule-list li{padding-left:3px;margin:7px 0}
+#characterPage #awRefinedArchive .af-resource-route{display:grid;grid-template-columns:87px minmax(0,1fr);gap:15px;padding:13px 15px;margin:10px 0;border:1px solid var(--line);border-radius:6px;font-size:14px!important;line-height:1.6!important}
+#characterPage #awRefinedArchive .af-resource-route>b{color:var(--cyan);font-weight:600!important}
+#characterPage #awRefinedArchive .af-amplifications{padding:0 26px 24px}
+#characterPage #awRefinedArchive .af-amp-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+#characterPage #awRefinedArchive .af-amp-section-head h3{font-size:15px!important;font-weight:600!important}
+#characterPage #awRefinedArchive .af-text-button{color:var(--muted);font-size:11px!important;font-weight:500!important;padding:5px 0;text-align:right}
+#characterPage #awRefinedArchive .af-text-button:hover{color:var(--cyan)}
+#characterPage #awRefinedArchive .af-amp-card{border:1px solid var(--line);border-radius:7px;margin-top:9px;background:var(--inset)}
+#characterPage #awRefinedArchive .af-amp-card.af-is-owned{border-color:color-mix(in srgb,var(--green) 52%,var(--line))}
+#characterPage #awRefinedArchive .af-amp-card summary{display:grid;grid-template-columns:28px minmax(0,1fr) auto 16px;align-items:center;gap:10px;list-style:none;padding:13px 14px;cursor:pointer}
+#characterPage #awRefinedArchive summary::-webkit-details-marker{display:none}
+#characterPage #awRefinedArchive .af-amp-number{display:grid;place-items:center;width:26px;height:26px;background:var(--raised);border-radius:5px;font-size:11px!important;font-weight:600!important;color:var(--muted)}
+#characterPage #awRefinedArchive .af-amp-card.af-is-owned .af-amp-number{color:var(--green)}
+#characterPage #awRefinedArchive .af-amp-title{min-width:0;font-size:14px!important;line-height:1.35!important;font-weight:500!important}
+#characterPage #awRefinedArchive .af-amp-cost{color:var(--muted);font-size:10px!important;white-space:nowrap}
+#characterPage #awRefinedArchive .af-chevron{width:15px;height:15px;color:var(--muted);transition:transform .15s}
+#characterPage #awRefinedArchive details[open]>summary .af-chevron{transform:rotate(180deg)}
+#characterPage #awRefinedArchive .af-amp-card[open]>summary{border-bottom:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-amp-body{padding:16px 17px}
+#characterPage #awRefinedArchive .af-amp-body .af-rule-text{font-size:14px!important;line-height:1.7!important}
+#characterPage #awRefinedArchive .af-amp-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:17px}
+#characterPage #awRefinedArchive .af-amp-footer p{font-size:11px!important;color:var(--muted);line-height:1.5!important;max-width:36ch}
+#characterPage #awRefinedArchive .af-amp-footer .af-primary-button{font-size:12px!important;min-height:36px;padding:8px 11px}
+#characterPage #awRefinedArchive .af-panel-heading{margin:3px 0 22px}
+#characterPage #awRefinedArchive .af-panel-heading h2{font-size:27px!important;line-height:1.15!important;font-weight:600!important;letter-spacing:-.02em}
+#characterPage #awRefinedArchive .af-panel-heading p{color:var(--muted);font-size:14px!important;line-height:1.65!important;margin-top:7px;max-width:65ch}
+#characterPage #awRefinedArchive .af-level-stack{display:grid;gap:12px}
+#characterPage #awRefinedArchive .af-level-card{border:1px solid var(--line);border-radius:9px;background:var(--panel);overflow:hidden}
+#characterPage #awRefinedArchive .af-level-card summary{list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:18px 21px;cursor:pointer}
+#characterPage #awRefinedArchive .af-level-card summary .af-eyebrow{font-size:9px!important;margin-bottom:5px}
+#characterPage #awRefinedArchive .af-level-card summary b{font-size:18px!important;line-height:1.3!important;font-weight:600!important;display:block}
+#characterPage #awRefinedArchive .af-level-card[open] summary{border-bottom:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-level-card .af-rule-text{padding:21px}
+#characterPage #awRefinedArchive .af-social-card{display:flex;align-items:flex-start;gap:13px;margin-top:21px;padding:19px 20px;border:1px solid var(--line);border-radius:8px;background:var(--inset)}
+#characterPage #awRefinedArchive .af-social-card>svg{width:24px;height:24px;color:var(--green);margin-top:2px}
+#characterPage #awRefinedArchive .af-social-card .af-eyebrow{margin-bottom:8px}
+#characterPage #awRefinedArchive .af-social-tags{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}
+#characterPage #awRefinedArchive .af-social-tags span{font-size:13px!important;padding:5px 9px;background:var(--raised);border-radius:5px;line-height:1.5!important}
+#characterPage #awRefinedArchive .af-social-card p{font-size:13px!important;color:var(--muted);line-height:1.6!important}
+#characterPage #awRefinedArchive .af-social-card .af-field-label{margin-top:12px;max-width:340px}
+#characterPage #awRefinedArchive .af-notes{margin-top:22px;border-top:1px solid var(--line);padding-top:13px}
+#characterPage #awRefinedArchive .af-notes>summary{display:flex;align-items:center;gap:8px;list-style:none;font-size:13px!important;cursor:pointer;padding:8px 0;color:var(--muted)}
+#characterPage #awRefinedArchive .af-notes[open]>summary{margin-bottom:7px}
+#characterPage #awRefinedArchive .af-notes summary .af-chevron{margin-left:auto}
+#characterPage #awRefinedArchive .af-notes p{font-size:11px!important;color:var(--muted);margin-top:7px}
+#characterPage #awRefinedArchive .af-dissonant-picker{max-width:380px;margin-bottom:24px}
+#characterPage #awRefinedArchive .af-dissonant-hero{display:flex;gap:18px;align-items:flex-start;padding:25px 26px;background:linear-gradient(120deg,#f62c9a08,transparent)}
+#characterPage #awRefinedArchive .af-dissonant-roman{width:50px;height:58px;display:grid;place-items:center;flex-shrink:0;background:#ed299209;border:1px solid var(--pink);color:var(--pink);font-size:25px!important;font-weight:500!important}
+#characterPage #awRefinedArchive .af-dissonant-hero h2{font-size:29px!important;line-height:1.1!important;font-weight:600!important;letter-spacing:-.02em;margin:4px 0 9px}
+#characterPage #awRefinedArchive .af-dissonant-hero p{color:var(--muted);font-size:14px!important;line-height:1.65!important;max-width:65ch}
+#characterPage #awRefinedArchive .af-dual-tabs{display:grid;grid-template-columns:1fr 1fr;border-block:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-dual-tabs button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:47px;font-size:13px!important;font-weight:500!important;color:var(--muted);border-bottom:2px solid transparent}
+#characterPage #awRefinedArchive .af-dual-tabs button+button{border-left:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-dual-tabs button[aria-pressed="true"]{background:var(--inset);border-bottom-color:var(--green);color:var(--green)}
+#characterPage #awRefinedArchive .af-dual-tabs button.af-risk[aria-pressed="true"]{border-bottom-color:var(--amber);color:var(--amber)}
+#characterPage #awRefinedArchive .af-dissonant-effect{padding:23px 26px 27px}
+#characterPage #awRefinedArchive .af-dissonant-effect h3{font-size:22px!important;line-height:1.25!important;font-weight:600!important;margin-bottom:18px}
+#characterPage #awRefinedArchive .af-dissonant-effect .af-rule-text{max-width:80ch}
+#characterPage #awRefinedArchive .af-exclusive-note{margin:0 26px 26px}
+#characterPage #awRefinedArchive .af-empty{padding:35px 26px;border:1px dashed var(--line);border-radius:9px;color:var(--muted);font-size:14px!important;line-height:1.7!important}
+#characterPage #awRefinedArchive .af-empty p{margin-bottom:16px}
+#characterPage #awRefinedArchive .af-empty-rail{font-size:12px!important;color:var(--muted);padding:20px 5px;line-height:1.6!important}
+#characterPage #awRefinedArchive .af-bottom-bar{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:11px!important;line-height:1.6!important;color:var(--muted)}
+#characterPage #awRefinedArchive .af-bottom-bar>span:first-child{letter-spacing:.05em;font-weight:600!important}
+#characterPage #awRefinedArchive .af-toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,12px);z-index:70;pointer-events:none;max-width:min(560px,calc(100vw - 32px));padding:12px 18px;background:var(--text);color:var(--bg);font-size:13px!important;line-height:1.5!important;font-weight:500!important;border-radius:7px;box-shadow:0 8px 28px #0004;opacity:0;transition:opacity .16s,transform .16s}
+#characterPage #awRefinedArchive .af-toast.af-show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:1480px){#characterPage #awRefinedArchive .af-trama-layout{grid-template-columns:250px minmax(0,1fr)}}
+@media(max-width:1180px){#characterPage #awRefinedArchive .af-shell{padding-inline:22px}
+#characterPage #awRefinedArchive .af-dashboard{grid-template-columns:188px minmax(0,1fr);gap:20px}
+#characterPage #awRefinedArchive .af-identity{padding:17px 14px}
+#characterPage #awRefinedArchive .af-card-art{width:136px}
+#characterPage #awRefinedArchive .af-side-tools,#characterPage #awRefinedArchive .af-sidebar-foot{padding-inline:14px}
+#characterPage #awRefinedArchive .af-trama-layout{grid-template-columns:205px minmax(0,1fr);gap:16px}
+#characterPage #awRefinedArchive .af-path-button{grid-template-columns:24px minmax(0,1fr) 12px;gap:7px;padding:11px 9px}
+#characterPage #awRefinedArchive .af-detail-top,#characterPage #awRefinedArchive .af-detail-body,#characterPage #awRefinedArchive .af-dissonant-effect{padding-inline:21px}
+#characterPage #awRefinedArchive .af-amplifications{padding-inline:21px}
+#characterPage #awRefinedArchive .af-detail-title-row{flex-direction:column;gap:13px}
+#characterPage #awRefinedArchive .af-detail-title-row .af-primary-button{align-self:flex-start}
+#characterPage #awRefinedArchive .af-budget{padding:17px 19px}
+#characterPage #awRefinedArchive .af-budget-stats{gap:23px}
+#characterPage #awRefinedArchive .af-budget-help{max-width:150px;font-size:11px!important}}
+@media(max-width:980px){#characterPage #awRefinedArchive .af-dashboard{grid-template-columns:1fr;gap:23px}
+#characterPage #awRefinedArchive .af-sidebar{position:static;display:grid;grid-template-columns:1fr 245px;overflow:visible}
+#characterPage #awRefinedArchive .af-identity{display:grid;grid-template-columns:115px minmax(0,1fr);gap:5px 21px;padding:18px 21px}
+#characterPage #awRefinedArchive .af-card-art{grid-row:1/4;width:104px;margin:0}
+#characterPage #awRefinedArchive .af-arcana-title{margin-bottom:0;align-self:start}
+#characterPage #awRefinedArchive .af-arcana-title h2{font-size:23px!important}
+#characterPage #awRefinedArchive .af-field-label{align-self:end}
+#characterPage #awRefinedArchive .af-pnv-row{margin-top:7px}
+#characterPage #awRefinedArchive .af-side-tools{grid-column:2;grid-row:1;border-top:0;border-left:1px solid var(--line);padding:8px 18px;align-content:start}
+#characterPage #awRefinedArchive .af-sidebar-foot{grid-column:1/-1;border-top:1px solid var(--line)}
+#characterPage #awRefinedArchive .af-trama-layout{grid-template-columns:225px minmax(0,1fr)}
+#characterPage #awRefinedArchive .af-budget-stats{gap:30px}
+#characterPage #awRefinedArchive .af-budget-help{max-width:218px;font-size:12px!important}}
+@media(max-width:700px){#characterPage #awRefinedArchive .af-shell{padding:17px 16px 26px}
+#characterPage #awRefinedArchive .af-topbar{padding-bottom:17px}
+#characterPage #awRefinedArchive .af-brand{font-size:14px!important;gap:9px}
+#characterPage #awRefinedArchive .af-brand em{display:none}
+#characterPage #awRefinedArchive .af-brand-mark{width:29px;height:29px}
+#characterPage #awRefinedArchive .af-top-actions{gap:4px}
+#characterPage #awRefinedArchive .af-preview-pill{font-size:9px!important;letter-spacing:.04em;padding:5px 7px}
+#characterPage #awRefinedArchive .af-top-actions .af-quiet-button{padding:7px}
+#characterPage #awRefinedArchive .af-top-actions .af-quiet-button span{display:none}
+#characterPage #awRefinedArchive .af-page-head{margin:24px 0}
+#characterPage #awRefinedArchive .af-page-head p{font-size:14px!important}
+#characterPage #awRefinedArchive .af-file-index{font-size:45px!important}
+#characterPage #awRefinedArchive .af-sidebar{display:block}
+#characterPage #awRefinedArchive .af-identity{grid-template-columns:80px minmax(0,1fr);gap:4px 16px;padding:17px}
+#characterPage #awRefinedArchive .af-card-art{width:76px}
+#characterPage #awRefinedArchive .af-arcana-title h2{font-size:21px!important}
+#characterPage #awRefinedArchive .af-arcana-title .af-eyebrow{font-size:9px!important}
+#characterPage #awRefinedArchive .af-identity .af-field-label{font-size:10px!important;gap:5px}
+#characterPage #awRefinedArchive .af-identity select{font-size:13px!important;min-height:38px;padding:7px 8px}
+#characterPage #awRefinedArchive .af-pnv-row{margin-top:6px}
+#characterPage #awRefinedArchive .af-pnv-row label{font-size:11px!important}
+#characterPage #awRefinedArchive .af-stepper button,#characterPage #awRefinedArchive .af-stepper input{min-height:29px;height:29px}
+#characterPage #awRefinedArchive .af-stepper input{font-size:14px!important}
+#characterPage #awRefinedArchive .af-side-tools{border-left:0;border-top:1px solid var(--line);padding:0 17px}
+#characterPage #awRefinedArchive .af-side-tools>summary{font-size:11px!important;padding:10px 0}
+#characterPage #awRefinedArchive .af-sidebar-foot{font-size:10px!important;padding:10px 17px}
+#characterPage #awRefinedArchive .af-dashboard{gap:20px}
+#characterPage #awRefinedArchive .af-budget{grid-template-columns:1fr;padding:16px 17px;gap:12px}
+#characterPage #awRefinedArchive .af-budget-stats{justify-content:space-between;gap:10px}
+#characterPage #awRefinedArchive .af-budget-stat{gap:7px}
+#characterPage #awRefinedArchive .af-budget-stat b{font-size:27px!important}
+#characterPage #awRefinedArchive .af-budget-stat .af-eyebrow{font-size:9px!important;letter-spacing:.04em;max-width:66px}
+#characterPage #awRefinedArchive .af-budget-help{text-align:left;max-width:none;font-size:11px!important;order:3}
+#characterPage #awRefinedArchive .af-budget-warning{order:4}
+#characterPage #awRefinedArchive .af-view-tabs{gap:20px;margin:21px 0 20px}
+#characterPage #awRefinedArchive .af-view-tab{font-size:13px!important;padding-bottom:11px;gap:6px}
+#characterPage #awRefinedArchive .af-view-tab svg{width:16px;height:16px}
+#characterPage #awRefinedArchive .af-trama-layout{grid-template-columns:1fr;gap:19px}
+#characterPage #awRefinedArchive .af-rail-heading{margin-bottom:10px}
+#characterPage #awRefinedArchive .af-path-list{display:flex;gap:8px;overflow:auto;padding:1px 1px 8px;scrollbar-width:thin;scroll-snap-type:x proximity}
+#characterPage #awRefinedArchive .af-path-button{grid-template-columns:22px minmax(0,1fr);grid-template-rows:auto auto;gap:0 8px;min-width:167px;flex:0 0 167px;min-height:69px;padding:11px;scroll-snap-align:start}
+#characterPage #awRefinedArchive .af-path-copy b{font-size:13px!important}
+#characterPage #awRefinedArchive .af-path-copy small{font-size:11px!important}
+#characterPage #awRefinedArchive .af-path-status{display:none}
+#characterPage #awRefinedArchive .af-path-symbol svg{width:21px;height:21px}
+#characterPage #awRefinedArchive .af-rail-foot{display:none}
+#characterPage #awRefinedArchive .af-detail-top{padding:20px 19px 18px}
+#characterPage #awRefinedArchive .af-detail-title-row{gap:15px}
+#characterPage #awRefinedArchive .af-detail-title-row h2{font-size:27px!important}
+#characterPage #awRefinedArchive .af-detail-body{padding:20px 19px 23px}
+#characterPage #awRefinedArchive .af-detail-kicker{margin-bottom:12px}
+#characterPage #awRefinedArchive .af-detail-subtitle{font-size:11px!important}
+#characterPage #awRefinedArchive .af-rule-text{font-size:15px!important;line-height:1.75!important}
+#characterPage #awRefinedArchive .af-rule-note{font-size:13px!important;padding:12px 13px}
+#characterPage #awRefinedArchive .af-rule-steps>div{grid-template-columns:67px minmax(0,1fr);font-size:13px!important;gap:9px;padding:11px}
+#characterPage #awRefinedArchive .af-resource-route{grid-template-columns:1fr;gap:6px;font-size:13px!important;padding:12px}
+#characterPage #awRefinedArchive .af-amplifications{padding:0 19px 20px}
+#characterPage #awRefinedArchive .af-amp-section-head h3{font-size:14px!important}
+#characterPage #awRefinedArchive .af-amp-card summary{grid-template-columns:24px minmax(0,1fr) 14px;gap:8px;padding:12px 10px}
+#characterPage #awRefinedArchive .af-amp-number{width:24px;height:24px}
+#characterPage #awRefinedArchive .af-amp-title{font-size:13px!important}
+#characterPage #awRefinedArchive .af-amp-cost{display:none}
+#characterPage #awRefinedArchive .af-amp-body{padding:15px 13px}
+#characterPage #awRefinedArchive .af-amp-footer{gap:12px;align-items:flex-start;flex-direction:column}
+#characterPage #awRefinedArchive .af-amp-footer p{max-width:none}
+#characterPage #awRefinedArchive .af-amp-footer .af-primary-button{align-self:flex-start}
+#characterPage #awRefinedArchive .af-panel-heading h2{font-size:25px!important}
+#characterPage #awRefinedArchive .af-panel-heading p{font-size:13px!important}
+#characterPage #awRefinedArchive .af-level-card summary{padding:17px}
+#characterPage #awRefinedArchive .af-level-card .af-rule-text{padding:17px}
+#characterPage #awRefinedArchive .af-level-card summary b{font-size:17px!important}
+#characterPage #awRefinedArchive .af-social-card{padding:16px}
+#characterPage #awRefinedArchive .af-social-tags span{font-size:12px!important}
+#characterPage #awRefinedArchive .af-dissonant-hero{padding:22px 19px;gap:13px}
+#characterPage #awRefinedArchive .af-dissonant-roman{width:40px;height:48px;font-size:22px!important}
+#characterPage #awRefinedArchive .af-dissonant-hero h2{font-size:25px!important}
+#characterPage #awRefinedArchive .af-dissonant-hero p{font-size:13px!important}
+#characterPage #awRefinedArchive .af-dissonant-effect{padding:21px 19px}
+#characterPage #awRefinedArchive .af-dissonant-effect h3{font-size:21px!important}
+#characterPage #awRefinedArchive .af-dual-tabs button{font-size:12px!important}
+#characterPage #awRefinedArchive .af-exclusive-note{margin:0 19px 21px}
+#characterPage #awRefinedArchive .af-bottom-bar{font-size:10px!important;gap:8px;margin-top:24px}
+#characterPage #awRefinedArchive .af-toast{bottom:15px;font-size:12px!important}}
+@media(max-width:370px){#characterPage #awRefinedArchive .af-shell{padding-inline:12px}
+#characterPage #awRefinedArchive .af-file-index{display:none}
+#characterPage #awRefinedArchive .af-budget-stat{gap:5px}
+#characterPage #awRefinedArchive .af-budget-stat b{font-size:24px!important}
+#characterPage #awRefinedArchive .af-budget-stat .af-eyebrow{font-size:8px!important}
+#characterPage #awRefinedArchive .af-view-tabs{gap:16px}
+#characterPage #awRefinedArchive .af-view-tab{font-size:12px!important}
+#characterPage #awRefinedArchive .af-identity{padding:14px;gap:3px 12px}
+#characterPage #awRefinedArchive .af-card-art{width:68px}
+#characterPage #awRefinedArchive .af-identity{grid-template-columns:69px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){#characterPage #awRefinedArchive *{scroll-behavior:auto!important;transition:none!important}}
+/* Isolate form controls from the sheet's original notebook input styles. */
+#characterPage #awRefinedArchive :is(input,select,textarea){margin:0;box-shadow:none;transform:none;color:var(--text)!important;background:var(--inset)!important;letter-spacing:normal!important}
+#characterPage #awRefinedArchive :is(select,textarea){padding:10px 12px!important}
+#characterPage #awRefinedArchive .af-stepper input{padding:0!important;background:transparent!important}
+#characterPage #awRefinedArchive button{box-shadow:none;text-shadow:none;transform:none;letter-spacing:normal;text-transform:none}
+#characterPage #awRefinedArchive .af-path-button[aria-pressed="true"]{box-shadow:inset 3px 0 var(--pink)}
+#characterPage #awRefinedArchive .af-card-art.af-is-empty{display:grid;place-items:center;border:1px dashed var(--line);border-radius:8px;background:var(--inset);color:var(--muted)}
+#characterPage #awRefinedArchive .af-card-art.af-is-empty svg{width:42px;height:42px}
+#characterPage #awRefinedArchive .master-only{display:none!important}
+body.master #characterPage #awRefinedArchive .master-only{display:block!important}
+#characterPage #awRefinedArchive .af-dissonant-slots{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+#characterPage #awRefinedArchive .af-dissonant-slots button{padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--muted);font-size:13px!important;font-weight:500!important}
+#characterPage #awRefinedArchive .af-dissonant-slots button[aria-pressed="true"]{border-color:var(--pink);color:var(--text);background:var(--raised)}
+#characterPage #awRefinedArchive .af-shell>.af-page-head{margin-top:2px}
+#characterPage #awRefinedArchive .af-rule-text{color:var(--text)}
+#characterPage #awRefinedArchive :is(h1,h2,h3,h4){color:var(--text);text-transform:none;text-shadow:none}
+#characterPage #awRefinedArchive :is(section,article,aside,header,nav,details,figure){min-width:0}
+@media(max-width:980px){body:not(.master) #characterPage #awRefinedArchive .af-sidebar{grid-template-columns:1fr}}
+
 </style>
 
 
@@ -13636,7 +13988,14 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
            PAGE 04 — ARCANA / AWAKENINGS
            ===================================================== -->
       <section class="sheet-subpage" data-sheet-panel="awakening">
-        <div class="awakening-spread arcana-archive-spread">
+        <div class="aw-layout-picker" id="awLayoutPicker" role="group" aria-label="Versão da seção Despertares">
+          <span>Visualização dos Despertares</span>
+          <div class="aw-layout-options">
+            <button type="button" data-aw-layout="classic" aria-pressed="true" aria-controls="awClassicArchive">Antiga</button>
+            <button type="button" data-aw-layout="focused" aria-pressed="false" aria-controls="awRefinedArchive">Nova</button>
+          </div>
+        </div>
+        <div class="awakening-spread arcana-archive-spread" id="awClassicArchive">
           <header class="spread-head arcana-archive-head">
             <div>
               <div class="mag-ribbon">ARCANA // AWAKENING ARCHIVE</div>
@@ -13776,6 +14135,7 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
             </section>
           </div>
         </div>
+        <div id="awRefinedArchive" class="aw-refined" hidden></div>
       </section>
 
       <!-- =====================================================
@@ -17738,6 +18098,327 @@ function renderArcanaSocialEffectBox(arcana=currentArcanaData()){
   }
 }
 
+/* Despertares: apresentações clássica e organizada, com o mesmo save. */
+const AWAKENING_FOCUS_ARCHIVE=(()=>{
+const PATHS=[
+  {key:'impeto',label:'Ímpeto'}, {key:'autocuidado',label:'Autocuidado'},
+  {key:'artificio',label:'Artifício'}, {key:'cognicao',label:'Cognição'},
+  {key:'elo',label:'Elo'}, {key:'resolucao',label:'Resolução'}
+];
+const VIEWS=[{key:"arcana",label:"Arcana · Nível 1",icon:"card"},{key:"trama",label:"Despertares",icon:"spark"},{key:"dissonante",label:"Dissonante",icon:"mask"}];
+const ICONS={
+  spark:'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/>',
+  impeto:'<path d="m13 2-9 12h7l-1 8 10-13h-7Z"/>',
+  autocuidado:'<path d="M20.8 4.8a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.4a5.5 5.5 0 0 0 0-7.8Z"/><path d="M5 12h4l2-4 2 8 2-4h4"/>',
+  artificio:'<path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/>',
+  cognicao:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  elo:'<path d="m10 14 4-4M8 16l-1 1a4.2 4.2 0 0 1-6-6l5-5a4.2 4.2 0 0 1 6 0M16 8l1-1a4.2 4.2 0 0 1 6 6l-5 5a4.2 4.2 0 0 1-6 0" transform="translate(0 -1) scale(.95)"/>',
+  resolucao:'<path d="m12 2 9 10-9 10-9-10Z"/><path d="m12 7 4 5-4 5-4-5Z"/>',
+  card:'<rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="m12 7 3 5-3 5-3-5Z"/>',
+  mask:'<path d="M3 5v6a9 9 0 0 0 18 0V5c-3 2-5 2-9 0-4 2-6 2-9 0Z"/><path d="m6 10 3 1m6 0 3-1M8 15c3-2 5-2 8 0"/>',
+  check:'<path d="m5 12 4 4L19 6"/>',
+  lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  down:'<path d="m6 9 6 6 6-6"/>',
+  reset:'<path d="M3 11a9 9 0 1 1 3 8M3 4v7h7"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+  moon:'<path d="M20.5 14A8.8 8.8 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/>',
+  note:'<path d="M4 3h16v18H4Z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  shield:'<path d="m12 2 8 3v6c0 5-8 11-8 11S4 16 4 11V5Z"/><path d="m8 11 3 3 5-6"/>',
+  warning:'<path d="m12 3 10 18H2Z"/><path d="M12 9v5m0 3h.01"/>'
+};
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon=(name,classes='')=>`<svg viewBox="0 0 24 24" aria-hidden="true" class="${classes}">${ICONS[name]||ICONS.spark}</svg>`;
+const clamp=(value,min,max,fallback=min)=>Number.isFinite(Number(value))?Math.max(min,Math.min(max,Math.floor(Number(value)))):fallback;
+
+
+const DB={arcanas:PERSONA_PHOBIA_ARCANAS,images:ARCANA_DEFAULT_IMAGES,dissonants:PERSONA_PHOBIA_DISSONANT_ARCANAS,social:ARCANA_SOCIAL_EFFECTS};
+let model;
+function ui(){
+  state.charSheet.ui ||= {};
+  const parent=state.charSheet.ui;
+  if(!parent.awakeningFocus||typeof parent.awakeningFocus!=='object'||Array.isArray(parent.awakeningFocus))parent.awakeningFocus={};
+  const value=parent.awakeningFocus;
+  if(!VIEWS.some(v=>v.key===value.view))value.view='arcana';
+  if(!PATHS.some(p=>p.key===value.path))value.path='impeto';
+  for(const key of ['openAmps','levelOpen'])if(!value[key]||typeof value[key]!=='object'||Array.isArray(value[key]))value[key]={};
+  value.dissonantSide=value.dissonantSide==='complicacao'?'complicacao':'beneficio';
+  value.dissonantSlot=value.dissonantSlot==='extra'?'extra':'main';
+  return value;
+}
+function refreshModel(){
+  const view=ui(),a=arcana(),b=budget();
+  model={...view,arcana:a?.romano||'',pnv:b.pnv,bonus:b.bonus,resolutionOverride:!!state.charSheet.progress?.resolutionOverride,socialChoices:ensureArcanaSocialState()};
+}
+function arcana(){return currentArcanaData()}
+function sourceFor(key){return arcanaAwakeningSource(arcana(),key)}
+function progress(){const a=arcana();return a?ensureArcanaProgress(a.romano):{}}
+function budget(){return awakeningPointBudget(state.charSheet.pnv,arcana())}
+function resolutionAllowed(){return resolutionPurchaseAllowed()}
+function mainLock(key){
+  if(progress()[key]?.owned)return '';
+  if(key==='resolucao'&&!resolutionAllowed())return 'Requer PNv. 10 ou liberação narrativa.';
+  if(budget().available<1)return 'Sem Pontos de Despertar disponíveis.';
+  return '';
+}
+function ampLock(key,index){
+  if(progress()[key]?.amplificacoes[index])return '';
+  if(!progress()[key]?.owned)return 'Adquira primeiro o Despertar desta trilha.';
+  if(budget().available<1)return 'Sem Pontos de Despertar disponíveis.';
+  return '';
+}
+function changePurchase(key,index=null){
+  if(!arcana()||!PATHS.some(p=>p.key===key))return false;
+  const item=progress()[key];
+  if(index===null){
+    if(item.owned){
+      const refunded=1+item.amplificacoes.filter(Boolean).length;
+      item.owned=false;item.amplificacoes=[false,false];
+      toast(`${refunded} ponto${refunded>1?'s devolvidos':' devolvido'}. Aquisição removida.`);
+    }else{
+      const reason=mainLock(key);if(reason){toast(reason);return false;}
+      item.owned=true;toast(`${sourceFor(key).habilidade.nome} adquirido.`);
+    }
+  }else{
+    if(!Number.isInteger(index)||index<0||index>1)return false;
+    if(item.amplificacoes[index]){item.amplificacoes[index]=false;toast('Amplificação removida. 1 ponto devolvido.');}
+    else{const reason=ampLock(key,index);if(reason){toast(reason);return false;}item.amplificacoes[index]=true;toast('Amplificação adquirida.');}
+  }
+  return true;
+}
+function syncNativeInputs(){
+  const values={pnv:state.charSheet.pnv,'profile.arcana':state.charSheet.profile.arcana||'','profile.dissonantArcana':state.charSheet.profile.dissonantArcana||'','profile.dissonantArcanaExtra':state.charSheet.profile.dissonantArcanaExtra||'','persona.amplifications':state.charSheet.persona?.amplifications||''};
+  Object.entries(values).forEach(([path,value])=>document.querySelectorAll(`[data-sheet="${path}"]`).forEach(el=>{if(el.value!==String(value))el.value=value;}));
+}
+function focusControl(key='',id=''){
+  if(!key&&!id)return;
+  requestAnimationFrame(()=>{
+    const root=document.getElementById('awRefinedArchive');
+    const target=id?document.getElementById(id):root?.querySelector(`[data-aw-focus="${key}"]`);
+    if(target&&!target.disabled)target.focus({preventScroll:true});
+  });
+}
+function commit(focusKey='',id=''){
+  syncNativeInputs();renderCharacterSheet();saveState(true);focusControl(focusKey,id);
+}
+function updateAccentContrast(){
+  const root=document.getElementById('awRefinedArchive');if(!root||typeof getComputedStyle!=='function')return;
+  const raw=getComputedStyle(root).getPropertyValue('--theme-accent').trim();
+  const hex=raw.replace(/^#/,'');if(!/^(?:[\da-f]{3}|[\da-f]{6})$/i.test(hex))return;
+  const full=hex.length===3?hex.split('').map(x=>x+x).join(''):hex;
+  const [r,g,b]=[0,2,4].map(i=>{const n=parseInt(full.slice(i,i+2),16)/255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4;});
+  const luminance=.2126*r+.7152*g+.0722*b;
+  root.style.setProperty('--on-accent',(luminance+.05)/.05>=1.05/(luminance+.05)?'#090b10':'#fff');
+}
+function bind(){
+  const section=document.querySelector('[data-sheet-panel="awakening"]');
+  if(!section||section.dataset.awPresentationBound)return;
+  section.dataset.awPresentationBound='1';
+  section.addEventListener('click',event=>{
+    const button=event.target.closest('button');if(!button||!section.contains(button)||button.disabled)return;
+    const layout=button.dataset.awLayout;
+    if(layout==='classic'||layout==='focused'){
+      state.charSheet.ui ||= {};state.charSheet.ui.awakeningLayout=layout;
+      render();saveState(true);return;
+    }
+    const root=document.getElementById('awRefinedArchive');if(!root?.contains(button))return;
+    const view=ui(),action=button.dataset.awAction,focus=button.dataset.awFocus||'';
+    if(button.hasAttribute('data-aw-step')){
+      state.charSheet.pnv=clamp(Number(state.charSheet.pnv||1)+Number(button.dataset.awStep),1,20,1);
+      commit(focus);return;
+    }
+    if(action==='view'&&VIEWS.some(v=>v.key===button.dataset.awView))view.view=button.dataset.awView;
+    else if(action==='path'&&PATHS.some(p=>p.key===button.dataset.awPath))view.path=button.dataset.awPath;
+    else if(action==='filter-owned')view.onlyOwned=!view.onlyOwned;
+    else if(action==='purchase'){
+      if(changePurchase(button.dataset.awPath,button.hasAttribute('data-aw-amp')?Number(button.dataset.awAmp):null))commit(focus);
+      return;
+    }
+    else if(action==='expand-amps'){
+      const key=button.dataset.awPath;
+      if(!arcana()||!PATHS.some(p=>p.key===key))return;
+      const tokens=sourceFor(key).amplificacoes.slice(0,2).map((_,i)=>`${arcana().romano}:${key}:${i}`);
+      const open=!tokens.every(k=>view.openAmps[k]);tokens.forEach(k=>view.openAmps[k]=open);
+    }
+    else if(action==='dissonant-side')view.dissonantSide=button.dataset.awSide==='complicacao'?'complicacao':'beneficio';
+    else if(action==='dissonant-slot')view.dissonantSlot=button.dataset.awSlot==='extra'?'extra':'main';
+    else return;
+    render(focus);saveState(true);
+  });
+  section.addEventListener('change',event=>{
+    const field=event.target.dataset.awField;if(!field)return;
+    const target=event.target,value=target.value;
+    if(field==='arcana'){
+      const a=DB.arcanas.arcanas.find(a=>a.romano===value);
+      if(value&&!a)return;
+      ui().onlyOwned=false;setArcanaSelection(a?.nomeFicha||'');focusControl('',target.id);return;
+    }
+    if(field==='pnv')state.charSheet.pnv=clamp(value,1,20,1);
+    else if(field==='bonus'||field==='resolutionOverride'){
+      if(!document.body.classList.contains('master')){render();return;}
+      state.charSheet.progress ||= {};
+      if(field==='bonus')state.charSheet.progress.awakeningBonus=clamp(value,0,20,0);
+      else state.charSheet.progress.resolutionOverride=!!target.checked;
+    }
+    else if(field==='dissonant'||field==='dissonantExtra'){
+      if(value&&!DB.dissonants.some(d=>d.romano===value))return;
+      const profile=state.charSheet.profile;
+      if(field==='dissonantExtra'){
+        if(profile.dissonantArcana!=='XI'||value==='XI')return;
+        profile.dissonantArcanaExtra=value;ui().dissonantSlot=value?'extra':'main';
+      }else{profile.dissonantArcana=value;ui().dissonantSlot='main';}
+    }
+    else if(field==='socialChoice'){
+      const a=arcana(),spec=arcanaSocialSpec(a);if(!a||!spec?.choice)return;
+      ensureArcanaSocialState()[a.romano]=spec.choice.skills.includes(value)?value:'';
+    }
+    else return;
+    commit('',target.id);
+  });
+  section.addEventListener('input',event=>{
+    if(event.target.dataset.awField!=='notes')return;
+    state.charSheet.persona ||= {};state.charSheet.persona.amplifications=event.target.value;
+    syncNativeInputs();saveState(true);
+  });
+  section.addEventListener('toggle',event=>{
+    const target=event.target,view=ui(),token=target.dataset?.awAmpToken;
+    let changed=false;
+    if(token&&!!view.openAmps[token]!==target.open){view.openAmps[token]=target.open;changed=true;}
+    else if(target.dataset?.awOpenPanel==='tools'&&!!view.toolsOpen!==target.open){view.toolsOpen=target.open;changed=true;}
+    else if(target.dataset?.awOpenPanel==='notes'&&!!view.notesOpen!==target.open){view.notesOpen=target.open;changed=true;}
+    else if(target.hasAttribute('data-aw-level-index')&&arcana()){
+      const roman=arcana().romano,index=Number(target.dataset.awLevelIndex),previous=view.levelOpen[roman]??0;
+      if(target.open&&previous!==index){view.levelOpen[roman]=index;changed=true;}
+      else if(!target.open&&previous===index){view.levelOpen[roman]=-1;changed=true;}
+    }
+    if(changed)saveState(true);
+  },true);
+  section.addEventListener('keydown',event=>{
+    const tab=event.target.closest('[role="tab"]');
+    if(!tab||!document.getElementById('awRefinedArchive')?.contains(tab))return;
+    const keys=['ArrowLeft','ArrowRight','Home','End'];if(!keys.includes(event.key))return;
+    event.preventDefault();const view=ui(),index=VIEWS.findIndex(v=>v.key===view.view);
+    const next=event.key==='Home'?0:event.key==='End'?VIEWS.length-1:(index+(event.key==='ArrowRight'?1:VIEWS.length-1))%VIEWS.length;
+    view.view=VIEWS[next].key;render('view-'+view.view);saveState(true);
+  });
+  if(typeof MutationObserver==='function')new MutationObserver(updateAccentContrast).observe(document.body,{attributes:true,attributeFilter:['data-site-theme','class']});
+}
+
+
+function inlineRule(text){
+  return esc(text).replace(/\[([^\]]+)\]/g,(_,term)=>term.length<=64?`<strong class="rule-term">${term}</strong>`:term);
+}
+
+function ruleHTML(text){
+  return String(text||'').split(/\n\s*\n/).filter(s=>s.trim()).map(raw=>{
+    const block=raw.trim(),lines=block.split('\n').map(x=>x.trim()).filter(Boolean);
+    if(/^\[[\s\S]+\]$/.test(block))return `<aside class="rule-note">${inlineRule(block.slice(1,-1)).replace(/\n/g,'<br>')}</aside>`;
+    if(lines.length>1&&lines.every(line=>/^\d+\s+[^:]{1,28}:/.test(line)))return `<dl class="rule-steps">${lines.map(line=>{const cut=line.indexOf(':');return `<div><dt>${inlineRule(line.slice(0,cut))}</dt><dd>${inlineRule(line.slice(cut+1).trim())}</dd></div>`;}).join('')}</dl>`;
+    if(lines.every(line=>/^[-•]\s/.test(line)))return `<ul class="rule-list">${lines.map(line=>`<li>${inlineRule(line.replace(/^[-•]\s/,''))}</li>`).join('')}</ul>`;
+    if(lines.length>1&&/^[A-Z\s→↔/-]{2,24}$/.test(lines[0])&&/[→↔]/.test(lines[0]))return `<section class="resource-route"><b>${inlineRule(lines[0])}</b><p>${inlineRule(lines.slice(1).join('\n')).replace(/\n/g,'<br>')}</p></section>`;
+    return `<p>${inlineRule(block).replace(/\n/g,'<br>')}</p>`;
+  }).join('');
+}
+
+function budgetHTML(){
+  const b=budget();let used=Math.min(b.spent,Math.floor(model.pnv/2));
+  const next=model.pnv<20?`Próximo ponto no PNv. ${String((Math.floor(model.pnv/2)+1)*2).padStart(2,'0')}.`:'Progressão de nível completa.';
+  return `<section class="budget" aria-label="Pontos de Despertar">
+    <div class="budget-stats"><div class="budget-stat available ${b.balance<0?'over':''}"><b>${String(b.balance).padStart(2,'0')}</b><span class="eyebrow">Pontos disponíveis</span></div><div class="budget-stat"><b>${b.spent}</b><span class="eyebrow">Em uso</span></div><div class="budget-stat"><b>${b.earned}</b><span class="eyebrow">Recebidos</span></div></div>
+    <p class="budget-help">1 ponto a cada 2 níveis de Persona.<br>${next}</p>
+    <div class="point-track" aria-label="${b.spent} pontos usados, ${b.earned} recebidos">${Array.from({length:10},(_,i)=>`<i class="${(i+1)*2<=model.pnv?'earned':''} ${i<used?'spent':''}" aria-hidden="true"></i>`).join('')}</div>
+    ${b.balance<0?`<p class="budget-warning">${icon('warning')} Há ${-b.balance} aquisição(ões) acima do total atual. Remova aquisições ou ajuste o PNv. para liberar novas compras.</p>`:''}
+  </section>`;
+}
+
+function purchaseButton(key,index=null){
+  const owned=index===null?progress()[key].owned:progress()[key].amplificacoes[index];
+  const reason=index===null?mainLock(key):ampLock(key,index);
+  return `<button type="button" class="primary-button ${owned?'is-owned':''}" data-aw-action="purchase" data-aw-path="${key}" ${index===null?'':`data-aw-amp="${index}"`} data-aw-focus="buy-${key}-${index??'main'}" ${reason?'disabled':''} aria-label="${owned?'Remover':'Adquirir'} ${esc(index===null?sourceFor(key).habilidade.nome:sourceFor(key).amplificacoes[index].nome)}">${icon(owned?'check':reason?'lock':'plus')}${owned?'Adquirido · remover':'Adquirir · 1 pt'}</button>`;
+}
+
+function tramaHTML(){
+  const owned=progress();const paths=PATHS.filter(p=>!model.onlyOwned||owned[p.key].owned);
+  const selected=paths.find(p=>p.key===model.path)||paths[0];
+  if(selected)model.path=selected.key;
+  const rail=`<nav class="path-rail" aria-label="Trilhas de Despertar"><div class="rail-heading"><h2>Trilhas da Trama</h2><button type="button" class="filter-button" data-aw-action="filter-owned" data-aw-focus="filter-owned" aria-pressed="${model.onlyOwned}">${model.onlyOwned?'Adquiridas':'Todas'}</button></div><div class="path-list">${paths.map(p=>{
+    const item=owned[p.key],locked=p.key==='resolucao'&&!resolutionAllowed()&&!item.owned;
+    return `<button type="button" class="path-button" data-aw-action="path" data-aw-path="${p.key}" data-aw-focus="path-${p.key}" aria-pressed="${selected.key===p.key}" title="${esc(p.label+' — '+sourceFor(p.key).habilidade.nome)}"><span class="path-symbol">${icon(p.key)}</span><span class="path-copy"><b>${esc(p.label)}</b><small>${esc(sourceFor(p.key).habilidade.nome)}</small></span><span class="path-status ${item.owned?'owned':''}" aria-label="${item.owned?'Adquirido':locked?'Requer PNv. 10 ou liberação':'Não adquirido'}">${icon(item.owned?'check':locked?'lock':'down')}</span></button>`;
+  }).join('')||'<p class="empty-rail">Nenhuma trilha adquirida ainda.</p>'}</div><p class="rail-foot">Cada Despertar e cada Amplificação custa 1 ponto. As trilhas Elo e Resolução são universais.</p></nav>`;
+  if(!selected)return `<div class="trama-layout">${rail}<div class="empty"><p>Seu repertório ainda está vazio. Explore as trilhas para escolher seu primeiro Despertar.</p><button class="primary-button" type="button" data-aw-action="filter-owned">Ver todas as trilhas</button></div></div>`;
+  const key=selected.key,source=sourceFor(key),entry=owned[key],lock=mainLock(key);
+  const ampKeys=(source.amplificacoes||[]).slice(0,2).map((_,i)=>`${model.arcana}:${key}:${i}`);
+  const allOpen=ampKeys.every(k=>model.openAmps[k]);
+  return `<div class="trama-layout">${rail}<article class="detail-panel" aria-labelledby="awFocusAbilityTitle">
+    <header class="detail-top"><div class="detail-kicker"><span class="eyebrow">Trama / ${esc(selected.label)}</span><span class="state-label ${entry.owned?'owned':''}">${icon(entry.owned?'check':'card')}${entry.owned?'No seu repertório':'Custo: 1 ponto'}</span></div><div class="detail-title-row"><div><h2 id="awFocusAbilityTitle">${esc(source.habilidade.nome)}</h2><p class="detail-subtitle">${key==='elo'||key==='resolucao'?'Despertar universal':esc(arcana().romano+' — '+arcana().nomeFicha)}</p></div>${purchaseButton(key)}</div>${lock?`<p class="purchase-hint locked">${esc(lock)}</p>`:key==='resolucao'?'<p class="purchase-hint">Exige PNv. 10 ou liberação narrativa, além de 1 ponto.</p>':''}</header>
+    <div class="detail-body"><span class="section-overline">Regra do Despertar</span><div class="rule-text">${ruleHTML(source.habilidade.texto)}</div></div>
+    <section class="amplifications" aria-label="Amplificações"><div class="amp-section-head"><h3>Amplificações <span class="state-label">/ ${source.amplificacoes.length}</span></h3><button type="button" class="text-button" data-aw-action="expand-amps" data-aw-path="${key}" data-aw-focus="expand-amps">${allOpen?'Recolher':'Expandir'} todas</button></div>
+      ${source.amplificacoes.slice(0,2).map((amp,i)=>{
+        const token=`${model.arcana}:${key}:${i}`,reason=ampLock(key,i),acquired=entry.amplificacoes[i];
+        return `<details class="amp-card ${acquired?'is-owned':''}" data-aw-amp-token="${token}" ${model.openAmps[token]?'open':''}><summary><span class="amp-number">${acquired?icon('check'):String(i+1).padStart(2,'0')}</span><span class="amp-title">${esc(amp.nome)}</span><span class="amp-cost">${acquired?'ADQUIRIDA':'1 PONTO'}</span>${icon('down','chevron')}</summary><div class="amp-body"><div class="rule-text">${ruleHTML(amp.texto)}</div><div class="amp-footer"><p>${reason?esc(reason):acquired?'Esta Amplificação está no seu repertório.':'Amplia o Despertar desta trilha. Custo: 1 ponto.'}</p>${purchaseButton(key,i)}</div></div></details>`;
+      }).join('')}
+    </section>
+  </article></div>`;
+}
+
+function socialHTML(){
+  const spec=DB.social[model.arcana];if(!spec)return '';
+  const tags=Object.entries(spec.fixed||{}).map(([skill,effect])=>`<span><b>${esc(skill)}</b> · +${effect.tier} Tier${effect.permanent?` · +${effect.permanent} em testes`:''}</span>`).join('');
+  return `<aside class="social-card">${icon('shield')}<div><span class="eyebrow">Benefício social da Arcana</span>${tags?`<div class="social-tags">${tags}</div>`:''}${spec.choice?`<p>+${spec.choice.tier} Tier Inicial${spec.choice.permanent?` e +${spec.choice.permanent} em testes`:''} em uma habilidade à sua escolha.</p><label class="field-label" for="awFocusSocialChoice">HABILIDADE SOCIAL<select id="awFocusSocialChoice" data-aw-field="socialChoice"><option value="">Escolher habilidade...</option>${spec.choice.skills.map(skill=>`<option ${model.socialChoices[model.arcana]===skill?'selected':''}>${esc(skill)}</option>`).join('')}</select></label>`:'<p>Este benefício é automático nos cálculos sociais da ficha.</p>'}</div></aside>`;
+}
+
+function arcanaHTML(){
+  const a=arcana();
+  return `<section aria-labelledby="awFocusLevelTitle"><header class="panel-heading"><span class="eyebrow">${esc(a.romano)} / Características da Arcana</span><h2 id="awFocusLevelTitle">O que vem com ${esc(a.nomeFicha)}</h2><p>Habilidades de Nível 1. Abra a regra que deseja consultar.</p></header><div class="level-stack">${a.nivel1.map((item,i)=>`<details class="level-card" name="awFocus-level-traits" data-aw-level-index="${i}" ${(model.levelOpen[model.arcana]??0)===i?'open':''}><summary><span><small class="eyebrow">${item.tipo==='nota'?'Nota da Arcana':'Nível 1 · Habilidade'}</small><b>${esc(item.nome)}</b></span>${icon('down','chevron')}</summary><div class="rule-text">${ruleHTML(item.texto)}</div></details>`).join('')}</div>${socialHTML()}${notesHTML()}</section>`;
+}
+
+function sidebarHTML(){
+  const a=arcana();
+  return `<aside class="sidebar" aria-label="Arcana e progressão"><div class="identity">
+    <figure class="card-art ${a?'':'is-empty'}">${a?`<img src="${DB.images[a.romano]}" alt="Carta ${esc(a.romano+' — '+a.nomeFicha)}" width="148" height="223">`:icon('card')}</figure>
+    <div class="arcana-title"><span class="eyebrow">${a?'Arcana '+esc(a.romano):'Sua Arcana'}</span><h2>${esc(a?.nomeFicha||'Escolha sua carta')}</h2></div>
+    <label class="field-label" for="awFocusArcanaSelect">ESCOLHER ARCANA<select id="awFocusArcanaSelect" data-aw-field="arcana"><option value="">— selecionar —</option>${DB.arcanas.arcanas.map(item=>`<option value="${item.romano}" ${item.romano===model.arcana?'selected':''}>${item.romano} — ${esc(item.nomeFicha)}</option>`).join('')}</select></label>
+    <div class="pnv-row"><label for="awFocusPNvInput">Nível da Persona</label><div class="stepper"><button type="button" data-aw-step="-1" data-aw-focus="pnv-down" aria-label="Reduzir nível da Persona" ${model.pnv<=1?'disabled':''}>−</button><input type="number" id="awFocusPNvInput" min="1" max="20" value="${model.pnv}" data-aw-field="pnv" aria-label="Nível da Persona"><button type="button" data-aw-step="1" data-aw-focus="pnv-up" aria-label="Aumentar nível da Persona" ${model.pnv>=20?'disabled':''}>+</button></div></div>
+  </div>
+  <details class="side-tools master-only" data-aw-open-panel="tools" ${model.toolsOpen?'open':''}><summary>Ajustes do Narrador ${icon('down','chevron')}</summary><label class="field-label" for="awFocusBonusInput">PONTOS EXTRAS<input id="awFocusBonusInput" type="number" min="0" max="20" value="${model.bonus}" data-aw-field="bonus"></label><label class="check-label"><input type="checkbox" data-aw-field="resolutionOverride" ${model.resolutionOverride?'checked':''}><span>Liberar Resolução antes do PNv. 10.</span></label></details>
+  <p class="sidebar-foot">${icon('shield')} Cada Despertar e Amplificação custa 1 Ponto de Despertar.</p></aside>`;
+}
+function notesHTML(){
+  return `<details class="notes" data-aw-open-panel="notes" ${model.notesOpen?'open':''}><summary>${icon('note')} Notas e exceções da Arcana ${icon('down','chevron')}</summary><label class="field-label" for="awFocusNotes">ANOTAÇÕES<textarea id="awFocusNotes" data-aw-field="notes" rows="5" placeholder="Alterações narrativas, combinações e lembretes...">${esc(state.charSheet.persona?.amplifications||'')}</textarea></label><p>As anotações ficam salvas nesta ficha.</p></details>`;
+}
+function dissonantHTML(){
+  const primary=currentDissonantArcana(),extra=currentExtraDissonantArcana();
+  const hasExtra=primary?.romano==='XI'&&extra&&extra.romano!==primary.romano;
+  const slot=hasExtra&&model.dissonantSlot==='extra'?'extra':'main',d=slot==='extra'?extra:primary;
+  const options=(selected,exclude='')=>'<option value="">— selecionar —</option>'+DB.dissonants.map(item=>`<option value="${item.romano}" ${item.romano===selected?'selected':''} ${item.romano===exclude?'disabled':''}>${item.romano} — ${esc(item.nome)}${item.proposta?' · proposta':''}</option>`).join('');
+  const picker=`<label class="field-label dissonant-picker" for="awFocusDissonantSelect">ARCANA DISSONANTE<select id="awFocusDissonantSelect" data-aw-field="dissonant">${options(primary?.romano||'')}</select></label>${primary?.romano==='XI'?`<label class="field-label dissonant-picker" for="awFocusDissonantExtraSelect">SEGUNDA DISSONANTE · A FOME<select id="awFocusDissonantExtraSelect" data-aw-field="dissonantExtra">${options(extra?.romano||'','XI')}</select></label>`:''}`;
+  if(!d)return `<section aria-label="Arcana Dissonante">${picker}<div class="empty"><p>Escolha uma Arcana Dissonante para consultar seu benefício e sua complicação.</p></div></section>`;
+  const side=model.dissonantSide,rule=d[side];
+  const exclusive=d.exclusivo?`<div class="exclusive-note"><details class="level-card"><summary><span><small class="eyebrow">Exclusivo desta Dissonante</small><b>${esc(typeof d.exclusivo==='string'?'Efeito exclusivo':d.exclusivo.nome)}</b></span>${icon('down','chevron')}</summary><div class="rule-text">${ruleHTML(typeof d.exclusivo==='string'?d.exclusivo:d.exclusivo.texto)}</div></details></div>`:'';
+  return `<section aria-label="Arcana Dissonante">${picker}${hasExtra?`<div class="dissonant-slots" role="group" aria-label="Dissonante em consulta"><button type="button" data-aw-action="dissonant-slot" data-aw-slot="main" data-aw-focus="dissonant-main" aria-pressed="${slot==='main'}">${esc(primary.nome)}</button><button type="button" data-aw-action="dissonant-slot" data-aw-slot="extra" data-aw-focus="dissonant-extra" aria-pressed="${slot==='extra'}">${esc(extra.nome)} · segunda</button></div>`:''}<article class="detail-panel"><header class="dissonant-hero"><span class="dissonant-roman">${esc(d.romano)}</span><div><span class="eyebrow">Padrão recorrente${d.proposta?' / Proposta':''}${slot==='extra'?' / Segunda Dissonante':''}</span><h2>${esc(d.nome)}</h2><p>${esc(d.descricao||'')}</p></div></header><div class="dual-tabs" role="group" aria-label="Efeito da Arcana Dissonante"><button type="button" data-aw-action="dissonant-side" data-aw-side="beneficio" data-aw-focus="side-beneficio" aria-pressed="${side==='beneficio'}">${icon('plus')} Benefício</button><button type="button" class="risk" data-aw-action="dissonant-side" data-aw-side="complicacao" data-aw-focus="side-complicacao" aria-pressed="${side==='complicacao'}">${icon('warning')} Complicação</button></div><div class="dissonant-effect"><span class="section-overline">${side==='beneficio'?'Benefício':'Complicação'}</span><h3>${esc(rule?.nome||'')}</h3><div class="rule-text">${ruleHTML(rule?.texto||'')}</div></div>${exclusive}</article></section>`;
+}
+function scopedClasses(markup){
+  return markup.replace(/\bclass="([^"]*)"/g,(_,value)=>`class="${value.split(/\s+/).filter(Boolean).map(name=>name==='master-only'?name:'af-'+name).join(' ')}"`);
+}
+function render(focusKey=''){
+  const app=document.getElementById('awRefinedArchive'),classic=document.getElementById('awClassicArchive');
+  if(!app||!classic)return;
+  const focused=state.charSheet.ui?.awakeningLayout==='focused';
+  classic.hidden=focused;app.hidden=!focused;
+  document.querySelectorAll('[data-aw-layout]').forEach(button=>button.setAttribute('aria-pressed',String((button.dataset.awLayout==='focused')===focused)));
+  if(!focused){app.innerHTML='';return;}
+  refreshModel();
+  const content=view=>view==='dissonante'?dissonantHTML():!arcana()?`<div class="empty"><p>Selecione sua Arcana ao lado para abrir as habilidades de Nível 1 e os Despertares da Trama.</p></div>${view==='arcana'?notesHTML():''}`:view==='trama'?tramaHTML():arcanaHTML();
+  app.innerHTML=scopedClasses(`<div class="shell"><header class="page-head"><div><span class="eyebrow">Arcana / Arquivo da Trama</span><h1>ARCANA & DESPERTARES</h1><p>Consulte suas habilidades e explore uma trilha de cada vez.</p></div><span class="file-index" aria-hidden="true">04</span></header><div class="dashboard">${sidebarHTML()}<div class="workspace">${budgetHTML()}<div class="view-tabs" role="tablist" aria-label="Seções do arquivo">${VIEWS.map(view=>`<button type="button" class="view-tab" role="tab" id="awFocusTab-${view.key}" aria-controls="awFocusPanel-${view.key}" aria-selected="${model.view===view.key}" tabindex="${model.view===view.key?0:-1}" data-aw-action="view" data-aw-view="${view.key}" data-aw-focus="view-${view.key}">${icon(view.icon)}${esc(view.label)}</button>`).join('')}</div>${VIEWS.map(view=>`<section id="awFocusPanel-${view.key}" role="tabpanel" aria-labelledby="awFocusTab-${view.key}" ${model.view===view.key?'':'hidden'}>${model.view===view.key?content(view.key):''}</section>`).join('')}</div></div></div>`);
+  ui().path=model.path;updateAccentContrast();focusControl(focusKey);
+}
+
+return {render,bind};
+})();
+function renderAwakeningPresentation(){AWAKENING_FOCUS_ARCHIVE.render()}
+function bindAwakeningPresentation(){AWAKENING_FOCUS_ARCHIVE.bind()}
+
 function renderArcanaArchive(){
   const arcana=currentArcanaData();
   const select=document.getElementById('arcanaArchiveSelect');
@@ -17765,6 +18446,7 @@ function renderArcanaArchive(){
     renderAwakeningPointConsole(null);
     renderArcanaSocialEffectBox(null);
     renderArcanaArtwork(null);
+    renderAwakeningPresentation();
     return
   }
 
@@ -17831,7 +18513,8 @@ function renderArcanaArchive(){
       </article>`
     }).join('');
   }
-  renderArcanaArtwork(arcana)
+  renderArcanaArtwork(arcana);
+  renderAwakeningPresentation();
 }
 async function storeArcanaArtwork(file){
   const arcana=currentArcanaData();
@@ -17860,6 +18543,7 @@ function setArcanaSelection(value){
   renderCharacterSheet();saveState(true)
 }
 function bindArcanaArchiveUI(){
+  bindAwakeningPresentation();
   if(document.body.dataset.arcanaArchiveBound)return;
   document.body.dataset.arcanaArchiveBound='1';
   document.getElementById('arcanaArchiveSelect')?.addEventListener('change',e=>setArcanaSelection(e.target.value));
