@@ -18383,12 +18383,15 @@ function renderMagicCalc(slot){
   return makeCalcHtml('special','EFEITO ESPECIAL','Sem cálculo automático','A descrição abaixo continua disponível para consulta.',spell.description||'',color);
 }
 /* MAGIC WORKSHOP: spell actions are defined below. */
+function grimoireCategoryLabel(category){
+  return category==='Luz e Bênção'?'Luz':category==='Trevas e Maldição'?'Trevas':category;
+}
 function renderGrimoireCategorySelect(){
   const sel=document.getElementById('grimoireCategory');
   if(!sel)return;
   const current=grimoireUi.category||'all';
   sel.innerHTML='<option value="all">TODOS OS TIPOS</option>'+
-    PERSONA_SPELL_CATEGORIES.map(c=>`<option value="${esc(c.name)}" ${c.name===current?'selected':''}>${esc(c.name)} (${c.count})</option>`).join('');
+    PERSONA_SPELL_CATEGORIES.map(c=>`<option value="${esc(c.name)}" ${c.name===current?'selected':''}>${esc(grimoireCategoryLabel(c.name))} (${c.count})</option>`).join('');
 }
 /* PERSONA // PHOBIA v5.2.5 — MAGIC MIXTAPE WORKSHOP
    Uses the existing grimoire catalog, calculation engine and saved magicSlots. */
@@ -18517,7 +18520,7 @@ function deckLabPreview(){
   const locked=Number(s.tier)>availableMagicTierNumber();
   const editable=m&&!m.libraryId;
   const view=`<div class="deck-inspector-art" style="--spell-color:${color}"><strong>${deckLabIcon(s)}</strong></div>
-    <span class="deck-inspector-tag">${esc(category)} // TIER ${romanTier(s.tier)}</span>
+    <span class="deck-inspector-tag">${esc(grimoireCategoryLabel(category))} // TIER ${romanTier(s.tier)}</span>
     <h3>${esc(s.name||'NOVA MAGIA')}</h3>
     <div class="deck-inspector-metrics"><span><small>CUSTO</small>${esc(s.cost||'—')}</span><span><small>ALVO</small>${esc(s.target||'—')}</span></div>
     <div class="deck-inspector-effect">${esc(s.effect||'Efeito ainda não informado.')}</div>
@@ -18552,7 +18555,7 @@ function renderMagicDeck(){
         <span class="deck-cassette-screws" aria-hidden="true"><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i></span>
         <span class="deck-cassette-paper">
           <span class="deck-cassette-top"><small>FITA ${String(i+1).padStart(2,'0')} · TIER ${romanTier(s.tier||m.tier)}</small><span aria-hidden="true">${deckLabIcon(s)}</span></span>
-          <span class="deck-cassette-label"><b>${esc(s.name||m.name)}</b><small>${esc(category)}</small></span>
+          <span class="deck-cassette-label"><b>${esc(s.name||m.name)}</b><small>${esc(grimoireCategoryLabel(category))}</small></span>
           <span class="deck-cassette-rainbow" aria-hidden="true"><span class="deck-cassette-mechanism"><i class="deck-cassette-wheel"></i><span class="deck-cassette-tape"><i></i></span><i class="deck-cassette-wheel"></i></span></span>
           <span class="deck-cassette-bottom"><span class="deck-cassette-cost">${esc(s.cost||m.cost||'SEM CUSTO')}</span><span class="deck-cassette-target"><small>ALVO</small><b>${esc(s.target||m.target||'—')}</b></span></span>
         </span>
@@ -18579,7 +18582,7 @@ function renderMagicDeck(){
 function deckLabQuickFilters(){
   const box=document.getElementById('deckTypeChips');if(!box)return;
   const categories=['all','Físico','Fogo','Gelo','Vento','Raio','Nuclear','PSY','Luz e Bênção','Trevas e Maldição','Cura e Recuperação','Intel','Passivas Mágicas'];
-  box.innerHTML=categories.map(c=>`<button type="button" data-deck-category="${esc(c)}" class="${grimoireUi.category===c?'active':''}" aria-pressed="${grimoireUi.category===c}" style="--chip:${GRIMOIRE_CATEGORY_COLORS[c]||'var(--theme-accent)'}"><i></i>${c==='all'?'✦ TODOS':esc(c)}</button>`).join('');
+  box.innerHTML=categories.map(c=>`<button type="button" data-deck-category="${esc(c)}" class="${grimoireUi.category===c?'active':''}" aria-pressed="${grimoireUi.category===c}" style="--chip:${GRIMOIRE_CATEGORY_COLORS[c]||'var(--theme-accent)'}"><i></i>${c==='all'?'✦ TODOS':esc(grimoireCategoryLabel(c))}</button>`).join('');
 }
 function renderGrimoire(){
   const box=document.getElementById('grimoireResults');if(!box)return;
@@ -18599,7 +18602,7 @@ function renderGrimoire(){
   box.innerHTML=shown.length?shown.map(s=>{
     const locked=Number(s.tier)>available,equipped=spellInDeck(s.id),selected=deckLabUi.source==='library'&&deckLabUi.spellId===s.id;
     return `<article class="deck-library-spell ${locked?'locked':''} ${equipped?'equipped':''} ${selected?'selected':''}" style="--spell-color:${deckLabColor(s)}" draggable="${!locked&&!equipped}" data-deck-library-id="${esc(s.id)}">
-      <header><span class="deck-library-icon">${deckLabIcon(s)}</span><div><small>${esc(s.category)}</small><b>${esc(s.name)}</b></div><em>T${romanTier(s.tier)}</em></header>
+      <header><span class="deck-library-icon">${deckLabIcon(s)}</span><div><small>${esc(grimoireCategoryLabel(s.category))}</small><b>${esc(s.name)}</b></div><em>T${romanTier(s.tier)}</em></header>
       <div class="deck-library-tags"><span>${esc(s.cost||'—')}</span><span>${esc(s.target||'—')}</span></div>
       <p>${esc(s.effect||s.description||'Sem descrição')}</p>
       <div class="deck-library-actions"><button type="button" data-deck-library-preview="${esc(s.id)}">◉ EXAMINAR</button>
