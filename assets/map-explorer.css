@@ -44,8 +44,12 @@
 #mapPage .atlas-viewport{position:absolute;inset:48px 0 0;overflow:hidden;touch-action:none;cursor:grab;outline-offset:-4px;isolation:isolate}
 #mapPage .atlas-viewport.is-panning{cursor:grabbing}
 #mapPage #mapSvg{position:absolute;left:0;top:0;width:1000px!important;height:700px!important;transform-origin:0 0;transition:none;max-width:none;user-select:none;-webkit-user-select:none}
-#mapPage .map-title{left:22px;top:70px;font-size:36px;line-height:.9;pointer-events:none;z-index:5}
-#mapPage .map-title span{font:700 9px Barlow,Arial,sans-serif;letter-spacing:2px;margin:6px 0 0}
+#mapPage .map-title{left:24px;top:72px;font:1000 clamp(48px,8cqw,80px)/.9 "Arial Black",Arial,sans-serif;letter-spacing:-3px;color:#fff8e7;text-shadow:3px 4px 0 #171417;pointer-events:none;z-index:5}
+#mapPage .map-title span{display:table;font:800 clamp(10px,1.5cqw,13px)/1.25 Barlow,Arial,sans-serif;letter-spacing:1.4px;white-space:nowrap;margin:12px 0 0 5px;padding:7px 10px;background:#171417;color:#fff1d7;border-left:4px solid var(--hot);box-shadow:3px 3px 0 #17141744;text-shadow:none}
+body.time-night #mapPage .map-title span,body.cognition #mapPage .map-title span{color:#fff1d7;border-left-color:var(--cyan)}
+/* Keep transparent click targets; district artwork provides its own silhouette. */
+#mapPage .district-art-button .district-art-hit{fill:transparent;stroke:none;stroke-dasharray:none}
+#mapPage .district-art-button:focus-visible{filter:drop-shadow(0 0 3px #fff8e7) drop-shadow(0 0 7px var(--cyan))}
 #mapPage .map-hint{left:12px;bottom:14px;max-width:calc(100% - 210px);font:700 10px Barlow,Arial,sans-serif;letter-spacing:.3px;pointer-events:none;padding:7px 8px;border:1px solid #645b53;box-shadow:none}
 #mapPage .map-controls{bottom:12px;right:12px;gap:0;align-items:center;border:1px solid #171417;background:#faf2df;box-shadow:2px 3px 0 #171417;border-radius:4px;overflow:hidden}
 #mapPage .map-controls button{height:36px;width:36px;border:0;box-shadow:none;background:transparent;color:#171417;font-size:20px}
@@ -177,7 +181,8 @@ body.time-night #mapPage .atlas-local-head,body.time-night #mapPage .atlas-local
  #mapPage .atlas-toolbar button{font-size:10px;padding:5px 7px}
  #mapPage .atlas-local-tools{padding:8px 10px}
  #mapPage .atlas-local-tools select{max-width:115px}
- #mapPage .map-title{font-size:29px;left:14px}
+ #mapPage .map-title{font-size:46px;left:18px;top:69px;letter-spacing:-2px}
+ #mapPage .map-title span{font-size:10px;letter-spacing:1px;margin-top:10px;padding:6px 8px}
 }
 @media(prefers-reduced-motion:reduce){#mapPage *{scroll-behavior:auto!important;transition:none!important}}
 
