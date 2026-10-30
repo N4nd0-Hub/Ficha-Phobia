@@ -141,7 +141,13 @@ body.time-night #mapPage .map-title span,body.cognition #mapPage .map-title span
 #mapPage .atlas-place-card b{display:block;font-size:16px;line-height:1.1}
 #mapPage .atlas-place-card small{display:block;font-size:10px;opacity:.65;margin-top:6px}
 #mapPage [hidden]{display:none!important}
-#mapPage.atlas-expanded{position:fixed;inset:8px;z-index:450;display:block;background:#15121a;padding:8px;height:auto}
+/* A fixed map leaves the shell grid. Keep the footer in its own row so it
+   cannot stretch into the empty content track, even during expansion. */
+.site>.bottom.compact-taskbar{grid-row:3}
+#mapPage.atlas-expanded{position:fixed;inset:8px;z-index:600;display:block;background:#15121a;padding:8px;height:auto}
+body:has(#mapPage.atlas-expanded.active) .topbar,
+body:has(#mapPage.atlas-expanded.active) .bottom.compact-taskbar,
+body:has(#mapPage.atlas-expanded.active) .note-launch{visibility:hidden;pointer-events:none}
 #atlasPhotoDialog{padding:0;border:1px solid #706177;background:#17141c;color:#f6ebd7;max-width:min(1000px,94vw);max-height:94dvh;width:fit-content;box-shadow:0 20px 80px #000b}
 #atlasPhotoDialog::backdrop{background:#09070ee6;backdrop-filter:blur(4px)}
 #atlasPhotoDialog .atlas-dialog-top{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:12px 16px;font:700 15px Barlow,Arial,sans-serif}
