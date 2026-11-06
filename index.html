@@ -13096,6 +13096,8 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/map-explorer.css?v=20261106">
 <link rel="stylesheet" href="assets/map-motion.css?v=3">
 <link rel="stylesheet" href="assets/map-roads.css?v=1">
+<link rel="stylesheet" href="assets/phobia-deck.css?v=1">
+<script src="assets/phobia-deck.js?v=1"></script>
 <script src="assets/map-roads.js?v=1"></script>
 <script src="assets/map-camera.js?v=20261023"></script>
 <script src="assets/map-photos.js?v=20261023"></script>
@@ -15020,153 +15022,67 @@ RETURN key AS HEX</code></pre>
   </section>
 
 
-  <!-- PHOBIA MUSIC PLAYER -->
+  <!-- PHOBIA DECK // barra inferior + player (assets/phobia-deck.js) -->
   <audio id="phobiaAudio" preload="metadata"></audio>
 
-  <section class="music-player-window" id="musicPlayerWindow" aria-hidden="true">
-    <header class="music-player-titlebar" id="musicPlayerDrag">
-      <div>
-        <small>PHOBIA // MEDIA PLAYER 2000</small>
-        <b>NOW PLAYING</b>
-      </div>
-      <button id="musicPlayerClose" type="button" aria-label="Fechar">×</button>
-    </header>
-
-    <div class="music-player-body">
-      <div class="music-player-now">
-        <button class="music-player-cover" id="musicPlayerCoverButton" type="button" title="Trocar capa">
-          <img id="musicPlayerCover" alt="" loading="lazy" decoding="async">
-          <span id="musicPlayerCoverFallback">★</span>
-          <i class="cover-shine"></i>
-        </button>
-
-        <div class="music-player-track">
-          <small>TRACK</small>
-          <h3 id="musicPlayerTrackTitle">Glass Hearts</h3>
-          <b id="musicPlayerArtist">MIRR★R NOISE</b>
-
-          <div class="music-player-visualizer" id="musicPlayerVisualizer" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-
-          <div class="music-player-time-row">
-            <span id="musicPlayerCurrent">00:00</span>
-            <input id="musicPlayerProgress" type="range" min="0" max="1000" value="0" step="1">
-            <span id="musicPlayerDuration">00:00</span>
-          </div>
-
-          <div class="music-player-controls">
-            <button id="musicPlayerBack" type="button" title="Voltar 10 segundos">◀◀</button>
-            <button id="musicPlayerPlay" class="main" type="button" title="Tocar / Pausar">▶</button>
-            <button id="musicPlayerForward" type="button" title="Avançar 10 segundos">▶▶</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="music-player-tabs">
-        <div class="music-player-config">
-          <div class="music-config-title">TRACK INFO</div>
-
-          <label>ARTISTA / BANDA
-            <input id="musicArtistInput" placeholder="MIRR★R NOISE">
-          </label>
-          <label>TÍTULO
-            <input id="musicTitleInput" placeholder="Glass Hearts">
-          </label>
-
-          <div class="music-file-row">
-            <label class="music-file-button">
-              <span>♪ CARREGAR MP3 / ÁUDIO</span>
-              <input id="musicAudioInput" type="file" accept="audio/*">
-            </label>
-            <button id="musicRemoveAudio" type="button">REMOVER ÁUDIO</button>
-          </div>
-
-          <div class="music-file-row">
-            <label class="music-file-button secondary">
-              <span>▧ TROCAR CAPA</span>
-              <input id="musicCoverInput" type="file" accept="image/*">
-            </label>
-            <button id="musicRemoveCover" type="button">REMOVER CAPA</button>
-          </div>
-
-          <div class="music-config-grid">
-            <label>VOLUME
-              <input id="musicVolume" type="range" min="0" max="100" value="75">
-            </label>
-            <label class="music-check">
-              <input id="musicLoop" type="checkbox">
-              <span>REPETIR FAIXA</span>
-            </label>
-          </div>
-
-          <div class="music-storage-status">
-            <span id="musicFileStatus">SEM ARQUIVO DE ÁUDIO</span>
-            <small>O áudio é armazenado localmente no navegador. A capa e os dados do player ficam junto do save.</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="bottom compact-taskbar">
-    <div class="taskbar-music phobia-player-mini" id="phobiaPlayerMini">
-      <button class="mini-album player-cover-button" id="playerCoverButton" type="button" title="Personalizar player">
-        <img id="playerMiniCover" alt="" loading="lazy" decoding="async">
-        <span id="playerMiniCoverFallback">★</span>
+  <footer class="bottom phobia-deck-bar" id="phobiaDeckBar">
+    <div class="deck-player" id="deckPlayer">
+      <button class="deck-cover" id="deckCover" type="button" aria-controls="deckPanel" aria-expanded="false" title="Abrir playlist">
+        <span class="deck-cover-art" id="deckCoverArt"></span>
+        <i class="deck-eq" aria-hidden="true"><b></b><b></b><b></b><b></b></i>
       </button>
-
-      <button class="player-mini-play" id="playerMiniPlay" type="button" title="Tocar / Pausar">▶</button>
-
-      <div class="mini-track player-mini-info">
-        <strong id="playerMiniTitle">MIRR★R NOISE — Glass Hearts</strong>
-        <div class="mini-track-row player-mini-row">
-          <span id="playerMiniMeta">NO AUDIO // LOCAL</span>
-          <label class="mini-progress player-progress-wrap" title="Posição da música">
-            <input id="playerMiniProgress" type="range" min="0" max="1000" value="0" step="1">
-            <i id="playerMiniProgressFill"></i>
-          </label>
-          <span class="player-mini-time" id="playerMiniTime">00:00</span>
-        </div>
+      <div class="deck-info">
+        <div class="deck-title" id="deckTitleBox"><span id="deckTitle">Sem músicas</span></div>
+        <small><span id="deckMeta"></span><span class="deck-pos" id="deckPos"></span><span class="deck-time" id="deckTime"></span></small>
       </div>
-
-      <button class="player-mini-settings" id="playerMiniSettings" type="button" title="Abrir player">▣</button>
+      <div class="deck-controls">
+        <button type="button" id="deckPrev" aria-label="Faixa anterior" title="Anterior"></button>
+        <button type="button" id="deckPlay" class="deck-play" aria-label="Tocar"></button>
+        <button type="button" id="deckNext" aria-label="Próxima faixa" title="Próxima"></button>
+      </div>
+      <span class="deck-next" id="deckUpNext"></span>
+      <button type="button" class="deck-list-btn" id="deckListBtn" aria-controls="deckPanel" aria-expanded="false" title="Playlist"><b id="deckCount">+</b></button>
+      <input class="deck-seek" id="deckSeek" type="range" min="0" max="1000" value="0" aria-label="Posição da faixa">
+      <i class="deck-progress" aria-hidden="true"><i id="deckProgress"></i></i>
     </div>
 
-    <div class="taskbar-day">
-      <button id="quickPrevDay" class="task-icon-btn" title="Voltar um dia">◀</button>
-      <button id="quickCalendarBtn" class="task-date" title="Abrir calendário">
+    <div class="deck-day">
+      <button id="quickPrevDay" class="deck-arrow" type="button" aria-label="Voltar um dia" title="Voltar um dia">◀</button>
+      <button id="quickCalendarBtn" class="deck-date" type="button" title="Abrir calendário">
         <small>DATA DA HISTÓRIA</small>
         <b id="footerDate">17 ABR 2000</b>
+        <em><span id="footerWeekday">SEG</span><span id="footerPeriod">TARDE</span></em>
       </button>
-      <button id="quickNextDay" class="task-icon-btn" title="Avançar um dia">▶</button>
+      <button id="quickNextDay" class="deck-arrow" type="button" aria-label="Avançar um dia" title="Avançar um dia">▶</button>
     </div>
 
-    <div class="taskbar-context">
-      <button id="footerDistrictBtn" class="context-card" title="Abrir distrito selecionado">
-        <small>ÁREA ATUAL</small>
+    <div class="deck-area">
+      <button id="footerDistrictBtn" class="deck-district" type="button" title="Abrir distrito selecionado">
+        <i class="deck-dot" id="currentDistrictDot"></i>
+        <small>ÁREA ATUAL <span id="currentDistrictCode"></span></small>
         <b id="currentDistrictFooter">SHIBUYA</b>
       </button>
-      <button id="openNotesFoot" class="task-square" title="Abrir Bloco de Notas">✎</button>
-
+      <div class="deck-tools">
+        <button id="openNotesFoot" class="deck-tool" type="button" aria-label="Abrir Bloco de Notas" title="Bloco de Notas">✎</button>
       <div class="file-menu-wrap">
-        <button id="footerFileToggle" class="task-square file-toggle" title="Arquivo / Backup">▾</button>
-        <div id="footerFileMenu" class="footer-file-menu">
-          <div class="file-menu-title">ARQUIVO</div>
-          <button id="saveBtn">SALVAR AGORA</button>
-          <button id="exportBtn">BACKUP JSON • COM FOTOS</button>
-          <label>IMPORTAR JSON<input id="importInput" type="file" accept=".json,application/json"></label>
-          <div class="large-save-info" id="largeSaveInfo">
-            <span>ARMAZENAMENTO</span>
-            <b id="largeSaveEngine">LARGE SAVE // INDEXEDDB</b>
-            <small id="largeSaveUsage">Verificando espaço disponível...</small>
-            <small>Fotos e ficha são salvas neste navegador e endereço. Ao mudar de domínio ou dispositivo, exporte e importe o backup JSON.</small>
+          <button id="footerFileToggle" class="deck-tool file-toggle" title="Arquivo / Backup">▾</button>
+          <div id="footerFileMenu" class="footer-file-menu">
+            <div class="file-menu-title">ARQUIVO</div>
+            <button id="saveBtn">SALVAR AGORA</button>
+            <button id="exportBtn">BACKUP JSON • COM FOTOS</button>
+            <label>IMPORTAR JSON<input id="importInput" type="file" accept=".json,application/json"></label>
+            <div class="large-save-info" id="largeSaveInfo">
+              <span>ARMAZENAMENTO</span>
+              <b id="largeSaveEngine">LARGE SAVE // INDEXEDDB</b>
+              <small id="largeSaveUsage">Verificando espaço disponível...</small>
+              <small>Fotos e ficha são salvas neste navegador e endereço. Ao mudar de domínio ou dispositivo, exporte e importe o backup JSON.</small>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="save-state" id="saveStateFooter">
-        <i></i><span id="systemLog">SALVO</span>
+        <div class="save-state" id="saveStateFooter">
+          <i></i><span id="systemLog">SALVO</span>
+        </div>
       </div>
     </div>
   </footer>
@@ -15736,7 +15652,7 @@ function rehydrateAfterLargeRestore(){
   switchPage(state.page||'mapPage');
   renderHackCenter();
   updateCompactTaskbar();
-  mediaRenderMeta?.();
+  window.PhobiaDeck?.refresh();
   setTimeout(()=>setMapMode(state.mapMode||'collage'),80);
 }
 async function initializePhobiaLargeSave(){
@@ -17057,7 +16973,7 @@ function lockMasterSession(){
 function setTime(t){
   state.time=t;document.body.classList.remove('time-morning','time-afternoon','time-night');document.body.classList.add('time-'+t);
   document.querySelectorAll('[data-time]').forEach(b=>b.classList.toggle('active',b.dataset.time===t));
-  document.getElementById('timeStamp').textContent=TIME_LABEL[t];saveState(true);if(realMap)setTimeout(()=>realMap.invalidateSize(),20);log('time layer // '+t)
+  document.getElementById('timeStamp').textContent=TIME_LABEL[t];saveState(true);updateCompactTaskbar?.();if(realMap)setTimeout(()=>realMap.invalidateSize(),20);log('time layer // '+t)
 }
 function setLayer(l){
   if(l!=='cognition'&&cognitivePlacementMode)cancelCognitivePlacement();
@@ -17596,10 +17512,13 @@ function updateCompactTaskbar(){
   if(dateEl)dateEl.textContent=formatDate(state.campaignDate||'2000-04-17');
 
   const districtEl=document.getElementById('currentDistrictFooter');
-  if(districtEl){
-    const d=state.districts?.[state.selected];
-    districtEl.textContent=d?.name?.toUpperCase()||'TOKYO';
-  }
+  const d=state.districts?.[state.selected];
+  if(districtEl)districtEl.textContent=d?.name?.toUpperCase()||'TOKYO';
+  const code=document.getElementById('currentDistrictCode');if(code)code.textContent=d?.code||'';
+  const dot=document.getElementById('currentDistrictDot');if(dot)dot.dataset.state=d?.state||'';
+  const wd=document.getElementById('footerWeekday');
+  if(wd){const dt=dateFromYMD(state.campaignDate||'2000-04-17');wd.textContent=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dt.getDay()]||''}
+  const per=document.getElementById('footerPeriod');if(per)per.textContent={morning:'MANHÃ',afternoon:'TARDE',night:'NOITE'}[state.time]||'';
 }
 function setFooterSaveState(mode='saved',message='SALVO'){
   const box=document.getElementById('saveStateFooter');
@@ -21505,347 +21424,7 @@ function bindLevelConsole(){
 }
 
 
-/* ==========================================================
-   PHOBIA MEDIA PLAYER v4.3
-   ========================================================== */
-
-const MEDIA_DB_NAME='PersonaPhobiaMedia';
-const MEDIA_DB_STORE='files';
-const MEDIA_AUDIO_KEY='activeTrack';
-let mediaObjectUrl='';
-let mediaDbPromise=null;
-
-function mediaOpenDB(){
-  if(mediaDbPromise)return mediaDbPromise;
-  mediaDbPromise=new Promise((resolve,reject)=>{
-    if(!('indexedDB' in window)){reject(new Error('IndexedDB unavailable'));return}
-    const req=indexedDB.open(MEDIA_DB_NAME,1);
-    req.onupgradeneeded=()=>{
-      const db=req.result;
-      if(!db.objectStoreNames.contains(MEDIA_DB_STORE))db.createObjectStore(MEDIA_DB_STORE)
-    };
-    req.onsuccess=()=>resolve(req.result);
-    req.onerror=()=>reject(req.error||new Error('IndexedDB error'))
-  });
-  return mediaDbPromise
-}
-async function mediaDbPut(key,value){
-  const db=await mediaOpenDB();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(MEDIA_DB_STORE,'readwrite');
-    tx.objectStore(MEDIA_DB_STORE).put(value,key);
-    tx.oncomplete=()=>resolve();
-    tx.onerror=()=>reject(tx.error)
-  })
-}
-async function mediaDbGet(key){
-  const db=await mediaOpenDB();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(MEDIA_DB_STORE,'readonly');
-    const req=tx.objectStore(MEDIA_DB_STORE).get(key);
-    req.onsuccess=()=>resolve(req.result);
-    req.onerror=()=>reject(req.error)
-  })
-}
-async function mediaDbDelete(key){
-  const db=await mediaOpenDB();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(MEDIA_DB_STORE,'readwrite');
-    tx.objectStore(MEDIA_DB_STORE).delete(key);
-    tx.oncomplete=()=>resolve();
-    tx.onerror=()=>reject(tx.error)
-  })
-}
-function mediaState(){
-  state.mediaPlayer ||= {artist:'MIRR★R NOISE',title:'Glass Hearts',coverData:'',fileName:'',volume:75,loop:false};
-  return state.mediaPlayer
-}
-function mediaFormatTime(seconds){
-  if(!Number.isFinite(seconds)||seconds<0)return '00:00';
-  const m=Math.floor(seconds/60);
-  const s=Math.floor(seconds%60);
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-}
-function mediaCombinedTitle(){
-  const m=mediaState();
-  const artist=(m.artist||'').trim();
-  const title=(m.title||'').trim();
-  return artist&&title?`${artist} — ${title}`:(title||artist||'SEM TÍTULO')
-}
-function mediaSetCover(){
-  const m=mediaState();
-  const mini=document.getElementById('playerMiniCover');
-  const full=document.getElementById('musicPlayerCover');
-  const miniFallback=document.getElementById('playerMiniCoverFallback');
-  const fullFallback=document.getElementById('musicPlayerCoverFallback');
-  [mini,full].forEach(img=>{
-    if(!img)return;
-    if(m.coverData)img.src=m.coverData;else img.removeAttribute('src');
-    img.style.display=m.coverData?'block':'none'
-  });
-  if(miniFallback)miniFallback.style.display=m.coverData?'none':'grid';
-  if(fullFallback)fullFallback.style.display=m.coverData?'none':'grid'
-}
-function mediaRenderMeta(){
-  const m=mediaState();
-  const audio=document.getElementById('phobiaAudio');
-  const combined=mediaCombinedTitle();
-
-  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
-  set('playerMiniTitle',combined);
-  set('musicPlayerTrackTitle',m.title||'SEM TÍTULO');
-  set('musicPlayerArtist',m.artist||'SEM ARTISTA');
-  set('playerMiniMeta',m.fileName?`LOCAL // ${m.fileName.split('.').pop()?.toUpperCase()||'AUDIO'}`:'NO AUDIO // LOCAL');
-  set('musicFileStatus',m.fileName?`ARQUIVO: ${m.fileName}`:'SEM ARQUIVO DE ÁUDIO');
-
-  const artistInput=document.getElementById('musicArtistInput');
-  const titleInput=document.getElementById('musicTitleInput');
-  const volume=document.getElementById('musicVolume');
-  const loop=document.getElementById('musicLoop');
-  if(artistInput&&document.activeElement!==artistInput)artistInput.value=m.artist||'';
-  if(titleInput&&document.activeElement!==titleInput)titleInput.value=m.title||'';
-  if(volume)volume.value=String(Number(m.volume??75));
-  if(loop)loop.checked=!!m.loop;
-
-  if(audio){
-    audio.volume=Math.max(0,Math.min(1,(Number(m.volume??75))/100));
-    audio.loop=!!m.loop
-  }
-  mediaSetCover();
-  mediaUpdatePlaybackUI()
-}
-function mediaUpdatePlaybackUI(){
-  const audio=document.getElementById('phobiaAudio');
-  if(!audio)return;
-  const playing=!audio.paused&&!audio.ended;
-  const duration=Number.isFinite(audio.duration)?audio.duration:0;
-  const current=Number.isFinite(audio.currentTime)?audio.currentTime:0;
-  const pct=duration>0?Math.max(0,Math.min(1,current/duration)):0;
-
-  const playSymbols=playing?'❚❚':'▶';
-  ['playerMiniPlay','musicPlayerPlay'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.textContent=playSymbols
-  });
-  const fill=document.getElementById('playerMiniProgressFill');
-  if(fill)fill.style.width=(pct*100)+'%';
-
-  const miniRange=document.getElementById('playerMiniProgress');
-  const fullRange=document.getElementById('musicPlayerProgress');
-  const sliderVal=Math.round(pct*1000);
-  if(miniRange&&document.activeElement!==miniRange)miniRange.value=String(sliderVal);
-  if(fullRange&&document.activeElement!==fullRange)fullRange.value=String(sliderVal);
-
-  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
-  set('playerMiniTime',mediaFormatTime(current));
-  set('musicPlayerCurrent',mediaFormatTime(current));
-  set('musicPlayerDuration',mediaFormatTime(duration));
-
-  const win=document.getElementById('musicPlayerWindow');
-  if(win)win.classList.toggle('playing',playing)
-}
-async function mediaLoadSavedAudio(){
-  const audio=document.getElementById('phobiaAudio');
-  if(!audio)return;
-  try{
-    const blob=await mediaDbGet(MEDIA_AUDIO_KEY);
-    if(!blob)return;
-    if(mediaObjectUrl)URL.revokeObjectURL(mediaObjectUrl);
-    mediaObjectUrl=URL.createObjectURL(blob);
-    audio.src=mediaObjectUrl;
-    audio.load();
-    mediaRenderMeta()
-  }catch(err){
-    console.warn('Media audio storage unavailable:',err)
-  }
-}
-async function mediaStoreAudio(file){
-  if(!file)return;
-  const audio=document.getElementById('phobiaAudio');
-  try{
-    await mediaDbPut(MEDIA_AUDIO_KEY,file);
-  }catch(err){
-    console.warn('Could not persist audio:',err);
-    toast('ÁUDIO CARREGADO SÓ NESTA SESSÃO')
-  }
-
-  if(mediaObjectUrl)URL.revokeObjectURL(mediaObjectUrl);
-  mediaObjectUrl=URL.createObjectURL(file);
-  audio.src=mediaObjectUrl;
-  audio.load();
-
-  const m=mediaState();
-  m.fileName=file.name||'audio';
-  if(!m.title||m.title==='Glass Hearts'){
-    m.title=(file.name||'TRACK').replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').trim()
-  }
-  saveState(true);
-  mediaRenderMeta();
-  toast('FAIXA CARREGADA')
-}
-function mediaRemoveAudio(){
-  const audio=document.getElementById('phobiaAudio');
-  if(audio){
-    audio.pause();
-    audio.removeAttribute('src');
-    audio.load()
-  }
-  if(mediaObjectUrl){
-    URL.revokeObjectURL(mediaObjectUrl);
-    mediaObjectUrl=''
-  }
-  mediaState().fileName='';
-  mediaDbDelete(MEDIA_AUDIO_KEY).catch(()=>{});
-  saveState(true);
-  mediaRenderMeta();
-  toast('ÁUDIO REMOVIDO')
-}
-function mediaSeekFromSlider(value){
-  const audio=document.getElementById('phobiaAudio');
-  if(!audio||!Number.isFinite(audio.duration)||audio.duration<=0)return;
-  audio.currentTime=(Number(value)/1000)*audio.duration;
-  mediaUpdatePlaybackUI()
-}
-function mediaTogglePlay(){
-  const audio=document.getElementById('phobiaAudio');
-  if(!audio)return;
-  if(!audio.src){
-    openMusicPlayer();
-    toast('CARREGUE UMA FAIXA DE ÁUDIO');
-    return
-  }
-  if(audio.paused)audio.play().catch(()=>toast('CLIQUE EM PLAY NOVAMENTE'));
-  else audio.pause()
-}
-function openMusicPlayer(){
-  const el=document.getElementById('musicPlayerWindow');
-  if(!el)return;
-  el.classList.add('open');
-  el.setAttribute('aria-hidden','false');
-  mediaRenderMeta()
-}
-function closeMusicPlayer(){
-  const el=document.getElementById('musicPlayerWindow');
-  if(!el)return;
-  el.classList.remove('open');
-  el.setAttribute('aria-hidden','true')
-}
-async function mediaStoreCover(file){
-  if(!file)return;
-  try{
-    const src=await new Promise((resolve,reject)=>{
-      const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)
-    });
-    const img=await new Promise((resolve,reject)=>{
-      const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src
-    });
-    const size=420;
-    const c=document.createElement('canvas');
-    c.width=size;c.height=size;
-    const ctx=c.getContext('2d');
-    const scale=Math.max(size/img.width,size/img.height);
-    const w=img.width*scale,h=img.height*scale;
-    ctx.drawImage(img,(size-w)/2,(size-h)/2,w,h);
-    mediaState().coverData=c.toDataURL('image/jpeg',.82);
-    saveState(true);
-    mediaRenderMeta();
-    await persistPhobiaPhotoNow()
-  }catch(err){
-    toast('ERRO AO CARREGAR CAPA')
-  }
-}
-function bindMusicPlayerDrag(){
-  const win=document.getElementById('musicPlayerWindow');
-  const handle=document.getElementById('musicPlayerDrag');
-  if(!win||!handle)return;
-  let dragging=false,dx=0,dy=0;
-  handle.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button')||window.innerWidth<=680)return;
-    dragging=true;
-    const r=win.getBoundingClientRect();
-    dx=e.clientX-r.left;dy=e.clientY-r.top;
-    handle.setPointerCapture?.(e.pointerId);
-    e.preventDefault()
-  });
-  handle.addEventListener('pointermove',e=>{
-    if(!dragging)return;
-    const maxX=Math.max(4,window.innerWidth-win.offsetWidth-4);
-    const maxY=Math.max(70,window.innerHeight-win.offsetHeight-58);
-    win.style.left=Math.max(4,Math.min(maxX,e.clientX-dx))+'px';
-    win.style.top=Math.max(70,Math.min(maxY,e.clientY-dy))+'px';
-    win.style.bottom='auto'
-  });
-  const stop=()=>dragging=false;
-  handle.addEventListener('pointerup',stop);
-  handle.addEventListener('pointercancel',stop)
-}
-function bindMusicPlayer(){
-  if(document.body.dataset.musicPlayerBound)return;
-  document.body.dataset.musicPlayerBound='1';
-
-  const audio=document.getElementById('phobiaAudio');
-  document.getElementById('playerMiniPlay')?.addEventListener('click',mediaTogglePlay);
-  document.getElementById('musicPlayerPlay')?.addEventListener('click',mediaTogglePlay);
-  document.getElementById('playerMiniSettings')?.addEventListener('click',openMusicPlayer);
-  document.getElementById('playerCoverButton')?.addEventListener('click',openMusicPlayer);
-  document.getElementById('musicPlayerClose')?.addEventListener('click',closeMusicPlayer);
-
-  document.getElementById('musicPlayerBack')?.addEventListener('click',()=>{
-    if(audio)audio.currentTime=Math.max(0,(audio.currentTime||0)-10)
-  });
-  document.getElementById('musicPlayerForward')?.addEventListener('click',()=>{
-    if(audio&&Number.isFinite(audio.duration))audio.currentTime=Math.min(audio.duration,(audio.currentTime||0)+10)
-  });
-
-  ['playerMiniProgress','musicPlayerProgress'].forEach(id=>{
-    document.getElementById(id)?.addEventListener('input',e=>mediaSeekFromSlider(e.target.value))
-  });
-
-  document.getElementById('musicAudioInput')?.addEventListener('change',e=>{
-    mediaStoreAudio(e.target.files?.[0]);
-    e.target.value=''
-  });
-  document.getElementById('musicRemoveAudio')?.addEventListener('click',mediaRemoveAudio);
-
-  const coverPicker=()=>document.getElementById('musicCoverInput')?.click();
-  document.getElementById('musicPlayerCoverButton')?.addEventListener('click',coverPicker);
-  document.getElementById('musicCoverInput')?.addEventListener('change',e=>{
-    mediaStoreCover(e.target.files?.[0]);
-    e.target.value=''
-  });
-  document.getElementById('musicRemoveCover')?.addEventListener('click',()=>{
-    mediaState().coverData='';
-    saveState(true);mediaRenderMeta()
-  });
-
-  document.getElementById('musicArtistInput')?.addEventListener('input',e=>{
-    mediaState().artist=e.target.value;
-    saveState(true);mediaRenderMeta()
-  });
-  document.getElementById('musicTitleInput')?.addEventListener('input',e=>{
-    mediaState().title=e.target.value;
-    saveState(true);mediaRenderMeta()
-  });
-  document.getElementById('musicVolume')?.addEventListener('input',e=>{
-    mediaState().volume=Number(e.target.value);
-    if(audio)audio.volume=Math.max(0,Math.min(1,Number(e.target.value)/100));
-    saveState(true)
-  });
-  document.getElementById('musicLoop')?.addEventListener('change',e=>{
-    mediaState().loop=e.target.checked;
-    if(audio)audio.loop=e.target.checked;
-    saveState(true)
-  });
-
-  if(audio){
-    ['timeupdate','loadedmetadata','durationchange','play','pause','ended','emptied'].forEach(evt=>{
-      audio.addEventListener(evt,mediaUpdatePlaybackUI)
-    })
-  }
-
-  bindMusicPlayerDrag();
-  mediaRenderMeta();
-  mediaLoadSavedAudio()
-}
+/* Player: assets/phobia-deck.js (PhobiaDeck) */
 
 /* PAGE NAV */
 function updateWorkspaceUI(){
@@ -22131,7 +21710,7 @@ function hydrateControls(){
   applyMapAppearance();
 }
 
-state.mapMode='collage';setSubmapWorkspace(false);hydrateControls();renderAll();hydrateCharacterSheet();bindCharacterSheet();bindCharacterUX();bindGlobalThemePicker();bindLevelConsole();bindIntegrityStageChips();bindMusicPlayer();bindGrimoire();renderCalendar();showCalendarDetail(2000,3,17);switchPage(state.page||'mapPage');
+state.mapMode='collage';setSubmapWorkspace(false);hydrateControls();renderAll();hydrateCharacterSheet();bindCharacterSheet();bindCharacterUX();bindGlobalThemePicker();bindLevelConsole();bindIntegrityStageChips();window.PhobiaDeck?.init();bindGrimoire();renderCalendar();showCalendarDetail(2000,3,17);switchPage(state.page||'mapPage');
 renderHackCenter();
 updateCompactTaskbar();setFooterSaveState('dirty','CARREGANDO SAVE...');
 setTimeout(()=>setMapMode(state.mapMode||'collage'),120);

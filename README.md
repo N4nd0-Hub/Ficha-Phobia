@@ -10,4 +10,6 @@ As imagens de interface e cartas ficam em arquivos separados em `assets/`, com c
 
 O save completo usa IndexedDB. A abertura e as transações têm limite de tempo. Se a leitura inicial falhar, a ficha interrompe o estado de carregamento e impede que uma cópia incompleta sobrescreva os saves existentes. Recarregar permite tentar a leitura novamente. O nome do banco e o formato dos backups foram mantidos.
 
+A barra inferior reúne o player, a data da história e a área atual. O player aceita várias músicas (MP3, M4A, OGG, WAV), com playlist, ordem aleatória, repetição, capa por faixa e teclas de mídia. Os arquivos de áudio ficam no navegador (IndexedDB) e não entram no backup JSON; em outro navegador a faixa aparece como ausente e pode ser reanexada.
+
 Execute as verificações com `node --test tests/*.test.cjs`.
