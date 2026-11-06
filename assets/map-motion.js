@@ -99,10 +99,12 @@
     /* rotas: o traço "se desenha" */
     var linkLayer = $('#districtLinks');
     if(linkLayer){
-      var drawn = linkLayer.querySelectorAll('.district-link-outer, .district-link-inner, .district-link-edge');
+      var drawn = linkLayer.querySelectorAll('.district-link-shadow, .district-link-outer, .district-link-inner, .district-link-edge');
       [].forEach.call(drawn, function(p, i){
         if(!canAnimate(p) || typeof p.getTotalLength !== 'function') return;
-        var routeIndex = Math.floor(i / 3);
+        /* cada pista traz data-route; sem ele (desenho antigo), 3 camadas por pista */
+        var tagged = p.getAttribute('data-route');
+        var routeIndex = tagged !== null ? Number(tagged) : Math.floor(i / 3);
         p.setAttribute('pathLength', '1');
         p.style.strokeDasharray = '1 1';
         var a = p.animate(
@@ -114,13 +116,15 @@
       });
 
       [].forEach.call(linkLayer.querySelectorAll('.district-link-lane'), function(p, i){
+        var r = p.getAttribute('data-route'), n = r !== null ? Number(r) : i;
         if(canAnimate(p)) p.animate([{ opacity:0 }],
-          { duration:500, delay:700 + Math.floor(i) * 90 - elapsed, easing:EASE_OUT, fill:'backwards' });
+          { duration:500, delay:900 + n * 130 - elapsed, easing:EASE_OUT, fill:'backwards' });
       });
 
       [].forEach.call(linkLayer.querySelectorAll('.district-link-node'), function(c, i){
+        var r = c.getAttribute('data-route'), base = r !== null ? 650 + Number(r) * 130 : 350;
         if(canAnimate(c)) c.animate([{ transform:'scale(0)', opacity:0 }],
-          { duration:420, delay:350 + i * 45 - elapsed, easing:EASE_BACK, fill:'backwards' });
+          { duration:420, delay:base + i * 25 - elapsed, easing:EASE_BACK, fill:'backwards' });
       });
     }
 

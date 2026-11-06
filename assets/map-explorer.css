@@ -43,7 +43,7 @@
 #mapPage .atlas-toolbar .atlas-help{font-size:10px;opacity:.65}
 #mapPage .atlas-viewport{position:absolute;inset:48px 0 0;overflow:hidden;touch-action:none;cursor:grab;outline-offset:-4px;isolation:isolate}
 #mapPage .atlas-viewport.is-panning{cursor:grabbing}
-#mapPage #mapSvg{position:absolute;left:0;top:0;width:1000px!important;height:700px!important;transform-origin:0 0;transition:none;max-width:none;user-select:none;-webkit-user-select:none}
+#mapPage #mapSvg{position:absolute;left:0;top:0;width:1280px!important;height:700px!important;transform-origin:0 0;transition:none;max-width:none;user-select:none;-webkit-user-select:none}
 #mapPage .map-title{left:24px;top:72px;font:1000 clamp(48px,8cqw,80px)/.9 "Arial Black",Arial,sans-serif;letter-spacing:-3px;color:#fff8e7;text-shadow:3px 4px 0 #171417;pointer-events:none;z-index:5}
 #mapPage .map-title span{display:table;font:800 clamp(10px,1.5cqw,13px)/1.25 Barlow,Arial,sans-serif;letter-spacing:1.4px;white-space:nowrap;margin:12px 0 0 5px;padding:7px 10px;background:#171417;color:#fff1d7;border-left:4px solid var(--hot);box-shadow:3px 3px 0 #17141744;text-shadow:none}
 body.time-night #mapPage .map-title span,body.cognition #mapPage .map-title span{color:#fff1d7;border-left-color:var(--cyan)}

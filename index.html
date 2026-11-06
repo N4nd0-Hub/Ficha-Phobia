@@ -13093,12 +13093,14 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 @media(prefers-reduced-motion:reduce){#characterPage .sheet-page-tabs .sheet-page-tab{transition:none}}
 
 </style>
-<link rel="stylesheet" href="assets/map-explorer.css?v=20261023">
-<link rel="stylesheet" href="assets/map-motion.css?v=2">
+<link rel="stylesheet" href="assets/map-explorer.css?v=20261106">
+<link rel="stylesheet" href="assets/map-motion.css?v=3">
+<link rel="stylesheet" href="assets/map-roads.css?v=1">
+<script src="assets/map-roads.js?v=1"></script>
 <script src="assets/map-camera.js?v=20261023"></script>
 <script src="assets/map-photos.js?v=20261023"></script>
-<script src="assets/map-explorer.js?v=20261023"></script>
-<script defer src="assets/map-motion.js?v=2"></script>
+<script src="assets/map-explorer.js?v=20261106"></script>
+<script defer src="assets/map-motion.js?v=3"></script>
 </head>
 <body class="time-afternoon" data-site-theme="cream">
 
@@ -13323,22 +13325,16 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
         <div class="cog-placement-hint">⌖ CLIQUE NO MAPA PARA POSICIONAR O SINAL • ESC PARA CANCELAR</div>
         <div id="subDistrictMap" class="sub-district-map" aria-label="Submapa do distrito"></div>
         <div id="atlasTokyoViewport" class="atlas-viewport" tabindex="0" role="region" aria-label="Mapa de Tokyo. Arraste para mover; use mais, menos e zero para ajustar o zoom.">
-        <svg id="mapSvg" viewBox="0 0 1000 700" aria-label="Mapa narrativo estilizado de Tóquio">
+        <svg id="mapSvg" viewBox="0 0 1280 700" overflow="visible" aria-label="Mapa narrativo estilizado de Tóquio">
           <defs>
             <pattern id="scribble" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
               <line x1="0" y1="4" x2="28" y2="4" stroke="currentColor" stroke-width="2" opacity=".13"/>
             </pattern>
           </defs>
-          <rect class="map-base" width="1000" height="700"/>
-          <path d="M0 86 L1000 24 L1000 0 L0 0Z" fill="#ef2b97"/>
-          <path class="map-low" d="M0 600 L1000 525 L1000 700 L0 700Z"/>
-          <rect width="1000" height="700" fill="url(#scribble)"/>
-          <g>
-            <path class="route alt" d="M115 380 C210 230 330 215 420 290 S590 415 710 320 S850 200 925 250"/>
-            <path class="route" d="M180 155 C290 180 365 360 475 360 S675 220 805 165"/>
-            <path class="route" d="M285 610 C355 520 475 515 560 560 S760 625 875 520"/>
-            <path class="route" d="M500 90 C465 175 500 290 520 360 S470 530 410 620"/>
-          </g>
+          <rect class="map-base" x="-2000" y="-1500" width="5280" height="3700"/>
+          <path class="map-top-band" d="M-2000 183 L3280 -100 L3280 -1500 L-2000 -1500Z" fill="#ef2b97"/>
+          <path class="map-low" d="M-2000 717 L3280 408 L3280 2200 L-2000 2200Z"/>
+          <rect x="-2000" y="-1500" width="5280" height="3700" fill="url(#scribble)"/>
           <g id="districtLinks"></g>
           <g id="districts"></g>
           <g id="landmarks"></g>
@@ -15410,18 +15406,18 @@ const SHAPES={
 };
 
 const DISTRICT_ART_LAYOUT={
-  ikebukuro:{cx:230,cy:184,w:190,h:143},
-  nakano:{cx:150,cy:318,w:190,h:143},
-  shinjuku:{cx:365,cy:292,w:204,h:153},
-  harajuku:{cx:286,cy:410,w:158,h:118},
-  shibuya:{cx:470,cy:493,w:216,h:153},
-  akihabara:{cx:698,cy:278,w:212,h:143},
-  asakusa:{cx:884,cy:182,w:194,h:139},
-  ginza:{cx:772,cy:447,w:150,h:106},
-  kichijoji:{cx:126,cy:531,w:168,h:126},
-  roppongi:{cx:639,cy:563,w:168,h:126},
-  meguro:{cx:410,cy:628,w:150,h:106},
-  odaiba:{cx:901,cy:613,w:180,h:128}
+  ikebukuro:{cx:480,cy:190,w:180,h:136},
+  nakano:{cx:150,cy:350,w:180,h:136},
+  shinjuku:{cx:450,cy:390,w:194,h:145},
+  harajuku:{cx:350,cy:570,w:150,h:112},
+  shibuya:{cx:750,cy:420,w:205,h:145},
+  akihabara:{cx:810,cy:230,w:201,h:136},
+  asakusa:{cx:1110,cy:200,w:184,h:132},
+  ginza:{cx:990,cy:420,w:142,h:101},
+  kichijoji:{cx:140,cy:560,w:160,h:120},
+  roppongi:{cx:880,cy:610,w:160,h:120},
+  meguro:{cx:560,cy:610,w:142,h:101},
+  odaiba:{cx:1130,cy:590,w:171,h:122}
 };
 
 const PALETTE=['#ed2f97','#f5ecd3','#d7cec0','#ffcf59','#c4e0df','#ee9cbf','#bbb0a3','#f3ecd8','#bdc9bc','#f48aa9','#dbd2c4','#cfb8ca'];
@@ -16331,6 +16327,7 @@ function buildDistrictLinkPath(points){
 }
 function drawDistrictConnections(layer){
   if(!layer)return;
+  if(window.PhobiaMapRoads){window.PhobiaMapRoads.draw(layer,DISTRICT_ART_LAYOUT);return}
   const ns='http://www.w3.org/2000/svg';
   const routes=[
     ['kichijoji','nakano','shinjuku','harajuku','shibuya','meguro'],
@@ -16425,7 +16422,7 @@ function drawCognitiveSignals(layer){
   layer.replaceChildren();
   cognitiveMarkers().forEach(m=>{
     if(m.visible===false&&state.mode!=='master')return;
-    const x=cognitiveClamp(m.x,0,1000),y=cognitiveClamp(m.y,0,700),r=cognitiveClamp(m.radius||95,25,220);
+    const x=cognitiveClamp(m.x,0,1280),y=cognitiveClamp(m.y,0,700),r=cognitiveClamp(m.radius||95,25,220);
     const group=makeCogSVG('g',{
       class:'cog-manual-marker'+(cognitiveSelectedId===m.id?' selected':'')+(m.visible===false?' hidden-from-players':''),
       'data-cognitive-marker-id':m.id,
@@ -16464,7 +16461,7 @@ function mapClientToSvg(clientX,clientY){
   if(!matrix)return null;
   const pt=svg.createSVGPoint();pt.x=clientX;pt.y=clientY;
   const xy=pt.matrixTransform(matrix.inverse());
-  return {x:Math.round(cognitiveClamp(xy.x,0,1000)),y:Math.round(cognitiveClamp(xy.y,0,700))};
+  return {x:Math.round(cognitiveClamp(xy.x,0,1280)),y:Math.round(cognitiveClamp(xy.y,0,700))};
 }
 function placeCognitiveMarker(x,y){
   if(state.mode!=='master')return;

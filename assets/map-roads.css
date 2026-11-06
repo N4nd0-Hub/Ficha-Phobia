@@ -1,0 +1,81 @@
+/* ==========================================================
+   PERSONA // PHOBIA — map-roads.css
+   Pistas, fundo e decoração do mapa de Tokyo.
+   Carregado antes do map-explorer.css; regras com #mapPage
+   para vencer as antigas do index.html.
+   ========================================================== */
+
+/* ---------- O "retângulo": o mapa agora sangra além das bordas ---------- */
+#mapPage #mapSvg{
+  overflow:visible;
+  background:transparent !important;
+}
+/* as cores de estação passam a tingir o chão inteiro, não só o retângulo */
+body:not(.cognition):not(.time-night) .map-shell.season-spring svg .map-base{fill:#f5d9df}
+body:not(.cognition):not(.time-night) .map-shell.season-summer svg .map-base{fill:#f4e5b7}
+body:not(.cognition):not(.time-night) .map-shell.season-autumn svg .map-base{fill:#dfc5aa}
+body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fill:#cbdbe5}
+
+/* ---------- Pistas: preto grosso + rosa + creme (estilo P5) ---------- */
+#mapPage svg .district-link-shadow,
+#mapPage svg .district-link-outer,
+#mapPage svg .district-link-edge,
+#mapPage svg .district-link-inner,
+#mapPage svg .district-link-lane{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+#mapPage svg .district-link-shadow{stroke:#0b0a0e;stroke-width:26;opacity:.32}
+#mapPage svg .district-link-outer {stroke:#141217;stroke-width:26;opacity:1}
+#mapPage svg .district-link-edge  {stroke:#ef2b97;stroke-width:18;opacity:1}
+#mapPage svg .district-link-inner {stroke:#fff3d9;stroke-width:9;opacity:1}
+#mapPage svg .district-link-lane  {stroke:#141217;stroke-width:3;stroke-dasharray:2 11;opacity:.85}
+
+/* linhas secundárias: mais finas, acento ciano */
+#mapPage svg .district-link-shadow.is-minor{stroke-width:17}
+#mapPage svg .district-link-outer.is-minor {stroke-width:17}
+#mapPage svg .district-link-edge.is-minor  {stroke:#6ce6ff;stroke-width:11}
+#mapPage svg .district-link-inner.is-minor {stroke-width:4}
+#mapPage svg .district-link-lane.is-minor  {display:none}
+
+/* losangos nas curvas */
+#mapPage svg .district-link-node{
+  fill:#fff3d9;
+  stroke:#141217;
+  stroke-width:3;
+  stroke-linejoin:miter;
+}
+
+/* ---------- Decoração de fundo ---------- */
+#mapPage .pm-dot      {fill:#ef2b97}
+#mapPage .pm-halftone {opacity:.16}
+#mapPage .pm-bay-shadow{fill:#141217;opacity:.85}
+#mapPage .pm-bay      {fill:#8fd8ea}
+#mapPage .pm-dot-bay  {fill:#4aa8c4}
+#mapPage .pm-bay-dots {fill:url(#pmDotsBay);opacity:.55}
+#mapPage .pm-bay-line {fill:none;stroke:#141217;stroke-width:4;stroke-linejoin:round}
+#mapPage .pm-slash-black{fill:#141217}
+#mapPage .pm-slash-cream{fill:#fff3d9}
+#mapPage .pm-star     {fill:#fff3d9;stroke:#141217;stroke-width:2.2;stroke-linejoin:miter}
+
+/* ---------- Noite ---------- */
+body.time-night #mapPage svg .district-link-inner{stroke:#e9f7ff}
+body.time-night #mapPage svg .district-link-edge.is-minor{stroke:#58d9ff}
+body.time-night #mapPage .pm-bay{fill:#1c3550}
+body.time-night #mapPage .pm-dot-bay{fill:#6ce6ff}
+body.time-night #mapPage .pm-halftone{opacity:.22}
+body.time-night #mapPage .pm-star{fill:#6ce6ff}
+body.time-night #mapPage .pm-slash-cream{fill:#ef2b97}
+
+/* ---------- Cognição: mesmo traçado, energia verde/ciano ---------- */
+body.cognition #mapPage svg .district-link-edge{stroke:#96ff45;opacity:.9}
+body.cognition #mapPage svg .district-link-edge.is-minor{stroke:#6ce6ff}
+body.cognition #mapPage svg .district-link-inner{stroke:#14252b}
+body.cognition #mapPage svg .district-link-lane{stroke:#6ce6ff;stroke-width:3;stroke-dasharray:10 8;opacity:.95}
+body.cognition #mapPage .pm-dot{fill:#6ce6ff}
+body.cognition #mapPage .pm-bay{fill:#10262c}
+body.cognition #mapPage .pm-dot-bay{fill:#96ff45}
+body.cognition #mapPage .pm-bay-line{stroke:#6ce6ff}
+body.cognition #mapPage .pm-star{fill:#96ff45}
+body.cognition #mapPage .pm-slash-cream{fill:#6ce6ff}
