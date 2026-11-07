@@ -13096,7 +13096,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/map-explorer.css?v=20261106">
 <link rel="stylesheet" href="assets/map-motion.css?v=3">
 <link rel="stylesheet" href="assets/map-roads.css?v=2">
-<link rel="stylesheet" href="assets/district-badges.css?v=2">
+<link rel="stylesheet" href="assets/district-badges.css?v=4">
 <link rel="stylesheet" href="assets/phobia-deck.css?v=1">
 <link rel="stylesheet" href="assets/hud.css?v=4">
 <link rel="stylesheet" href="assets/hud-pages.css?v=3">
@@ -15180,7 +15180,7 @@ const DEFAULT = {
     combatAbility:{name:'',sigil:'',tag:'',cost:'',trigger:'',uses:'',description:'',upgrade1:'',upgrade2:'',upgrade3:'',upgrades:[],upgradeTitles:[]},
     social:{Conhecimento:0,Disciplina:0,Empatia:0,Charme:0,Coragem:0,Expressão:0}
   },
-  page:'mapPage', workspace:'navigation', lastNavPage:'mapPage', siteTheme:'cream', layer:'reality', mode:'player', time:'afternoon', selected:'shibuya', mapMode:'collage', realStyle:'normal', ptLabels:true,
+  page:'mapPage', workspace:'navigation', lastNavPage:'mapPage', siteTheme:'cream', layer:'reality', mode:'player', time:'afternoon', selected:'shibuya', mapMode:'collage', realStyle:'normal', ptLabels:true, badgeStyles:{},
   campaignDate:'2000-04-17', notes:'', pinnedDate:'', placeCoords:{}, customCalendarMarks:{}, hackUnlocks:{}, netTraceUnlocked:false,
   mapAppearance:{imageData:'',opacity:68,contrast:105,brightness:96},
   mapNotes:{},
@@ -15699,6 +15699,7 @@ function mergeDefaults(base,saved){
   out.hackUnlocks=Object.assign({},base.hackUnlocks||{},saved.hackUnlocks||{});
   out.mediaPlayer=Object.assign({},base.mediaPlayer||{},saved.mediaPlayer||{});
   out.saveMeta=Object.assign({},base.saveMeta||{},saved.saveMeta||{});
+  out.badgeStyles=(saved.badgeStyles&&typeof saved.badgeStyles==='object')?saved.badgeStyles:{};
   if(saved.charSheet){
     out.charSheet=Object.assign({},base.charSheet,saved.charSheet);
     out.charSheet.profile=Object.assign({},base.charSheet.profile,saved.charSheet.profile||{});
@@ -21836,6 +21837,6 @@ initializePhobiaLargeSave();
 <script src="assets/hud.js?v=3"></script>
 <script src="assets/hud-pages.js?v=5"></script>
 <script src="assets/sheet-style.js?v=5"></script>
-<script src="assets/district-badges.js?v=1"></script>
+<script src="assets/district-badges.js?v=3"></script>
 </body>
 </html>
