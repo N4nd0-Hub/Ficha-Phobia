@@ -133,11 +133,10 @@
     '<rect x="25" y="20" width="12" height="11" fill="#3a3a40" stroke="#f5a524" stroke-width="1.5"/><circle cx="29" cy="25.5" r="1.4" fill="#f5a524"/><circle cx="33" cy="25.5" r="1.4" fill="#f5a524"/>' +
     '<g class="lid"><rect x="8" y="10" width="44" height="21" rx="4" fill="#2a2a2e" stroke="#f5a524" stroke-width="2.5"/></g></svg>';
   function transition(k) {
-    if (!KINDS[k] || calm()) return;
+    if (!KINDS[k] || k === 'naoya' || calm()) return;   /* o Naoya só tem a abertura (TV ligando) */
     var old = document.querySelector('.tf-trans'); if (old) old.remove();
     var t = document.createElement('div'); t.className = 'tf-trans ' + k; t.setAttribute('aria-hidden', 'true');
-    if (k === 'naoya') t.innerHTML = '<i class="neg"></i><i class="tv"></i><i class="line"></i>';
-    else if (k === 'maya') t.innerHTML = '<i class="flash"></i><i class="page"></i><i class="frame"></i>';
+    if (k === 'maya') t.innerHTML = '<i class="flash"></i><i class="page"></i><i class="frame"></i>';
     else if (k === 'kotone') t.innerHTML = '<i class="glow"></i><i class="wave"></i>';
     else if (k === 'tatsuya') t.innerHTML = '<i class="burn"></i>' + ZIPPO;
     document.body.appendChild(t);
@@ -154,7 +153,29 @@
       if (p < 1) requestAnimationFrame(step); else el.style.background = 'transparent';
     })(t0);
   }
-  window.PhobiaThemeFx = { transition: transition };
+  /* Naoya: ao abrir a ficha, a tela "liga" como uma TV de tubo — suave, sem flash */
+  function tvOn() {
+    if (kind() !== 'naoya' || calm()) return;
+    var old = document.querySelector('.tf-tvon'); if (old) old.remove();
+    var t = document.createElement('div'); t.className = 'tf-trans tf-tvon'; t.setAttribute('aria-hidden', 'true');
+    t.innerHTML = '<i class="half top"></i><i class="half bot"></i><i class="beam"></i><i class="snow"></i>';
+    document.body.appendChild(t);
+    kill(t, 1300);
+  }
+  window.PhobiaThemeFx = { transition: transition, tvOn: tvOn };
+  function wrapWorkspace() {
+    var o = window.switchWorkspace;
+    if (typeof o !== 'function') { setTimeout(wrapWorkspace, 300); return; }
+    if (o.__tf) return;
+    var w = function (ws) {
+      var was = document.body.classList.contains('workspace-sheet');
+      var r = o.apply(this, arguments);
+      if (ws === 'sheet' && !was) setTimeout(tvOn, 30);
+      return r;
+    };
+    w.__tf = true; window.switchWorkspace = w;
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wrapWorkspace); else wrapWorkspace();
 
   function wrapSection() {
     var o = window.setSheetSection;
