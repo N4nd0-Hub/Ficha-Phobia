@@ -149,7 +149,7 @@ body.hud #characterPage :is(
 /* cartões / seções */
 body.hud #characterPage :is(
   .zine-card,.persona-v2-hero > *,.persona-v2-dissonant,.persona-v2-affinities,.persona-v2-journal,.dissonant-recap,
-  .magic-lab-grid > *,.eq-collection,.bp-section,.eq-setup-grid > *,#traitCatalogPanel,.tr-tabs,
+  .magic-lab-grid > *,.eq-collection,.bp-section,.eq-setup-grid > *,:where(#traitCatalogPanel),.tr-tabs,
   .bond-toolbar,.bond-grid > *,.arcana-overview-grid > *,.arcana-lower-grid > *,.aw-refined > *,
   .social-monitor-shell,.exclusive-ability-card
 ){

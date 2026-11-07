@@ -306,19 +306,20 @@
       '<div class="hs-main">' +
         '<div class="hs-levels"></div>' +
         '<div class="hs-res">' +
-          '<div class="hs-bar pv"><div class="hs-bar-top"><b>PV</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div><div class="hs-res-meta"></div></div>' +
-          '<div class="hs-bar pm"><div class="hs-bar-top"><b>PM</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div><div class="hs-res-meta"></div></div>' +
+          '<div class="hs-bar pv"><div class="hs-bar-top"><b>PV</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div></div>' +
+          '<div class="hs-bar pm"><div class="hs-bar-top"><b>PM</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div></div>' +
         '</div>' +
         '<div class="hs-attrs">' + ATTR.map(function (a) { return '<label class="hs-attr" data-a="' + a + '"><small>' + a + '</small><em class="hs-eq" hidden></em></label>'; }).join('') + '</div>' +
         '<div class="hs-derived-wrap"></div>' +
         '<div class="hs-integ"><div class="hs-integ-top"><span>INTEGRIDADE</span><b></b></div><div class="hs-integ-track"><i></i><i></i><i></i><i></i><i></i><i></i><span class="hs-needle"></span></div>' +
           '<div class="hs-integ-labels">' +
             [[0, 'Morte'], [1, 'Ruína'], [25, 'Fraturado'], [50, 'Estável'], [75, 'Íntegro'], [100, 'Plenitude']].map(function (z) { return '<button type="button" data-integrity-stage="' + z[0] + '">' + z[1] + '</button>'; }).join('') +
-          '</div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></div>' +
+          '</div></div>' +
         '<div class="hs-social">' + SOCIAL.map(function (s) {
           var pips = ''; for (var t = 1; t <= 5; t++) pips += '<button type="button" data-hs-tier="' + t + '" aria-label="' + s + ' Tier ' + ROMAN[t] + '"></button>';
           return '<div class="hs-skill" data-s="' + s + '"><div><span>' + s + '</span><b></b></div><div class="hs-pips">' + pips + '</div></div>';
         }).join('') + '</div>' +
+        '<details class="hs-extra"><summary>Recursos, combate e efeitos de integridade</summary><div class="hs-res"><div class="hs-res-meta"></div><div class="hs-res-meta"></div></div><div class="hs-derived-wrap"><div class="hs-more-combat"></div></div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></details><details class="hs-social-details"><summary>Habilidades sociais e efeitos por Tier</summary></details>' +
       '</div>';
     panel.insertBefore(hero.root, panel.firstChild);
 
@@ -331,14 +332,16 @@
     mv('[data-sheet="resources.pvCurrent"]', $('.hs-cur', pv));
     mv('[data-sheet="resources.pmCurrent"]', $('.hs-cur', pm));
     var metas = panel.querySelectorAll('.resources-game-panel .resource-meta');
-    if (metas[0]) mv(metas[0], $('.hs-res-meta', pv));
-    if (metas[1]) mv(metas[1], $('.hs-res-meta', pm));
+    var targetMetas=hero.root.querySelectorAll('.hs-res-meta');
+    if (metas[0]) mv(metas[0], targetMetas[0]);
+    if (metas[1]) mv(metas[1], targetMetas[1]);
     ATTR.forEach(function (a) { mv('[data-sheet="attrs.' + a + '"]', $('.hs-attr[data-a="' + a + '"]', hero.root)); });
     var dw = $('.hs-derived-wrap', hero.root);
-    mv('.derived-ribbon', dw); mv('.combat-status-pods', dw);
+    mv('.derived-ribbon', dw); mv('.combat-status-pods', $('.hs-more-combat',hero.root));
     var range = mv('.integrity-game-range', $('.hs-integ-track', hero.root));
     if (range) range.setAttribute('aria-label', 'Integridade');
     mv('#sheetIntegrityEffects', $('.hs-integ-effects', hero.root));
+    mv('#socialTierMonitorSection', $('.hs-social-details', hero.root));
 
     panel.classList.add('hs-ready');
     $('.hs-portrait', hero.root).addEventListener('click', function () { var i = $('#sheetPhotoInput'); if (i) i.click(); });

@@ -13099,7 +13099,8 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/phobia-deck.css?v=1">
 <link rel="stylesheet" href="assets/hud.css?v=3">
 <link rel="stylesheet" href="assets/hud-pages.css?v=2">
-<link rel="stylesheet" href="assets/hud-sheet.css?v=2">
+<link rel="stylesheet" href="assets/hud-sheet.css?v=3">
+<link rel="stylesheet" href="assets/sheet-editorial.css?v=1">
 <script src="assets/phobia-deck.js?v=1"></script>
 <script src="assets/map-roads.js?v=1"></script>
 <script src="assets/map-camera.js?v=20261023"></script>
@@ -13117,7 +13118,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
       <button class="global-tab" data-page="areasPage">GUIA DE ÁREAS</button>
       <button class="global-tab" data-page="calendarPage">CALENDÁRIO</button>
       <button class="global-tab terminal-tab hidden" id="netTraceTab" data-page="hackPage">NET//TRACE</button>
-      <button class="global-tab" id="openNotesTop">NOTEPAD.EXE</button>
+      <button class="global-tab" id="openNotesTop">NOTAS</button>
     </nav>
 
     <div class="sheet-mode-banner" id="sheetModeBanner">CHARACTER MAGAZINE MODE // FICHA DE PERSONAGEM</div>
@@ -13783,8 +13784,174 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
             </section>
           </section>
 
+        </div>
+      </section>
+
+      <!-- =====================================================
+           PAGE 02 — PERSONA / SIDE B REWORK 5.2.5
+           ===================================================== -->
+      <section class="sheet-subpage" data-sheet-panel="persona" id="sheet-panel-persona" role="tabpanel" aria-labelledby="sheet-tab-persona" hidden>
+        <div class="persona-v2">
+          <div class="persona-v2-hero">
+            <section class="persona-v2-art-side" aria-label="Arte da Persona">
+              <button class="persona-v2-art-btn" id="personaArtButton" type="button" title="Adicionar ou trocar arte da Persona" aria-label="Adicionar ou trocar arte da Persona">
+                <span class="persona-v2-art-frame">
+                  <img id="personaArtImg" alt="Arte da Persona" draggable="false" loading="lazy" decoding="async">
+                  <span id="personaArtPlaceholder" class="persona-v2-art-placeholder">
+                    <span class="persona-v2-placeholder-symbol" aria-hidden="true">✦</span>
+                    <span class="persona-v2-placeholder-label">SUA PERSONA AQUI</span>
+                    <span class="persona-v2-placeholder-hint">CLIQUE PARA ANEXAR A ARTE</span>
+                  </span>
+                </span>
+                <span class="persona-v2-art-badge">✦ TROCAR IMAGEM ↗</span>
+              </button>
+              <input id="personaArtInput" type="file" accept="image/*" hidden>
+              <div class="persona-v2-level-strip">
+                <label>PNv. / NÍVEL
+                  <input type="number" min="1" max="20" data-sheet="pnv" aria-label="Nível da Persona">
+                </label>
+                <div><span>TIER / MAGIA</span><b id="sheetPersonaMagicTierReadout">I</b></div>
+              </div>
+            </section>
+
+            <section class="persona-v2-profile" aria-label="Identidade e nível da Persona">
+              <div class="persona-v2-arcana">
+
+                <select data-sheet="profile.arcana" id="sheetArcanaSelect" aria-label="Arcana da Persona">
+                    <option value="">— selecionar —</option>
+                    <option value="Mágico">I — Mágico</option>
+                    <option value="Sacerdotisa">II — Sacerdotisa</option>
+                    <option value="Imperatriz">III — Imperatriz</option>
+                    <option value="Imperador">IV — Imperador</option>
+                    <option value="Hierofante">V — Hierofante</option>
+                    <option value="Enamorados">VI — Enamorados</option>
+                    <option value="Carruagem">VII — Carruagem</option>
+                    <option value="Justiça">VIII — Justiça</option>
+                    <option value="Eremita">IX — Eremita</option>
+                    <option value="Fortuna">X — Fortuna</option>
+                    <option value="Força">XI — Força</option>
+                    <option value="Enforcado">XII — Enforcado</option>
+                    <option value="Morte">XIII — Morte</option>
+                    <option value="Temperança">XIV — Temperança</option>
+                    <option value="Diabo">XV — Diabo</option>
+                    <option value="Torre">XVI — Torre</option>
+                    <option value="Estrela">XVII — Estrela</option>
+                    <option value="Lua">XVIII — Lua</option>
+                    <option value="Sol">XIX — Sol</option>
+                    <option value="Julgamento">XX — Julgamento</option>
+                  </select>
+                <span id="sheetArcanaSyncNote" hidden></span>
+              </div>
+              <label class="persona-v2-codename-editor">
+                <input data-sheet="profile.persona" placeholder="[NOME DA PERSONA]" aria-label="Nome da Persona" autocomplete="off">
+              </label>
+              <div id="personaArcanaTraits" class="persona-arcana-traits" aria-label="Características da Arcana"></div>
+              <div class="persona-v2-hidden-readouts" hidden aria-hidden="true">
+                <span id="sheetMagicTier">I</span>
+                <span id="sheetPersonaLvReadout">1</span>
+                <span id="sheetPersonaChoiceReadout">0</span>
+                <span id="sheetPersonaAwakeningReadout">0</span>
+                <span id="sheetPersonaProgressNote"></span>
+              </div>
+          <section class="persona-v2-affinities" id="personaAffinitySection">
+            <div id="personaElementPane" class="persona-v2-affinity-pane">
+              <div class="persona-v2-pane-caption"><strong>AFINIDADES · 10 ELEMENTOS</strong><span>Fraqueza · Resistência · Anula / reflete / drena</span></div>
+              <div class="affinity-hud-summary">
+                <div class="affinity-summary-box weak"><small>FRAQUEZAS</small><b id="sheetAffinityWeakList">—</b></div>
+                <div class="affinity-summary-box resist"><small>RESISTE</small><b id="sheetAffinityResistList">—</b></div>
+                <div class="affinity-summary-box guard"><small>BLOQUEIA / REFLETE / DRENA</small><b id="sheetAffinityGuardList">—</b></div>
+              </div>
+              <div class="affinity-hud-grid" id="sheetAffinityGrid"></div>
+            </div>
+            <div class="persona-secondary">            <div id="personaInstrumentPane" class="persona-v2-affinity-pane">
+              <div class="persona-v2-pane-caption"><strong>INSTRUMENTOS</strong></div>
+              <div class="affinity-hud-summary instrument-summary">
+                <div class="affinity-summary-box weak"><small>FRAQUEZAS</small><b id="sheetInstrumentWeakList">—</b></div>
+                <div class="affinity-summary-box resist"><small>RESISTE</small><b id="sheetInstrumentResistList">—</b></div>
+                <div class="affinity-summary-box guard"><small>BLOQUEIA / REFLETE / DRENA</small><b id="sheetInstrumentGuardList">—</b></div>
+              </div>
+              <div class="instrument-hud-grid" id="sheetInstrumentAffinityGrid"></div>
+              <details class="instrument-special-box">
+                <summary class="instrument-special-title">Fraqueza de instrumento</summary>
+                <div class="instrument-special-fields">
+                  <label>FAMÍLIA<select id="sheetSpecificInstrumentFamily"></select></label>
+                  <label>INSTRUMENTO<input id="sheetSpecificInstrumentName" type="text" placeholder="Ex.: Guitarra Elétrica"></label>
+                </div>
+                <div class="instrument-special-preview" id="sheetSpecificInstrumentPreview">Nenhuma fraqueza específica registrada.</div>
+              </details>
+            </div>
+<div>          <section class="persona-v2-dissonant" id="personaDissonantSection" aria-label="Arcana Dissonante">
+            <div class="persona-v2-dissonant-info">
+              <span class="persona-v2-dissonant-code" id="dissonantPersonaCode">ARQUIVO // NÃO DEFINIDO</span>
+              <h3 class="persona-v2-dissonant-name" id="dissonantPersonaName">SEM DISSONÂNCIA</h3>
+              <p class="persona-v2-dissonant-desc" id="dissonantPersonaDesc">A Arcana Dissonante representa o padrão destrutivo recorrente do personagem e é escolhida separadamente da Arcana da Trama.</p>
+
+            </div>
+            <details class="persona-v2-dissonant-select">
+              <summary>Escolher Dissonante</summary>
+              <span class="tr-dissonant-credit" id="dissonantPointCredit">Cada escolha concede 5 pontos de Defeitos.</span>
+              <button class="tr-persona-link" type="button" data-open-dissonant-catalog>Ver Dissonantes e pontos ↗</button>
+              <select id="sheetDissonantArcanaSelect" data-sheet="profile.dissonantArcana" aria-label="Arcana Dissonante">
+                <option value="">— selecionar —</option>
+                <option value="I">I — A MÁSCARA</option>
+<option value="II">II — O SILÊNCIO</option>
+<option value="III">III — O ESPELHO</option>
+<option value="IV">IV — A COROA</option>
+<option value="V">V — O DOGMA</option>
+<option value="VI">VI — A CORRENTE</option>
+<option value="VII">VII — O IMPULSO</option>
+<option value="VIII">VIII — A SENTENÇA</option>
+<option value="IX">IX — O EXÍLIO</option>
+<option value="X">X — O CICLO</option>
+<option value="XI">XI — A FOME</option>
+<option value="XII">XII — A FÚRIA</option>
+<option value="XIII">XIII — A CULPA</option>
+<option value="XIV">XIV — A ESTAGNAÇÃO</option>
+<option value="XV">XV — O VÍCIO</option>
+<option value="XVI">XVI — A RUÍNA</option>
+<option value="XVII">XVII — O DELÍRIO</option>
+<option value="XVIII">XVIII — O PAVOR</option>
+<option value="XIX">XIX — O EGO</option>
+<option value="XX">XX — A NEGAÇÃO</option>
+              </select>
+              <label class="persona-v2-dissonant-extra" id="dissonantExtraWrap" hidden>
+                <b>SEGUNDA DISSONÂNCIA // A FOME</b>
+                <select id="sheetDissonantArcanaExtraSelect" data-sheet="profile.dissonantArcanaExtra" aria-label="Segunda Arcana Dissonante concedida por A Fome">
+                  <option value="">— selecionar Arcana extra —</option>
+                  <option value="I">I — A MÁSCARA</option>
+<option value="II">II — O SILÊNCIO</option>
+<option value="III">III — O ESPELHO</option>
+<option value="IV">IV — A COROA</option>
+<option value="V">V — O DOGMA</option>
+<option value="VI">VI — A CORRENTE</option>
+<option value="VII">VII — O IMPULSO</option>
+<option value="VIII">VIII — A SENTENÇA</option>
+<option value="IX">IX — O EXÍLIO</option>
+<option value="X">X — O CICLO</option>
+<option value="XI">XI — A FOME</option>
+<option value="XII">XII — A FÚRIA</option>
+<option value="XIII">XIII — A CULPA</option>
+<option value="XIV">XIV — A ESTAGNAÇÃO</option>
+<option value="XV">XV — O VÍCIO</option>
+<option value="XVI">XVI — A RUÍNA</option>
+<option value="XVII">XVII — O DELÍRIO</option>
+<option value="XVIII">XVIII — O PAVOR</option>
+<option value="XIX">XIX — O EGO</option>
+<option value="XX">XX — A NEGAÇÃO</option>
+                </select>
+              </label>
+            </details>
+          </section>
+
+          <div class="dissonant-recap" id="personaDissonantRecap" aria-live="polite" aria-label="Resumo dos benefícios e complicações da Arcana Dissonante" hidden></div>
+
+</div></div>
+          </section>
+            </section>
+          </div>
+          <h3 class="hud-section-label">HABILIDADES EXCLUSIVAS</h3>
           <div class="ability-bottom-grid exclusive-ability-grid">
-            <section class="zine-card ability-core natural exclusive-ability-card">
+            <details class="zine-card ability-core natural exclusive-ability-card"><summary>Habilidade Natural</summary>
               <div class="exclusive-ability-hero">
                 <div class="exclusive-ability-hero-copy">
                   <div class="exclusive-ability-kicker">PHOBIA_OS / INSTINCT.LOG / TOKYO 2000</div>
@@ -13824,7 +13991,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                 <label class="ability-effect-field"><span>EFEITO PRINCIPAL</span>
                   <textarea rows="5" data-sheet="naturalAbility.description" placeholder="Descreva a regra central, condições, exceções e como a habilidade funciona em jogo..."></textarea>
                 </label>
-                <section class="ability-upgrade-zone ability-upgrade-panel" data-upgrade-drawer="natural" aria-label="Melhorias da Habilidade de Natural">
+                <section class="ability-upgrade-zone ability-upgrade-panel" data-upgrade-drawer="natural" aria-label="Melhorias da Habilidade Natural">
                   <button type="button" class="ability-upgrade-toggle" data-upgrade-toggle="natural" aria-expanded="false" aria-controls="naturalAbilityDrawer">
                     <span class="ability-upgrade-grip" aria-hidden="true"><i></i><i></i><i></i></span>
                     <span class="ability-upgrade-handle-copy">
@@ -13850,9 +14017,9 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                   </div>
                 </section>
               </div>
-            </section>
+            </details>
 
-            <section class="zine-card ability-core combat exclusive-ability-card combat-exclusive">
+            <details class="zine-card ability-core combat exclusive-ability-card combat-exclusive"><summary>Habilidade de Combate</summary>
               <div class="exclusive-ability-hero">
                 <div class="exclusive-ability-hero-copy">
                   <div class="exclusive-ability-kicker">PHOBIA_OS / BATTLE.LOG / TOKYO 2000</div>
@@ -13921,205 +14088,8 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                   </div>
                 </section>
               </div>
-            </section>
+            </details>
           </div>
-        </div>
-      </section>
-
-      <!-- =====================================================
-           PAGE 02 — PERSONA / SIDE B REWORK 5.2.5
-           ===================================================== -->
-      <section class="sheet-subpage" data-sheet-panel="persona" id="sheet-panel-persona" role="tabpanel" aria-labelledby="sheet-tab-persona" hidden>
-        <div class="persona-v2">
-          <header class="persona-v2-top">
-            <div>
-              <small>▸ SIDE B / SUMMON ARCHIVE.EXE / TOKYO 2000</small>
-              <h2>PERSONA<em>.</em></h2>
-              <p class="persona-v2-tagline">"i am dou, dou art i..."</p>
-            </div>
-            <div class="persona-v2-seal" aria-hidden="true"><b>P/02</b><span>PERSONA FILE</span></div>
-          </header>
-
-          <div class="persona-v2-hero">
-            <section class="persona-v2-art-side" aria-label="Arte da Persona">
-              <div class="persona-v2-art-meta"><strong>▸ ARTWORK / 01</strong><span>ARQUIVO DE INVOCAÇÃO</span></div>
-              <button class="persona-v2-art-btn" id="personaArtButton" type="button" title="Adicionar ou trocar arte da Persona" aria-label="Adicionar ou trocar arte da Persona">
-                <span class="persona-v2-art-frame">
-                  <img id="personaArtImg" alt="Arte da Persona" draggable="false" loading="lazy" decoding="async">
-                  <span id="personaArtPlaceholder" class="persona-v2-art-placeholder">
-                    <span class="persona-v2-placeholder-symbol" aria-hidden="true">✦</span>
-                    <span class="persona-v2-placeholder-label">SUA PERSONA AQUI</span>
-                    <span class="persona-v2-placeholder-hint">CLIQUE PARA ANEXAR A ARTE</span>
-                  </span>
-                </span>
-                <span class="persona-v2-art-badge">✦ TROCAR IMAGEM ↗</span>
-              </button>
-              <input id="personaArtInput" type="file" accept="image/*" hidden>
-              <div class="persona-v2-art-caption">
-                <span id="personaArtCaption">PERSONA ARTWORK</span>
-                <span id="personaStageArcana">ARCANA // —</span>
-              </div>
-            </section>
-
-            <section class="persona-v2-profile" aria-label="Identidade e nível da Persona">
-              <div class="persona-v2-profile-head"><span class="p2-id">Nº 02 // REGISTRO</span><span class="p2-series">PERSONA // PHOBIA</span></div>
-              <div class="persona-v2-name-area">
-                <span>PERSONA / CODINOME</span>
-                <h3 id="personaStageName">SUA PERSONA</h3>
-              </div>
-              <div class="persona-v2-arcana">
-                <div class="persona-v2-arcana-label"><span>ARCANA / IDENTIDADE</span></div>
-                <select data-sheet="profile.arcana" id="sheetArcanaSelect">
-                    <option value="">— selecionar —</option>
-                    <option value="Mágico">I — Mágico</option>
-                    <option value="Sacerdotisa">II — Sacerdotisa</option>
-                    <option value="Imperatriz">III — Imperatriz</option>
-                    <option value="Imperador">IV — Imperador</option>
-                    <option value="Hierofante">V — Hierofante</option>
-                    <option value="Enamorados">VI — Enamorados</option>
-                    <option value="Carruagem">VII — Carruagem</option>
-                    <option value="Justiça">VIII — Justiça</option>
-                    <option value="Eremita">IX — Eremita</option>
-                    <option value="Fortuna">X — Fortuna</option>
-                    <option value="Força">XI — Força</option>
-                    <option value="Enforcado">XII — Enforcado</option>
-                    <option value="Morte">XIII — Morte</option>
-                    <option value="Temperança">XIV — Temperança</option>
-                    <option value="Diabo">XV — Diabo</option>
-                    <option value="Torre">XVI — Torre</option>
-                    <option value="Estrela">XVII — Estrela</option>
-                    <option value="Lua">XVIII — Lua</option>
-                    <option value="Sol">XIX — Sol</option>
-                    <option value="Julgamento">XX — Julgamento</option>
-                  </select>
-                <div class="arcana-sync-note" id="sheetArcanaSyncNote">Selecione sua Arcana.</div>
-              </div>
-              <div class="persona-v2-level-strip">
-                <label>PNv. / NÍVEL
-                  <input type="number" min="1" max="20" data-sheet="pnv" aria-label="Nível da Persona">
-                </label>
-                <div><span>TIER / MAGIA</span><b id="sheetPersonaMagicTierReadout">I</b></div>
-              </div>
-              <label class="persona-v2-codename-editor"><span>EDIÇÃO / NOME DA PERSONA</span>
-                <input data-sheet="profile.persona" placeholder="Digite o nome da Persona" autocomplete="off">
-              </label>
-              <div class="persona-v2-shortcuts">
-                <button type="button" data-persona-v2-jump="elements">✦ AFINIDADES ↗</button>
-                <button type="button" data-persona-v2-jump="instruments">♫ INSTRUMENTOS ↗</button>
-                <button type="button" data-persona-v2-jump="journal">▤ NOTAS ↗</button>
-              </div>
-              <div class="persona-v2-hidden-readouts" hidden aria-hidden="true">
-                <span id="sheetMagicTier">I</span>
-                <span id="sheetPersonaLvReadout">1</span>
-                <span id="sheetPersonaChoiceReadout">0</span>
-                <span id="sheetPersonaAwakeningReadout">0</span>
-                <span id="sheetPersonaProgressNote"></span>
-              </div>
-            </section>
-          </div>
-
-          <section class="persona-v2-dissonant" id="personaDissonantSection" aria-label="Arcana Dissonante">
-            <div class="persona-v2-dissonant-select">
-              <small>▸ SHADOW PROFILE / DISSONANCE FILE</small>
-              <h3>ARCANA DISSONANTE</h3>
-              <span class="tr-dissonant-credit" id="dissonantPointCredit">Cada escolha concede 5 pontos de Defeitos.</span>
-              <button class="tr-persona-link" type="button" data-open-dissonant-catalog>Ver Dissonantes e pontos ↗</button>
-              <select id="sheetDissonantArcanaSelect" data-sheet="profile.dissonantArcana" aria-label="Arcana Dissonante">
-                <option value="">— selecionar —</option>
-                <option value="I">I — A MÁSCARA</option>
-<option value="II">II — O SILÊNCIO</option>
-<option value="III">III — O ESPELHO</option>
-<option value="IV">IV — A COROA</option>
-<option value="V">V — O DOGMA</option>
-<option value="VI">VI — A CORRENTE</option>
-<option value="VII">VII — O IMPULSO</option>
-<option value="VIII">VIII — A SENTENÇA</option>
-<option value="IX">IX — O EXÍLIO</option>
-<option value="X">X — O CICLO</option>
-<option value="XI">XI — A FOME</option>
-<option value="XII">XII — A FÚRIA</option>
-<option value="XIII">XIII — A CULPA</option>
-<option value="XIV">XIV — A ESTAGNAÇÃO</option>
-<option value="XV">XV — O VÍCIO</option>
-<option value="XVI">XVI — A RUÍNA</option>
-<option value="XVII">XVII — O DELÍRIO</option>
-<option value="XVIII">XVIII — O PAVOR</option>
-<option value="XIX">XIX — O EGO</option>
-<option value="XX">XX — A NEGAÇÃO</option>
-              </select>
-              <label class="persona-v2-dissonant-extra" id="dissonantExtraWrap" hidden>
-                <b>SEGUNDA DISSONÂNCIA // A FOME</b>
-                <select id="sheetDissonantArcanaExtraSelect" data-sheet="profile.dissonantArcanaExtra" aria-label="Segunda Arcana Dissonante concedida por A Fome">
-                  <option value="">— selecionar Arcana extra —</option>
-                  <option value="I">I — A MÁSCARA</option>
-<option value="II">II — O SILÊNCIO</option>
-<option value="III">III — O ESPELHO</option>
-<option value="IV">IV — A COROA</option>
-<option value="V">V — O DOGMA</option>
-<option value="VI">VI — A CORRENTE</option>
-<option value="VII">VII — O IMPULSO</option>
-<option value="VIII">VIII — A SENTENÇA</option>
-<option value="IX">IX — O EXÍLIO</option>
-<option value="X">X — O CICLO</option>
-<option value="XI">XI — A FOME</option>
-<option value="XII">XII — A FÚRIA</option>
-<option value="XIII">XIII — A CULPA</option>
-<option value="XIV">XIV — A ESTAGNAÇÃO</option>
-<option value="XV">XV — O VÍCIO</option>
-<option value="XVI">XVI — A RUÍNA</option>
-<option value="XVII">XVII — O DELÍRIO</option>
-<option value="XVIII">XVIII — O PAVOR</option>
-<option value="XIX">XIX — O EGO</option>
-<option value="XX">XX — A NEGAÇÃO</option>
-                </select>
-              </label>
-            </div>
-            <div class="persona-v2-dissonant-info">
-              <span class="persona-v2-dissonant-code" id="dissonantPersonaCode">ARQUIVO // NÃO DEFINIDO</span>
-              <h3 class="persona-v2-dissonant-name" id="dissonantPersonaName">SEM DISSONÂNCIA</h3>
-              <p class="persona-v2-dissonant-desc" id="dissonantPersonaDesc">A Arcana Dissonante representa o padrão destrutivo recorrente do personagem e é escolhida separadamente da Arcana da Trama.</p>
-              <div class="persona-v2-dissonant-mark" aria-hidden="true"><b>REVÉS</b><span>PADRÃO / FALHA / ECO</span></div>
-            </div>
-          </section>
-
-          <div class="dissonant-recap" id="personaDissonantRecap" aria-live="polite" aria-label="Resumo dos benefícios e complicações da Arcana Dissonante" hidden></div>
-
-          <section class="persona-v2-affinities" id="personaAffinitySection">
-            <header class="persona-v2-affinity-top">
-              <div><small>▸ SYSTEM / REACTIONS</small><h3>AFINIDADES &amp; RESSONÂNCIA</h3></div>
-              <div class="persona-v2-affinity-tabs" role="tablist" aria-label="Tipos de afinidade">
-                <button type="button" class="is-active" role="tab" aria-selected="true" aria-controls="personaElementPane" data-persona-affinity-tab="elements">✦ ELEMENTOS</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="personaInstrumentPane" data-persona-affinity-tab="instruments">♫ INSTRUMENTOS</button>
-              </div>
-            </header>
-            <div id="personaElementPane" class="persona-v2-affinity-pane" role="tabpanel" data-persona-affinity-content="elements">
-              <div class="persona-v2-pane-caption"><span>Reações aos tipos de dano</span><strong>ELEMENTOS / 10</strong></div>
-              <div class="affinity-hud-summary">
-                <div class="affinity-summary-box weak"><small>FRAQUEZAS</small><b id="sheetAffinityWeakList">—</b></div>
-                <div class="affinity-summary-box resist"><small>RESISTE</small><b id="sheetAffinityResistList">—</b></div>
-                <div class="affinity-summary-box guard"><small>BLOQUEIA / REFLETE / DRENA</small><b id="sheetAffinityGuardList">—</b></div>
-              </div>
-              <div class="affinity-hud-grid" id="sheetAffinityGrid"></div>
-            </div>
-            <div id="personaInstrumentPane" class="persona-v2-affinity-pane" role="tabpanel" data-persona-affinity-content="instruments" hidden>
-              <div class="persona-v2-pane-caption"><span>Reações às famílias musicais</span><strong>FAMÍLIAS / 05</strong></div>
-              <div class="affinity-hud-summary instrument-summary">
-                <div class="affinity-summary-box weak"><small>FRAQUEZAS</small><b id="sheetInstrumentWeakList">—</b></div>
-                <div class="affinity-summary-box resist"><small>RESISTE</small><b id="sheetInstrumentResistList">—</b></div>
-                <div class="affinity-summary-box guard"><small>BLOQUEIA / REFLETE / DRENA</small><b id="sheetInstrumentGuardList">—</b></div>
-              </div>
-              <div class="instrument-hud-grid" id="sheetInstrumentAffinityGrid"></div>
-              <div class="instrument-special-box">
-                <div class="instrument-special-title">FRAQUEZA ESPECÍFICA // INSTRUMENTO</div>
-                <div class="instrument-special-fields">
-                  <label>FAMÍLIA<select id="sheetSpecificInstrumentFamily"></select></label>
-                  <label>INSTRUMENTO<input id="sheetSpecificInstrumentName" type="text" placeholder="Ex.: Guitarra Elétrica"></label>
-                </div>
-                <div class="instrument-special-preview" id="sheetSpecificInstrumentPreview">Nenhuma fraqueza específica registrada.</div>
-              </div>
-            </div>
-          </section>
-
           <details class="persona-v2-journal" id="personaV2Journal">
             <summary>▤ NOTAS DA PERSONA <small>CARACTERÍSTICAS / EXCEÇÕES</small></summary>
             <div class="persona-v2-journal-grid">
@@ -14144,7 +14114,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
               <div class="magic-lab-kicker">♪ SOUND SYSTEM / DECK BUILDER.EXE / 2000</div>
               <h2>MAGIC <span>MIXTAPE</span></h2>
               <div class="magic-lab-meter">
-                <div><small>FITAS NO DECK</small><b id="magicDeckCounter">0</b></div>
+                <div><small>MAGIAS NO DECK</small><b id="magicDeckCounter">0</b></div>
                 <div><small>TIPOS EQUIPADOS</small><b id="magicDeckTypes">0</b></div>
                 <div><small>PNv. / TIER</small><b><span id="sheetMagicPNvEcho">1</span> / <span id="sheetMagicTierEcho">I</span></b></div>
                 <div><small>CUSTOS DO DECK / PM</small><b id="magicDeckPM">0</b></div>
@@ -14163,10 +14133,10 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
           </header>
 
           <div class="magic-lab-grid">
-            <main class="magic-lab-main">
+
               <section class="deck-window deck-workspace" id="deckWorkspace" aria-labelledby="deckWorkspaceTitle">
                 <div class="deck-window-title">
-                  <div><small>TRACK 01 // LOADOUT</small><b id="deckWorkspaceTitle">DECK DA PERSONA</b></div>
+                  <div><small>TRACK 01 // LOADOUT</small><b id="deckWorkspaceTitle">DECK <span id="deckEditorialCount"></span></b></div>
                   <div class="deck-window-actions">
                     <button type="button" data-deck-sort="tier" title="Ordenar do menor Tier para o maior">↕ ORDENAR POR TIER</button>
                     <button type="button" class="deck-primary" data-deck-custom>＋ MAGIA PRÓPRIA</button>
@@ -14192,8 +14162,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                 <button class="grimoire-more deck-library-more" id="grimoireMore" type="button">MOSTRAR MAIS MAGIAS</button>
               </section>
 
-              <section class="deck-window deck-notes-panel magic-notes"><div class="deck-window-title"><div><small>EXTRA TRACK // PERSONAL NOTES</small><b>ANOTAÇÕES DO DECK</b></div></div><textarea rows="4" data-sheet="persona.deckNotes" placeholder="Evoluções, alterações, combinações e ideias para o repertório da sua Persona..."></textarea></section>
-            </main>
+              <details class="deck-window deck-notes-panel magic-notes"><summary>Anotações do Deck</summary><div class="deck-window-title"><div><small>EXTRA TRACK // PERSONAL NOTES</small><b>ANOTAÇÕES DO DECK</b></div></div><textarea rows="4" data-sheet="persona.deckNotes" placeholder="Evoluções, alterações, combinações e ideias para o repertório da sua Persona..."></textarea></details>
 
             <aside class="deck-inspector-panel" id="deckInspector" aria-label="Prévia da magia selecionada">
               <div class="deck-inspector-head"><div><small>♪ DECK VIEWER.EXE</small><br><b>VISOR DE MAGIAS</b></div><small>◉ ONLINE</small></div>
@@ -14383,16 +14352,18 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
           </header>
 
           <div class="eq-section-heading"><div><span class="eq-heading-index">01</span><b>SEU EQUIPAMENTO</b><small>LOADOUT // ITENS EM USO</small></div><span class="eq-heading-accent">CURRENT SESSION ★</span></div>
+          <div class="eq-gear-column">
+          <div class="hud-section-label" id="eqEquippedLabel">EQUIPADOS · 0 DE 5</div>
           <div class="eq-setup-grid">
             <div class="eq-slot-grid" id="equipmentSlots" aria-live="polite"></div>
-            <aside class="eq-readout-panel">
+            <details class="eq-readout-panel"><summary>Soma na ficha e detalhes do equipamento</summary>
               <div class="eq-readout-header"><span>♫</span><b>BACKSTAGE MONITOR</b><i>ONLINE</i></div>
               <div class="eq-readout-content" id="equipmentOverview" aria-live="polite"></div>
               <div class="eq-readout-foot">BÔNUS DE EQUIPAMENTOS ATIVOS // REFLETIDOS NA FICHA BASE</div>
-            </aside>
+            </details>
           </div>
 
-          <section class="eq-collection">
+          <details class="eq-collection" id="eqCollection"><summary>Arquivo de equipamentos</summary>
             <div class="eq-section-heading eq-library-heading"><div><span class="eq-heading-index">02</span><b>ARQUIVO DE EQUIPAMENTOS</b><small>STORAGE / INVENTORY.EXE</small></div><span class="eq-heading-accent" id="equipmentStorageCount">0 CADASTRADOS</span></div>
             <div class="eq-library-toolbar">
               <div class="eq-filters" id="equipmentFilters" role="group" aria-label="Filtrar equipamentos">
@@ -14413,7 +14384,8 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                 <div class="eq-editor-empty"><span>♫</span><b>ITEM VIEWER.EXE</b><p>Selecione um item do arquivo para editá-lo, ou adicione um novo equipamento.</p></div>
               </aside>
             </div>
-          </section>
+          </details>
+          </div>
 
           <!-- INVENTÁRIO // BACKPACK.EXE — na página de Equipamentos -->
           <section class="bp-section" id="backpackSection" aria-labelledby="bpSectionTitle">
@@ -14423,12 +14395,12 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
             </div>
             <div class="bp-dashboard" aria-label="Controle de peso e capacidade">
               <div class="bp-dashboard-primary">
-                <span class="bp-kicker">▸ CAPACIDADE / FOR × 5 + VIT</span>
+                <h2 class="bp-capacity-title">MOCHILA</h2>
                 <div class="bp-figures"><strong id="bpTotalWeight">0</strong><span>/</span><b id="bpCarryLimit">0</b><small>UN. DE CARGA</small></div>
                 <div class="bp-load-track" id="bpLoadTrack" role="progressbar" aria-label="Porcentagem da capacidade de carga utilizada" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100"><i id="bpLoadFill"></i></div>
                 <div class="bp-dashboard-bottom"><span id="bpRemaining">0 DISPONÍVEIS</span><strong id="bpLoadStatus">MOCHILA VAZIA</strong></div>
               </div>
-              <div class="bp-dashboard-split"><div><small>MOCHILA / ITENS</small><b id="bpBagWeight">0</b></div><div><small>EQUIPAMENTOS</small><b id="bpGearWeight">0</b></div><p>Equipamentos em uso contam automaticamente. Peças extras só contam se marcadas como transportadas no arquivo.</p></div>
+              <details class="bp-dashboard-split"><summary>Capacidade = FOR × 5 + VIT. Itens guardados não contam.</summary><div><small>MOCHILA / ITENS</small><b id="bpBagWeight">0</b></div><div><small>EQUIPAMENTOS</small><b id="bpGearWeight">0</b></div><p>Equipamentos em uso contam automaticamente. Peças extras só contam se marcadas como transportadas no arquivo.</p></details>
             </div>
             <div class="bp-toolbar">
               <label class="bp-search-label">LOCALIZAR ITEM <input id="bpSearch" type="search" placeholder="Buscar por nome, efeito ou descrição…" autocomplete="off"></label>
@@ -14439,7 +14411,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                 <button type="button" data-bp-filter="key">IMPORTANTES</button>
                 <button type="button" data-bp-filter="other">OUTROS</button>
               </div>
-              <button type="button" class="bp-new" id="bpNew">＋ NOVO ITEM</button>
+
             </div>
             <div class="bp-workspace">
               <div class="bp-item-list" id="bpItemList" aria-live="polite"></div>
@@ -14447,6 +14419,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                 <div class="bp-editor-placeholder"><span>✳</span><b>ITEM DATABASE.EXE</b><p>Selecione um item ou cadastre um novo para registrar seus efeitos, quantidade e peso.</p><button type="button" data-bp-new>＋ ADICIONAR ITEM</button></div>
               </aside>
             </div>
+            <button type="button" class="bp-new" id="bpNew">＋ Novo item</button>
             <p class="bp-footnote">PESO TOTAL = quantidade × peso unitário. Itens guardados não ocupam a carga do personagem. Os valores são editáveis; use a mesma unidade adotada pelo Narrador.</p>
           </section>
 
@@ -14471,11 +14444,15 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
             </div>
           </header>
           <div class="tr-budget-note">
+            <div id="traitBudgetSegments" aria-hidden="true"></div>
             <span id="traitLimitsNote">Defeitos: <b>0 / 5 pontos</b> · <b>0 / 3 escolhas</b></span>
             <span>Uma Dissonante concede <b>5 pontos</b> e ocupa uma escolha de Defeito.</span>
             <label class="tr-extra-points master-only">Pontos concedidos pelo Mestre <input id="traitExtraPoints" type="number" min="0" max="99" step="1" value="0"></label>
           </div>
           <div id="traitBudgetAlert" class="tr-alert" role="status" hidden></div>
+          <div id="traitOwnedOverview" class="tr-owned-overview"></div>
+          <div class="hud-section-label tr-catalog-title">CATÁLOGO <span id="traitCatalogCount"></span></div>
+          <div id="traitCategoryQuick" class="tr-category-quick" aria-label="Categorias do catálogo"></div>
           <div class="tr-tabs" id="traitViewTabs" role="tablist" aria-label="Catálogos de vantagens e defeitos">
             <button type="button" id="traitTabAdvantages" role="tab" data-trait-view="vantagens" aria-controls="traitCatalogPanel" aria-selected="true">Vantagens <i id="traitAdvantageCount">60</i></button>
             <button type="button" id="traitTabFlaws" role="tab" data-trait-view="defeitos" aria-controls="traitCatalogPanel" aria-selected="false" tabindex="-1">Defeitos <i id="traitFlawCount">60</i></button>
@@ -14522,11 +14499,13 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
               <div><small>NO NÍVEL 10</small><b id="bondMaxCount">0</b></div>
             </div>
           </header>
-          <div class="bond-toolbar">
-            <div><strong>SEU CÍRCULO SOCIAL</strong><small>Crie quantos registros precisar e edite cada vínculo separadamente.</small></div>
-            <button type="button" class="bond-add-button" data-bond-add>＋ NOVO VÍNCULO</button>
+          <div class="bond-layout">
+            <div class="bond-grid" id="bondGrid"></div>
+            <aside>
+              <div class="bond-toolbar"><strong><b id="bondListCount">0</b> VÍNCULOS</strong><button type="button" class="bond-add-button" data-bond-add>＋ Novo vínculo</button></div>
+              <nav id="bondIndex" class="bond-index" aria-label="Seus vínculos"></nav>
+            </aside>
           </div>
-          <div class="bond-grid" id="bondGrid" aria-live="polite"></div>
           <datalist id="bondArcanaCatalog"></datalist>
           <input type="file" accept="image/*" id="bondPhotoInput" hidden aria-label="Escolher foto do vínculo">
         </div>
@@ -14536,19 +14515,16 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
            PAGE 08 — RECORD LABEL DOSSIER
            ===================================================== -->
       <section class="sheet-subpage" data-sheet-panel="record" id="sheet-panel-record" role="tabpanel" aria-labelledby="sheet-tab-record" hidden>
+        <div class="record-layout">
         <div class="record-file">
           <header class="record-head">
-            <div class="record-logo">RECORD<br>LABEL</div>
-            <div>
-              <small>ARTIST DEVELOPMENT DEPARTMENT // TOKYO</small>
-              <h2>ARTIST APPLICATION FILE</h2>
-              <p>CONFIDENTIAL // INTERNAL USE ONLY</p>
-            </div>
-            <div class="record-stamp">2000<br>APR</div>
+            <div><div class="record-logo">RECORD LABEL</div><small>ARTIST DEVELOPMENT DEPARTMENT // TOKYO</small></div>
+            <div class="record-number">APR 2000<br>FILE NO. PHB-00-____</div>
           </header>
 
           <div class="record-paper">
-            <div class="record-number">FILE NO. <span>PHB-00-________</span></div>
+            <h2 class="record-application">ARTIST APPLICATION FILE</h2>
+            <div class="record-stamp" aria-hidden="true">CONFIDENTIAL</div>
             <div class="record-polaroid-pin">
               <button class="record-polaroid" id="sheetPhotoButton" type="button" title="Adicionar ou trocar foto">
                 <span class="record-polaroid-tape tape-a"></span>
@@ -14576,22 +14552,16 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
               <label>FUNÇÃO NA BANDA<input data-sheet="profile.bandRole"></label>
               <label>INSTRUMENTO PRINCIPAL<input data-sheet="profile.mainInstrument"></label>
               <label>CONTATO<input data-sheet="profile.contact" placeholder="Telefone / pager / e-mail"></label>
-              <label class="wide">EXPERIÊNCIA MUSICAL
-                <textarea rows="4" data-sheet="profile.experience"></textarea>
-              </label>
-              <label class="wide">OBJETIVOS / O QUE VOCÊ PROCURA EM UMA GRAVADORA?
-                <textarea rows="4" data-sheet="profile.goals"></textarea>
-              </label>
-              <label class="wide">PERFIL / BIOGRAFIA
-                <textarea rows="7" data-sheet="profile.bio"></textarea>
-              </label>
             </div>
-
+            <label class="record-bio">HISTÓRIA DO PERSONAGEM
+              <textarea rows="8" data-sheet="profile.bio" placeholder="De onde veio, o que procura em Tokyo e por que entrou na banda…"></textarea>
+            </label>
+            <details class="record-extras">
+              <summary>Experiência musical e objetivos</summary>
+              <label>EXPERIÊNCIA MUSICAL<textarea rows="4" data-sheet="profile.experience"></textarea></label>
+              <label>OBJETIVOS<textarea rows="4" data-sheet="profile.goals"></textarea></label>
+            </details>
             <div class="record-bottom">
-              <div class="record-note">
-                <b>STAFF NOTES</b>
-                <textarea rows="4" data-sheet="profile.staffNotes"></textarea>
-              </div>
               <div class="signature-box">
                 <span>ASSINATURA DO ARTISTA</span>
                 <div class="signature-line">
@@ -14601,6 +14571,16 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
               </div>
             </div>
           </div>
+        </div>
+          <aside class="record-memories">
+            <header><h3 class="hud-section-label">MEMÓRIAS</h3><button type="button" data-memory-add>＋ Memória</button></header>
+            <div id="recordMemories"></div>
+            <input type="file" id="memoryPhotoInput" accept="image/*" aria-label="Foto da memória" hidden>
+              <div class="record-note">
+                <b>STAFF NOTES</b>
+                <textarea rows="4" data-sheet="profile.staffNotes"></textarea>
+              </div>
+          </aside>
         </div>
       </section>
 
@@ -14633,26 +14613,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
           <div class="sheet-ui-hero-preview" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>
 
-        <section class="sheet-ui-group enhanced">
-          <div class="sheet-ui-group-head">
-            <b>IDENTIDADE VISUAL</b>
-            <small>Muda com mais destaque a cara da ficha: molduras, contraste e acabamento dos cards.</small>
-          </div>
-          <div class="sheet-ui-options three enhanced">
-            <button type="button" class="sheet-ui-card" data-sheet-style="zine">
-              <span class="sheet-ui-preview zine" aria-hidden="true"></span>
-              <b>ZINE 2000</b><small>Recortes, contraste de revista e visual mais “mixtape”.</small>
-            </button>
-            <button type="button" class="sheet-ui-card" data-sheet-style="pixel">
-              <span class="sheet-ui-preview pixel" aria-hidden="true"></span>
-              <b>PIXEL UI</b><small>Mais quadrado, videogame, HUD e cara Y2K digital.</small>
-            </button>
-            <button type="button" class="sheet-ui-card" data-sheet-style="clean">
-              <span class="sheet-ui-preview clean" aria-hidden="true"></span>
-              <b>CLEAN PRINT</b><small>Mais editorial, limpo e com cartões menos pesados.</small>
-            </button>
-          </div>
-        </section>
+
 
         <section class="sheet-ui-group enhanced">
           <div class="sheet-ui-group-head">
@@ -15441,6 +15402,7 @@ function phobiaPhotoSlots(data){
   slots['map']=data?.mapAppearance?.imageData||'';
   slots['cover']=data?.mediaPlayer?.coverData||'';
   Object.entries(persona.arcanaImages||{}).forEach(([name,value])=>slots['arcana:'+name]=value||'');
+  (Array.isArray(sheet.memories)?sheet.memories:[]).forEach((item,i)=>slots['memory:'+(item.id||i)]=item.imageData||'');
   (sheet.bonds?.items||[]).forEach((item,i)=>slots['bond:'+(item.id||i)]=item.imageData||'');
   (sheet.equipment?.items||[]).forEach((item,i)=>slots['equipment:'+(item.id||i)]=item.imageData||'');
   return slots;
@@ -15479,6 +15441,7 @@ function recoverPhobiaPhotos(target,source){
     const lookup=new Map((older||[]).map((item,i)=>[String(item.id||i),item]));
     (items||[]).forEach((item,i)=>restore(item,prefix+String(item.id||i),'imageData',lookup.get(String(item.id||i))));
   };
+  if(Array.isArray(target.charSheet?.memories))recoverItems(target.charSheet.memories,Array.isArray(source.charSheet?.memories)?source.charSheet.memories:[],'memory:');
   recoverItems(target.charSheet?.bonds?.items,source.charSheet?.bonds?.items,'bond:');
   recoverItems(target.charSheet?.equipment?.items,source.charSheet?.equipment?.items,'equipment:');
   return restored;
@@ -18665,7 +18628,7 @@ function renderPersonaAffinityHUD(){
       return `
         <article class="affinity-hud-card tone-${tone}">
           <div class="affinity-hud-icon ${preset.key}"><span>${preset.symbol}</span></div>
-          <div class="affinity-hud-name">${preset.label}</div>
+          <div class="affinity-hud-name" title="${preset.label}">${["FIS","FOG","GEL","VEN","RAI","NUC","PSY","LUZ","TRV","INT"][i]||preset.label}</div>
           <select class="affinity-hud-select" data-affinity-reaction-card="${i}" aria-label="Afinidade ${preset.label}">
             ${ELEMENT_REACTIONS.map(opt=>`<option value="${opt}" ${opt===reaction?'selected':''}>${PERSONA_REACTION_LABEL[opt]||opt}</option>`).join('')}
           </select>
@@ -19046,6 +19009,8 @@ function deckLabMetrics(slots){
   const pm=slots.reduce((sum,s)=>sum+(extractPMCost(deckLabSpell(s)?.cost||s.cost)||0),0);
   const count=document.getElementById('magicDeckCounter');
   if(count)count.textContent=String(slots.length);
+  const total=document.getElementById('deckEditorialCount');
+  if(total)total.textContent=slots.length;
   const kinds=document.getElementById('magicDeckTypes');
   if(kinds)kinds.textContent=String(types.size);
   const costs=document.getElementById('magicDeckPM');
@@ -19106,9 +19071,7 @@ function deckLabPreview(){
   const inDeck=id&&spellInDeck(id);
   const locked=Number(s.tier)>availableMagicTierNumber();
   const editable=m&&!m.libraryId;
-  const view=`<div class="deck-inspector-art" style="--spell-color:${color}"><strong>${deckLabIcon(s)}</strong></div>
-    <span class="deck-inspector-tag">${esc(grimoireCategoryLabel(category))} // TIER ${romanTier(s.tier)}</span>
-    <h3>${esc(s.name||'NOVA MAGIA')}</h3>
+  const view=`<header class="deck-spell-title" style="--spell-color:${color}"><h3>${esc(s.name||'NOVA MAGIA')}</h3><span>${esc(grimoireCategoryLabel(category))} · TIER ${romanTier(s.tier)}</span></header>
     <div class="deck-inspector-metrics"><span><small>CUSTO</small>${esc(s.cost||'—')}</span><span><small>ALVO</small>${esc(s.target||'—')}</span></div>
     <div class="deck-inspector-effect">${esc(s.effect||'Efeito ainda não informado.')}</div>
     ${s.description?`<p class="deck-inspector-desc">${esc(s.description)}</p>`:''}
@@ -19139,14 +19102,9 @@ function renderMagicDeck(){
     const bands=deckLabBands(m,s);
     return `<article role="listitem" tabindex="0" draggable="true" class="deck-lab-cassette ${selected?'selected':''}" data-deck-index="${i}" style="--spell-color:${deckLabColor(s)};${deckLabBandStyle(bands)}">
       <button type="button" class="deck-cassette-window" data-deck-select="${i}" aria-label="Inspecionar magia ${esc(s.name||m.name)}">
-        <span class="deck-cassette-screws" aria-hidden="true"><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i><i class="deck-cassette-screw"></i></span>
-        <span class="deck-cassette-paper">
-          <span class="deck-cassette-top"><small>FITA ${String(i+1).padStart(2,'0')} · TIER ${romanTier(s.tier||m.tier)}</small><span aria-hidden="true">${deckLabIcon(s)}</span></span>
-          <span class="deck-cassette-label"><b>${esc(s.name||m.name)}</b><small>${esc(grimoireCategoryLabel(category))}</small></span>
-          <span class="deck-cassette-rainbow" aria-hidden="true"><span class="deck-cassette-mechanism"><i class="deck-cassette-wheel"></i><span class="deck-cassette-tape"><i></i></span><i class="deck-cassette-wheel"></i></span></span>
-          <span class="deck-cassette-bottom"><span class="deck-cassette-cost">${esc(s.cost||m.cost||'SEM CUSTO')}</span><span class="deck-cassette-target"><small>ALVO</small><b>${esc(s.target||m.target||'—')}</b></span></span>
-        </span>
-        <span class="deck-cassette-base" aria-hidden="true"><i class="deck-cassette-screw"></i><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b><b class="deck-cassette-hole"></b></span>
+        <small class="deck-card-type">${esc(grimoireCategoryLabel(category))}</small>
+        <strong class="deck-card-name">${esc(s.name||m.name)}</strong>
+        <span class="deck-card-meta"><small>TIER ${romanTier(s.tier||m.tier)}</small><small>${esc(s.cost||m.cost||'SEM CUSTO')}</small></span>
       </button>
       <div class="deck-cassette-controls">
         <button type="button" class="deck-palette-toggle" data-deck-palette-toggle="${i}" aria-expanded="false" aria-controls="deckPalette${i}" aria-label="Personalizar cores da fita ${esc(s.name||m.name)}"><span class="deck-palette-preview" aria-hidden="true"></span>CORES</button>
@@ -19189,11 +19147,8 @@ function renderGrimoire(){
   box.innerHTML=shown.length?shown.map(s=>{
     const locked=Number(s.tier)>available,equipped=spellInDeck(s.id),selected=deckLabUi.source==='library'&&deckLabUi.spellId===s.id;
     return `<article class="deck-library-spell ${locked?'locked':''} ${equipped?'equipped':''} ${selected?'selected':''}" style="--spell-color:${deckLabColor(s)}" draggable="${!locked&&!equipped}" data-deck-library-id="${esc(s.id)}">
-      <header><span class="deck-library-icon">${deckLabIcon(s)}</span><div><small>${esc(grimoireCategoryLabel(s.category))}</small><b>${esc(s.name)}</b></div><em>T${romanTier(s.tier)}</em></header>
-      <div class="deck-library-tags"><span>${esc(s.cost||'—')}</span><span>${esc(s.target||'—')}</span></div>
-      <p>${esc(s.effect||s.description||'Sem descrição')}</p>
-      <div class="deck-library-actions"><button type="button" data-deck-library-preview="${esc(s.id)}">◉ EXAMINAR</button>
-        <button type="button" class="deck-equip" data-grimoire-add="${esc(s.id)}" ${locked||equipped?'disabled':''}>${equipped?'✓ EQUIPADA':locked?'TIER BLOQUEADO':'＋ ADICIONAR'}</button></div>
+      <button type="button" class="deck-library-preview" data-deck-library-preview="${esc(s.id)}"><b>${esc(s.name)}</b><span>${esc(s.effect||s.description||'Sem descrição')}</span><small>${esc(s.cost||'—')}</small></button>
+      <button type="button" class="deck-equip" data-grimoire-add="${esc(s.id)}" ${locked||equipped?'disabled':''} aria-label="${equipped?'Já equipada':locked?'Tier bloqueado':'Adicionar '+esc(s.name)}">${equipped?'✓':locked?'—':'＋'}</button>
     </article>`;
   }).join(''):'<div class="deck-lab-empty">Nenhuma magia encontrada. Experimente outro nome, Tier ou família.</div>';
   const more=document.getElementById('grimoireMore');if(more){more.hidden=shown.length>=total;more.textContent=`MOSTRAR MAIS // ${shown.length} DE ${total}`}
@@ -19314,7 +19269,9 @@ function setSheetSection(section,persist=true){
   if(section==='feats')section='traits';
   const allowed=['core','persona','magic','awakening','equipment','traits','bonds','record'];
   if(!allowed.includes(section))section='core';
+  const changed=state.charSheet.sheetSection!==section;
   state.charSheet.sheetSection=section;
+  if(changed&&persist)document.getElementById('characterPage').scrollTop=0;
   document.querySelectorAll('.sheet-page-tab').forEach(button=>{
     const active=button.dataset.sheetPage===section;
     button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;
@@ -19323,6 +19280,7 @@ function setSheetSection(section,persist=true){
   if(section==='equipment')renderEquipmentPage();
   if(section==='traits')renderTraitsPage();
   if(section==='bonds')renderBondsPage();
+  if(section==='record')renderRecordMemories();
   if(persist)saveState(true)
 }
 /* The new dynamic deck renderer is defined with the workshop above. */
@@ -19460,8 +19418,14 @@ function renderRecordSignature(){
 function renderPersonaPhoto(){
   const img=document.getElementById('personaArtImg');
   const ph=document.getElementById('personaArtPlaceholder');
-  const data=state.charSheet.persona?.artData||'';
-  if(img){img.src=data;img.style.display=data?'block':'none'}
+  const arcana=currentArcanaData();
+  const data=state.charSheet.persona?.artData||getArcanaArtworkData(arcana);
+  if(img){if(data){if(img.getAttribute('src')!==data)img.src=data}else img.removeAttribute('src');img.style.display=data?'block':'none';img.alt=state.charSheet.persona?.artData?'Arte da Persona':arcana?'Carta '+arcana.romano+' — '+arcana.nome:'Arte da Persona'}
+  const traits=document.getElementById('personaArcanaTraits');
+  if(traits&&traits.dataset.arcana!==(arcana?.romano||'')){
+    traits.dataset.arcana=arcana?.romano||'';
+    traits.innerHTML=arcana?(arcana.nivel1||[]).map(item=>`<details${item.tipo==='nota'?' class="persona-arcana-note"':''}><summary><b>${esc(item.nome||'Nota da Arcana')}</b><span>${esc(item.texto||'')}</span></summary><div>${arcanaRuleHTML(item.texto)}</div></details>`).join(''):'<p>Escolha sua Arcana para ver as características iniciais.</p>';
+  }
   if(ph)ph.style.display=data?'none':'grid';
   const cap=document.getElementById('personaArtCaption');
   if(cap)cap.textContent=(state.charSheet.profile.persona||'PERSONA ARTWORK').toUpperCase();
@@ -19914,24 +19878,21 @@ function eqBrief(item){
 function renderEquipmentSlots(){
   const root=document.getElementById('equipmentSlots');if(!root)return;
   const eq=ensureEquipmentState();
+  document.getElementById('eqEquippedLabel').textContent='EQUIPADOS · '+EQ_SLOTS.filter(slot=>eq.items.some(item=>item.id===eq.slots[slot.key]&&item.type===slot.type)).length+' DE '+EQ_SLOTS.length;
   root.innerHTML=EQ_SLOTS.map(slot=>{
     const item=eq.items.find(it=>it.id===eq.slots[slot.key]&&it.type===slot.type);
     const options=eq.items.filter(it=>it.type===slot.type).map(it=>`<option value="${esc(it.id)}" ${item?.id===it.id?'selected':''}>${esc(it.name)}</option>`).join('');
-    return `<section class="eq-slot ${slot.type} eq-slot-${slot.key} ${item?'is-equipped':''}">
-      <div class="eq-slot-title"><b>${slot.title}</b><small>${slot.serial}</small></div>
-      <div class="eq-slot-body">
-        ${eqImageMarkup(item,'slot',slot.glyph)}
-        <div class="eq-slot-data"><small>${item?'● EQUIPADO':'○ VAZIO'}</small><strong>${esc(item?.name||'SLOT DISPONÍVEL')}</strong>
-          <p class="${item?'':'empty'}">${esc(item?eqBrief(item):'Selecione um item do arquivo abaixo.')}</p>
-          ${item?`<div class="eq-bonus-row">${eqBonusBadges(item)}</div>`:''}
-        </div>
-      </div>
+    return `<details class="eq-slot ${slot.type} eq-slot-${slot.key} ${item?'is-equipped':''}">
+      <summary class="eq-slot-ticket"><span class="eq-slot-letter">${slot.serial[0]}</span>
+        <span class="eq-slot-copy"><small>${slot.title}</small><strong>${esc(item?.name||'+ Equipar')}</strong></span>
+        ${item?`<span class="eq-bonus-row">${eqBonusBadges(item)}</span>`:''}
+      </summary>
       ${item?.type==='instrument'?`<div class="eq-slot-skills"><small>HABILIDADES / ARMA EM USO</small>${eqAbilityCards(item,true)}</div>`:''}
       ${item?.effect?`<div class="eq-slot-effect"><b>EFEITO</b><p>${esc(item.effect)}</p></div>`:''}
       <div class="eq-slot-actions"><label>TROCAR ITEM<select data-eq-slot="${slot.key}" aria-label="${slot.title}"><option value="">— NÃO EQUIPADO —</option>${options}</select></label>
-        ${item?`<button type="button" data-eq-view="${esc(item.id)}">VER FICHA ↗</button>`:''}
-        <button type="button" data-eq-unequip="${slot.key}" ${!item?'disabled':''}>RETIRAR ×</button></div>
-    </section>`;
+        ${item?`<button type="button" data-eq-view="${esc(item.id)}">Ver ficha ↗</button>`:`<button type="button" data-eq-new="${slot.type}">Cadastrar item</button>`}
+        <button type="button" data-eq-unequip="${slot.key}" ${!item?'disabled':''}>Retirar ×</button></div>
+    </details>`;
   }).join('');
 }
 function renderEquipmentOverview(){
@@ -19985,6 +19946,7 @@ function renderEquipmentInventory(){
   }).join('');
 }
 function renderEquipmentViewer(itemId){
+  document.getElementById('eqCollection').open=true;
   const container=document.getElementById('equipmentEditor');if(!container)return;
   const it=eqItem(itemId);
   if(!it){closeEquipmentEditor();return}
@@ -20018,6 +19980,7 @@ function eqStatInput(k,val){
   return `<label>${k}<input data-eq-stat="${k}" type="number" min="-20" max="20" step="1" value="${Number(val)||0}"></label>`;
 }
 function openEquipmentEditor(type='instrument',id=''){
+  document.getElementById('eqCollection').open=true;
   const container=document.getElementById('equipmentEditor');if(!container)return;
   const existing=id?eqItem(id):null;
   const resolved=existing?.type||(EQ_TYPES[type]?type:'instrument');
@@ -20356,6 +20319,16 @@ function renderTraitsPage(){
   if(budget.flawPoints>5||budget.flawCount>3)warnings.push('As escolhas carregadas excedem o limite de Defeitos. Revise-as em Minhas escolhas.');
   if(alert){alert.hidden=!warnings.length;alert.textContent=warnings.join(' ');}
   const owned=ALL_CHARACTER_TRAITS.filter(item=>traitIsOwned(item));
+  const overview=document.getElementById('traitOwnedOverview');
+  if(overview){
+    const group=(name,items,kind,tab)=>`<section class="tr-owned-group ${kind}"><h3 class="hud-section-label">${name} · ${items.length}</h3>${items.map(item=>`<button type="button" class="tr-owned-ticket" data-trait-action="details" data-trait-id="${esc(item.id)}" data-trait-points="${item.points}"><span><strong>${esc(item.name)}</strong><small>${esc(item.requirement||item.category||'')}</small></span><b>${item.points} PT</b></button>`).join('')}<button type="button" class="tr-owned-browse" data-trait-browse="${tab}">${tab==='vantagens'?'＋ Ver vantagens':'Ver defeitos ↗'}</button></section>`;
+    overview.innerHTML=group('VANTAGENS ADQUIRIDAS',owned.filter(item=>item.kind==='vantagem'),'adv','vantagens')+group('DEFEITOS',owned.filter(item=>item.kind!=='vantagem'),'flaw','defeitos');
+  }
+  text('traitCatalogCount','· '+SOCIAL_TRAIT_CATALOG.length+' ESCOLHAS SOCIAIS · '+DISSONANT_TRAIT_CATALOG.length+' DISSONANTES');
+  const quick=document.getElementById('traitCategoryQuick');
+  if(quick)quick.innerHTML=SOCIAL_TRAIT_CATEGORIES.map(category=>`<button type="button" data-trait-quick="${esc(category.id)}" aria-pressed="${value.category===category.id}">${esc(category.name)}</button>`).join('');
+  const progress=document.getElementById('traitBudgetSegments');
+  if(progress)progress.innerHTML=Array.from({length:Math.min(20,Math.max(1,budget.base+budget.flawPoints))},(_,i)=>`<i class="${i<budget.spent?'is-spent':''}"></i>`).join('');
   text('traitAdvantageCount',SOCIAL_TRAIT_CATALOG.filter(item=>item.kind==='vantagem').length);
   text('traitFlawCount',SOCIAL_TRAIT_CATALOG.filter(item=>item.kind==='defeito').length);
   text('traitDissonantCount',DISSONANT_TRAIT_CATALOG.length);text('traitOwnedCount',owned.length);
@@ -20431,6 +20404,17 @@ function bindTraitsUI(){
   const root=document.getElementById('sheetTraitsPage');if(!root||root.dataset.bound)return;
   root.dataset.bound='1';
   root.addEventListener('click',event=>{
+    const browse=event.target.closest('[data-trait-browse]');
+    const quick=event.target.closest('[data-trait-quick]');
+    if(browse||quick){
+      const value=ensureTraitState();
+      if(browse)value.view=browse.dataset.traitBrowse;
+      else if(value.view==='dissonantes'||value.view==='owned')value.view='vantagens';
+      value.category=quick?(value.category===quick.dataset.traitQuick?'all':quick.dataset.traitQuick):'all';
+      value.pointFilter='all';renderTraitsPage();saveState(true);
+      document.getElementById('traitSearch')?.focus();
+      return;
+    }
     const viewButton=event.target.closest('[data-trait-view]');
     if(viewButton){const value=ensureTraitState();value.view=viewButton.dataset.traitView;value.category='all';value.pointFilter='all';renderTraitsPage();saveState(true);return;}
     handleTraitAction(event);
@@ -20534,6 +20518,17 @@ function bondCard(b,index){
     </div>
   </article>`;
 }
+let selectedBondId='';
+function renderBondIndex(items){
+  const index=document.getElementById('bondIndex');
+  if(!index)return;
+  document.getElementById('bondListCount').textContent=items.length;
+  index.innerHTML=items.map((b,i)=>{
+    const level=Math.max(0,Math.min(10,Number(b.level)||0));
+    const arcana=String(b.arcana||'').match(/^(?:0|[IVX]+)(?=\s|$)/i)?.[0]||'✦';
+    return `<button type="button" data-bond-select="${esc(b.id)}" aria-pressed="${b.id===selectedBondId}" style="--link-tone:var(--link-${i%5})"><span class="bond-index-badge">${esc(arcana)}</span><span class="bond-index-name"><b>${esc(b.name||'Novo vínculo')}</b><small>${esc(b.arcana||'Arcana indefinida')}</small></span><span class="bond-index-rank"><b>RANK ${level}</b><i style="--rank:${level*10}%"></i></span></button>`;
+  }).join('');
+}
 function renderBondsPage(){
   const s=ensureBondState(),root=document.getElementById('bondGrid');if(!root)return;
   const count=document.getElementById('bondCount'),max=document.getElementById('bondMaxCount');
@@ -20544,18 +20539,19 @@ function renderBondsPage(){
     catalog.innerHTML=ARCANA_SIMPLE_NAMES.map((name,i)=>`<option value="${esc(BOND_ROMANS[i]+' — '+name)}"></option>`).join('')+'<option value="0 — Louco"></option><option value="XXI — Mundo"></option>';
     catalog.dataset.loaded='1';
   }
-  root.innerHTML=s.items.length?s.items.map((b,i)=>bondCard(b,i)).join(''):'<div class="bond-empty"><b>SEU ARQUIVO DE VÍNCULOS ESTÁ VAZIO.</b><span>Comece registrando a primeira pessoa importante para a história do seu personagem.</span><button type="button" data-bond-add>＋ CRIAR PRIMEIRO VÍNCULO</button></div>';
+  const index=Math.max(0,s.items.findIndex(item=>item.id===selectedBondId));
+  const selected=s.items[index];
+  selectedBondId=selected?.id||'';
+  renderBondIndex(s.items);
+  root.innerHTML=selected?bondCard(selected,index):'<div class="bond-empty"><b>SEU ARQUIVO DE VÍNCULOS ESTÁ VAZIO.</b><span>Comece registrando a primeira pessoa importante para a história do seu personagem.</span><button type="button" data-bond-add>＋ CRIAR PRIMEIRO VÍNCULO</button></div>';
 }
 function addBond(){
   const s=ensureBondState();
   const b={id:'bond'+s.nextId++,name:'',arcana:'',level:0,benefits:'',description:'',imageData:'',collapsed:false};
-  s.items.push(b);renderBondsPage();saveState(true);
-  document.querySelectorAll('.bond-card').item(s.items.length-1)?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  s.items.push(b);selectedBondId=b.id;renderBondsPage();saveState(true);
+  document.querySelector('#bondGrid [data-bond-field="name"]')?.focus();
 }
-async function storeBondPhoto(file,id){
-  if(!file||!id)return;
-  if(!file.type.startsWith('image/')){toast('SELECIONE UMA IMAGEM');return;}
-  try{
+async function dossierImageData(file){
     const source=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)});
     const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=source});
     const factor=Math.min(1,600/Math.max(image.width,image.height)),canvas=document.createElement('canvas');
@@ -20563,6 +20559,13 @@ async function storeBondPhoto(file,id){
     canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
     let data=canvas.toDataURL('image/webp',.78);
     if(!data.startsWith('data:image/webp'))data=canvas.toDataURL('image/jpeg',.78);
+    return data;
+}
+async function storeBondPhoto(file,id){
+  if(!file||!id)return;
+  if(!file.type.startsWith('image/')){toast('SELECIONE UMA IMAGEM');return;}
+  try{
+    const data=await dossierImageData(file);
     const b=bondById(id);if(!b)return;
     b.imageData=data;renderBondsPage();saveState(true);
     if(await persistPhobiaPhotoNow())toast('FOTO DO VÍNCULO SALVA');
@@ -20574,6 +20577,11 @@ function bindBondsUI(){
   root.addEventListener('click',e=>{
     const btn=e.target.closest('button');if(!btn)return;
     if(btn.matches('[data-bond-add]')){addBond();return;}
+    if(btn.dataset.bondSelect){
+      selectedBondId=btn.dataset.bondSelect;renderBondsPage();
+      document.querySelector('#bondIndex [aria-pressed="true"]')?.focus();
+      return;
+    }
     const id=btn.dataset.bondCollapse||btn.dataset.bondPhoto||btn.dataset.bondClearPhoto||btn.dataset.bondRemove;
     if(!id)return;
     const b=bondById(id);if(!b)return;
@@ -20604,13 +20612,67 @@ function bindBondsUI(){
       pips?.setAttribute('aria-label',level+' de 10 níveis');
       const max=document.getElementById('bondMaxCount');if(max)max.textContent=ensureBondState().items.filter(item=>Number(item.level)>=10).length;
     }
+    if(['name','arcana','level'].includes(field))renderBondIndex(ensureBondState().items);
     saveState(true);
   });
   root.querySelector('#bondPhotoInput')?.addEventListener('change',e=>{const id=bondPhotoTarget;bondPhotoTarget='';storeBondPhoto(e.target.files?.[0],id);e.target.value='';});
   renderBondsPage();
 }
 
+function recordMemories(){
+  if(!Array.isArray(state.charSheet.memories))state.charSheet.memories=[];
+  return state.charSheet.memories;
+}
+function renderRecordMemories(){
+  const root=document.getElementById('recordMemories');if(!root)return;
+  const items=recordMemories();
+  root.innerHTML=items.length?items.map(item=>`<article class="record-memory" data-memory-id="${esc(item.id)}">
+    <button type="button" class="record-memory-photo" data-memory-photo aria-label="Anexar ou trocar foto da memória">${item.imageData?`<img src="${esc(item.imageData)}" alt="" loading="lazy" decoding="async">`:'＋ ANEXAR FOTO'}</button>
+    <input data-memory-field="title" aria-label="Título da memória" maxlength="120" placeholder="Título da memória" value="${esc(item.title||'')}">
+    <input data-memory-field="when" aria-label="Data e lugar" maxlength="160" placeholder="Data · lugar" value="${esc(item.when||'')}">
+    <textarea data-memory-field="text" aria-label="Lembrança" maxlength="8000" rows="3" placeholder="O que aconteceu?">${esc(item.text||'')}</textarea>
+    <div>${item.imageData?'<button type="button" data-memory-clear>Remover foto</button>':''}<button type="button" data-memory-delete>Excluir memória</button></div>
+  </article>`).join(''):'<p class="record-memory-empty">Guarde aqui cenas, lembranças e fotos da campanha.</p>';
+}
+function bindRecordMemories(){
+  const root=document.querySelector('.record-memories');if(!root||root.dataset.bound)return;
+  root.dataset.bound='1';
+  const input=root.querySelector('#memoryPhotoInput');
+  let photoId='';
+  root.addEventListener('click',e=>{
+    const button=e.target.closest('button');if(!button)return;
+    const items=recordMemories();
+    if(button.matches('[data-memory-add]')){
+      items.unshift({id:'memory-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10),title:'',when:'',text:'',imageData:''});
+      renderRecordMemories();saveState(true);root.querySelector('[data-memory-field="title"]')?.focus();return;
+    }
+    const i=items.findIndex(item=>item.id===button.closest('[data-memory-id]')?.dataset.memoryId);
+    if(i<0)return;
+    if(button.matches('[data-memory-photo]')){photoId=items[i].id;input.click();return;}
+    if(button.matches('[data-memory-clear]'))items[i].imageData='';
+    else if(button.matches('[data-memory-delete]')&&confirm('Excluir esta memória?'))items.splice(i,1);
+    else return;
+    renderRecordMemories();saveState(true);
+  });
+  root.addEventListener('input',e=>{
+    const field=e.target.dataset.memoryField;
+    if(!['title','when','text'].includes(field))return;
+    const item=recordMemories().find(i=>i.id===e.target.closest('[data-memory-id]')?.dataset.memoryId);
+    if(item){item[field]=e.target.value;saveState(true);}
+  });
+  input.addEventListener('change',async()=>{
+    const file=input.files?.[0],id=photoId;input.value='';photoId='';
+    if(!file?.type.startsWith('image/'))return;
+    try{
+      const data=await dossierImageData(file);
+      const item=recordMemories().find(i=>i.id===id);if(!item)return;
+      item.imageData=data;renderRecordMemories();saveState(true);
+      if(await persistPhobiaPhotoNow())toast('FOTO DA MEMÓRIA SALVA');
+    }catch(err){console.warn('Memory image load failed',err);toast('ERRO AO CARREGAR FOTO');}
+  });
+}
 function bindCharacterSheet(){
+  bindRecordMemories();
   bindDerivedEditors();
   document.querySelectorAll('[data-sheet]').forEach(el=>{
     if(el.dataset.sheetBound)return;
@@ -21769,6 +21831,6 @@ initializePhobiaLargeSave();
 </script>
 
 <script src="assets/hud.js?v=3"></script>
-<script src="assets/hud-pages.js?v=2"></script>
+<script src="assets/hud-pages.js?v=3"></script>
 </body>
 </html>
