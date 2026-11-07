@@ -21,7 +21,11 @@
     paper: ['Texto', 'Letras e números']
   };
   var PRESETS = [
+    { id: 'naoya', site: 'midnight', name: 'NAOYA', tag: 'A linha do espelho', fx: 'naoya', c: { acc: '#a77bff', acc2: '#dfe3ee', acc3: '#c9b6ff', bg: '#101218', card: '#1c1f28', card2: '#171a22', black: '#08090d', paper: '#eef0f7' } },
+    { id: 'tatsuya', site: 'joker', name: 'TATSUYA', tag: 'Borboletas e chamas', fx: 'tatsuya', c: { acc: '#e3242b', acc2: '#f5a524', acc3: '#ff7a2e', bg: '#120707', card: '#241111', card2: '#1c0c0c', black: '#070303', paper: '#fff1e2' } },
+    { id: 'maya', site: 'violet', name: 'MAYA', tag: 'Neon e corações cósmicos', fx: 'maya', c: { acc: '#ff2fa8', acc2: '#2fe3ea', acc3: '#fff27a', bg: '#100a1c', card: '#21163a', card2: '#1a1130', black: '#090511', paper: '#fff0fa' } },
     { id: 'makoto', site: 'makoto', name: 'MAKOTO', tag: 'Hora Sombria', fx: 'makoto', c: { acc: '#3d8bff', acc2: '#6dffc2', acc3: '#9dffd6', bg: '#050d1f', card: '#0c1a36', card2: '#09152c', black: '#02060f', paper: '#e4f2ff' } },
+    { id: 'kotone', site: 'sakura', name: 'KOTONE', tag: 'Pôr do sol e fones', fx: 'kotone', c: { acc: '#ff86b8', acc2: '#ffab52', acc3: '#ffd98a', bg: '#26120e', card: '#3a1e1b', card2: '#301815', black: '#170a08', paper: '#fff4ec' } },
     { id: 'narukami', site: 'graphite', name: 'NARUKAMI', tag: 'Flores ao vento', fx: 'narukami', c: { acc: '#f7c51e', acc2: '#c3c7cf', acc3: '#ffe36b', bg: '#17181c', card: '#26282e', card2: '#1f2126', black: '#0b0c0e', paper: '#f7f3e6' } },
     { id: 'joker', site: 'joker', name: 'JOKER', tag: 'Ladrão de corações', fx: 'joker', c: { acc: '#e5101c', acc2: '#ffffff', acc3: '#ff3a44', bg: '#0a0909', card: '#171313', card2: '#110e0e', black: '#000000', paper: '#ffffff' } },
     { id: 'phobia', site: 'cream', name: 'PHOBIA', tag: 'Padrão', c: { acc: '#ef2b97', acc2: '#6ce6ff', acc3: '#96ff45', bg: '#141523', card: '#1b1e33', card2: '#151729', black: '#0d0c10', paper: '#fff0d8' } },
@@ -187,6 +191,45 @@
           '<i style="width:' + size + 'px;height:' + size + 'px;background-image:' + flower(c[0], c[1]) + ';animation-duration:' + (3 + Math.random() * 5).toFixed(1) + 's;animation-direction:' + (i % 2 ? 'reverse' : 'normal') + '"></i></span></span>';
       }
       top.innerHTML = html;
+    } else if (kind === 'naoya') {
+      back.innerHTML = '<i class="ny-base"></i><i class="ny-vhs"></i><i class="ny-noise"></i><i class="ny-track"></i><i class="ny-track b"></i><i class="ny-ghost"></i><i class="ny-vig"></i><i class="ny-rec">▶ PLAY &nbsp;SP 0:00:00</i>' +
+        '<svg class="ny-mirror" viewBox="0 0 400 400"><path d="M200 200L40 30M200 200L370 60M200 200L390 260M200 200L250 395M200 200L20 330M200 200L120 0M120 112L170 48M262 132L330 120M300 236L360 300M220 300L180 360M110 260L60 250"/></svg>';
+    } else if (kind === 'tatsuya') {
+      back.innerHTML = '<i class="ts-base"></i><svg class="ts-heat-svg" aria-hidden="true"><filter id="tsHeat"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="2" seed="3"><animate attributeName="baseFrequency" dur="9s" values="0.012 0.06;0.016 0.09;0.012 0.06" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="34"/></filter></svg>' +
+        '<div class="ts-flames"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i></div><i class="ts-embers"></i><i class="ts-vig"></i>';
+      var bh = '';
+      for (var k = 0; k < 9; k++) {
+        var d2 = 14 + Math.random() * 12, sz = 26 + Math.round(Math.random() * 22);
+        bh += '<span class="ts-fly" style="left:' + (4 + Math.random() * 92).toFixed(1) + '%;animation-duration:' + d2.toFixed(1) + 's;animation-delay:-' + (Math.random() * d2).toFixed(1) + 's">' +
+          '<span class="ts-drift" style="animation-duration:' + (3 + Math.random() * 3).toFixed(1) + 's"><svg class="ts-bfly" viewBox="-30 -24 60 48" style="width:' + sz + 'px;animation-duration:' + (0.28 + Math.random() * 0.25).toFixed(2) + 's">' +
+          '<path class="w l" d="M-1 -2C-10 -22-28 -22-27 -10C-26 0-14 2-3 1C-16 5-22 17-12 20C-5 22-1 10-1 2Z"/><path class="w r" d="M1 -2C10 -22 28 -22 27 -10C26 0 14 2 3 1C16 5 22 17 12 20C5 22 1 10 1 2Z"/><path class="bd" d="M0 -8V14"/></svg></span></span>';
+      }
+      top.innerHTML = bh;
+    } else if (kind === 'maya') {
+      back.innerHTML = '<i class="my-base"></i><i class="my-grid"></i><i class="my-halo a"></i><i class="my-halo b"></i>';
+      var st = '', hs = '';
+      for (var q = 0; q < 26; q++) {
+        st += '<i class="my-star" style="left:' + (Math.random() * 100).toFixed(1) + '%;top:' + (Math.random() * 100).toFixed(1) + '%;--s:' + (8 + Math.random() * 16).toFixed(0) + 'px;animation-duration:' + (1.6 + Math.random() * 2.6).toFixed(1) + 's;animation-delay:-' + (Math.random() * 3).toFixed(1) + 's"></i>';
+      }
+      for (var w = 0; w < 9; w++) {
+        var d3 = 16 + Math.random() * 14;
+        hs += '<span class="my-rise" style="left:' + (Math.random() * 96).toFixed(1) + '%;animation-duration:' + d3.toFixed(1) + 's;animation-delay:-' + (Math.random() * d3).toFixed(1) + 's"><svg class="my-heart' + (w % 3 === 1 ? ' cy' : '') + '" viewBox="-12 -11 24 22" style="width:' + (18 + Math.round(Math.random() * 20)) + 'px;animation-duration:' + (1 + Math.random() * .8).toFixed(2) + 's"><path d="M0 9C-9 3-11-2-10-5C-9-9-4-10 0-5C4-10 9-9 10-5C11-2 9 3 0 9Z"/></svg></span>';
+      }
+      back.innerHTML += st;
+      top.innerHTML = hs;
+    } else if (kind === 'kotone') {
+      back.innerHTML = '<i class="kt-sky"></i><i class="kt-sun"></i><i class="kt-cloud a"></i><i class="kt-cloud b"></i><i class="kt-shade"></i>';
+      var eqb = '';
+      for (var e = 0; e < 64; e++) eqb += '<b style="animation-duration:' + (0.7 + Math.random() * 1.1).toFixed(2) + 's;animation-delay:-' + (Math.random() * 1.5).toFixed(2) + 's"></b>';
+      back.innerHTML += '<div class="kt-eq">' + eqb + '</div><svg class="kt-wave" viewBox="0 0 1200 120" preserveAspectRatio="none"><path class="a" d="M0 60Q150 10 300 60T600 60T900 60T1200 60"/><path class="b" d="M0 70Q150 120 300 70T600 70T900 70T1200 70"/></svg>';
+      var pt = '', pc = [['#ffc2d9', '#ffe7a6'], ['#ffb0cb', '#fff1c9'], ['#ffd0e0', '#ffc76b']];
+      for (var r = 0; r < 9; r++) {
+        var c2 = pc[r % 3], d4 = 12 + Math.random() * 10, sz2 = 12 + Math.round(Math.random() * 10);
+        pt += '<span class="nk-fall" style="left:' + (Math.random() * 100).toFixed(1) + '%;animation-duration:' + d4.toFixed(1) + 's;animation-delay:-' + (Math.random() * d4).toFixed(1) + 's">' +
+          '<span class="nk-sway" style="animation-duration:' + (2.8 + Math.random() * 2.4).toFixed(1) + 's">' +
+          '<i class="kt-petal" style="width:' + sz2 + 'px;height:' + sz2 + 'px;background-image:' + flower(c2[0], c2[1]) + ';animation-duration:' + (3 + Math.random() * 4).toFixed(1) + 's"></i></span></span>';
+      }
+      top.innerHTML = pt;
     } else if (kind === 'joker') {
       back.innerHTML = '<i class="jk-tone"></i><i class="jk-band a"></i><i class="jk-band b"></i><i class="jk-star"></i>' +
         '<svg class="jk-city" viewBox="0 0 1200 220" preserveAspectRatio="none"><path d="M0 220V150h40v-40h30v-30h20v70h35V60h50v90h25V100h30v-50h15v-20h10v20h15v120h40V90h60v130h20V40h45v60h25v120h30V120h40V70h20v-30h30v180h35V100h55v120h20V60h30V20h12v40h28v160h40V130h50v-50h40v140h25V90h60v130h30V50h40v170h30V140h35V100h45v120h40V70h30v150h25V120h35v100z"/></svg>' +

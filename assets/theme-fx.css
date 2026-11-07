@@ -1,0 +1,158 @@
+/* ==========================================================
+   PERSONA // PHOBIA — theme-fx.css
+   Temas especiais: Naoya, Tatsuya, Maya, Kotone
+   (cenário de fundo, efeitos de clique/hover e transições de aba)
+   ========================================================== */
+
+/* cartões dos temas no painel Visual */
+.hs-preset.fx-naoya .hs-preset-art{background:repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px),linear-gradient(118deg,transparent 0 58%,rgba(223,227,238,.9) 58.4% 59%,transparent 59.4%),linear-gradient(64deg,transparent 0 70%,rgba(167,123,255,.9) 70.4% 71%,transparent 71.4%),linear-gradient(180deg,#1c1f28,#101218)}
+.hs-preset.fx-tatsuya .hs-preset-art{background:radial-gradient(ellipse 60% 70% at 70% 120%,#ffb13a,#e3242b 45%,transparent 75%),radial-gradient(ellipse 40% 60% at 30% 130%,#ff7a2e,transparent 70%),linear-gradient(180deg,#120707,#3a0b0b)}
+.hs-preset.fx-maya .hs-preset-art{background:radial-gradient(circle at 80% 35%,#fff 0 1.5px,transparent 2px),radial-gradient(circle at 64% 70%,#fff 0 1.2px,transparent 2px),radial-gradient(circle at 90% 75%,#ff2fa8 0 6px,transparent 7px),linear-gradient(120deg,#0f4a55,#3b1350 55%,#7a0f55)}
+.hs-preset.fx-kotone .hs-preset-art{background:radial-gradient(circle at 78% 82%,#fff1c2 0 10px,#ffc76b 11px,rgba(255,171,82,.4) 22px,transparent 40px),repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 2px,transparent 2px 7px) 0 100%/100% 14px no-repeat,linear-gradient(180deg,#ff8fb8,#ff9a52 65%,#4a2318)}
+
+/* ---------- NAOYA // A linha do espelho ---------- */
+#hsFxBack .ny-base{inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,#1c2030,#0d0f15 75%)}
+#hsFxBack .ny-vhs{inset:-10% 0;background:repeating-linear-gradient(0deg,rgba(223,227,238,.05) 0 1px,transparent 1px 4px);animation:nyRise 6s linear infinite;will-change:transform}
+@keyframes nyRise{to{transform:translateY(-40px)}}
+#hsFxBack .ny-noise{inset:-50%;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:nyNoise .5s steps(4) infinite}
+@keyframes nyNoise{0%{transform:translate(0,0)}25%{transform:translate(-5%,3%)}50%{transform:translate(4%,-6%)}75%{transform:translate(-3%,5%)}100%{transform:translate(0,0)}}
+#hsFxBack .ny-track{left:0;right:0;height:28px;top:100%;background:linear-gradient(180deg,transparent,rgba(223,227,238,.10) 40%,rgba(167,123,255,.16) 55%,transparent);mix-blend-mode:screen;animation:nyTrack 9s linear infinite}
+#hsFxBack .ny-track.b{height:8px;animation-duration:5.5s;animation-delay:-2s;background:rgba(223,227,238,.08)}
+@keyframes nyTrack{from{top:105%}to{top:-10%}}
+#hsFxBack .ny-ghost{inset:0;background:linear-gradient(90deg,rgba(167,123,255,.06),transparent 30%,transparent 70%,rgba(223,227,238,.05));animation:nyGlitch 7s steps(1) infinite}
+@keyframes nyGlitch{0%,100%{transform:none;opacity:1}61%{transform:translateX(6px) skewX(-6deg);opacity:.4}62%{transform:translateX(-8px);opacity:1}63%{transform:none}88%{transform:translateY(3px) scaleY(1.02)}89%{transform:none}}
+#hsFxBack .ny-vig{inset:0;background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 55%,rgba(0,0,0,.65))}
+#hsFxBack .ny-rec{left:3vw;top:12vh;font:700 13px/1 "Courier New",monospace;letter-spacing:2px;color:rgba(223,227,238,.22);animation:nyBlink 2s steps(1) infinite}
+@keyframes nyBlink{50%{opacity:.25}}
+#hsFxBack .ny-mirror{position:absolute;right:-4vw;bottom:-6vh;width:min(46vw,560px);height:auto;fill:none;stroke:rgba(223,227,238,.10);stroke-width:1.4;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(167,123,255,.35))}
+body.workspace-sheet[data-hs-fx="naoya"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ){box-shadow:3px 3px 0 rgba(167,123,255,.45),-1px 0 0 rgba(223,227,238,.25)!important}
+body.workspace-sheet[data-hs-fx="naoya"] .hud-title{text-shadow:2px 0 0 rgba(167,123,255,.7),-2px 0 0 rgba(223,227,238,.4)!important}
+
+/* ---------- TATSUYA // Borboletas e chamas ---------- */
+#hsFxBack .ts-base{inset:0;background:radial-gradient(ellipse 90% 55% at 50% 115%,#4a0d0b,transparent 70%),linear-gradient(180deg,#0d0505 0%,#1a0707 55%,#2a0909 100%)}
+#hsFxBack .ts-heat-svg{position:absolute;width:0;height:0}
+#hsFxBack .ts-flames{position:absolute;left:-5%;right:-5%;bottom:-6vh;height:44vh;filter:url(#tsHeat) blur(10px);opacity:.75}
+#hsFxBack .ts-flames i{bottom:0;border-radius:50% 50% 20% 20%/70% 70% 30% 30%;background:radial-gradient(ellipse at 50% 90%,#ffcf6a,#ff7a2e 30%,#e3242b 58%,transparent 72%);transform-origin:50% 100%;animation:tsFlick 2.4s ease-in-out infinite alternate}
+#hsFxBack .ts-flames .f1{left:0;width:28%;height:80%}
+#hsFxBack .ts-flames .f2{left:20%;width:22%;height:100%;animation-duration:1.9s;animation-delay:-.6s}
+#hsFxBack .ts-flames .f3{left:42%;width:24%;height:70%;animation-duration:2.8s}
+#hsFxBack .ts-flames .f4{left:62%;width:20%;height:95%;animation-duration:2.1s;animation-delay:-1s}
+#hsFxBack .ts-flames .f5{left:78%;width:26%;height:78%;animation-duration:2.6s;animation-delay:-.3s}
+@keyframes tsFlick{0%{transform:scale(1,1)}50%{transform:scale(1.08,.88)}100%{transform:scale(.94,1.12)}}
+#hsFxBack .ts-embers{inset:0;background:radial-gradient(circle,#ffb13a 0 1.2px,transparent 1.8px) 0 0/140px 160px,radial-gradient(circle,#ff7a2e 0 1px,transparent 1.6px) 60px 80px/190px 210px;opacity:.55;animation:tsEmbers 14s linear infinite;-webkit-mask:linear-gradient(0deg,#000,transparent 75%);mask:linear-gradient(0deg,#000,transparent 75%)}
+@keyframes tsEmbers{to{background-position:30px -800px,90px -1000px}}
+#hsFxBack .ts-vig{inset:0;background:radial-gradient(ellipse 85% 75% at 50% 40%,transparent 55%,rgba(0,0,0,.6))}
+#hsFxTop .ts-fly{position:absolute;bottom:-60px;display:block;animation:tsUp 20s linear infinite;will-change:transform,opacity}
+#hsFxTop .ts-drift{display:block;animation:tsDrift 4s ease-in-out infinite alternate}
+#hsFxTop .ts-bfly{display:block;height:auto;overflow:visible;animation:tsFlap .35s ease-in-out infinite alternate;filter:drop-shadow(0 0 4px rgba(245,165,36,.55))}
+#hsFxTop .ts-bfly .w{fill:#050202;stroke:#f5a524;stroke-width:1.4;transform-origin:0 0}
+#hsFxTop .ts-bfly .bd{stroke:#f5a524;stroke-width:2;stroke-linecap:round}
+@keyframes tsFlap{from{transform:scaleX(1)}to{transform:scaleX(.25)}}
+@keyframes tsUp{0%{transform:translateY(0);opacity:0}8%{opacity:.85}70%{opacity:.75;filter:none}100%{transform:translateY(-118vh);opacity:0;filter:grayscale(1) blur(2px)}}
+@keyframes tsDrift{from{transform:translateX(-30px) rotate(-12deg)}to{transform:translateX(30px) rotate(10deg)}}
+body.workspace-sheet[data-hs-fx="tatsuya"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ,.hs-skill){box-shadow:5px 5px 0 #000,7px 7px 0 rgba(227,36,43,.65)!important}
+body.workspace-sheet[data-hs-fx="tatsuya"] .hud-title{text-shadow:0 0 18px rgba(255,122,46,.55),3px 3px 0 #000!important}
+
+/* ---------- MAYA // Neon e corações cósmicos ---------- */
+#hsFxBack .my-base{inset:0;background:linear-gradient(135deg,#0a3a44 0%,#16123a 45%,#3a0c3c 80%,#4b0a35 100%)}
+#hsFxBack .my-grid{left:-10%;right:-10%;bottom:-2vh;height:38vh;background:linear-gradient(transparent 0 96%,rgba(47,227,234,.35) 96%) 0 0/100% 34px,linear-gradient(90deg,transparent 0 97%,rgba(255,47,168,.32) 97%) 0 0/60px 100%;transform:perspective(380px) rotateX(58deg);transform-origin:50% 100%;-webkit-mask:linear-gradient(0deg,#000,transparent);mask:linear-gradient(0deg,#000,transparent);animation:myGrid 3s linear infinite}
+@keyframes myGrid{to{background-position:0 34px,0 0}}
+#hsFxBack .my-halo{border-radius:50%;filter:blur(40px);opacity:.45;animation:myHalo 9s ease-in-out infinite alternate}
+#hsFxBack .my-halo.a{left:-10vw;top:-12vh;width:46vw;height:46vw;background:#2fe3ea;opacity:.18}
+#hsFxBack .my-halo.b{right:-12vw;bottom:-14vh;width:50vw;height:50vw;background:#ff2fa8;opacity:.22;animation-direction:alternate-reverse}
+@keyframes myHalo{to{transform:translate(4vw,3vh) scale(1.1)}}
+#hsFxBack .my-star{width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);background:#fff;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 4px #fff);animation:myTwinkle 2.4s ease-in-out infinite}
+#hsFxBack .my-star:nth-child(3n){background:#bff9ff}
+#hsFxBack .my-star:nth-child(4n){background:#ffd1ee}
+@keyframes myTwinkle{0%,100%{transform:scale(.2) rotate(0);opacity:.2}50%{transform:scale(1) rotate(45deg);opacity:1}}
+#hsFxTop .my-rise{position:absolute;bottom:-50px;display:block;animation:myRise 22s linear infinite;will-change:transform}
+#hsFxTop .my-heart{display:block;height:auto;overflow:visible;fill:rgba(255,47,168,.12);stroke:#ff4fbb;stroke-width:1.6;filter:drop-shadow(0 0 5px #ff2fa8);animation:myBeat 1.4s ease-in-out infinite}
+#hsFxTop .my-heart.cy{stroke:#4ff0f5;fill:rgba(47,227,234,.12);filter:drop-shadow(0 0 5px #2fe3ea)}
+@keyframes myRise{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.8}50%{transform:translateY(-55vh) translateX(26px)}90%{opacity:.7}100%{transform:translateY(-115vh) translateX(-10px);opacity:0}}
+@keyframes myBeat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(.96)}45%{transform:scale(1.12)}}
+body.workspace-sheet[data-hs-fx="maya"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ,.hs-skill){box-shadow:4px 4px 0 #ff2fa8,-2px -2px 0 rgba(47,227,234,.5)!important}
+body.workspace-sheet[data-hs-fx="maya"] .hud-title{text-shadow:0 0 14px rgba(255,47,168,.8),2px 2px 0 #2fe3ea!important}
+
+/* ---------- KOTONE // Pôr do sol e fones ---------- */
+#hsFxBack .kt-sky{inset:0;background:linear-gradient(180deg,#5a1f3a 0%,#b8466e 26%,#ff8a6a 52%,#ffab52 66%,#7a3418 82%,#26120e 100%)}
+#hsFxBack .kt-sun{left:50%;top:58vh;width:min(36vw,440px);aspect-ratio:1;margin-left:min(-18vw,-220px);border-radius:50%;background:radial-gradient(circle,#fff6d6 0,#ffd98a 40%,#ffab52 62%,rgba(255,171,82,0) 72%);box-shadow:0 0 120px 40px rgba(255,171,82,.35);animation:ktSun 8s ease-in-out infinite alternate}
+@keyframes ktSun{to{transform:translateY(-14px) scale(1.03)}}
+#hsFxBack .kt-cloud{height:36px;border-radius:40px;background:linear-gradient(90deg,transparent,rgba(255,200,220,.35),transparent);filter:blur(4px);animation:ktCloud 60s linear infinite}
+#hsFxBack .kt-cloud.a{top:20vh;width:46vw;left:-50vw}
+#hsFxBack .kt-cloud.b{top:34vh;width:30vw;left:-30vw;animation-duration:80s;animation-delay:-30s;opacity:.7}
+@keyframes ktCloud{to{transform:translateX(160vw)}}
+#hsFxBack .kt-shade{inset:0;background:linear-gradient(180deg,rgba(20,8,8,.55),rgba(20,8,8,.25) 40%,rgba(20,8,8,.45))}
+#hsFxBack .kt-eq{position:absolute;left:0;right:0;bottom:0;height:18vh;display:flex;align-items:flex-end;gap:3px;padding:0 4px;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+#hsFxBack .kt-eq b{flex:1;height:100%;background:linear-gradient(0deg,rgba(255,134,184,.55),rgba(255,217,138,.45));transform-origin:50% 100%;animation:ktBar 1s ease-in-out infinite alternate;border-radius:2px 2px 0 0}
+#hsFxBack .kt-eq b:nth-child(odd){background:linear-gradient(0deg,rgba(255,217,138,.5),rgba(255,134,184,.35))}
+@keyframes ktBar{0%{transform:scaleY(.12)}40%{transform:scaleY(.55)}70%{transform:scaleY(.25)}100%{transform:scaleY(.8)}}
+#hsFxBack .kt-wave{position:absolute;left:0;bottom:16vh;width:200%;height:70px;fill:none;stroke-width:2;animation:ktWave 9s linear infinite}
+#hsFxBack .kt-wave .a{stroke:rgba(255,217,138,.5)}
+#hsFxBack .kt-wave .b{stroke:rgba(255,134,184,.45)}
+@keyframes ktWave{to{transform:translateX(-50%)}}
+#hsFxTop .kt-petal{position:static;display:block;background:center/contain no-repeat;opacity:.85;filter:drop-shadow(0 0 4px rgba(255,217,138,.6));animation:nkSpin 5s linear infinite}
+body.workspace-sheet[data-hs-fx="kotone"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ,.hs-skill){border-radius:14px!important;box-shadow:0 0 0 1px rgba(255,134,184,.25),0 8px 24px rgba(255,134,184,.12)!important}
+body.workspace-sheet[data-hs-fx="kotone"] .hud-title{text-shadow:0 0 16px rgba(255,171,82,.6),2px 2px 0 rgba(255,134,184,.8)!important}
+
+/* ---------- efeitos de clique / hover ---------- */
+#hsFxTop .tf-at{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none;z-index:2}
+/* Naoya: rachadura de espelho que se conserta */
+#hsFxTop .tf-crack{position:absolute;left:-160px;top:-160px;width:320px;height:320px;overflow:visible;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#hsFxTop .tf-crack path{stroke-dasharray:var(--l);stroke-dashoffset:var(--l);animation:tfCrack var(--t,.9s) cubic-bezier(.2,.8,.3,1) forwards}
+#hsFxTop .tf-crack .w{stroke:#f4f6ff;stroke-width:1.6;filter:drop-shadow(0 0 3px #fff)}
+#hsFxTop .tf-crack .p{stroke:#a77bff;stroke-width:2.6;opacity:.8;filter:drop-shadow(0 0 6px #a77bff);transform:translate(1.5px,1px)}
+@keyframes tfCrack{0%{stroke-dashoffset:var(--l)}28%{stroke-dashoffset:0;opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:calc(var(--l) * -1);opacity:0}}
+#hsFxTop .tf-shine{position:absolute;left:-40px;top:-40px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.7),rgba(167,123,255,.25) 40%,transparent 70%);animation:tfFade .5s ease-out forwards}
+@keyframes tfFade{from{transform:scale(.3);opacity:1}to{transform:scale(1.4);opacity:0}}
+/* Tatsuya: faíscas e cinzas */
+#hsFxTop .tf-spark{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#ffcf6a;box-shadow:0 0 8px 2px #ff7a2e}
+#hsFxTop .tf-spark.ash{background:#6d6460;box-shadow:none;width:4px;height:4px;border-radius:1px}
+/* Maya: coração vetorial */
+#hsFxTop .tf-heart{position:absolute;left:-14px;top:-14px;width:28px;height:28px;overflow:visible;fill:rgba(255,47,168,.25);stroke:#ff4fbb;stroke-width:1.8;filter:drop-shadow(0 0 6px #ff2fa8)}
+#hsFxTop .tf-heart.cy{stroke:#4ff0f5;fill:rgba(47,227,234,.2);filter:drop-shadow(0 0 6px #2fe3ea)}
+#hsFxTop .tf-twinkle{position:absolute;left:-9px;top:-9px;width:18px;height:18px;background:#fff;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 4px #fff)}
+/* Kotone: ondas sonoras circulares */
+#hsFxTop .tf-ring{position:absolute;left:-10px;top:-10px;width:20px;height:20px;border-radius:50%;border:2px solid #ff86b8;box-shadow:0 0 10px rgba(255,134,184,.6);animation:tfRing .9s cubic-bezier(.2,.8,.3,1) forwards}
+#hsFxTop .tf-ring.g{border-color:#ffd98a;box-shadow:0 0 10px rgba(255,217,138,.6)}
+@keyframes tfRing{from{transform:scale(.3);opacity:1}to{transform:scale(var(--k,5));opacity:0}}
+
+/* ---------- transições de aba ---------- */
+.tf-trans{position:fixed;inset:0;z-index:2000;pointer-events:none;overflow:hidden}
+/* Naoya: troca de canal de TV de tubo + negativo */
+.tf-trans.naoya .neg{position:absolute;inset:0;backdrop-filter:invert(1) hue-rotate(180deg);-webkit-backdrop-filter:invert(1) hue-rotate(180deg);animation:tfNeg .5s steps(1) forwards}
+@keyframes tfNeg{0%{opacity:1}12%{opacity:0}22%{opacity:1}30%,100%{opacity:0}}
+.tf-trans.naoya .tv{position:absolute;inset:0;background:#0b0c10;animation:tfTv .52s cubic-bezier(.7,0,.3,1) forwards}
+.tf-trans.naoya .tv::before{content:"";position:absolute;inset:-50%;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:nyNoise .2s steps(3) infinite}
+.tf-trans.naoya .line{position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1px;background:#f4f6ff;box-shadow:0 0 18px 4px #a77bff;animation:tfLine .52s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes tfTv{0%{clip-path:inset(0 0 0 0);opacity:1}35%{clip-path:inset(49.6% 0 49.6% 0);opacity:1}60%{clip-path:inset(49.6% 48% 49.6% 48%);opacity:1}100%{clip-path:inset(50% 50% 50% 50%);opacity:0}}
+@keyframes tfLine{0%,30%{transform:scaleX(1);opacity:0}38%{opacity:1}65%{transform:scaleX(.02);opacity:1}100%{transform:scaleX(0);opacity:0}}
+/* Tatsuya: queimadura + isqueiro */
+.tf-trans.tatsuya .burn{position:absolute;inset:0}
+.tf-trans.tatsuya .zippo{position:absolute;right:4vw;bottom:12vh;width:74px;height:auto;overflow:visible;animation:tfZip .9s cubic-bezier(.2,.8,.3,1) forwards;filter:drop-shadow(0 0 14px rgba(255,122,46,.7))}
+.tf-trans.tatsuya .zippo .lid{transform-origin:6px 30px;animation:tfLid .9s cubic-bezier(.34,1.56,.64,1) forwards}
+.tf-trans.tatsuya .zippo .flame{transform-origin:31px 28px;animation:tfFlame .9s ease-out forwards}
+@keyframes tfZip{0%{transform:translateY(30px) rotate(-8deg);opacity:0}18%{transform:none;opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+@keyframes tfLid{0%,15%{transform:rotate(0)}35%,100%{transform:rotate(-115deg)}}
+@keyframes tfFlame{0%,32%{transform:scale(0);opacity:0}45%{transform:scale(1.25);opacity:1}60%{transform:scale(.9)}75%{transform:scale(1.08)}100%{transform:scale(1);opacity:.9}}
+/* Maya: flash de câmera + página de revista */
+.tf-trans.maya .flash{position:absolute;inset:0;background:#fff;animation:tfFlash .5s ease-out forwards}
+@keyframes tfFlash{0%{opacity:0}8%{opacity:.95}100%{opacity:0}}
+.tf-trans.maya .page{position:absolute;top:-20%;bottom:-20%;width:44vw;left:-50vw;background:linear-gradient(90deg,rgba(47,227,234,.0),rgba(47,227,234,.55) 40%,rgba(255,47,168,.7) 70%,#fff 71% 73%,transparent 74%);transform:skewX(-14deg);animation:tfPage .55s cubic-bezier(.6,0,.3,1) forwards}
+@keyframes tfPage{to{transform:translateX(160vw) skewX(-14deg)}}
+.tf-trans.maya .frame{position:absolute;inset:6vh 6vw;border:3px solid transparent;border-image:linear-gradient(90deg,#ff2fa8,#2fe3ea) 1;opacity:0;animation:tfFrame .5s ease-out forwards}
+@keyframes tfFrame{0%{opacity:0;transform:scale(1.06)}20%{opacity:1}100%{opacity:0;transform:scale(1)}}
+/* Kotone: onda suave da esquerda para a direita */
+.tf-trans.kotone .wave{position:absolute;top:0;bottom:0;left:-70vw;width:70vw;background:linear-gradient(90deg,transparent,rgba(255,200,220,.18) 30%,rgba(255,134,184,.55) 80%,rgba(255,217,138,.7));border-radius:0 50% 50% 0/0 50% 50% 0;filter:blur(6px);animation:tfWave .7s cubic-bezier(.45,0,.2,1) forwards}
+@keyframes tfWave{to{transform:translateX(175vw)}}
+.tf-trans.kotone .glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,134,184,.25),transparent 60%);animation:tfFade2 .7s ease-out forwards}
+@keyframes tfFade2{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+
+/* movimento reduzido / calmo */
+@media (prefers-reduced-motion:reduce){.tf-trans{display:none!important}}
+body.hs-calm .tf-trans{display:none!important}
+@media (max-width:760px){
+  #hsFxBack .ny-rec,#hsFxBack .ny-mirror{display:none}
+  #hsFxTop .ts-fly:nth-child(n+6),#hsFxTop .my-rise:nth-child(n+6),#hsFxTop .nk-fall:nth-child(n+7){display:none}
+  #hsFxBack .my-star:nth-child(n+14){display:none}
+  #hsFxBack .kt-eq b:nth-child(n+33){display:none}
+}
