@@ -21,6 +21,9 @@
     paper: ['Texto', 'Letras e números']
   };
   var PRESETS = [
+    { id: 'makoto', name: 'MAKOTO', tag: 'Hora Sombria', fx: 'makoto', c: { acc: '#3d8bff', acc2: '#6dffc2', acc3: '#9dffd6', bg: '#050d1f', card: '#0c1a36', card2: '#09152c', black: '#02060f', paper: '#e4f2ff' } },
+    { id: 'narukami', name: 'NARUKAMI', tag: 'Flores ao vento', fx: 'narukami', c: { acc: '#f7c51e', acc2: '#c3c7cf', acc3: '#ffe36b', bg: '#17181c', card: '#26282e', card2: '#1f2126', black: '#0b0c0e', paper: '#f7f3e6' } },
+    { id: 'joker', name: 'JOKER', tag: 'Ladrão de corações', fx: 'joker', c: { acc: '#e5101c', acc2: '#ffffff', acc3: '#ff3a44', bg: '#0a0909', card: '#171313', card2: '#110e0e', black: '#000000', paper: '#ffffff' } },
     { id: 'phobia', name: 'PHOBIA', tag: 'Padrão', c: { acc: '#ef2b97', acc2: '#6ce6ff', acc3: '#96ff45', bg: '#141523', card: '#1b1e33', card2: '#151729', black: '#0d0c10', paper: '#fff0d8' } },
     { id: 'rubro', name: 'RUBRO', tag: 'Vermelho e preto', c: { acc: '#e8202a', acc2: '#f4ece2', acc3: '#ffcc33', bg: '#0e0b0b', card: '#1d1515', card2: '#160f10', black: '#060505', paper: '#f7efe6' } },
     { id: 'mare', name: 'MARÉ', tag: 'Azul profundo', c: { acc: '#2f8cff', acc2: '#8fe9ff', acc3: '#c6ff5c', bg: '#08132a', card: '#122242', card2: '#0d1a34', black: '#040a17', paper: '#e9f6ff' } },
@@ -125,6 +128,7 @@
     var b = document.body;
     b.dataset.hsSlab = h.slab;
     b.classList.toggle('hs-calm', h.motion === 'calm');
+    applyFx(h);
     // compatibilidade com o hexágono social (fonte)
     try { var ui = ensureCharacterUI(); if (ui.font !== f.radar) { ui.font = f.radar; var p = document.getElementById('characterPage'); if (p) p.dataset.coreFont = f.radar; } } catch (e) {}
     try { if (typeof renderSocialVisualization === 'function') renderSocialVisualization(); } catch (e) {}
@@ -137,6 +141,54 @@
   /* ---------- painel ---------- */
   var panel = null;
   function esc(s) { return String(s).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); }
+
+  function card(p) {
+    return '<button type="button" class="hs-preset' + (p.fx ? ' is-special fx-' + p.fx : '') + '" data-hs-preset="' + p.id + '" style="--p1:' + p.c.acc + ';--p2:' + p.c.acc2 + ';--p3:' + p.c.acc3 + ';--pb:' + p.c.bg + ';--pc:' + p.c.card + ';--pt:' + p.c.paper + '">' +
+      '<span class="hs-preset-art"><i></i><i></i><i></i><em>Aa</em></span>' +
+      '<b>' + p.name + '</b><small>' + p.tag + '</small></button>';
+  }
+
+  /* ---------- efeitos dos temas especiais ---------- */
+  var FLOWER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 -12 24 24"><g fill="COLOR">' +
+    [0, 72, 144, 216, 288].map(function (a) { return '<ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(' + a + ')"/>'; }).join('') +
+    '</g><circle r="2.6" fill="CORE"/></svg>');
+  function flower(c, core) { return "url('" + FLOWER.replace('COLOR', encodeURIComponent(c)).replace('CORE', encodeURIComponent(core)) + "')"; }
+  var fxBuilt = {};
+  function fxLayer(id, top) {
+    var el = document.getElementById(id);
+    if (!el) { el = document.createElement('div'); el.id = id; el.setAttribute('aria-hidden', 'true'); document.body.appendChild(el); }
+    if (top) el.className = 'hs-fx-top'; else el.className = 'hs-fx-back';
+    return el;
+  }
+  function buildFx(kind) {
+    var back = fxLayer('hsFxBack'), top = fxLayer('hsFxTop', true);
+    if (fxBuilt.kind === kind) return;
+    fxBuilt.kind = kind; back.innerHTML = ''; top.innerHTML = '';
+    if (kind === 'makoto') {
+      back.innerHTML = '<i class="mk-sky"></i><i class="mk-moon"></i><i class="mk-mist a"></i><i class="mk-mist b"></i><i class="mk-scan"></i><i class="mk-clock">00:00</i>';
+    } else if (kind === 'narukami') {
+      back.innerHTML = '<i class="nk-fog a"></i><i class="nk-fog b"></i><i class="nk-static"></i>';
+      var cols = [['#ffd84a', '#fff4c2'], ['#fff6dc', '#f7c51e'], ['#c9ccd4', '#ffe36b'], ['#ffe36b', '#fffbe9']], html = '';
+      for (var i = 0; i < 20; i++) {
+        var c = cols[i % cols.length], size = 14 + Math.round(Math.random() * 16), dur = 9 + Math.random() * 9;
+        html += '<span class="nk-fall" style="left:' + (Math.random() * 100).toFixed(1) + '%;animation-duration:' + dur.toFixed(1) + 's;animation-delay:-' + (Math.random() * dur).toFixed(1) + 's">' +
+          '<span class="nk-sway" style="animation-duration:' + (2.6 + Math.random() * 2.4).toFixed(1) + 's">' +
+          '<i style="width:' + size + 'px;height:' + size + 'px;background-image:' + flower(c[0], c[1]) + ';animation-duration:' + (3 + Math.random() * 5).toFixed(1) + 's;animation-direction:' + (i % 2 ? 'reverse' : 'normal') + '"></i></span></span>';
+      }
+      top.innerHTML = html;
+    } else if (kind === 'joker') {
+      back.innerHTML = '<i class="jk-tone"></i><i class="jk-band a"></i><i class="jk-band b"></i><i class="jk-star"></i>' +
+        '<svg class="jk-city" viewBox="0 0 1200 220" preserveAspectRatio="none"><path d="M0 220V150h40v-40h30v-30h20v70h35V60h50v90h25V100h30v-50h15v-20h10v20h15v120h40V90h60v130h20V40h45v60h25v120h30V120h40V70h20v-30h30v180h35V100h55v120h20V60h30V20h12v40h28v160h40V130h50v-50h40v140h25V90h60v130h30V50h40v170h30V140h35V100h45v120h40V70h30v150h25V120h35v100z"/></svg>' +
+        '<i class="jk-cut c1">TAKE</i><i class="jk-cut c2">YOUR</i><i class="jk-cut c3">HEART</i>';
+      top.innerHTML = '<i class="jk-slash"></i>';
+    }
+  }
+  function applyFx(h) {
+    var kind = h.fx === 'off' ? '' : (preset(h.preset).fx || '');
+    document.body.dataset.hsFx = kind;
+    document.documentElement.style.backgroundColor = kind ? colors(h).bg : '';
+    if (kind) buildFx(kind); else { fxBuilt.kind = ''; ['hsFxBack', 'hsFxTop'].forEach(function (id) { var e = document.getElementById(id); if (e) e.innerHTML = ''; }); }
+  }
 
   function build() {
     var body = $('#sheetAppearanceBackdrop .sheet-ui-modal-body');
@@ -161,11 +213,10 @@
 
       '<section class="hs-pane on" data-hs-pane="temas">' +
         '<p class="hs-hint">Escolha um tema pronto. Dá para ajustar qualquer cor depois na aba Cores.</p>' +
-        '<div class="hs-presets">' + PRESETS.map(function (p) {
-          return '<button type="button" class="hs-preset" data-hs-preset="' + p.id + '" style="--p1:' + p.c.acc + ';--p2:' + p.c.acc2 + ';--p3:' + p.c.acc3 + ';--pb:' + p.c.bg + ';--pc:' + p.c.card + ';--pt:' + p.c.paper + '">' +
-            '<span class="hs-preset-art"><i></i><i></i><i></i><em>Aa</em></span>' +
-            '<b>' + p.name + '</b><small>' + p.tag + '</small></button>';
-        }).join('') + '</div>' +
+        '<b class="hs-sub">ESPECIAIS · com efeito animado</b>' +
+        '<div class="hs-presets hs-specials">' + PRESETS.filter(function (p) { return p.fx; }).map(card).join('') + '</div>' +
+        '<b class="hs-sub">CLÁSSICOS</b>' +
+        '<div class="hs-presets">' + PRESETS.filter(function (p) { return !p.fx; }).map(card).join('') + '</div>' +
         '<div class="hs-sign">' +
           '<div><b>COR-ASSINATURA</b><small>Escolha uma cor que represente o personagem e a ficha monta uma paleta inteira com ela.</small></div>' +
           '<label class="hs-sign-pick"><input type="color" id="hsSignature" value="#ef2b97"><span>GERAR</span></label>' +
@@ -197,6 +248,9 @@
         '</div>' +
         '<div class="hs-block"><b>ANIMAÇÕES</b><small>Reduzidas deixa tudo mais calmo (bom para celular fraco ou enjoo).</small>' +
           '<div class="hs-row hs-chips"><button type="button" data-hs-motion="full">COMPLETAS</button><button type="button" data-hs-motion="calm">REDUZIDAS</button></div>' +
+        '</div>' +
+        '<div class="hs-block"><b>EFEITO ESPECIAL</b><small>Lua da Hora Sombria, flores caindo ou cidade de Tóquio. Só aparece nos temas Makoto, Narukami e Joker.</small>' +
+          '<div class="hs-row hs-chips"><button type="button" data-hs-fx="on">LIGADO</button><button type="button" data-hs-fx="off">DESLIGADO</button></div>' +
         '</div>' +
         '<div class="hs-keep"></div>' +
         '<div class="hs-block"><b>COMPARTILHAR VISUAL</b><small>Copie o código e mande para alguém, ou cole o código de outra ficha.</small>' +
@@ -238,8 +292,9 @@
     if (d.hsSlab) return set(function (h) { h.slab = d.hsSlab; });
     if (d.hsSlabfrom) return set(function (h) { h.slabFrom = d.hsSlabfrom; });
     if (d.hsMotion) return set(function (h) { h.motion = d.hsMotion; });
+    if (d.hsFx) return set(function (h) { h.fx = d.hsFx; });
     if (t.hasAttribute('data-hs-reset-colors')) return set(function (h) { h.colors = {}; h.custom = false; });
-    if (t.hasAttribute('data-hs-reset-all')) return set(function (h) { h.preset = 'phobia'; h.colors = {}; h.font = 'p5'; h.slab = 'dots'; h.slabFrom = 'acc'; h.motion = 'full'; h.custom = false; });
+    if (t.hasAttribute('data-hs-reset-all')) return set(function (h) { h.preset = 'phobia'; h.colors = {}; h.font = 'p5'; h.slab = 'dots'; h.slabFrom = 'acc'; h.motion = 'full'; h.fx = 'on'; h.custom = false; });
     if (t.hasAttribute('data-hs-copy')) return copyCode();
     if (t.hasAttribute('data-hs-paste')) return pasteCode();
   }
@@ -279,6 +334,7 @@
     $$('[data-hs-slab]', panel).forEach(function (b) { b.classList.toggle('on', b.dataset.hsSlab === h.slab); });
     $$('[data-hs-slabfrom]', panel).forEach(function (b) { b.classList.toggle('on', b.dataset.hsSlabfrom === h.slabFrom); });
     $$('[data-hs-motion]', panel).forEach(function (b) { b.classList.toggle('on', b.dataset.hsMotion === h.motion); });
+    $$('[data-hs-fx]', panel).forEach(function (b) { b.classList.toggle('on', b.dataset.hsFx === (h.fx || 'on')); });
     $$('[data-hs-color]', panel).forEach(function (inp) {
       var k = inp.dataset.hsColor; if (document.activeElement !== inp) inp.value = c[k];
       var lab = inp.parentNode; lab.style.setProperty('--sw', c[k]); lab.querySelector('code').textContent = c[k].toUpperCase();

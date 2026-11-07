@@ -177,3 +177,94 @@ body.hud .sheet-ui-backdrop .hs-old :is(.sheet-ui-preview,.radar-color-preview){
 @media (prefers-reduced-motion:reduce){
   body.hud .sheet-ui-backdrop.open .sheet-ui-modal,.hs-pane.on{animation:none}
 }
+
+/* ==========================================================
+   TEMAS ESPECIAIS — efeitos
+   ========================================================== */
+.hs-sub{display:block;margin:4px 0 8px;font:800 12px/1 var(--hud-cond);letter-spacing:2px;color:var(--hud-mute)}
+.hs-presets + .hs-sub{margin-top:18px}
+.hs-specials{grid-template-columns:1fr!important}
+.hs-preset.is-special{flex-direction:row;align-items:center;flex-wrap:wrap;padding:0;position:relative}
+.hs-preset.is-special .hs-preset-art{height:70px;margin:0}
+.hs-preset.is-special b{position:absolute;left:14px;bottom:24px;font-size:22px;text-shadow:2px 2px 0 var(--pb)}
+.hs-preset.is-special small{position:absolute;left:14px;bottom:8px;opacity:.85;text-shadow:1px 1px 0 var(--pb)}
+.hs-preset.is-special .hs-preset-art i{display:none}
+.hs-preset.is-special em{display:none}
+.hs-preset.fx-makoto .hs-preset-art{background:radial-gradient(circle at 82% 40%,#f2fff0 0 13px,#b9ffd9 14px,rgba(109,255,194,.35) 24px,transparent 46px),linear-gradient(180deg,#0b2a3e,#081a33 55%,#0f3b3a)}
+.hs-preset.fx-narukami .hs-preset-art{background:radial-gradient(circle at 78% 30%,#ffe36b 0 5px,transparent 6px),radial-gradient(circle at 88% 64%,#fff4c2 0 4px,transparent 5px),radial-gradient(circle at 66% 70%,#c9ccd4 0 4px,transparent 5px),repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px),linear-gradient(120deg,#26282e,#3a3b40 60%,#f7c51e 60.5% 64%,#26282e 64.5%)}
+.hs-preset.fx-joker .hs-preset-art{background:radial-gradient(circle,rgba(229,16,28,.55) 1.4px,transparent 1.8px) 0 0/8px 8px,linear-gradient(115deg,#000 0 52%,#e5101c 52% 70%,#fff 70% 72%,#000 72%)}
+
+#hsFxBack,#hsFxTop{position:fixed;inset:0;pointer-events:none;overflow:hidden;display:none}
+#hsFxBack{z-index:-1}
+#hsFxTop{z-index:45}
+body.workspace-sheet[data-hs-fx]:not([data-hs-fx=""]) :is(#hsFxBack,#hsFxTop){display:block}
+body.workspace-sheet[data-hs-fx]:not([data-hs-fx=""]),
+body.workspace-sheet[data-hs-fx]:not([data-hs-fx=""]) .site,
+body.workspace-sheet[data-hs-fx]:not([data-hs-fx=""]) .site > #characterPage{background:transparent!important}
+#hsFxBack i,#hsFxTop i{position:absolute;display:block;font-style:normal}
+
+/* ---- MAKOTO // Hora Sombria ---- */
+#hsFxBack .mk-sky{inset:0;background:
+  radial-gradient(ellipse 80% 60% at 60% 110%,rgba(64,255,170,.16),transparent 70%),
+  linear-gradient(180deg,#050d1f 0%,#061830 55%,#082a2c 100%)}
+#hsFxBack .mk-moon{right:7vw;top:12vh;width:min(30vw,380px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 42% 40%,#fbfff4 0,#e2ffd9 38%,#a8f7cf 62%,rgba(109,255,194,.0) 71%);
+  box-shadow:0 0 90px 30px rgba(109,255,194,.22),0 0 220px 90px rgba(61,139,255,.16);
+  opacity:.55;animation:mkMoon 7s ease-in-out infinite alternate;will-change:transform,opacity}
+@keyframes mkMoon{from{transform:scale(1);opacity:.45}to{transform:scale(1.05);opacity:.62}}
+#hsFxBack .mk-mist{left:-30%;width:160%;height:45vh;bottom:-8vh;
+  background:radial-gradient(ellipse 30% 50% at 20% 60%,rgba(109,255,194,.13),transparent 70%),radial-gradient(ellipse 25% 45% at 65% 50%,rgba(61,139,255,.14),transparent 70%),radial-gradient(ellipse 22% 40% at 90% 70%,rgba(109,255,194,.10),transparent 70%);
+  animation:mkMist 26s linear infinite alternate;will-change:transform}
+#hsFxBack .mk-mist.b{bottom:22vh;opacity:.6;animation-duration:34s;animation-direction:alternate-reverse}
+@keyframes mkMist{from{transform:translateX(-6%)}to{transform:translateX(10%)}}
+#hsFxBack .mk-scan{inset:0;background:repeating-linear-gradient(0deg,rgba(109,255,194,.035) 0 1px,transparent 1px 4px);animation:mkFlick 5.5s steps(1) infinite}
+@keyframes mkFlick{0%,100%{opacity:1}47%{opacity:.4}48%{opacity:1}83%{opacity:.6}84%{opacity:1}}
+#hsFxBack .mk-clock{right:3vw;bottom:9vh;font:400 clamp(60px,9vw,140px)/1 var(--hud-display);letter-spacing:-4px;color:rgba(109,255,194,.07);transform:skewX(-8deg)}
+body.workspace-sheet[data-hs-fx="makoto"] #characterPage::before{box-shadow:0 0 60px rgba(109,255,194,.25)}
+body.workspace-sheet[data-hs-fx="makoto"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ){box-shadow:0 0 0 1px rgba(109,255,194,.12),0 0 22px rgba(109,255,194,.06)!important}
+
+/* ---- NARUKAMI // flores ---- */
+#hsFxBack .nk-fog{left:-20%;width:140%;height:60vh;bottom:-10vh;background:radial-gradient(ellipse 35% 45% at 30% 60%,rgba(247,197,30,.10),transparent 70%),radial-gradient(ellipse 30% 40% at 75% 55%,rgba(195,199,207,.12),transparent 70%);animation:mkMist 30s ease-in-out infinite alternate;will-change:transform}
+#hsFxBack .nk-fog.b{bottom:30vh;opacity:.7;animation-duration:40s;animation-direction:alternate-reverse}
+#hsFxBack .nk-static{inset:0;opacity:.05;background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);animation:nkStatic .9s steps(3) infinite}
+@keyframes nkStatic{0%{transform:translateY(0)}33%{transform:translateY(1px)}66%{transform:translateY(2px)}}
+#hsFxTop .nk-fall{position:absolute;top:-40px;display:block;animation:nkFall 12s linear infinite;will-change:transform}
+#hsFxTop .nk-sway{display:block;animation:nkSway 3.5s ease-in-out infinite alternate;will-change:transform}
+#hsFxTop .nk-fall i{position:static;background:center/contain no-repeat;opacity:.9;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.35));animation:nkSpin 5s linear infinite;will-change:transform}
+@keyframes nkFall{from{transform:translateY(-6vh)}to{transform:translateY(110vh)}}
+@keyframes nkSway{from{transform:translateX(-28px)}to{transform:translateX(28px)}}
+@keyframes nkSpin{from{transform:rotate(0) rotateX(0)}50%{transform:rotate(180deg) rotateX(55deg)}to{transform:rotate(360deg) rotateX(0)}}
+
+/* ---- JOKER // Tóquio ---- */
+#hsFxBack .jk-tone{inset:0;background:
+  radial-gradient(circle,rgba(229,16,28,.45) 1.5px,transparent 2px) 0 0/12px 12px;
+  -webkit-mask:radial-gradient(ellipse 60% 70% at 100% 0,#000,transparent 70%),radial-gradient(ellipse 50% 60% at 0 100%,#000,transparent 70%);
+  mask:radial-gradient(ellipse 60% 70% at 100% 0,#000,transparent 70%),radial-gradient(ellipse 50% 60% at 0 100%,#000,transparent 70%)}
+#hsFxBack .jk-band{left:-20%;width:140%;height:120px;top:58%;background:#e5101c;transform:rotate(-14deg);opacity:.6;box-shadow:0 14px 0 #fff,0 26px 0 #000}
+#hsFxBack .jk-band.b{top:18%;height:46px;opacity:.5;transform:rotate(9deg);box-shadow:none;background:#fff}
+body.workspace-sheet[data-hs-fx="joker"] #hsFxBack .jk-band{animation:jkBand 1s var(--hud-ease,ease) both}
+@keyframes jkBand{from{translate:-30% 0}to{translate:0 0}}
+#hsFxBack .jk-star{right:-8vw;top:-10vh;width:min(48vw,620px);aspect-ratio:1;background:#e5101c;opacity:.18;
+  clip-path:polygon(50% 0,58% 36%,96% 18%,66% 46%,100% 62%,62% 60%,72% 100%,50% 68%,26% 98%,36% 60%,0 66%,34% 46%,6% 16%,42% 36%);
+  animation:jkSpin 60s linear infinite;will-change:transform}
+@keyframes jkSpin{to{transform:rotate(360deg)}}
+#hsFxBack .jk-city{position:absolute;left:0;right:0;bottom:0;width:100%;height:21vh;fill:#000;stroke:#e5101c;stroke-width:2;vector-effect:non-scaling-stroke}
+#hsFxBack .jk-cut{font:400 clamp(30px,4vw,64px)/1 var(--hud-display);padding:.08em .22em;color:#000;background:#fff;box-shadow:5px 5px 0 #e5101c;opacity:.14}
+#hsFxBack .jk-cut.c1{right:9vw;top:40vh;transform:rotate(-8deg)}
+#hsFxBack .jk-cut.c2{right:22vw;top:50vh;transform:rotate(5deg);background:#e5101c;color:#fff;box-shadow:5px 5px 0 #fff}
+#hsFxBack .jk-cut.c3{right:6vw;top:58vh;transform:rotate(-3deg)}
+#hsFxTop .jk-slash{left:-60%;top:38%;width:60%;height:10px;background:#e5101c;box-shadow:0 14px 0 #fff;transform:rotate(-14deg);opacity:0;animation:jkSlash 7s var(--hud-ease,ease) infinite;will-change:transform,opacity}
+@keyframes jkSlash{0%,82%{transform:translateX(0) rotate(-14deg);opacity:0}84%{opacity:.9}92%{transform:translateX(330%) rotate(-14deg);opacity:.9}93%,100%{opacity:0;transform:translateX(330%) rotate(-14deg)}}
+body.workspace-sheet[data-hs-fx="joker"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ,.hs-skill){box-shadow:5px 5px 0 #e5101c!important}
+body.workspace-sheet[data-hs-fx="joker"] .hud-title{text-shadow:3px 3px 0 #e5101c!important}
+
+/* calmo / movimento reduzido: só o cenário parado */
+body.hs-calm #hsFxTop{display:none!important}
+@media (prefers-reduced-motion:reduce){
+  #hsFxTop{display:none!important}
+  #hsFxBack *{animation:none!important}
+}
+@media (max-width:760px){
+  #hsFxBack .jk-cut,#hsFxBack .mk-clock{display:none}
+  #hsFxTop .nk-fall:nth-child(n+11){display:none}
+}
