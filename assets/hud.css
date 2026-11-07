@@ -13,7 +13,7 @@ body.hud{
   --hud-acc3:  var(--theme-accent-3, #96ff45);
   --hud-black: #0d0c10;
   --hud-paper: #fff0d8;
-  --hud-mute:  rgba(255,240,216,.62);
+  --hud-mute:  color-mix(in srgb,var(--hud-paper,#fff0d8) 62%,transparent);
   --hud-ease:  cubic-bezier(.22,1,.36,1);
   --hud-back:  cubic-bezier(.34,1.56,.64,1);
   --hud-display: "Archivo Black","Arial Black",Arial,sans-serif;
@@ -181,7 +181,7 @@ body.hud .hud-search input{
   flex:1;min-width:0;height:100%;padding:0;border:0!important;outline:0;background:transparent!important;
   color:var(--hud-black)!important;font:700 15px var(--hud-body)!important;box-shadow:none!important;
 }
-body.hud .hud-search input::placeholder{color:rgba(13,12,16,.55)}
+body.hud .hud-search input::placeholder{color:color-mix(in srgb,var(--hud-black,#0d0c10) 55%,transparent)}
 body.hud .hud-search-count{font:800 12px var(--hud-cond);letter-spacing:1px;opacity:.6}
 body.hud .hud-results{left:28px;top:168px;width:400px;max-height:min(520px,calc(100% - 200px));overflow:auto;padding:6px 0 10px;z-index:70}
 body.hud .hud-results #districtList{display:flex!important;flex-direction:column;gap:2px;max-height:none;padding:0 8px}
@@ -229,7 +229,7 @@ body.hud .hud-master-pop #cogEditor{display:block!important;margin:0;border:0;ba
 body.hud .hud-master-pop #cogEditor > summary{display:none}
 body.hud .hud-master-pop .cog-editor-body{padding:14px;background:transparent;color:var(--hud-ink)}
 body.hud .hud-master-pop .cog-editor-hint{color:var(--hud-mute)}
-body.hud .hud-master-pop input[type=text],body.hud .hud-master-pop select{background:#1c1f36;color:var(--hud-ink);border:1px solid rgba(255,255,255,.2)}
+body.hud .hud-master-pop input[type=text],body.hud .hud-master-pop select{background:var(--hud-card,#1c1f36);color:var(--hud-ink);border:1px solid rgba(255,255,255,.2)}
 body.hud .hud-master-pop #cogPlaceBtn{background:var(--hud-acc3);color:var(--hud-black);border:0}
 
 body.hud .hud-opts-pop{left:28px;bottom:70px;width:360px;box-shadow:8px 8px 0 var(--hud-acc2)}
@@ -297,7 +297,7 @@ body.hud #characterPage .sheet-book{
 body.hud #characterPage .sheet-page-tabs::before{
   content:"";position:absolute;left:-160px;top:-40px;height:calc(100vh + 80px);width:400px;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(circle,rgba(13,12,16,.2) 2px,transparent 2.5px) 0 0/14px 14px,
+    radial-gradient(circle,color-mix(in srgb,var(--hud-black,#0d0c10) 20%,transparent) 2px,transparent 2.5px) 0 0/14px 14px,
     var(--hud-acc);
   transform:skewX(-12deg);
 }
@@ -333,9 +333,9 @@ body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active .sheet-nav-copy 
    ========================================================== */
 .hud-slash{
   position:fixed;left:-20vw;top:-10vh;width:30vw;height:120vh;z-index:9000;pointer-events:none;
-  background:var(--hud-acc,#ef2b97);transform:translateX(-120%) skewX(-14deg);will-change:transform;
+  background:var(--hud-acc,var(--hud-acc,#ef2b97));transform:translateX(-120%) skewX(-14deg);will-change:transform;
 }
-.hud-slash::after{content:"";position:absolute;inset:0 -14px 0 auto;width:12px;background:var(--hud-acc2,#6ce6ff)}
+.hud-slash::after{content:"";position:absolute;inset:0 -14px 0 auto;width:12px;background:var(--hud-acc2,var(--hud-acc2,#6ce6ff))}
 
 @media (prefers-reduced-motion:reduce){
   body.hud *{transition:none!important}

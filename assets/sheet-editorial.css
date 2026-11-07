@@ -17,7 +17,7 @@ body.hud.workspace-sheet .site > #characterPage{
 }
 body.hud.workspace-sheet #characterPage::before{
   left:0;top:110px;bottom:56px;width:min(25.5vw,368px);
-  background:radial-gradient(ellipse,rgba(16,14,19,.22) 1.6px,transparent 2.15px) 0 0/14px 14px,var(--hud-acc);
+  background:radial-gradient(ellipse,color-mix(in srgb,var(--hud-black,#0d0c10) 22%,transparent) 1.6px,transparent 2.15px) 0 0/14px 14px,var(--hud-acc);
 }
 body.hud.workspace-sheet #characterPage:has(#sheet-panel-core.active)::before{
   width:61vw;top:120px;
@@ -331,7 +331,7 @@ body.hud.workspace-sheet #characterPage .bond-grid .bond-rank-pips i.lit{backgro
 body.hud.workspace-sheet #characterPage .bond-toolbar{display:flex!important;justify-content:space-between;align-items:center;gap:6px;margin:0 0 10px!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
 body.hud.workspace-sheet #characterPage .bond-toolbar strong{font:var(--sheet-label)!important;letter-spacing:1.5px;color:var(--hud-mute)}
 body.hud.workspace-sheet #characterPage .bond-toolbar .bond-add-button,body.hud.workspace-sheet #characterPage [data-memory-add]{margin:0!important}
-body.hud.workspace-sheet #characterPage .bond-index{--link-0:#ed2495;--link-1:#6ae7fa;--link-2:#ffda4d;--link-3:#9dff42;--link-4:#c8aaff;display:grid;gap:9px}
+body.hud.workspace-sheet #characterPage .bond-index{--link-0:var(--hud-acc,#ed2495);--link-1:var(--hud-acc2,#6ae7fa);--link-2:#ffda4d;--link-3:var(--hud-acc3,#9dff42);--link-4:#c8aaff;display:grid;gap:9px}
 body.hud.workspace-sheet #characterPage .bond-index button{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(56px,22%);align-items:center;gap:12px;text-align:left;min-height:78px;padding:9px 12px;background:var(--hud-card);color:var(--hud-paper);border:2px solid var(--hud-black);letter-spacing:0!important}
 body.hud.workspace-sheet #characterPage .bond-index button[aria-pressed=true]{background:var(--hud-black);border-color:var(--link-tone);box-shadow:5px 5px var(--link-tone)}
 body.hud.workspace-sheet #characterPage .bond-index-badge{display:grid;place-items:center;width:55px;height:55px;transform:rotate(-5deg);background:var(--link-tone);color:var(--hud-black);border:2px solid var(--hud-black);font:400 20px var(--hud-display)}
@@ -485,7 +485,7 @@ body.hud.workspace-sheet #characterPage .persona-v2-dissonant-desc{font-size:13p
 body.hud.workspace-sheet #characterPage .exclusive-ability-grid > details > summary{border-left:4px solid var(--hud-acc)}
 body.hud.workspace-sheet #characterPage .exclusive-ability-grid > .combat > summary{border-color:var(--hud-acc2)}
 body.hud.workspace-sheet #characterPage .persona-v2-journal > summary{background:var(--hud-black)!important;border-left:4px solid var(--hud-acc2);font:var(--sheet-label)!important}
-body.hud.workspace-sheet #characterPage .eq-slot summary + :is(.eq-slot-skills,.eq-slot-actions,.eq-slot-effect){border-top:1px solid rgba(255,240,216,.2)}
+body.hud.workspace-sheet #characterPage .eq-slot summary + :is(.eq-slot-skills,.eq-slot-actions,.eq-slot-effect){border-top:1px solid color-mix(in srgb,var(--hud-paper,#fff0d8) 20%,transparent)}
 
 body.hud.workspace-sheet #characterPage .bp-search-label{flex:0 0 auto}
 body.hud.workspace-sheet #characterPage .bp-search-label #bpSearch{height:34px;min-height:34px!important}

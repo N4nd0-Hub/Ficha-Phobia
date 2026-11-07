@@ -26,12 +26,12 @@ body.hud.workspace-sheet #characterPage :is(
   #traitCatalogPanel,.tr-tabs,.tr-alert,.tr-budget-note,
   .bond-index,.bond-index > *,
   .arcana-overview-grid > *,.aw-refined > *,.awakening-spread > *
-){background-color:var(--hud-card,#1b1e33)!important}
-body.hud.workspace-sheet #characterPage .hs-integ{background-color:var(--hud-black,#0d0c10)!important}
+){background-color:var(--hud-card,var(--hud-card,#1b1e33))!important}
+body.hud.workspace-sheet #characterPage .hs-integ{background-color:var(--hud-black,var(--hud-black,#0d0c10))!important}
 body.hud.workspace-sheet #characterPage .hs-skill{padding:8px 10px!important}
 body.hud.workspace-sheet #characterPage .hs-bar{padding:8px 12px 10px!important}
 /* espaços de equipamento vazios: continuam tracejados, mas com fundo */
-body.hud.workspace-sheet #characterPage :is(.eq-slot,[class*="eq-slot"]):is(.is-empty,.empty,[data-empty="true"]){background-color:var(--hud-card2,#151729)!important}
+body.hud.workspace-sheet #characterPage :is(.eq-slot,[class*="eq-slot"]):is(.is-empty,.empty,[data-empty="true"]){background-color:var(--hud-card2,var(--hud-card2,#151729))!important}
 
 /* 3. Retrato / imagens: preenchem a moldura sem distorcer,
       e o aviso "toque para trocar" só aparece ao passar o mouse. */
@@ -83,8 +83,8 @@ body.hud.workspace-sheet #characterPage .deck-cassette-controls button{min-width
 body.hud.workspace-sheet #characterPage .sheet-book > :not(.sheet-book-head){position:relative;z-index:2}
 
 /* 10. Níveis CNv/PNv: cores fixas e legíveis */
-body.hud.workspace-sheet #characterPage .hs-levels .level-unit.cnv{background:var(--hud-paper,#fff0d8)!important;color:#0d0c10!important}
-body.hud.workspace-sheet #characterPage .hs-levels .level-unit.pnv{background:#0d0c10!important;color:#fff0d8!important}
+body.hud.workspace-sheet #characterPage .hs-levels .level-unit.cnv{background:var(--hud-paper,var(--hud-paper,#fff0d8))!important;color:var(--hud-black,#0d0c10)!important}
+body.hud.workspace-sheet #characterPage .hs-levels .level-unit.pnv{background:var(--hud-black,#0d0c10)!important;color:var(--hud-paper,#fff0d8)!important}
 body.hud.workspace-sheet #characterPage .hs-levels .level-unit :is(input,small,b,button){color:inherit!important;opacity:1!important}
 
 /* 11. Só uma faixa rosa (a fixa); a antiga da lista de páginas sai */
@@ -121,37 +121,37 @@ body.hud.workspace-sheet #characterPage .hud-section-label{margin:0 0 10px!impor
    ========================================================== */
 body.hud.workspace-sheet #characterPage .exclusive-ability-grid{align-items:start!important;gap:16px!important}
 body.hud.workspace-sheet #characterPage .hp-ability{
-  --ab:var(--hud-acc,#ef2b97);
-  background:var(--hud-card,#1b1e33)!important;border:2px solid #0d0c10!important;border-top:0!important;
+  --ab:var(--hud-acc,var(--hud-acc,#ef2b97));
+  background:var(--hud-card,var(--hud-card,#1b1e33))!important;border:2px solid var(--hud-black,#0d0c10)!important;border-top:0!important;
   box-shadow:6px 6px 0 rgba(0,0,0,.45)!important;border-radius:0!important;overflow:visible!important;
 }
-body.hud.workspace-sheet #characterPage .hp-ability.combat{--ab:var(--hud-acc2,#6ce6ff)}
+body.hud.workspace-sheet #characterPage .hp-ability.combat{--ab:var(--hud-acc2,var(--hud-acc2,#6ce6ff))}
 body.hud.workspace-sheet #characterPage .hp-ability::before,body.hud.workspace-sheet #characterPage .hp-ability::after{display:none!important}
 body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-hero{display:none!important}
 
 /* cabeçalho (o próprio botão de abrir/fechar) */
 body.hud.workspace-sheet #characterPage .hp-ability > summary{
   list-style:none;display:grid!important;grid-template-columns:58px minmax(0,1fr) auto 22px;align-items:center;gap:14px;
-  padding:12px 16px!important;background:#0d0c10!important;border-top:4px solid var(--ab);cursor:pointer;
-  font:inherit!important;color:#fff0d8!important;
+  padding:12px 16px!important;background:var(--hud-black,#0d0c10)!important;border-top:4px solid var(--ab);cursor:pointer;
+  font:inherit!important;color:var(--hud-paper,#fff0d8)!important;
 }
 body.hud.workspace-sheet #characterPage .hp-ability > summary::-webkit-details-marker{display:none}
 body.hud.workspace-sheet #characterPage .hp-ab-sigil{
-  width:52px;height:52px;display:grid;place-items:center;background:var(--ab);color:#0d0c10;
-  font:400 24px/1 var(--hud-display,"Arial Black");transform:rotate(-6deg);box-shadow:4px 4px 0 #fff0d8;
+  width:52px;height:52px;display:grid;place-items:center;background:var(--ab);color:var(--hud-black,#0d0c10);
+  font:400 24px/1 var(--hud-display,"Arial Black");transform:rotate(-6deg);box-shadow:4px 4px 0 var(--hud-paper,#fff0d8);
   overflow:hidden;white-space:nowrap;
 }
 body.hud.workspace-sheet #characterPage .hp-ab-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
 body.hud.workspace-sheet #characterPage .hp-ab-copy small{font:800 11px var(--hud-cond,"Arial Narrow");letter-spacing:2px;color:var(--ab)}
-body.hud.workspace-sheet #characterPage .hp-ab-copy b{font:400 clamp(18px,1.6vw,24px)/1.05 var(--hud-display,"Arial Black");letter-spacing:-.5px;color:#fff0d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-body.hud.workspace-sheet #characterPage .hp-ab-copy b.is-empty{color:rgba(255,240,216,.45)}
+body.hud.workspace-sheet #characterPage .hp-ab-copy b{font:400 clamp(18px,1.6vw,24px)/1.05 var(--hud-display,"Arial Black");letter-spacing:-.5px;color:var(--hud-paper,#fff0d8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hud.workspace-sheet #characterPage .hp-ab-copy b.is-empty{color:color-mix(in srgb,var(--hud-paper,#fff0d8) 45%,transparent)}
 body.hud.workspace-sheet #characterPage .hp-ab-chips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:240px}
 body.hud.workspace-sheet #characterPage .hp-ab-chips i{
   font:800 11px var(--hud-cond,"Arial Narrow");font-style:normal;letter-spacing:1px;text-transform:uppercase;
-  padding:4px 8px;background:#1c1f36;color:#fff0d8;border-left:3px solid var(--ab);
+  padding:4px 8px;background:var(--hud-card,#1c1f36);color:var(--hud-paper,#fff0d8);border-left:3px solid var(--ab);
   max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-body.hud.workspace-sheet #characterPage .hp-ab-chev{width:12px;height:12px;border-right:3px solid #fff0d8;border-bottom:3px solid #fff0d8;transform:rotate(45deg) translateY(-3px);transition:transform .25s var(--hud-ease,ease)}
+body.hud.workspace-sheet #characterPage .hp-ab-chev{width:12px;height:12px;border-right:3px solid var(--hud-paper,#fff0d8);border-bottom:3px solid var(--hud-paper,#fff0d8);transform:rotate(45deg) translateY(-3px);transition:transform .25s var(--hud-ease,ease)}
 body.hud.workspace-sheet #characterPage .hp-ability[open] .hp-ab-chev{transform:rotate(-135deg) translate(-2px,-2px)}
 
 /* corpo */
@@ -166,13 +166,13 @@ body.hud.workspace-sheet #characterPage .hp-ability .ability-meta-grid{grid-temp
 body.hud.workspace-sheet #characterPage .hp-ability label{
   display:flex!important;flex-direction:column;gap:6px;min-width:0;margin:0!important;padding:0!important;
   background:none!important;border:0!important;box-shadow:none!important;
-  font:800 11px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1.5px;color:rgba(255,240,216,.62)!important;text-transform:uppercase;
+  font:800 11px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1.5px;color:color-mix(in srgb,var(--hud-paper,#fff0d8) 62%,transparent)!important;text-transform:uppercase;
 }
 body.hud.workspace-sheet #characterPage .hp-ability label > span{font:inherit!important;color:inherit!important;background:none!important;padding:0!important}
 body.hud.workspace-sheet #characterPage .hp-ability label::before,body.hud.workspace-sheet #characterPage .hp-ability label::after{display:none!important}
 body.hud.workspace-sheet #characterPage .hp-ability :is(input,textarea){
-  width:100%;box-sizing:border-box;padding:10px 12px!important;background:#0d0c10!important;color:#fff0d8!important;
-  border:1px solid rgba(255,240,216,.18)!important;border-left:3px solid var(--ab)!important;border-radius:0!important;
+  width:100%;box-sizing:border-box;padding:10px 12px!important;background:var(--hud-black,#0d0c10)!important;color:var(--hud-paper,#fff0d8)!important;
+  border:1px solid color-mix(in srgb,var(--hud-paper,#fff0d8) 18%,transparent)!important;border-left:3px solid var(--ab)!important;border-radius:0!important;
   font:600 15px var(--hud-body,Barlow)!important;letter-spacing:0;text-transform:none;box-shadow:none!important;
 }
 body.hud.workspace-sheet #characterPage .hp-ability :is(input,textarea):focus{border-color:var(--ab)!important;outline:0}
@@ -185,25 +185,25 @@ body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone{margin
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone::before,body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone::after{display:none!important}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle{
   display:flex!important;align-items:center;gap:12px;width:100%;min-height:0!important;padding:11px 14px!important;
-  background:#0d0c10!important;background-image:none!important;border:0!important;border-left:4px solid var(--ab)!important;border-radius:0!important;box-shadow:none!important;
-  color:#fff0d8!important;cursor:pointer;text-align:left;
+  background:var(--hud-black,#0d0c10)!important;background-image:none!important;border:0!important;border-left:4px solid var(--ab)!important;border-radius:0!important;box-shadow:none!important;
+  color:var(--hud-paper,#fff0d8)!important;cursor:pointer;text-align:left;
 }
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle::before,body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle::after,
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-grip{display:none!important}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy{display:flex!important;flex-direction:column;gap:2px;flex:1;min-width:0}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy small{display:none!important}
-body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy strong{font:400 15px var(--hud-display,"Arial Black")!important;color:#fff0d8!important;letter-spacing:0;text-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy strong{font:400 15px var(--hud-display,"Arial Black")!important;color:var(--hud-paper,#fff0d8)!important;letter-spacing:0;text-shadow:none!important}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy strong em{display:none}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-count{
-  padding:4px 9px!important;background:var(--ab)!important;color:#0d0c10!important;border:0!important;border-radius:0!important;
+  padding:4px 9px!important;background:var(--ab)!important;color:var(--hud-black,#0d0c10)!important;border:0!important;border-radius:0!important;
   font:800 11px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1px;box-shadow:none!important;
 }
-body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-chevron{width:auto!important;height:auto!important;border:0!important;background:none!important;color:#fff0d8!important;font-size:16px!important;box-shadow:none!important}
-body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer{background:#151729!important;border:0!important;border-left:4px solid var(--ab)!important;box-shadow:none!important}
-body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer-intro b{font:400 14px var(--hud-display,"Arial Black")!important;color:#fff0d8!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-chevron{width:auto!important;height:auto!important;border:0!important;background:none!important;color:var(--hud-paper,#fff0d8)!important;font-size:16px!important;box-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer{background:var(--hud-card2,#151729)!important;border:0!important;border-left:4px solid var(--ab)!important;box-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer-intro b{font:400 14px var(--hud-display,"Arial Black")!important;color:var(--hud-paper,#fff0d8)!important}
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add{
   display:flex!important;align-items:center;gap:8px;width:auto!important;min-height:0!important;padding:9px 14px!important;
-  background:var(--ab)!important;color:#0d0c10!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+  background:var(--ab)!important;color:var(--hud-black,#0d0c10)!important;border:0!important;border-radius:0!important;box-shadow:none!important;
   clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);font:800 13px var(--hud-body,Barlow)!important;
 }
 body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add small{display:none!important}
@@ -234,7 +234,7 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{
   --at:var(--hud-acc);
   position:relative;display:flex!important;flex-direction:column;justify-content:flex-end;align-items:stretch;
   min-height:96px!important;padding:10px 16px 12px!important;overflow:hidden;
-  background:#0d0c10!important;border:0!important;box-shadow:none!important;
+  background:var(--hud-black,#0d0c10)!important;border:0!important;box-shadow:none!important;
   clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)!important;
   transition:transform .25s var(--hud-ease,ease),background-color .25s;
 }
@@ -252,16 +252,16 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr::before{
 /* etiqueta */
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr small{
   position:absolute;left:16px;top:10px;margin:0!important;padding:3px 9px 2px!important;
-  background:var(--at)!important;color:#0d0c10!important;transform:skewX(-10deg);
+  background:var(--at)!important;color:var(--hud-black,#0d0c10)!important;transform:skewX(-10deg);
   font:400 13px/1 var(--hud-display,"Arial Black")!important;letter-spacing:1px!important;
 }
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr input{
   position:relative;z-index:1;width:100%!important;text-align:left!important;padding:0!important;height:auto!important;
-  font:400 44px/1 var(--hud-display,"Arial Black")!important;letter-spacing:-1px;color:#fff0d8!important;
+  font:400 44px/1 var(--hud-display,"Arial Black")!important;letter-spacing:-1px;color:var(--hud-paper,#fff0d8)!important;
   background:transparent!important;border:0!important;
 }
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr .hs-eq{position:absolute;right:14px;bottom:12px;z-index:1;color:var(--hud-acc3)!important}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:hover{background:#15172a!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:hover{background:var(--hud-card2,#15172a)!important}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:hover::after,
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:focus-within::after{height:7px}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:focus-within input{color:var(--at)!important}
@@ -273,7 +273,7 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-ribbo
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor,.combat-status-pod){
   --dv:var(--hud-acc2);
   position:relative;gap:6px!important;padding:12px 14px 10px!important;overflow:hidden;
-  background:#0d0c10!important;border:0!important;border-top:3px solid var(--dv)!important;
+  background:var(--hud-black,#0d0c10)!important;border:0!important;border-top:3px solid var(--dv)!important;
   box-shadow:4px 4px 0 rgba(0,0,0,.4)!important;transform:none;
 }
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor.carry{--dv:var(--hud-acc3)}
@@ -286,27 +286,27 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-e
   clip-path:polygon(100% 0,100% 100%,0 100%);pointer-events:none;
 }
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor-top strong,.pod-copy > small){
-  font:400 13px/1 var(--hud-display,"Arial Black")!important;letter-spacing:1px!important;color:#fff0d8!important;text-transform:uppercase;
+  font:400 13px/1 var(--hud-display,"Arial Black")!important;letter-spacing:1px!important;color:var(--hud-paper,#fff0d8)!important;text-transform:uppercase;
 }
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-mode{
-  padding:3px 6px!important;border:0!important;background:rgba(255,240,216,.08)!important;color:var(--dv)!important;
+  padding:3px 6px!important;border:0!important;background:color-mix(in srgb,var(--hud-paper,#fff0d8) 8%,transparent)!important;color:var(--dv)!important;
   font:800 10px/1 var(--hud-cond,"Arial Narrow")!important;letter-spacing:1.5px;transform:skewX(-10deg);
 }
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .is-manual .derived-mode{background:#ffcf59!important;color:#0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .is-manual .derived-mode{background:#ffcf59!important;color:var(--hud-black,#0d0c10)!important}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line){align-items:baseline!important;gap:8px!important;min-height:38px}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input{
   width:3.2ch!important;field-sizing:content;min-width:1.4ch;font:400 34px/1 var(--hud-display,"Arial Black")!important;letter-spacing:-1px;
-  color:#fff0d8!important;border:0!important;border-bottom:2px solid transparent!important;transition:border-color .2s;
+  color:var(--hud-paper,#fff0d8)!important;border:0!important;border-bottom:2px solid transparent!important;transition:border-color .2s;
 }
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input:hover{border-bottom-color:rgba(255,240,216,.25)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input:hover{border-bottom-color:color-mix(in srgb,var(--hud-paper,#fff0d8) 25%,transparent)!important}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input:focus{border-bottom-color:var(--dv)!important;outline:0}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-units{font:800 14px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1px;color:var(--dv)!important}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot{padding-top:7px;border-top:1px solid rgba(255,240,216,.1)}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot{padding-top:7px;border-top:1px solid color-mix(in srgb,var(--hud-paper,#fff0d8) 10%,transparent)}
 body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small{font:700 12px var(--hud-body,Barlow)!important;color:var(--hud-mute)!important}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small b{color:#fff0d8!important}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .bp-core-carry{margin-left:auto;padding:2px 6px!important;background:rgba(150,255,69,.1)!important}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset{border:0!important;background:rgba(255,240,216,.06)!important;color:#fff0d8!important;transition:background-color .2s,color .2s}
-body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset:not(:disabled):hover{background:var(--dv)!important;color:#0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small b{color:var(--hud-paper,#fff0d8)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .bp-core-carry{margin-left:auto;padding:2px 6px!important;background:color-mix(in srgb,var(--hud-acc3,#96ff45) 10%,transparent)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset{border:0!important;background:color-mix(in srgb,var(--hud-paper,#fff0d8) 6%,transparent)!important;color:var(--hud-paper,#fff0d8)!important;transition:background-color .2s,color .2s}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset:not(:disabled):hover{background:var(--dv)!important;color:var(--hud-black,#0d0c10)!important}
 
 @media (max-width:1100px){
   body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{min-height:84px!important}
