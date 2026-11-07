@@ -21,19 +21,19 @@
     paper: ['Texto', 'Letras e números']
   };
   var PRESETS = [
-    { id: 'makoto', name: 'MAKOTO', tag: 'Hora Sombria', fx: 'makoto', c: { acc: '#3d8bff', acc2: '#6dffc2', acc3: '#9dffd6', bg: '#050d1f', card: '#0c1a36', card2: '#09152c', black: '#02060f', paper: '#e4f2ff' } },
-    { id: 'narukami', name: 'NARUKAMI', tag: 'Flores ao vento', fx: 'narukami', c: { acc: '#f7c51e', acc2: '#c3c7cf', acc3: '#ffe36b', bg: '#17181c', card: '#26282e', card2: '#1f2126', black: '#0b0c0e', paper: '#f7f3e6' } },
-    { id: 'joker', name: 'JOKER', tag: 'Ladrão de corações', fx: 'joker', c: { acc: '#e5101c', acc2: '#ffffff', acc3: '#ff3a44', bg: '#0a0909', card: '#171313', card2: '#110e0e', black: '#000000', paper: '#ffffff' } },
-    { id: 'phobia', name: 'PHOBIA', tag: 'Padrão', c: { acc: '#ef2b97', acc2: '#6ce6ff', acc3: '#96ff45', bg: '#141523', card: '#1b1e33', card2: '#151729', black: '#0d0c10', paper: '#fff0d8' } },
-    { id: 'rubro', name: 'RUBRO', tag: 'Vermelho e preto', c: { acc: '#e8202a', acc2: '#f4ece2', acc3: '#ffcc33', bg: '#0e0b0b', card: '#1d1515', card2: '#160f10', black: '#060505', paper: '#f7efe6' } },
-    { id: 'mare', name: 'MARÉ', tag: 'Azul profundo', c: { acc: '#2f8cff', acc2: '#8fe9ff', acc3: '#c6ff5c', bg: '#08132a', card: '#122242', card2: '#0d1a34', black: '#040a17', paper: '#e9f6ff' } },
-    { id: 'sakura', name: 'SAKURA', tag: 'Rosa e pêssego', c: { acc: '#ff5c9d', acc2: '#ffc29a', acc3: '#ffe36e', bg: '#1d0f18', card: '#2d1726', card2: '#24121f', black: '#0f070c', paper: '#fff0f4' } },
-    { id: 'veneno', name: 'VENENO', tag: 'Ácido e roxo', c: { acc: '#a6ff2e', acc2: '#c77dff', acc3: '#3dfcd1', bg: '#110c1c', card: '#1e1630', card2: '#181127', black: '#08060d', paper: '#f1ffe4' } },
-    { id: 'ouro', name: 'OURO', tag: 'Dourado e preto', c: { acc: '#f2b632', acc2: '#fff1c9', acc3: '#ff6b3d', bg: '#0f0d09', card: '#1d1a12', card2: '#16130d', black: '#070604', paper: '#fff5df' } },
-    { id: 'violeta', name: 'VIOLETA', tag: 'Clube noturno', c: { acc: '#b45cff', acc2: '#ff8ad8', acc3: '#7cf0ff', bg: '#140a22', card: '#24143a', card2: '#1c1030', black: '#0a0512', paper: '#f8edff' } },
-    { id: 'gelo', name: 'GELO', tag: 'Ciano e branco', c: { acc: '#38d6f5', acc2: '#ffffff', acc3: '#ffd86b', bg: '#0b1820', card: '#142a36', card2: '#10222d', black: '#050c11', paper: '#effbff' } },
-    { id: 'crepusculo', name: 'CREPÚSCULO', tag: 'Laranja e roxo', c: { acc: '#ff7a2f', acc2: '#ff4f9a', acc3: '#ffd23f', bg: '#170d1f', card: '#281632', card2: '#201129', black: '#0b0610', paper: '#fff1e6' } },
-    { id: 'grafite', name: 'GRAFITE', tag: 'Cinza e magenta', c: { acc: '#ff4fa3', acc2: '#d9dbe3', acc3: '#9be7c4', bg: '#131417', card: '#22242a', card2: '#1b1c21', black: '#08090b', paper: '#f2f2f0' } }
+    { id: 'makoto', site: 'makoto', name: 'MAKOTO', tag: 'Hora Sombria', fx: 'makoto', c: { acc: '#3d8bff', acc2: '#6dffc2', acc3: '#9dffd6', bg: '#050d1f', card: '#0c1a36', card2: '#09152c', black: '#02060f', paper: '#e4f2ff' } },
+    { id: 'narukami', site: 'graphite', name: 'NARUKAMI', tag: 'Flores ao vento', fx: 'narukami', c: { acc: '#f7c51e', acc2: '#c3c7cf', acc3: '#ffe36b', bg: '#17181c', card: '#26282e', card2: '#1f2126', black: '#0b0c0e', paper: '#f7f3e6' } },
+    { id: 'joker', site: 'joker', name: 'JOKER', tag: 'Ladrão de corações', fx: 'joker', c: { acc: '#e5101c', acc2: '#ffffff', acc3: '#ff3a44', bg: '#0a0909', card: '#171313', card2: '#110e0e', black: '#000000', paper: '#ffffff' } },
+    { id: 'phobia', site: 'cream', name: 'PHOBIA', tag: 'Padrão', c: { acc: '#ef2b97', acc2: '#6ce6ff', acc3: '#96ff45', bg: '#141523', card: '#1b1e33', card2: '#151729', black: '#0d0c10', paper: '#fff0d8' } },
+    { id: 'rubro', site: 'joker', name: 'RUBRO', tag: 'Vermelho e preto', c: { acc: '#e8202a', acc2: '#f4ece2', acc3: '#ffcc33', bg: '#0e0b0b', card: '#1d1515', card2: '#160f10', black: '#060505', paper: '#f7efe6' } },
+    { id: 'mare', site: 'makoto', name: 'MARÉ', tag: 'Azul profundo', c: { acc: '#2f8cff', acc2: '#8fe9ff', acc3: '#c6ff5c', bg: '#08132a', card: '#122242', card2: '#0d1a34', black: '#040a17', paper: '#e9f6ff' } },
+    { id: 'sakura', site: 'sakura', name: 'SAKURA', tag: 'Rosa e pêssego', c: { acc: '#ff5c9d', acc2: '#ffc29a', acc3: '#ffe36e', bg: '#1d0f18', card: '#2d1726', card2: '#24121f', black: '#0f070c', paper: '#fff0f4' } },
+    { id: 'veneno', site: 'violet', name: 'VENENO', tag: 'Ácido e roxo', c: { acc: '#a6ff2e', acc2: '#c77dff', acc3: '#3dfcd1', bg: '#110c1c', card: '#1e1630', card2: '#181127', black: '#08060d', paper: '#f1ffe4' } },
+    { id: 'ouro', site: 'graphite', name: 'OURO', tag: 'Dourado e preto', c: { acc: '#f2b632', acc2: '#fff1c9', acc3: '#ff6b3d', bg: '#0f0d09', card: '#1d1a12', card2: '#16130d', black: '#070604', paper: '#fff5df' } },
+    { id: 'violeta', site: 'violet', name: 'VIOLETA', tag: 'Clube noturno', c: { acc: '#b45cff', acc2: '#ff8ad8', acc3: '#7cf0ff', bg: '#140a22', card: '#24143a', card2: '#1c1030', black: '#0a0512', paper: '#f8edff' } },
+    { id: 'gelo', site: 'ice', name: 'GELO', tag: 'Ciano e branco', c: { acc: '#38d6f5', acc2: '#ffffff', acc3: '#ffd86b', bg: '#0b1820', card: '#142a36', card2: '#10222d', black: '#050c11', paper: '#effbff' } },
+    { id: 'crepusculo', site: 'midnight', name: 'CREPÚSCULO', tag: 'Laranja e roxo', c: { acc: '#ff7a2f', acc2: '#ff4f9a', acc3: '#ffd23f', bg: '#170d1f', card: '#281632', card2: '#201129', black: '#0b0610', paper: '#fff1e6' } },
+    { id: 'grafite', site: 'graphite', name: 'GRAFITE', tag: 'Cinza e magenta', c: { acc: '#ff4fa3', acc2: '#d9dbe3', acc3: '#9be7c4', bg: '#131417', card: '#22242a', card2: '#1b1c21', black: '#08090b', paper: '#f2f2f0' } }
   ];
   var FONTS = [
     { id: 'p5', name: 'ORIGINAL', sample: 'PHOBIA 20', d: '"Archivo Black","Arial Black",Arial,sans-serif', c: '"Barlow Condensed","Arial Narrow",Arial,sans-serif', b: 'Barlow,"Arial Narrow",Arial,sans-serif', radar: 'original' },
@@ -123,7 +123,13 @@
       '--theme-surface:' + c.card + '!important', '--theme-surface-2:' + c.card2 + '!important', '--theme-panel:' + c.card + '!important',
       '--theme-ink:' + c.paper + '!important', '--theme-input:' + c.black + '!important', '--theme-input-ink:' + c.paper + '!important',
       '--hs-slab:' + c[h.slabFrom] + '!important', '--hs-on-slab:' + (contrast(c[h.slabFrom], c.black) > contrast(c[h.slabFrom], c.paper) ? c.black : c.paper) + '!important');
+    var glob = ['--theme-accent:' + c.acc, '--theme-accent-2:' + c.acc2, '--theme-accent-3:' + c.acc3,
+      '--hud-acc:' + c.acc, '--hud-acc2:' + c.acc2, '--hud-acc3:' + c.acc3, '--hud-black:' + c.black, '--hud-paper:' + c.paper,
+      '--hud-card:' + c.card, '--hud-card2:' + c.card2, '--hud-display:' + f.d, '--hud-cond:' + f.c, '--hud-body:' + f.b,
+      '--dk-acc:' + c.acc, '--dk-acc2:' + c.acc2, '--dk-acc3:' + c.acc3].map(function (v) { return v + '!important'; });
     styleEl.textContent =
+      /* o site inteiro (mapa, guia, agenda, barra de baixo) usa os destaques e letras do visual */
+      'body.hud,body.hud .sheet-ui-backdrop{' + glob.join(';') + '}' +
       'body.hud.workspace-sheet,body.hud.workspace-sheet .site>#characterPage,body.hud.workspace-sheet #characterPage,body.hud.workspace-sheet .sheet-ui-backdrop{' + vars.join(';') + '}';
     var b = document.body;
     b.dataset.hsSlab = h.slab;
@@ -136,6 +142,11 @@
   }
 
   function save() { try { saveState(true); } catch (e) {} }
+  /* o tema do mapa acompanha o tema escolhido aqui */
+  function syncSite(id) {
+    var t = preset(id).site;
+    try { if (t && typeof applySiteTheme === 'function' && state.siteTheme !== t) applySiteTheme(t, false); } catch (e) {}
+  }
   function set(fn) { var h = cfg(); if (!h) return; fn(h); apply(); save(); }
 
   /* ---------- painel ---------- */
@@ -212,7 +223,7 @@
       '</div>' +
 
       '<section class="hs-pane on" data-hs-pane="temas">' +
-        '<p class="hs-hint">Escolha um tema pronto. Dá para ajustar qualquer cor depois na aba Cores.</p>' +
+        '<p class="hs-hint">Escolha um tema pronto. O mapa e o resto do site acompanham. Dá para ajustar qualquer cor depois na aba Cores.</p>' +
         '<b class="hs-sub">ESPECIAIS · com efeito animado</b>' +
         '<div class="hs-presets hs-specials">' + PRESETS.filter(function (p) { return p.fx; }).map(card).join('') + '</div>' +
         '<b class="hs-sub">CLÁSSICOS</b>' +
@@ -287,14 +298,14 @@
       $$('[data-hs-pane]', panel).forEach(function (p) { p.classList.toggle('on', p.dataset.hsPane === d.hsTab); });
       panel.scrollTop = 0; return;
     }
-    if (d.hsPreset) return set(function (h) { h.preset = d.hsPreset; h.colors = {}; h.custom = false; });
+    if (d.hsPreset) return set(function (h) { h.preset = d.hsPreset; h.colors = {}; h.custom = false; syncSite(h.preset); });
     if (d.hsFont) return set(function (h) { h.font = d.hsFont; });
     if (d.hsSlab) return set(function (h) { h.slab = d.hsSlab; });
     if (d.hsSlabfrom) return set(function (h) { h.slabFrom = d.hsSlabfrom; });
     if (d.hsMotion) return set(function (h) { h.motion = d.hsMotion; });
     if (d.hsFx) return set(function (h) { h.fx = d.hsFx; });
     if (t.hasAttribute('data-hs-reset-colors')) return set(function (h) { h.colors = {}; h.custom = false; });
-    if (t.hasAttribute('data-hs-reset-all')) return set(function (h) { h.preset = 'phobia'; h.colors = {}; h.font = 'p5'; h.slab = 'dots'; h.slabFrom = 'acc'; h.motion = 'full'; h.fx = 'on'; h.custom = false; });
+    if (t.hasAttribute('data-hs-reset-all')) return set(function (h) { h.preset = 'phobia'; h.colors = {}; h.font = 'p5'; h.slab = 'dots'; h.slabFrom = 'acc'; h.motion = 'full'; h.fx = 'on'; h.custom = false; syncSite('phobia'); });
     if (t.hasAttribute('data-hs-copy')) return copyCode();
     if (t.hasAttribute('data-hs-paste')) return pasteCode();
   }
@@ -319,7 +330,7 @@
       h.slabFrom = /^acc[23]?$/.test(p[4]) ? p[4] : 'acc';
       h.motion = p[5] === 'calm' ? 'calm' : 'full';
       h.colors = {}; KEYS.forEach(function (k, i) { h.colors[k] = '#' + p[6].substr(i * 6, 6).toLowerCase(); });
-      h.custom = true;
+      h.custom = true; syncSite(h.preset);
     });
     msg('Visual aplicado.');
   }
@@ -354,6 +365,15 @@
   function init() {
     if (typeof ensureCharacterUI !== 'function' || typeof state === 'undefined' || !state || !state.charSheet) { setTimeout(init, 200); return; }
     build(); apply();
+    var stb = document.getElementById('siteThemeButton');
+    if (stb && !stb.__hs) {
+      stb.__hs = true; stb.title = 'Visual do site e da ficha';
+      stb.addEventListener('click', function (e) {
+        e.stopImmediatePropagation(); e.preventDefault();
+        try { if (typeof closeGlobalThemePicker === 'function') closeGlobalThemePicker(); } catch (x) {}
+        if (typeof openSheetAppearance === 'function') openSheetAppearance();
+      }, true);
+    }
     wrap('openSheetAppearance', function () { build(); paintPanel(); });
     wrap('hydrateCharacterSheet', apply);
     wrap('applyCharacterAppearance', function () { build(); paintPanel(); });

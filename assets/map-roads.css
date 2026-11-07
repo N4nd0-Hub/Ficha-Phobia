@@ -28,14 +28,14 @@ body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fil
 }
 #mapPage svg .district-link-shadow{stroke:#0b0a0e;stroke-width:26;opacity:.32}
 #mapPage svg .district-link-outer {stroke:#141217;stroke-width:26;opacity:1}
-#mapPage svg .district-link-edge  {stroke:#ef2b97;stroke-width:18;opacity:1}
+#mapPage svg .district-link-edge  {stroke:var(--theme-accent,#ef2b97);stroke-width:18;opacity:1}
 #mapPage svg .district-link-inner {stroke:#fff3d9;stroke-width:9;opacity:1}
 #mapPage svg .district-link-lane  {stroke:#141217;stroke-width:3;stroke-dasharray:2 11;opacity:.85}
 
 /* linhas secundárias: mais finas, acento ciano */
 #mapPage svg .district-link-shadow.is-minor{stroke-width:17}
 #mapPage svg .district-link-outer.is-minor {stroke-width:17}
-#mapPage svg .district-link-edge.is-minor  {stroke:#6ce6ff;stroke-width:11}
+#mapPage svg .district-link-edge.is-minor  {stroke:var(--theme-accent-2,#6ce6ff);stroke-width:11}
 #mapPage svg .district-link-inner.is-minor {stroke-width:4}
 #mapPage svg .district-link-lane.is-minor  {display:none}
 
@@ -48,7 +48,7 @@ body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fil
 }
 
 /* ---------- Decoração de fundo ---------- */
-#mapPage .pm-dot      {fill:#ef2b97}
+#mapPage .pm-dot      {fill:var(--theme-accent,#ef2b97)}
 #mapPage .pm-halftone {opacity:.16}
 #mapPage .pm-bay-shadow{fill:#141217;opacity:.85}
 #mapPage .pm-bay      {fill:#8fd8ea}
@@ -63,19 +63,19 @@ body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fil
 body.time-night #mapPage svg .district-link-inner{stroke:#e9f7ff}
 body.time-night #mapPage svg .district-link-edge.is-minor{stroke:#58d9ff}
 body.time-night #mapPage .pm-bay{fill:#1c3550}
-body.time-night #mapPage .pm-dot-bay{fill:#6ce6ff}
+body.time-night #mapPage .pm-dot-bay{fill:var(--theme-accent-2,#6ce6ff)}
 body.time-night #mapPage .pm-halftone{opacity:.22}
-body.time-night #mapPage .pm-star{fill:#6ce6ff}
-body.time-night #mapPage .pm-slash-cream{fill:#ef2b97}
+body.time-night #mapPage .pm-star{fill:var(--theme-accent-2,#6ce6ff)}
+body.time-night #mapPage .pm-slash-cream{fill:var(--theme-accent,#ef2b97)}
 
 /* ---------- Cognição: mesmo traçado, energia verde/ciano ---------- */
-body.cognition #mapPage svg .district-link-edge{stroke:#96ff45;opacity:.9}
-body.cognition #mapPage svg .district-link-edge.is-minor{stroke:#6ce6ff}
+body.cognition #mapPage svg .district-link-edge{stroke:var(--theme-accent-3,#96ff45);opacity:.9}
+body.cognition #mapPage svg .district-link-edge.is-minor{stroke:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage svg .district-link-inner{stroke:#14252b}
-body.cognition #mapPage svg .district-link-lane{stroke:#6ce6ff;stroke-width:3;stroke-dasharray:10 8;opacity:.95}
-body.cognition #mapPage .pm-dot{fill:#6ce6ff}
+body.cognition #mapPage svg .district-link-lane{stroke:var(--theme-accent-2,#6ce6ff);stroke-width:3;stroke-dasharray:10 8;opacity:.95}
+body.cognition #mapPage .pm-dot{fill:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage .pm-bay{fill:#10262c}
-body.cognition #mapPage .pm-dot-bay{fill:#96ff45}
-body.cognition #mapPage .pm-bay-line{stroke:#6ce6ff}
-body.cognition #mapPage .pm-star{fill:#96ff45}
-body.cognition #mapPage .pm-slash-cream{fill:#6ce6ff}
+body.cognition #mapPage .pm-dot-bay{fill:var(--theme-accent-3,#96ff45)}
+body.cognition #mapPage .pm-bay-line{stroke:var(--theme-accent-2,#6ce6ff)}
+body.cognition #mapPage .pm-star{fill:var(--theme-accent-3,#96ff45)}
+body.cognition #mapPage .pm-slash-cream{fill:var(--theme-accent-2,#6ce6ff)}
