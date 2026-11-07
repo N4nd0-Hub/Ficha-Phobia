@@ -1,0 +1,334 @@
+/* ==========================================================
+   PERSONA // PHOBIA — district-local.css
+   Interior dos distritos no estilo HUD P5.
+   ========================================================== */
+#subDistrictMap .dl{
+  --dl-a: var(--theme-accent,#ef2b97);
+  --dl-b: var(--theme-accent-2,#6ce6ff);
+  --dl-c: var(--theme-accent-3,#96ff45);
+  --dl-ink: var(--hud-black,#0d0c10);
+  --dl-paper: var(--hud-paper,#fff0d8);
+  --dl-bg: var(--hud-bg,#141523);
+  --dl-card: var(--hud-card,#1c1f36);
+  --dl-ground: color-mix(in srgb,var(--dl-paper) 86%,var(--dl-a));
+  --dl-block: color-mix(in srgb,var(--dl-paper) 96%,var(--dl-ink));
+  --dl-block2: color-mix(in srgb,var(--dl-paper) 80%,var(--dl-a));
+  --dl-block3: color-mix(in srgb,var(--dl-paper) 72%,var(--dl-b));
+  --dl-water: color-mix(in srgb,var(--dl-b) 62%,var(--dl-paper));
+  --dl-park: color-mix(in srgb,var(--dl-c) 38%,var(--dl-paper));
+  height:100%;display:grid!important;grid-template-rows:auto minmax(0,1fr);min-width:0;
+  background:var(--dl-bg);color:var(--dl-paper);font-family:var(--hud-body,Barlow),sans-serif;
+}
+
+/* ---------- cabeçalho ---------- */
+#subDistrictMap .dl-head{
+  position:relative;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:18px;
+  padding:12px 22px 14px 14px!important;background:var(--dl-ink)!important;color:var(--dl-paper)!important;border:0!important;
+  border-bottom:4px solid var(--dl-a)!important;overflow:hidden;
+}
+#subDistrictMap .dl-head::before{content:"";position:absolute;inset:0 auto 0 -40px;width:300px;background:var(--dl-a);transform:skewX(-18deg);opacity:.12;pointer-events:none}
+#subDistrictMap .dl-badge{--bd-a:var(--theme-accent,#ef2b97);--bd-b:var(--theme-accent-2,#6ce6ff);--bd-c:var(--theme-accent-3,#96ff45);--bd-ink:var(--hud-black,#0d0c10);--bd-paper:var(--hud-paper,#fff3d9);width:132px;height:100px;flex:none;margin:-6px 0 -10px;transform:rotate(-4deg);filter:drop-shadow(4px 5px 0 rgba(0,0,0,.35))}
+#subDistrictMap .dl-badge svg{width:100%;height:100%;display:block}
+#subDistrictMap .dl-eyebrow{font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:2.5px!important;color:color-mix(in srgb,var(--dl-paper) 62%,transparent)!important;opacity:1!important}
+#subDistrictMap .dl-eyebrow b{color:var(--dl-b)}
+#subDistrictMap .dl-name{display:flex;flex-wrap:wrap;gap:2px;margin:8px 0 8px!important;font:400 34px/1 var(--hud-display,"Archivo Black"),sans-serif!important;letter-spacing:0!important}
+#subDistrictMap .dl-l{display:inline-grid;place-items:center;min-width:.78em;padding:.04em .1em 0;font-style:normal;transform:translateY(var(--y)) rotate(var(--r));border:2px solid var(--dl-ink);box-shadow:3px 3px 0 rgba(0,0,0,.45)}
+#subDistrictMap .dl-l.l-paper{background:var(--dl-paper);color:var(--dl-ink)}
+#subDistrictMap .dl-l.l-ink{background:var(--dl-ink);color:var(--dl-paper);border-color:var(--dl-paper)}
+#subDistrictMap .dl-l.l-acc{background:var(--dl-a);color:var(--dl-ink)}
+#subDistrictMap .dl-l.l-lit{background:var(--dl-b);color:var(--dl-ink)}
+#subDistrictMap .dl-space{display:inline-block;width:.35em}
+#subDistrictMap .dl-sub{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;margin:0!important;opacity:1!important}
+#subDistrictMap .dl-jp{font:900 15px/1 "Noto Sans JP",sans-serif;color:var(--dl-paper)}
+#subDistrictMap .dl-chip,#subDistrictMap .dl-tag{display:inline-flex;align-items:center;padding:4px 8px 3px;background:color-mix(in srgb,var(--dl-paper) 10%,transparent);color:var(--dl-paper);font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+#subDistrictMap :is(.dl-chip,.dl-tag).st-visited{background:var(--dl-c);color:var(--dl-ink)}
+#subDistrictMap :is(.dl-chip,.dl-tag).st-important{background:var(--dl-a);color:var(--dl-ink)}
+#subDistrictMap :is(.dl-chip,.dl-tag).st-danger{background:#ff4b5c;color:#140608}
+#subDistrictMap :is(.dl-chip,.dl-tag).st-cognitive{background:var(--dl-b);color:var(--dl-ink)}
+#subDistrictMap .dl-meters{display:grid;gap:8px;min-width:230px}
+#subDistrictMap .dl-meter small{display:block;font:800 10px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:color-mix(in srgb,var(--dl-paper) 60%,transparent)}
+#subDistrictMap .dl-meter{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 10px}
+#subDistrictMap .dl-meter > small{grid-column:1/-1}
+#subDistrictMap .dl-meter b{font:400 15px/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--dl-paper)}
+#subDistrictMap .dl-meter.two{grid-template-columns:1fr 1fr}
+#subDistrictMap .dl-meter.two b{font-size:13px}
+#subDistrictMap .dl-bar{display:block;height:10px;background:color-mix(in srgb,var(--dl-paper) 12%,transparent);transform:skewX(-18deg);overflow:hidden}
+#subDistrictMap .dl-bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--dl-b) 0 8px,color-mix(in srgb,var(--dl-b) 60%,var(--dl-ink)) 8px 10px)}
+#subDistrictMap .dl-tabs{display:flex!important;gap:4px;padding:0!important;background:none!important;border:0!important}
+#subDistrictMap .dl-tabs button{padding:10px 16px!important;border:0!important;border-radius:0!important;background:color-mix(in srgb,var(--dl-paper) 10%,transparent)!important;color:var(--dl-paper)!important;font:800 13px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.8px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);cursor:pointer;transition:background-color .2s,color .2s}
+#subDistrictMap .dl-tabs button[aria-pressed="true"]{background:var(--dl-paper)!important;color:var(--dl-ink)!important}
+
+/* ---------- grade ---------- */
+#subDistrictMap .dl-grid{display:grid!important;grid-template-columns:minmax(0,1fr) 350px;min-height:0}
+#subDistrictMap .dl-main{display:grid!important;grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;background:var(--dl-bg)!important;color:var(--dl-paper)!important}
+#subDistrictMap .dl-tools{display:flex!important;align-items:center;gap:12px;padding:10px 14px!important;border:0!important;background:color-mix(in srgb,var(--dl-ink) 70%,var(--dl-bg))!important;overflow:hidden}
+#subDistrictMap .dl-search{position:relative;flex:0 1 300px;min-width:150px;display:block}
+#subDistrictMap .dl-search svg{position:absolute;left:10px;top:50%;width:16px;height:16px;transform:translateY(-50%);fill:none;stroke:var(--dl-paper);stroke-width:2.4;opacity:.6;pointer-events:none}
+#subDistrictMap .dl-search input{width:100%;height:36px!important;padding:6px 10px 6px 34px!important;border:0!important;border-left:3px solid var(--dl-a)!important;border-radius:0!important;background:var(--dl-ink)!important;color:var(--dl-paper)!important;font:600 14px var(--hud-body,Barlow),sans-serif!important}
+#subDistrictMap .dl-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;min-width:0}
+#subDistrictMap .dl-chips::-webkit-scrollbar{display:none}
+#subDistrictMap .dl-chips button{flex:none;padding:8px 12px;border:0;cursor:pointer;background:color-mix(in srgb,var(--dl-paper) 9%,transparent);color:var(--dl-paper);font:800 12px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .2s,color .2s,transform .2s}
+#subDistrictMap .dl-chips button:hover{transform:translateY(-2px)}
+#subDistrictMap .dl-chips button.on{background:var(--dl-a);color:var(--dl-ink)}
+
+/* ---------- palco do mapa ---------- */
+#subDistrictMap .dl-surface{position:relative;min-height:0;overflow:hidden;background:var(--dl-ground)}
+#subDistrictMap .dl-viewport{position:absolute;inset:0;background:var(--dl-ground)!important;cursor:grab;outline:0}
+#subDistrictMap .dl-viewport.is-panning{cursor:grabbing}
+#subDistrictMap .dl-viewport:focus-visible{box-shadow:inset 0 0 0 3px var(--dl-b)}
+#subDistrictMap .dl-world{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none;background:none!important}
+#subDistrictMap .dl-scene{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.dl-scene .dl-ground{fill:var(--dl-ground)}
+.dl-scene .dl-hatch{fill:var(--dl-ink);opacity:.045}
+.dl-scene .dl-dot{fill:var(--dl-ink);opacity:.18}
+.dl-scene .dl-block-shadow{fill:var(--dl-ink);opacity:.22}
+.dl-scene .dl-block{stroke:var(--dl-ink);stroke-width:2.2}
+.dl-scene .dl-block.b1{fill:var(--dl-block)}
+.dl-scene .dl-block.b2{fill:var(--dl-block2)}
+.dl-scene .dl-block.b3{fill:var(--dl-block3)}
+.dl-scene .dl-roof{fill:color-mix(in srgb,var(--dl-ink) 14%,transparent)}
+.dl-scene .dl-tower{fill:var(--dl-ink);stroke:var(--dl-paper);stroke-width:1.5}
+.dl-scene .dl-tower-lines{fill:none;stroke:var(--dl-b);stroke-width:2;opacity:.65}
+.dl-scene .dl-park{fill:var(--dl-park);stroke:var(--dl-ink);stroke-width:3}
+.dl-scene .dl-park-dots{opacity:.5}
+.dl-scene .dl-tree{fill:color-mix(in srgb,var(--dl-c) 62%,var(--dl-ink));stroke:var(--dl-ink);stroke-width:2.2}
+.dl-scene .dl-tree-shadow{fill:var(--dl-ink);opacity:.25}
+.dl-scene .dl-water{fill:var(--dl-water);stroke:var(--dl-ink);stroke-width:3}
+.dl-scene .dl-water-edge{fill:var(--dl-ink);opacity:.35}
+.dl-scene .dl-wave{fill:none;stroke:var(--dl-paper);stroke-width:2.6;stroke-linecap:round;opacity:.85}
+.dl-scene .dl-island{fill:var(--dl-ground);stroke:var(--dl-ink);stroke-width:4}
+.dl-scene .dl-island-shadow{fill:var(--dl-ink);opacity:.4}
+.dl-scene .dl-bloom{fill:color-mix(in srgb,var(--dl-paper) 70%,var(--dl-a));stroke:var(--dl-ink);stroke-width:1.6}
+.dl-scene .pl-base{fill:color-mix(in srgb,var(--dl-paper) 90%,var(--dl-ink));stroke:var(--dl-ink);stroke-width:3}
+.dl-scene .pl-stripe{stroke:var(--dl-ink);stroke-width:5;opacity:.18;stroke-dasharray:10 8}
+.dl-scene .pl-line{fill:none;stroke:var(--dl-a);stroke-width:3;stroke-dasharray:6 6}
+/* ruas no mesmo estilo do mapa de Tóquio */
+.dl-scene .dl-road path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dl-scene .dl-road .r-shadow{stroke:var(--dl-ink);stroke-width:30;opacity:.25;transform:translate(4px,6px)}
+.dl-scene .dl-road .r-outer{stroke:var(--dl-ink);stroke-width:26}
+.dl-scene .dl-road .r-edge{stroke:var(--dl-a);stroke-width:18}
+.dl-scene .dl-road .r-inner{stroke:var(--dl-paper);stroke-width:9}
+.dl-scene .dl-road .r-lane{stroke:var(--dl-ink);stroke-width:2.4;stroke-dasharray:2 11;opacity:.8}
+.dl-scene .dl-road.is-avenue .r-outer{stroke-width:34}
+.dl-scene .dl-road.is-avenue .r-shadow{stroke-width:38}
+.dl-scene .dl-road.is-avenue .r-edge{stroke:var(--dl-b);stroke-width:24}
+.dl-scene .dl-road.is-avenue .r-inner{stroke-width:14}
+.dl-scene .dl-road.is-avenue .r-lane{stroke-dasharray:14 12;stroke-width:2.6}
+.dl-scene .dl-road.is-spur .r-outer{stroke-width:18}
+.dl-scene .dl-road.is-spur .r-shadow{stroke-width:20}
+.dl-scene .dl-road.is-spur .r-edge{stroke:color-mix(in srgb,var(--dl-paper) 70%,var(--dl-ink));stroke-width:11}
+.dl-scene .dl-road.is-spur .r-inner{stroke-width:4}
+.dl-scene .dl-road.is-spur .r-lane{display:none}
+.dl-scene .dl-rail .t-bed{fill:none;stroke:var(--dl-ink);stroke-width:22;stroke-linecap:butt}
+.dl-scene .dl-rail .t-ties{fill:none;stroke:var(--dl-paper);stroke-width:14;stroke-dasharray:3 9;opacity:.7}
+.dl-scene .dl-rail .t-steel{fill:none;stroke:var(--dl-c);stroke-width:3;opacity:.95}
+.dl-scene .dl-highway .h-shadow{fill:none;stroke:var(--dl-ink);stroke-width:46;opacity:.3;transform:translate(8px,14px)}
+.dl-scene .dl-highway .h-deck{fill:none;stroke:color-mix(in srgb,var(--dl-paper) 40%,var(--dl-ink));stroke-width:38;stroke-linecap:butt}
+.dl-scene .dl-highway .h-line{fill:none;stroke:var(--dl-paper);stroke-width:2.5;stroke-dasharray:18 14}
+.dl-scene .dl-trail{fill:none;stroke:var(--dl-ink);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 13;opacity:.9}
+.dl-scene .dl-ground-hatch{pointer-events:none}
+
+/* carimbo do nome no chão */
+#subDistrictMap .dl-stamp{position:absolute;right:40px;bottom:30px;text-align:right;font:400 92px/.85 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:-3px;color:transparent;-webkit-text-stroke:2px color-mix(in srgb,var(--dl-ink) 30%,transparent);transform:rotate(-4deg);pointer-events:none;white-space:nowrap}
+#subDistrictMap .dl-stamp small{display:block;margin-top:6px;font:900 30px/1 "Noto Sans JP",sans-serif;letter-spacing:6px;-webkit-text-stroke:0;color:color-mix(in srgb,var(--dl-ink) 22%,transparent)}
+
+/* ---------- pinos ---------- */
+#subDistrictMap .dl-pin{
+  position:absolute;width:0;height:0;padding:0!important;margin:0!important;border:0!important;background:none!important;box-shadow:none!important;
+  transform:none!important;min-height:0!important;color:var(--dl-paper);cursor:pointer;z-index:2;
+}
+#subDistrictMap .dl-pin[hidden]{display:none!important}
+#subDistrictMap .dl-pin::after{display:none!important}
+#subDistrictMap .dl-pin-dot{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--dl-a);border:4px solid var(--dl-ink);box-shadow:0 0 0 3px var(--dl-paper)}
+#subDistrictMap .dl-pin-card{
+  position:absolute;left:0;bottom:22px;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:10px;
+  width:max-content;max-width:290px;padding:9px 14px 9px 9px;background:var(--dl-ink);border:3px solid var(--dl-paper);
+  box-shadow:6px 6px 0 var(--dl-a);transform:translateX(-50%) rotate(var(--tilt,-2deg));transform-origin:50% 100%;
+  transition:transform .3s var(--hud-back,cubic-bezier(.34,1.56,.64,1)),box-shadow .3s,background-color .25s;
+}
+#subDistrictMap .dl-pin.tilt-r .dl-pin-card{--tilt:2deg}
+#subDistrictMap .dl-pin-card::after{content:"";position:absolute;left:50%;bottom:-17px;width:22px;height:16px;background:var(--dl-paper);clip-path:polygon(0 0,100% 0,40% 100%);transform:translateX(-50%)}
+#subDistrictMap .dl-pin.is-low .dl-pin-card{bottom:auto;top:22px;transform-origin:50% 0}
+#subDistrictMap .dl-pin.is-low .dl-pin-card::after{bottom:auto;top:-17px;clip-path:polygon(40% 0,100% 100%,0 100%)}
+#subDistrictMap .dl-pin-num{font:400 13px/1 var(--hud-display,"Archivo Black"),sans-serif;padding:5px 6px 4px;background:var(--dl-a);color:var(--dl-ink);transform:rotate(-6deg)}
+#subDistrictMap .dl-pin-ico{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--dl-paper);color:var(--dl-ink)}
+#subDistrictMap .dl-pin-ico svg,#subDistrictMap .dl-card-ico svg,#subDistrictMap .dl-focus-ico svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+#subDistrictMap .dl-pin-txt{display:flex;flex-direction:column;gap:3px;min-width:0;text-align:left}
+#subDistrictMap .dl-pin-txt b{font:400 16px/1.05 var(--hud-display,"Archivo Black"),sans-serif;color:var(--dl-paper);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+#subDistrictMap .dl-pin-txt small{font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;color:color-mix(in srgb,var(--dl-paper) 62%,transparent);white-space:nowrap}
+#subDistrictMap .dl-pin-burst{position:absolute;left:-58px;top:-58px;width:116px;height:116px;background:var(--dl-b);clip-path:polygon(50% 0,58% 32%,90% 12%,70% 42%,100% 50%,70% 58%,90% 88%,58% 68%,50% 100%,42% 68%,10% 88%,30% 58%,0 50%,30% 42%,10% 12%,42% 32%);transform:scale(0) rotate(0);opacity:0;transition:transform .45s var(--hud-back,cubic-bezier(.34,1.56,.64,1)),opacity .3s}
+#subDistrictMap .dl-pin-pulse{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:3px solid var(--dl-a);opacity:0}
+/* estados */
+#subDistrictMap .dl-pin.st-visited .dl-pin-dot{background:var(--dl-c)}
+#subDistrictMap .dl-pin.st-important .dl-pin-card{box-shadow:6px 6px 0 var(--dl-a),0 0 0 3px var(--dl-a)}
+#subDistrictMap .dl-pin.st-danger .dl-pin-dot{background:#ff4b5c}
+#subDistrictMap .dl-pin.st-danger .dl-pin-card{box-shadow:6px 6px 0 #ff4b5c}
+#subDistrictMap .dl-pin.st-danger .dl-pin-pulse{border-color:#ff4b5c;animation:dlPulse 1.8s ease-out infinite}
+#subDistrictMap .dl-pin.st-cognitive .dl-pin-dot{background:var(--dl-b)}
+#subDistrictMap .dl-pin.st-cognitive .dl-pin-pulse{border-color:var(--dl-b);animation:dlPulse 2.4s ease-out infinite}
+#subDistrictMap .dl-pin.st-locked .dl-pin-card{background:color-mix(in srgb,var(--dl-ink) 85%,var(--dl-paper));border-style:dashed;box-shadow:5px 5px 0 rgba(0,0,0,.35)}
+#subDistrictMap .dl-pin.st-locked .dl-pin-ico{background:color-mix(in srgb,var(--dl-paper) 25%,transparent);color:var(--dl-paper)}
+#subDistrictMap .dl-pin.st-locked .dl-pin-dot{background:#777080}
+/* hover / ativo */
+#subDistrictMap .dl-pin:hover,#subDistrictMap .dl-pin:focus-visible{z-index:5;outline:0}
+#subDistrictMap .dl-pin:hover .dl-pin-card,#subDistrictMap .dl-pin:focus-visible .dl-pin-card{transform:translateX(-50%) translateY(-6px) rotate(0) scale(1.04)}
+#subDistrictMap .dl-pin.is-low:hover .dl-pin-card{transform:translateX(-50%) translateY(6px) rotate(0) scale(1.04)}
+#subDistrictMap .dl-pin.active{z-index:6}
+#subDistrictMap .dl-pin.active .dl-pin-card{background:var(--dl-a);border-color:var(--dl-ink);box-shadow:7px 7px 0 var(--dl-ink);transform:translateX(-50%) translateY(-8px) rotate(-1deg) scale(1.08)}
+#subDistrictMap .dl-pin.active.is-low .dl-pin-card{transform:translateX(-50%) translateY(8px) rotate(-1deg) scale(1.08)}
+#subDistrictMap .dl-pin.active .dl-pin-card::after{background:var(--dl-ink)}
+#subDistrictMap .dl-pin.active .dl-pin-num{background:var(--dl-ink);color:var(--dl-paper)}
+#subDistrictMap .dl-pin.active .dl-pin-txt b{color:var(--dl-ink)}
+#subDistrictMap .dl-pin.active .dl-pin-txt small{color:color-mix(in srgb,var(--dl-ink) 70%,transparent)}
+#subDistrictMap .dl-pin.active .dl-pin-burst{opacity:.9;transform:scale(1) rotate(0);animation:dlSpin 14s linear infinite}
+#subDistrictMap .dl-pin.active .dl-pin-pulse{animation:dlPulse 1.6s ease-out infinite;border-color:var(--dl-ink)}
+@keyframes dlPulse{0%{transform:scale(.5);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+@keyframes dlSpin{to{transform:scale(1) rotate(360deg)}}
+
+/* marcador que viaja */
+#subDistrictMap .dl-token{position:absolute;left:0;top:0;width:0;height:0;z-index:4;pointer-events:none;will-change:transform;opacity:0}
+#subDistrictMap .dl-token.on{opacity:1}
+#subDistrictMap .dl-token svg{position:absolute;left:-17px;top:-17px;width:34px;height:34px;fill:var(--dl-paper);stroke:var(--dl-ink);stroke-width:3.5;stroke-linejoin:round;filter:drop-shadow(3px 4px 0 rgba(0,0,0,.4));animation:dlTok 3s linear infinite}
+@keyframes dlTok{to{transform:rotate(360deg)}}
+
+/* ---------- HUD por cima do mapa ---------- */
+#subDistrictMap .dl-caption{position:absolute;left:14px;top:12px;z-index:6;padding:7px 10px;background:var(--dl-ink);color:var(--dl-paper)!important;font:700 11px/1.45 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.4px!important;clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%);pointer-events:none}
+#subDistrictMap .dl-caption b{color:var(--dl-a)}
+#subDistrictMap .dl-compass{position:absolute;right:16px;top:12px;z-index:6;width:56px;height:56px;display:grid;place-items:center;pointer-events:none}
+#subDistrictMap .dl-compass svg{position:absolute;inset:0;width:100%;height:100%}
+#subDistrictMap .dl-compass circle{fill:var(--dl-ink);stroke:var(--dl-paper);stroke-width:2.5}
+#subDistrictMap .dl-compass path{fill:var(--dl-paper)}
+#subDistrictMap .dl-compass path.n{fill:var(--dl-a)}
+#subDistrictMap .dl-compass b{position:absolute;top:-12px;font:400 12px/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--dl-ink);background:var(--dl-paper);padding:2px 4px}
+#subDistrictMap .dl-route{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:6;max-width:calc(100% - 420px);padding:9px 14px 8px;background:var(--dl-ink);color:var(--dl-paper);font:800 13px/1.2 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;box-shadow:5px 5px 0 var(--dl-a);clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#subDistrictMap .dl-route:empty{display:none}
+#subDistrictMap .dl-route b{display:inline-block;padding:1px 5px;background:var(--dl-a);color:var(--dl-ink);font-family:var(--hud-display,"Archivo Black"),sans-serif;font-weight:400}
+#subDistrictMap .dl-step{position:absolute;right:250px;bottom:14px;z-index:6;display:flex;gap:4px}
+#subDistrictMap .dl-step button{width:44px;height:44px;border:0;cursor:pointer;background:var(--dl-ink);color:var(--dl-paper);font-size:14px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:background-color .2s,color .2s,transform .15s}
+#subDistrictMap .dl-step button:hover{background:var(--dl-a);color:var(--dl-ink)}
+#subDistrictMap .dl-step button:active{transform:scale(.92)}
+#subDistrictMap .dl-zoom{position:absolute!important;right:14px!important;bottom:14px!important;left:auto!important;top:auto!important;z-index:6;display:flex!important;gap:0!important;background:var(--dl-ink)!important;border:0!important;box-shadow:5px 5px 0 var(--dl-a)!important;border-radius:0!important}
+#subDistrictMap .dl-zoom button,#subDistrictMap .dl-zoom output{min-width:44px;height:44px;display:grid;place-items:center;border:0!important;border-radius:0!important;background:transparent!important;color:var(--dl-paper)!important;font:800 15px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1px;cursor:pointer}
+#subDistrictMap .dl-zoom output{min-width:54px;cursor:default;opacity:.75}
+#subDistrictMap .dl-zoom .atlas-fit{padding:0 14px!important;background:var(--dl-paper)!important;color:var(--dl-ink)!important}
+#subDistrictMap .dl-zoom button:disabled{opacity:.3;cursor:default}
+#subDistrictMap .dl-surface:has(#atlasPlaceCards:not([hidden])) :is(.dl-route,.dl-step){display:none}
+
+/* ---------- lista em cartões ---------- */
+#subDistrictMap .dl-cards{position:absolute;inset:0;overflow:auto;padding:18px!important;display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px!important;align-content:start;background:var(--dl-bg)}
+#subDistrictMap .dl-cards[hidden]{display:none!important}
+#subDistrictMap .dl-card{display:flex!important;flex-direction:column;padding:0!important;border:0!important;border-radius:0!important;background:var(--dl-card)!important;color:var(--dl-paper)!important;text-align:left;overflow:hidden;cursor:pointer;box-shadow:6px 6px 0 var(--dl-ink);transition:transform .25s var(--hud-ease,ease),box-shadow .25s}
+#subDistrictMap .dl-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--dl-a)}
+#subDistrictMap .dl-card.active{box-shadow:6px 6px 0 var(--dl-a),0 0 0 3px var(--dl-a)}
+#subDistrictMap .dl-card[hidden]{display:none!important}
+#subDistrictMap .dl-card-art{position:relative;display:grid;place-items:center;height:130px;background:repeating-linear-gradient(-45deg,color-mix(in srgb,var(--dl-paper) 6%,transparent) 0 8px,transparent 8px 16px),var(--dl-ink);clip-path:polygon(0 0,100% 0,100% 88%,0 100%)}
+#subDistrictMap .dl-card-art img{width:100%;height:100%;object-fit:cover;display:block}
+#subDistrictMap .dl-card-ico{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--dl-a);color:var(--dl-ink);font:400 28px var(--hud-display,"Archivo Black"),sans-serif}
+#subDistrictMap .dl-card-ico svg{width:34px!important;height:34px!important}
+#subDistrictMap .dl-card-num{position:absolute;left:10px;top:10px;padding:4px 7px 3px;background:var(--dl-a);color:var(--dl-ink);font:400 14px/1 var(--hud-display,"Archivo Black"),sans-serif;transform:rotate(-5deg)}
+#subDistrictMap .dl-card-txt{display:flex;flex-direction:column;gap:5px;padding:10px 14px 14px!important}
+#subDistrictMap .dl-card-txt b{font:400 18px/1.1 var(--hud-display,"Archivo Black"),sans-serif!important}
+#subDistrictMap .dl-card-txt small{font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.3px;opacity:.65!important;margin:0!important}
+#subDistrictMap .dl-card-txt em{font:600 13px/1.35 var(--hud-body,Barlow),sans-serif;font-style:normal;opacity:.8}
+#subDistrictMap .dl-card.st-locked{opacity:.65}
+
+/* ---------- painel de detalhes ---------- */
+#subDistrictMap .dl-detail{padding:16px 18px 24px!important;overflow:auto;min-height:0;background:var(--dl-card)!important;color:var(--dl-paper)!important;border:0!important;border-left:4px solid var(--dl-ink)!important;scrollbar-width:thin;scrollbar-color:var(--dl-a) transparent}
+#subDistrictMap .dl-focus-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;margin:0 0 12px}
+#subDistrictMap .dl-focus-nav button{padding:8px 6px;border:0;cursor:pointer;background:var(--dl-ink);color:var(--dl-paper);font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .2s,color .2s}
+#subDistrictMap .dl-focus-nav button:hover{background:var(--dl-a);color:var(--dl-ink)}
+#subDistrictMap .dl-focus-nav span{font:400 13px var(--hud-display,"Archivo Black"),sans-serif;color:var(--dl-paper)}
+#subDistrictMap .dl-detail .atlas-photo{margin:0 0 4px!important;border:3px solid var(--dl-ink);box-shadow:6px 6px 0 var(--dl-a);transform:rotate(-1.5deg);background:var(--dl-ink)}
+#subDistrictMap .dl-detail .atlas-photo img{height:180px!important;width:100%;object-fit:cover;display:block}
+#subDistrictMap .dl-detail .atlas-photo figcaption{padding:5px 8px;font:600 10px/1.3 var(--hud-body,Barlow),sans-serif;color:color-mix(in srgb,var(--dl-paper) 70%,transparent)!important;background:var(--dl-ink)}
+#subDistrictMap .dl-detail .atlas-photo figcaption a{color:var(--dl-b)!important}
+#subDistrictMap .dl-detail .atlas-photo-missing{padding:30px 10px;text-align:center;background:var(--dl-ink);color:color-mix(in srgb,var(--dl-paper) 60%,transparent)}
+#subDistrictMap .dl-detail .atlas-photo-note{font:600 11px/1.4 var(--hud-body,Barlow),sans-serif!important;color:color-mix(in srgb,var(--dl-paper) 58%,transparent)!important;margin:10px 0!important}
+#subDistrictMap .dl-detail .atlas-focus-kicker{margin:16px 0 6px!important;font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:2px!important;color:var(--dl-a)!important}
+#subDistrictMap .dl-focus-ico{float:left;display:grid;place-items:center;width:46px;height:46px;margin:0 12px 4px 0;border-radius:50%;background:var(--dl-paper);color:var(--dl-ink);box-shadow:3px 3px 0 var(--dl-a)}
+#subDistrictMap .dl-detail h3{margin:0 0 8px!important;font:400 26px/1.02 var(--hud-display,"Archivo Black"),sans-serif!important;letter-spacing:-.6px!important;color:var(--dl-paper)!important}
+#subDistrictMap .dl-detail .atlas-focus-meta{display:flex;flex-wrap:wrap;gap:6px;clear:both;margin:8px 0 10px;opacity:1!important}
+#subDistrictMap .dl-detail .atlas-copy{font:600 15px/1.45 var(--hud-body,Barlow),sans-serif!important;color:var(--dl-paper)!important}
+#subDistrictMap .dl-detail .atlas-detail-links a{display:inline-flex;padding:8px 12px;background:var(--dl-b);color:var(--dl-ink)!important;text-decoration:none;font:800 12px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+#subDistrictMap .dl-detail .atlas-note-label{display:block;margin:16px 0 6px;font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:2px;color:color-mix(in srgb,var(--dl-paper) 65%,transparent)!important}
+#subDistrictMap .dl-detail .atlas-note{width:100%;min-height:110px;box-sizing:border-box;padding:10px 12px!important;border:0!important;border-left:3px solid var(--dl-a)!important;border-radius:0!important;background:var(--dl-ink)!important;color:var(--dl-paper)!important;font:600 14px/1.45 var(--hud-body,Barlow),sans-serif!important;resize:vertical}
+#subDistrictMap .dl-detail .local-map-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#subDistrictMap .dl-detail .local-map-actions button{padding:8px 10px;border:0;background:var(--dl-paper);color:var(--dl-ink);font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;cursor:pointer}
+#subDistrictMap .dl-overview{margin-top:18px;padding-top:12px;border-top:2px dashed color-mix(in srgb,var(--dl-paper) 20%,transparent)}
+#subDistrictMap .dl-overview summary{cursor:pointer;font:800 12px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.8px;color:var(--dl-paper)}
+#subDistrictMap .dl-overview p{font:600 14px/1.45 var(--hud-body,Barlow),sans-serif;color:color-mix(in srgb,var(--dl-paper) 82%,transparent)}
+#subDistrictMap .dl-overview .atlas-tagline span{background:var(--dl-ink)!important;color:var(--dl-paper)!important;border:0!important}
+#subDistrictMap .dl-overview .atlas-status{color:var(--dl-paper)!important;font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px}
+#subDistrictMap .dl-overview select{background:var(--dl-ink)!important;color:var(--dl-paper)!important;border:1px solid color-mix(in srgb,var(--dl-paper) 25%,transparent)!important}
+#subDistrictMap .dl-detail .atlas-empty{padding:20px;text-align:center;background:var(--dl-ink);color:color-mix(in srgb,var(--dl-paper) 65%,transparent)}
+
+/* ---------- noite ---------- */
+body.time-night #subDistrictMap .dl{
+  --dl-ground: color-mix(in srgb,var(--dl-ink) 78%,var(--dl-b));
+  --dl-block: color-mix(in srgb,var(--dl-ink) 70%,var(--dl-paper));
+  --dl-block2: color-mix(in srgb,var(--dl-ink) 66%,var(--dl-a));
+  --dl-block3: color-mix(in srgb,var(--dl-ink) 66%,var(--dl-b));
+  --dl-water: color-mix(in srgb,var(--dl-ink) 55%,var(--dl-b));
+  --dl-park: color-mix(in srgb,var(--dl-ink) 70%,var(--dl-c));
+}
+body.time-night #subDistrictMap .dl-scene .dl-block{stroke:color-mix(in srgb,var(--dl-paper) 30%,transparent)}
+body.time-night #subDistrictMap .dl-scene .dl-roof{fill:var(--dl-b);opacity:.35}
+body.time-night #subDistrictMap .dl-stamp{-webkit-text-stroke-color:color-mix(in srgb,var(--dl-paper) 18%,transparent)}
+
+/* ---------- COGNIÇÃO ---------- */
+body.cognition #subDistrictMap .dl{
+  --dl-a: var(--theme-accent-3,#96ff45);
+  --dl-ground: #071114;
+  --dl-block: #0b1a1d;
+  --dl-block2: #0d1f22;
+  --dl-block3: #0a171f;
+  --dl-water: #08242b;
+  --dl-park: #0c2116;
+}
+body.cognition #subDistrictMap .dl-scene .dl-block{stroke:color-mix(in srgb,var(--dl-a) 55%,transparent);stroke-width:1.4}
+body.cognition #subDistrictMap .dl-scene .dl-block-shadow{fill:var(--dl-b);opacity:.08}
+body.cognition #subDistrictMap .dl-scene .dl-hatch{fill:var(--dl-a);opacity:.06}
+body.cognition #subDistrictMap .dl-scene .dl-roof{fill:var(--dl-a);opacity:.2}
+body.cognition #subDistrictMap .dl-scene :is(.dl-park,.dl-water,.dl-island,.pl-base){stroke:var(--dl-b)}
+body.cognition #subDistrictMap .dl-scene .dl-tree{fill:#0c2116;stroke:var(--dl-a)}
+body.cognition #subDistrictMap .dl-scene .dl-wave{stroke:var(--dl-b)}
+body.cognition #subDistrictMap .dl-scene .dl-road .r-outer{stroke:#020607}
+body.cognition #subDistrictMap .dl-scene .dl-road .r-inner{stroke:#0e2a2c}
+body.cognition #subDistrictMap .dl-scene .dl-road .r-lane{stroke:var(--dl-b);stroke-dasharray:10 8;opacity:1;animation:dlLane 1.2s linear infinite}
+body.cognition #subDistrictMap .dl-scene .dl-road.is-avenue .r-edge{stroke:var(--dl-b)}
+body.cognition #subDistrictMap .dl-scene .dl-trail{stroke:var(--dl-a)}
+body.cognition #subDistrictMap .dl-stamp{-webkit-text-stroke-color:color-mix(in srgb,var(--dl-a) 30%,transparent);animation:dlGlitch 4s steps(1) infinite}
+body.cognition #subDistrictMap .dl-pin-card{background:#040b0d;border-color:var(--dl-a);box-shadow:5px 5px 0 var(--dl-b)}
+body.cognition #subDistrictMap .dl-pin-ico{background:var(--dl-a)}
+body.cognition #subDistrictMap .dl-pin-pulse{border-color:var(--dl-b);animation:dlPulse 2.2s ease-out infinite}
+body.cognition #subDistrictMap .dl-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(150,255,69,.05) 0 1px,transparent 1px 4px);animation:dlScan 6s linear infinite}
+body.cognition #subDistrictMap .dl-head{border-bottom-color:var(--dl-a)!important}
+@keyframes dlLane{to{stroke-dashoffset:-36}}
+@keyframes dlScan{to{background-position:0 120px}}
+@keyframes dlGlitch{0%,100%{transform:rotate(-4deg)}40%{transform:rotate(-4deg) translate(6px,-2px)}41%{transform:rotate(-4deg)}77%{transform:rotate(-4deg) translate(-4px,3px)}78%{transform:rotate(-4deg)}}
+
+/* ---------- telas menores ---------- */
+@media (max-width:1280px){
+  #subDistrictMap .dl-grid{grid-template-columns:minmax(0,1fr) 300px}
+  #subDistrictMap .dl-meters{display:none}
+  #subDistrictMap .dl-head{grid-template-columns:auto minmax(0,1fr) auto}
+}
+@media (max-width:900px){
+  #subDistrictMap .dl-grid{grid-template-columns:1fr;grid-template-rows:460px auto}
+  #subDistrictMap .dl-detail{border-left:0!important;border-top:4px solid var(--dl-ink)!important}
+  #subDistrictMap .dl-head{grid-template-columns:auto minmax(0,1fr);gap:10px;padding:10px 12px!important}
+  #subDistrictMap .dl-tabs{grid-column:1/-1}
+  #subDistrictMap .dl-badge{--bd-a:var(--theme-accent,#ef2b97);--bd-b:var(--theme-accent-2,#6ce6ff);--bd-c:var(--theme-accent-3,#96ff45);--bd-ink:var(--hud-black,#0d0c10);--bd-paper:var(--hud-paper,#fff3d9);width:90px;height:68px}
+  #subDistrictMap .dl-name{font-size:24px!important}
+  #subDistrictMap .dl-tools{flex-wrap:wrap}
+  #subDistrictMap .dl-search{flex:1 1 100%}
+  #subDistrictMap .dl-step{right:auto;left:14px;bottom:66px}
+  #subDistrictMap .dl-route{max-width:calc(100% - 28px);top:auto;bottom:14px}
+  #subDistrictMap .dl-zoom{bottom:auto!important;top:76px!important}
+  #subDistrictMap .dl-stamp{font-size:58px}
+}
+@media (prefers-reduced-motion:reduce){
+  #subDistrictMap .dl *,#subDistrictMap .dl *::after{animation:none!important;transition:none!important}
+}
+body.hs-calm #subDistrictMap .dl *,body.hs-calm #subDistrictMap .dl *::after{animation:none!important}
+body.cognition #subDistrictMap .dl-badge{--bd-a:var(--theme-accent-3,#96ff45);--bd-b:var(--theme-accent-2,#6ce6ff)}
