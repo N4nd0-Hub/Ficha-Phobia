@@ -1,0 +1,381 @@
+/* ==========================================================
+   PERSONA // PHOBIA — hud.css
+   Interface "HUD de jogo": o mapa ocupa a tela, os controles
+   flutuam nos cantos e a ficha ganha a navegação diagonal.
+   Carregado por último; só vale com body.hud (posto pelo hud.js).
+   ========================================================== */
+
+body.hud{
+  --hud-bg:    var(--theme-deep, #121424);
+  --hud-ink:   var(--theme-deep-ink, #fff0d8);
+  --hud-acc:   var(--theme-accent, #ef2b97);
+  --hud-acc2:  var(--theme-accent-2, #6ce6ff);
+  --hud-acc3:  var(--theme-accent-3, #96ff45);
+  --hud-black: #0d0c10;
+  --hud-paper: #fff0d8;
+  --hud-mute:  rgba(255,240,216,.62);
+  --hud-ease:  cubic-bezier(.22,1,.36,1);
+  --hud-back:  cubic-bezier(.34,1.56,.64,1);
+  --hud-display: "Archivo Black","Arial Black",Arial,sans-serif;
+  --hud-cond: "Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --hud-body: Barlow,"Arial Narrow",Arial,sans-serif;
+}
+
+/* peças reaproveitáveis */
+body.hud .hud-skew{clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+body.hud .hud-pop{
+  position:absolute;z-index:60;
+  background:var(--hud-bg);color:var(--hud-ink);
+  border:2px solid var(--hud-black);
+  box-shadow:8px 8px 0 var(--hud-acc);
+  font-family:var(--hud-body);
+}
+body.hud .hud-pop[hidden]{display:none!important}
+body.hud .hud-pop-title{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;background:var(--hud-acc);color:var(--hud-black);
+  font:400 17px/1 var(--hud-display);letter-spacing:-.3px;
+}
+body.hud .hud-pop-title button{width:28px;height:28px;border:2px solid var(--hud-black);background:transparent;color:var(--hud-black);font:800 16px/1 Arial;cursor:pointer}
+body.hud .hud-label{font:800 12px/1 var(--hud-cond);letter-spacing:2px;color:var(--hud-mute)}
+
+/* ==========================================================
+   CABEÇALHO
+   ========================================================== */
+body.hud .site{grid-template-rows:minmax(0,1fr) 56px;position:relative}
+body.hud .topbar{
+  position:absolute;left:9px;right:9px;top:9px;height:84px;z-index:520;
+  display:flex;align-items:center;gap:10px;padding:0 20px;
+  background:transparent;border:0;box-shadow:none;
+  pointer-events:none;
+}
+body.hud .topbar::before,body.hud .topbar::after{display:none!important}
+body.hud .topbar > *{pointer-events:auto}
+body.hud:not(.hud-on-map) .topbar{background:var(--hud-bg);border-bottom:3px solid var(--hud-acc)}
+body.hud:has(#mapPage.active .map-layout.submap-workspace) .topbar{background:var(--hud-bg);border-bottom:3px solid var(--hud-acc)}
+body.hud .topbar .brand,
+body.hud .topbar .world-clock,
+body.hud .topbar .sheet-mode-banner,
+body.hud .topbar .workspace-btn[data-workspace="navigation"]{display:none!important}
+
+body.hud .hud-title{
+  display:flex;align-items:flex-end;gap:12px;margin-right:auto;min-width:0;
+  font:400 40px/.9 var(--hud-display);letter-spacing:-2px;color:var(--hud-ink);
+  text-shadow:3px 3px 0 var(--hud-black);white-space:nowrap;
+}
+body.hud .hud-title small{font:800 13px/1 var(--hud-cond);letter-spacing:2px;color:var(--hud-mute);text-shadow:none;padding-bottom:4px}
+body.hud.hud-on-map .hud-title{visibility:hidden}
+
+body.hud .topbar .global-tabs{display:flex!important;align-items:center;gap:6px;margin:0;padding:0;background:none;border:0;box-shadow:none;flex-wrap:nowrap}
+body.hud .topbar .global-tab{
+  padding:10px 16px;border:0;background:var(--hud-black)!important;color:var(--hud-ink)!important;
+  font:800 15px/1 var(--hud-cond);letter-spacing:1.5px;text-transform:uppercase;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  box-shadow:none;cursor:pointer;
+  transition:transform .2s var(--hud-back),background .15s,color .15s;
+}
+body.hud .topbar .global-tab:hover{transform:translateY(-2px)}
+body.hud .topbar .global-tab.active{background:var(--hud-acc)!important;color:var(--hud-black)!important;filter:drop-shadow(4px 4px 0 var(--hud-black))}
+body.hud.workspace-sheet .topbar .global-tab.active{background:var(--hud-black)!important;color:var(--hud-ink)!important;filter:none}
+body.hud .topbar .global-tab.hidden{display:none}
+
+body.hud .topbar .workspace-switch{display:flex;margin:0 0 0 10px;padding:0;background:none;border:0;box-shadow:none}
+body.hud .topbar .workspace-btn[data-workspace="sheet"]{
+  padding:10px 22px;border:0;background:var(--hud-paper);color:var(--hud-black);
+  font:400 16px/1 var(--hud-display);letter-spacing:.5px;
+  transform:rotate(-3deg);box-shadow:4px 4px 0 var(--hud-acc2);cursor:pointer;
+  transition:transform .25s var(--hud-back),box-shadow .2s;
+}
+body.hud .topbar .workspace-btn[data-workspace="sheet"]:hover{transform:rotate(0) scale(1.06)}
+body.hud.workspace-sheet .topbar .workspace-btn[data-workspace="sheet"]{box-shadow:4px 4px 0 var(--hud-acc)}
+
+body.hud .topbar .site-theme-button{
+  width:40px;height:40px;min-width:0;padding:0;margin-left:8px;border-radius:50%;
+  border:2px solid var(--hud-paper);
+  background:conic-gradient(var(--hud-acc) 0 33%,var(--hud-acc2) 0 66%,var(--hud-bg) 0);
+  box-shadow:0 0 0 3px var(--hud-black);cursor:pointer;
+  transition:transform .3s var(--hud-back);
+}
+body.hud .topbar .site-theme-button:hover{transform:rotate(120deg) scale(1.08)}
+body.hud .topbar .site-theme-button > *{display:none!important}
+
+/* páginas que não são o mapa começam abaixo do cabeçalho */
+body.hud .site > .page:not(#mapPage){padding-top:96px!important;box-sizing:border-box}
+
+body.hud #areasPage .areas-head h1,body.hud #areasPage .areas-head .kicker{display:none}
+body.hud #areasPage .areas-head{justify-content:flex-end}
+
+/* ==========================================================
+   MAPA EM TELA CHEIA
+   ========================================================== */
+body.hud #mapPage .map-layout{grid-template-columns:minmax(0,1fr)!important;position:relative}
+body.hud #mapPage .map-layout > .sidebar{display:none!important}
+body.hud #mapPage .map-shell{border:0;box-shadow:none}
+body.hud #mapPage .atlas-viewport{inset:0}
+body.hud #mapPage .map-title,
+body.hud #mapPage .map-hint,
+body.hud #mapPage .atlas-toolbar #atlasSidebarToggle,
+body.hud #mapPage .atlas-toolbar .atlas-crumb,
+body.hud #mapPage .atlas-toolbar .atlas-help{display:none!important}
+body.hud #mapPage .atlas-toolbar{
+  position:absolute;left:auto;right:28px;top:auto;bottom:24px;z-index:25;
+  width:auto;height:auto;padding:0;background:none;border:0;box-shadow:none;gap:6px;
+}
+body.hud #mapPage .atlas-toolbar button{
+  padding:9px 14px;border:0;background:var(--hud-black);color:var(--hud-ink);
+  font:800 12px/1 var(--hud-cond);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+}
+body.hud #mapPage .map-layout:not(.submap-workspace) .atlas-toolbar{right:210px;bottom:28px}
+body.hud #mapPage .map-layout.submap-workspace .atlas-toolbar{left:28px;right:auto;top:auto;bottom:24px}
+body.hud #mapPage .sub-district-map{top:92px}
+body.hud #mapPage .map-layout.submap-workspace .map-shell{background:var(--hud-bg)}
+body.hud #mapPage .map-layout.submap-workspace .hud-map-only{display:none!important}
+
+/* faixa escura atrás do calendário */
+body.hud .hud-corner{
+  position:absolute;left:0;top:0;width:540px;height:240px;z-index:18;pointer-events:none;
+  background:linear-gradient(160deg,var(--hud-bg) 0 60%,transparent 60%);
+}
+
+/* calendário */
+body.hud .hud-cal{position:absolute;left:28px;top:20px;z-index:22;display:flex;align-items:flex-end;gap:14px}
+body.hud .hud-cal-day{
+  display:flex;flex-direction:column;align-items:center;line-height:1;
+  padding:6px 16px 4px 12px;background:var(--hud-acc);color:var(--hud-black);
+  transform:rotate(-4deg);box-shadow:5px 5px 0 var(--hud-black);
+}
+body.hud .hud-cal-day small{font:800 14px/1 var(--hud-cond);letter-spacing:2px}
+body.hud .hud-cal-day b{font:400 58px/.9 var(--hud-display)}
+body.hud .hud-cal-copy{display:flex;flex-direction:column;gap:5px;padding-bottom:4px}
+body.hud .hud-cal-copy > b{font:400 44px/.9 var(--hud-display);letter-spacing:-2px;color:var(--hud-ink);text-shadow:3px 3px 0 var(--hud-black)}
+body.hud .hud-cal-chips{display:flex;gap:6px;font:800 13px/1 var(--hud-cond);letter-spacing:1.5px}
+body.hud .hud-cal-chips > span,body.hud .hud-cal-chips > button{padding:4px 7px;border:0}
+body.hud .hud-cal-week{background:var(--hud-paper);color:var(--hud-black)}
+body.hud .hud-cal-year{color:var(--hud-mute)}
+body.hud .hud-period-btn{
+  display:flex;align-items:center;gap:5px;background:var(--hud-black);color:var(--hud-ink);
+  font:inherit;letter-spacing:inherit;cursor:pointer;transition:transform .2s var(--hud-back);
+}
+body.hud .hud-period-btn:hover{transform:translateY(-2px)}
+body.hud .hud-period-btn svg{width:13px;height:13px}
+
+body.hud .hud-period-pop{left:28px;top:118px;display:flex;padding:4px;gap:4px;box-shadow:6px 6px 0 var(--hud-black);z-index:70}
+body.hud .hud-period-pop .timeline{display:flex!important;gap:4px;margin:0}
+body.hud .hud-period-pop .time-btn{
+  padding:9px 14px;border:0;background:var(--hud-paper);color:var(--hud-black);
+  font:800 13px/1 var(--hud-cond);letter-spacing:1.4px;cursor:pointer;box-shadow:none;
+}
+body.hud .hud-period-pop .time-btn[data-time="night"]{background:#2a2e4d;color:var(--hud-ink)}
+body.hud .hud-period-pop .time-btn.active{background:#ffcf59;color:var(--hud-black)}
+
+/* busca */
+body.hud .hud-search{
+  position:absolute;left:28px;top:120px;z-index:22;width:340px;height:42px;box-sizing:border-box;
+  display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:var(--hud-paper);color:var(--hud-black);
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+body.hud .hud-search svg{width:16px;height:16px;flex:none}
+body.hud .hud-search input{
+  flex:1;min-width:0;height:100%;padding:0;border:0!important;outline:0;background:transparent!important;
+  color:var(--hud-black)!important;font:700 15px var(--hud-body)!important;box-shadow:none!important;
+}
+body.hud .hud-search input::placeholder{color:rgba(13,12,16,.55)}
+body.hud .hud-search-count{font:800 12px var(--hud-cond);letter-spacing:1px;opacity:.6}
+body.hud .hud-results{left:28px;top:168px;width:400px;max-height:min(520px,calc(100% - 200px));overflow:auto;padding:6px 0 10px;z-index:70}
+body.hud .hud-results #districtList{display:flex!important;flex-direction:column;gap:2px;max-height:none;padding:0 8px}
+body.hud .hud-results .jump-row{display:block}
+body.hud .hud-results .jump{
+  width:100%;min-height:48px;display:flex;align-items:center;gap:10px;padding:8px 12px;
+  border:0;border-left:4px solid transparent;background:transparent;color:var(--hud-ink);
+  text-align:left;cursor:pointer;box-shadow:none;transition:background .15s,transform .2s var(--hud-ease);
+}
+body.hud .hud-results .jump:hover{background:rgba(255,255,255,.06);transform:translateX(4px)}
+body.hud .hud-results .jump.active{background:color-mix(in srgb,var(--hud-acc) 16%,transparent);border-left-color:var(--hud-acc)}
+body.hud .hud-results .jump b,body.hud .hud-results .jump strong{font:400 16px var(--hud-display);letter-spacing:-.3px}
+body.hud .hud-results .jump small{color:var(--hud-mute)}
+body.hud .hud-results .atlas-locked{margin:8px 12px 0;color:var(--hud-mute);font:700 13px var(--hud-body)}
+body.hud .hud-results .atlas-locked summary{cursor:pointer;font:800 12px var(--hud-cond);letter-spacing:1.6px;padding:6px 0}
+body.hud .hud-results .atlas-locked .jump{border:1px dashed color-mix(in srgb,var(--hud-acc) 60%,transparent);margin-top:4px;color:var(--hud-acc)}
+body.hud .hud-results .atlas-empty{padding:12px;color:var(--hud-mute)}
+
+/* camada */
+body.hud .hud-layer{position:absolute;right:28px;top:96px;z-index:22;padding:4px;background:var(--hud-black);box-shadow:4px 4px 0 rgba(0,0,0,.4)}
+body.hud .hud-layer .timeline{display:flex!important;gap:0;margin:0}
+body.hud .hud-layer .time-btn{
+  padding:7px 12px;border:0;background:transparent;color:var(--hud-acc2);box-shadow:none;
+  font:800 12px/1 var(--hud-cond);letter-spacing:1.4px;cursor:pointer;
+  transition:background .2s,color .2s;
+}
+body.hud .hud-layer .time-btn.active{background:var(--hud-paper);color:var(--hud-black)}
+body.hud.cognition .hud-layer .time-btn#cognitionBtn.active{background:var(--hud-acc2)}
+
+/* botões do canto de baixo */
+body.hud .hud-corner-btns{position:absolute;left:28px;bottom:24px;z-index:22;display:flex;gap:8px;align-items:center}
+body.hud .hud-corner-btns button{
+  display:flex;align-items:center;gap:8px;padding:9px 14px;border:0;cursor:pointer;
+  background:var(--hud-black);color:var(--hud-ink);
+  font:800 12px/1 var(--hud-cond);letter-spacing:1.5px;transform:skewX(-10deg);
+  transition:transform .2s var(--hud-back);
+}
+body.hud .hud-corner-btns button:hover{transform:skewX(-10deg) translateY(-2px)}
+body.hud .hud-corner-btns .hud-master-btn{color:var(--hud-acc3)}
+body:not(.master) .hud-master-btn{display:none!important}
+
+body.hud .hud-master-pop{left:28px;bottom:70px;width:360px;max-height:calc(100% - 200px);overflow:auto;border-color:var(--hud-acc3);box-shadow:8px 8px 0 color-mix(in srgb,var(--hud-acc3) 40%,transparent)}
+body.hud .hud-master-pop .hud-pop-title{background:var(--hud-acc3)}
+body.hud .hud-master-pop #cogEditor{display:block!important;margin:0;border:0;background:transparent;box-shadow:none;color:var(--hud-ink)}
+body.hud .hud-master-pop #cogEditor > summary{display:none}
+body.hud .hud-master-pop .cog-editor-body{padding:14px;background:transparent;color:var(--hud-ink)}
+body.hud .hud-master-pop .cog-editor-hint{color:var(--hud-mute)}
+body.hud .hud-master-pop input[type=text],body.hud .hud-master-pop select{background:#1c1f36;color:var(--hud-ink);border:1px solid rgba(255,255,255,.2)}
+body.hud .hud-master-pop #cogPlaceBtn{background:var(--hud-acc3);color:var(--hud-black);border:0}
+
+body.hud .hud-opts-pop{left:28px;bottom:70px;width:360px;box-shadow:8px 8px 0 var(--hud-acc2)}
+body.hud .hud-opts-pop .hud-pop-title{background:var(--hud-acc2)}
+body.hud .hud-opts-pop .hud-opts-body{padding:14px;display:flex;flex-direction:column;gap:14px}
+body.hud .hud-opts-pop #mapVisualOptions{display:block;margin:0;border:0;background:transparent;box-shadow:none;color:var(--hud-ink)}
+body.hud .hud-opts-pop #mapVisualOptions > summary{display:none}
+body.hud .hud-opts-pop .map-visual-body{display:flex!important;flex-direction:column;gap:10px;padding:0;background:transparent;color:var(--hud-ink)}
+body.hud .hud-opts-pop .map-visual-body label{display:grid;grid-template-columns:90px 1fr 34px;align-items:center;gap:10px;font:700 13px var(--hud-body);color:var(--hud-ink)}
+body.hud .hud-opts-pop .map-visual-body output{color:var(--hud-mute);font:700 12px var(--hud-body);text-align:right}
+body.hud #noteLaunch{display:none!important}
+body.hud .hud-corner-btns svg{width:14px;height:14px}
+body.hud .hud-opts-pop .map-visual-row button{padding:7px 10px;border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--hud-ink);font:700 12px var(--hud-body);cursor:pointer}
+body.hud .hud-opts-pop .legend{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 12px;font:700 13px var(--hud-body);color:var(--hud-ink)}
+body.hud .hud-opts-pop .legend .dot{transform:rotate(45deg);border-radius:0}
+body.hud .hud-opts-pop .hud-opts-theme{padding:10px;border:0;background:var(--hud-paper);color:var(--hud-black);font:800 13px var(--hud-body);cursor:pointer}
+
+/* zoom */
+body.hud #mapPage .map-controls{
+  position:absolute;right:28px;bottom:24px;left:auto;top:auto;z-index:24;
+  display:flex;flex-direction:row;gap:0;padding:0;background:var(--hud-black);
+  border:2px solid var(--hud-black);box-shadow:4px 4px 0 rgba(0,0,0,.4);
+}
+body.hud #mapPage .map-controls output{display:none}
+body.hud #mapPage .map-controls button{width:40px;height:40px;border:0;background:var(--hud-paper);color:var(--hud-black);font:800 20px/1 Arial;cursor:pointer;box-shadow:none}
+body.hud #mapPage .map-controls button + button{border-left:2px solid var(--hud-black)}
+body.hud #mapPage .map-controls .atlas-fit{width:auto;padding:0 12px}
+body.hud #mapPage .map-controls .atlas-fit{font:800 10px/1 var(--hud-cond);letter-spacing:1px}
+
+/* dossiê flutuante */
+body.hud #mapPage .map-layout > .dossier{
+  position:absolute;right:28px;top:150px;z-index:30;width:330px;
+  max-height:calc(100% - 250px);overflow:auto;margin:0;padding:0;
+  background:var(--hud-bg);color:var(--hud-ink);
+  border:2px solid var(--hud-black);box-shadow:8px 8px 0 var(--hud-acc);
+}
+body.hud #mapPage .map-layout > .dossier::before,
+body.hud #mapPage .map-layout > .dossier::after,
+body.hud #mapPage .map-layout > .dossier > .kicker,
+body.hud #mapPage .map-layout > .dossier > .dossier-mini-toggle{display:none!important}
+body.hud #mapPage .map-layout.hud-dossier-closed > .dossier{display:none!important}
+body.hud #mapPage .map-layout.submap-workspace > .dossier{display:none!important}
+body.hud .hud-dossier-close{
+  position:sticky;top:8px;float:right;margin:8px 8px -38px 0;z-index:3;
+  width:30px;height:30px;border:2px solid var(--hud-black);background:var(--hud-paper);color:var(--hud-black);
+  font:800 16px/1 Arial;cursor:pointer;
+}
+body.hud #dossier{padding:0}
+body.hud #dossier h2{font:400 34px/.95 var(--hud-display)!important;letter-spacing:-1px;color:var(--hud-ink)}
+body.hud #dossier .atlas-photo,body.hud #dossier .atlas-photo img{margin:0;width:100%}
+body.hud #dossier > :not(.atlas-photo){margin-left:18px;margin-right:18px}
+body.hud #dossier .atlas-open{
+  display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border:0;
+  background:var(--hud-acc);color:var(--hud-black);font:800 16px var(--hud-body);cursor:pointer;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+
+/* ==========================================================
+   FICHA: navegação diagonal à esquerda
+   ========================================================== */
+body.hud #characterPage .sheet-book{
+  display:grid;grid-template-columns:270px minmax(0,1fr);column-gap:28px;align-items:start;
+  max-width:none;position:relative;
+}
+body.hud #characterPage .sheet-page-tabs::before{
+  content:"";position:absolute;left:-160px;top:-40px;height:calc(100vh + 80px);width:400px;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle,rgba(13,12,16,.2) 2px,transparent 2.5px) 0 0/14px 14px,
+    var(--hud-acc);
+  transform:skewX(-12deg);
+}
+body.hud #characterPage .sheet-book > *{grid-column:2;position:relative;z-index:1;min-width:0}
+body.hud #characterPage .sheet-book-head{display:contents}
+body.hud #characterPage .sheet-book-head > div:first-child{display:none}
+body.hud #characterPage .sheet-page-tabs{
+  grid-column:1;grid-row:1 / span 40;align-self:start;position:sticky;top:0;z-index:2;
+  display:flex!important;flex-direction:column;gap:4px;width:auto;padding:16px 0 30px;
+}
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab{
+  display:flex!important;align-items:center;gap:10px;min-height:0;width:auto;padding:6px 12px;
+  border:0!important;background:transparent!important;box-shadow:none!important;color:var(--hud-black)!important;
+  clip-path:none;text-align:left;cursor:pointer;
+  transition:transform .25s var(--hud-back),background .2s;
+}
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab::before,
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab::after,
+body.hud #characterPage .sheet-page-tabs .sheet-nav-icon,
+body.hud #characterPage .sheet-page-tabs .sheet-nav-copy small{display:none!important}
+body.hud #characterPage .sheet-page-tabs .sheet-nav-number{order:-1;position:static!important;font:800 12px var(--hud-cond)!important;opacity:.75;color:inherit!important;background:none!important;padding:0!important;transform:none!important}
+body.hud #characterPage .sheet-page-tabs .sheet-nav-copy b{font:400 18px/1 var(--hud-display)!important;letter-spacing:-.5px;color:inherit!important;text-transform:uppercase}
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab:hover{transform:translateX(6px)}
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active{
+  background:var(--hud-black)!important;color:var(--hud-ink)!important;
+  padding:9px 18px 9px 12px;width:224px;transform:rotate(-3deg);
+  box-shadow:6px 6px 0 var(--hud-acc2)!important;
+}
+body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active .sheet-nav-copy b{font-size:22px!important}
+
+/* ==========================================================
+   ANIMAÇÕES (só transform / opacity / clip-path)
+   ========================================================== */
+.hud-slash{
+  position:fixed;left:-20vw;top:-10vh;width:30vw;height:120vh;z-index:9000;pointer-events:none;
+  background:var(--hud-acc,#ef2b97);transform:translateX(-120%) skewX(-14deg);will-change:transform;
+}
+.hud-slash::after{content:"";position:absolute;inset:0 -14px 0 auto;width:12px;background:var(--hud-acc2,#6ce6ff)}
+
+@media (prefers-reduced-motion:reduce){
+  body.hud *{transition:none!important}
+  .hud-slash{display:none}
+}
+
+/* ==========================================================
+   TELAS MENORES
+   ========================================================== */
+@media (max-width:1100px){
+  body.hud .hud-title{font-size:30px}
+  body.hud .hud-title small{display:none}
+  body.hud .topbar .global-tab{padding:9px 11px;font-size:13px}
+}
+@media (max-width:900px){
+  body.hud .site{grid-template-rows:auto}
+  body.hud .topbar{position:relative;left:0;right:0;top:0;height:auto;flex-wrap:wrap;padding:10px;gap:8px;background:var(--hud-bg)!important;border-bottom:3px solid var(--hud-acc)}
+  body.hud .hud-title{display:none}
+  body.hud .topbar .global-tabs{order:2;width:100%;overflow-x:auto;padding-bottom:2px}
+  body.hud .topbar .workspace-switch{margin-left:auto}
+  body.hud .site > .page:not(#mapPage){padding-top:0!important}
+  body.hud #mapPage .map-layout{height:auto}
+  body.hud #mapPage .map-layout > .dossier{position:static;width:auto;max-height:none;margin-top:10px}
+  body.hud .hud-corner{width:100%;height:190px}
+  body.hud .hud-cal{left:16px;top:14px}
+  body.hud .hud-cal-day b{font-size:40px}
+  body.hud .hud-cal-copy > b{font-size:30px}
+  body.hud .hud-search{left:16px;right:16px;width:auto;top:100px}
+  body.hud .hud-results{left:16px;right:16px;width:auto;top:148px}
+  body.hud .hud-period-pop{left:16px;top:96px}
+  body.hud .hud-layer{top:auto;bottom:64px;left:16px;right:auto}
+  body.hud .hud-corner-btns{left:16px;bottom:16px}
+  body.hud #mapPage .map-controls{right:16px;bottom:16px}
+  body.hud #mapPage .map-layout:not(.submap-workspace) .atlas-toolbar{display:none}
+  body.hud #characterPage .sheet-book{display:block}
+  body.hud #characterPage .sheet-page-tabs::before{display:none}
+  body.hud #characterPage .sheet-page-tabs{
+    position:sticky;top:0;flex-direction:row;overflow-x:auto;gap:6px;padding:10px 6px;
+    background:var(--hud-acc);margin-bottom:12px;
+  }
+  body.hud #characterPage .sheet-page-tabs .sheet-page-tab{flex:none}
+  body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active{width:auto;transform:none}
+}

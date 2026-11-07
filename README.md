@@ -12,4 +12,6 @@ O save completo usa IndexedDB. A abertura e as transações têm limite de tempo
 
 A barra inferior reúne o player, a data da história e a área atual. O player aceita várias músicas (MP3, M4A, OGG, WAV), com playlist, ordem aleatória, repetição, capa por faixa e teclas de mídia. Os arquivos de áudio ficam no navegador (IndexedDB) e não entram no backup JSON; em outro navegador a faixa aparece como ausente e pode ser reanexada.
 
+A interface segue o estilo HUD (assets/hud.css e assets/hud.js): o mapa ocupa a tela, e período, camada, busca, ferramentas do mestre, fundo e legenda ficam em painéis flutuantes. O hud.js move os controles existentes para esses painéis sem mudar a lógica deles, e anima as trocas de página e de aba da ficha.
+
 Execute as verificações com `node --test tests/*.test.cjs`.
