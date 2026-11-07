@@ -133,10 +133,15 @@
     '<rect x="25" y="20" width="12" height="11" fill="#3a3a40" stroke="#f5a524" stroke-width="1.5"/><circle cx="29" cy="25.5" r="1.4" fill="#f5a524"/><circle cx="33" cy="25.5" r="1.4" fill="#f5a524"/>' +
     '<g class="lid"><rect x="8" y="10" width="44" height="21" rx="4" fill="#2a2a2e" stroke="#f5a524" stroke-width="2.5"/></g></svg>';
   function transition(k) {
-    if (!KINDS[k] || k === 'naoya' || calm()) return;   /* o Naoya só tem a abertura (TV ligando) */
+    if (!KINDS[k] || calm()) return;
     var old = document.querySelector('.tf-trans'); if (old) old.remove();
     var t = document.createElement('div'); t.className = 'tf-trans ' + k; t.setAttribute('aria-hidden', 'true');
-    if (k === 'maya') t.innerHTML = '<i class="flash"></i><i class="page"></i><i class="frame"></i>';
+    if (k === 'naoya') t.innerHTML = '<i class="roll"><i></i></i><i class="sliver s1"></i><i class="sliver s2"></i><i class="sliver s3"></i>';
+    else if (k === 'maya') {
+      var deco = '';
+      for (var i = 0; i < 7; i++) deco += '<i class="' + (i % 2 ? 'mh' : 'ms') + '" style="top:' + (8 + Math.random() * 84).toFixed(0) + '%;animation-delay:' + (60 + i * 35) + 'ms"></i>';
+      t.innerHTML = '<i class="strip a"></i><i class="strip b"></i><i class="strip c"></i>' + deco;
+    }
     else if (k === 'kotone') t.innerHTML = '<i class="glow"></i><i class="wave"></i>';
     else if (k === 'tatsuya') t.innerHTML = '<i class="burn"></i>' + ZIPPO;
     document.body.appendChild(t);
@@ -163,17 +168,35 @@
     kill(t, 1300);
   }
   window.PhobiaThemeFx = { transition: transition, tvOn: tvOn };
+  /* Naoya: ao sair da ficha a TV "desliga" (fecha numa linha) antes de trocar de tela */
+  function tvOff() {
+    var old = document.querySelector('.tf-tvoff'); if (old) old.remove();
+    var t = document.createElement('div'); t.className = 'tf-trans tf-tvoff'; t.setAttribute('aria-hidden', 'true');
+    t.innerHTML = '<i class="half top"></i><i class="half bot"></i><i class="beam"></i>';
+    document.body.appendChild(t);
+    kill(t, 1000);
+  }
+  var pend = null;
+  function flush() { if (!pend) return; clearTimeout(pend.t); var f = pend.f; pend = null; f(); }
   function wrapWorkspace() {
-    var o = window.switchWorkspace;
-    if (typeof o !== 'function') { setTimeout(wrapWorkspace, 300); return; }
+    var o = window.updateWorkspaceUI;
+    if (typeof o !== 'function' || typeof state === 'undefined') { setTimeout(wrapWorkspace, 300); return; }
     if (o.__tf) return;
-    var w = function (ws) {
-      var was = document.body.classList.contains('workspace-sheet');
+    var w = function () {
+      flush();
+      var inSheet = document.body.classList.contains('workspace-sheet'), toSheet = state.workspace === 'sheet';
+      if (inSheet && !toSheet && kind() === 'naoya' && !calm()) {
+        var self = this, args = arguments;
+        tvOff();
+        pend = { f: function () { o.apply(self, args); } };
+        pend.t = setTimeout(flush, 430);
+        return;
+      }
       var r = o.apply(this, arguments);
-      if (ws === 'sheet' && !was) setTimeout(tvOn, 30);
+      if (!inSheet && toSheet) setTimeout(tvOn, 30);
       return r;
     };
-    w.__tf = true; window.switchWorkspace = w;
+    w.__tf = true; window.updateWorkspaceUI = w;
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wrapWorkspace); else wrapWorkspace();
 

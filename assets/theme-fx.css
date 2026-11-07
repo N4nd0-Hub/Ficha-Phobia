@@ -128,6 +128,22 @@ body.workspace-sheet[data-hs-fx="kotone"] .hud-title{text-shadow:0 0 16px rgba(2
 @keyframes tfBeam{0%{transform:scaleX(0);opacity:0}22%{transform:scaleX(1);opacity:1}45%{transform:scaleX(1) scaleY(3);opacity:.7}100%{transform:scaleX(1) scaleY(60);opacity:0}}
 .tf-tvon .snow{position:absolute;inset:-50%;opacity:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:nyNoise .25s steps(3) infinite,tfSnow 1.2s ease-out forwards}
 @keyframes tfSnow{0%,20%{opacity:0}40%{opacity:.08}100%{opacity:0}}
+/* Naoya: troca de aba — rolagem de tracking de VHS, escura e rápida */
+.tf-trans.naoya .roll{position:absolute;left:0;right:0;top:-24vh;height:22vh;background:linear-gradient(180deg,transparent,rgba(10,11,16,.5) 30%,rgba(10,11,16,.5) 70%,transparent);border-bottom:1px solid rgba(201,182,255,.28);animation:tfRoll .5s cubic-bezier(.45,0,.3,1) forwards;overflow:hidden}
+.tf-trans.naoya .roll i{position:absolute;inset:-50%;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:nyNoise .2s steps(3) infinite}
+@keyframes tfRoll{to{transform:translateY(130vh)}}
+.tf-trans.naoya .sliver{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(167,123,255,.4),rgba(223,227,238,.3),transparent);opacity:0;animation:tfSliver .45s steps(4) forwards}
+.tf-trans.naoya .s1{top:28%}.tf-trans.naoya .s2{top:52%;height:2px;animation-delay:.08s}.tf-trans.naoya .s3{top:71%;animation-delay:.15s}
+@keyframes tfSliver{0%{opacity:0;transform:translateX(-12px)}25%{opacity:1;transform:translateX(16px)}50%{opacity:.6;transform:translateX(-8px)}75%{opacity:1;transform:translateX(5px)}100%{opacity:0;transform:none}}
+/* Naoya: sair da ficha — TV desligando */
+.tf-tvoff .half{position:absolute;left:0;right:0;height:50%;background:#0b0c11}
+.tf-tvoff .half.top{top:0;transform:translateY(-101%);animation:tfCloseT .42s cubic-bezier(.65,0,.35,1) forwards,tfGone .4s ease .5s forwards}
+.tf-tvoff .half.bot{bottom:0;transform:translateY(101%);animation:tfCloseB .42s cubic-bezier(.65,0,.35,1) forwards,tfGone .4s ease .5s forwards}
+@keyframes tfCloseT{to{transform:none}}
+@keyframes tfCloseB{to{transform:none}}
+@keyframes tfGone{to{opacity:0}}
+.tf-tvoff .beam{position:absolute;left:50%;top:50%;width:100%;height:2px;margin:-1px 0 0 -50%;background:linear-gradient(90deg,transparent,rgba(201,182,255,.55) 20%,rgba(223,227,238,.6) 50%,rgba(201,182,255,.55) 80%,transparent);box-shadow:0 0 10px rgba(167,123,255,.35);opacity:0;animation:tfBeamOff .9s ease forwards}
+@keyframes tfBeamOff{0%,38%{opacity:0;transform:scaleX(1)}46%{opacity:1;transform:scaleX(1)}72%{opacity:1;transform:scaleX(.01) scaleY(2)}100%{opacity:0;transform:scaleX(0)}}
 /* Tatsuya: queimadura + isqueiro */
 .tf-trans.tatsuya .burn{position:absolute;inset:0}
 .tf-trans.tatsuya .zippo{position:absolute;right:4vw;bottom:12vh;width:74px;height:auto;overflow:visible;animation:tfZip .9s cubic-bezier(.2,.8,.3,1) forwards;filter:drop-shadow(0 0 14px rgba(255,122,46,.7))}
@@ -136,13 +152,16 @@ body.workspace-sheet[data-hs-fx="kotone"] .hud-title{text-shadow:0 0 16px rgba(2
 @keyframes tfZip{0%{transform:translateY(30px) rotate(-8deg);opacity:0}18%{transform:none;opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
 @keyframes tfLid{0%,15%{transform:rotate(0)}35%,100%{transform:rotate(-115deg)}}
 @keyframes tfFlame{0%,32%{transform:scale(0);opacity:0}45%{transform:scale(1.25);opacity:1}60%{transform:scale(.9)}75%{transform:scale(1.08)}100%{transform:scale(1);opacity:.9}}
-/* Maya: flash de câmera + página de revista */
-.tf-trans.maya .flash{position:absolute;inset:0;background:#fff;animation:tfFlash .5s ease-out forwards}
-@keyframes tfFlash{0%{opacity:0}8%{opacity:.95}100%{opacity:0}}
-.tf-trans.maya .page{position:absolute;top:-20%;bottom:-20%;width:44vw;left:-50vw;background:linear-gradient(90deg,rgba(47,227,234,.0),rgba(47,227,234,.55) 40%,rgba(255,47,168,.7) 70%,#fff 71% 73%,transparent 74%);transform:skewX(-14deg);animation:tfPage .55s cubic-bezier(.6,0,.3,1) forwards}
-@keyframes tfPage{to{transform:translateX(160vw) skewX(-14deg)}}
-.tf-trans.maya .frame{position:absolute;inset:6vh 6vw;border:3px solid transparent;border-image:linear-gradient(90deg,#ff2fa8,#2fe3ea) 1;opacity:0;animation:tfFrame .5s ease-out forwards}
-@keyframes tfFrame{0%{opacity:0;transform:scale(1.06)}20%{opacity:1}100%{opacity:0;transform:scale(1)}}
+/* Maya: colagem de revista — tiras de papel rosa/ciano deslizando (sem flash) */
+.tf-trans.maya .strip{position:absolute;top:-25%;bottom:-25%;left:-40vw;width:26vw;transform:skewX(-16deg);opacity:.0;animation:tfStrip .62s cubic-bezier(.55,0,.25,1) forwards}
+.tf-trans.maya .strip.a{background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 2px,transparent 2px 9px),linear-gradient(90deg,rgba(255,47,168,.0),rgba(255,47,168,.42));animation-delay:0s}
+.tf-trans.maya .strip.b{width:10vw;background:rgba(47,227,234,.38);animation-delay:.06s}
+.tf-trans.maya .strip.c{width:5vw;background:rgba(58,12,60,.55);box-shadow:-6px 0 0 rgba(255,47,168,.35);animation-delay:.11s}
+@keyframes tfStrip{0%{transform:translateX(0) skewX(-16deg);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(150vw) skewX(-16deg);opacity:0}}
+.tf-trans.maya .mh,.tf-trans.maya .ms{position:absolute;left:-4vw;width:16px;height:16px;opacity:0;animation:tfDeco .62s cubic-bezier(.55,0,.25,1) forwards}
+.tf-trans.maya .mh{background:#ff4fbb;clip-path:path('M8 15C2 11 0 7.5 1 5C2 2 5.5 1.5 8 4.5C10.5 1.5 14 2 15 5C16 7.5 14 11 8 15Z');filter:drop-shadow(0 0 4px #ff2fa8)}
+.tf-trans.maya .ms{background:#bff9ff;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+@keyframes tfDeco{0%{transform:translateX(0) rotate(0) scale(.6);opacity:0}20%{opacity:.85}80%{opacity:.85}100%{transform:translateX(108vw) rotate(200deg) scale(1);opacity:0}}
 /* Kotone: onda suave da esquerda para a direita */
 .tf-trans.kotone .wave{position:absolute;top:0;bottom:0;left:-70vw;width:70vw;background:linear-gradient(90deg,transparent,rgba(255,200,220,.18) 30%,rgba(255,134,184,.55) 80%,rgba(255,217,138,.7));border-radius:0 50% 50% 0/0 50% 50% 0;filter:blur(6px);animation:tfWave .7s cubic-bezier(.45,0,.2,1) forwards}
 @keyframes tfWave{to{transform:translateX(175vw)}}
