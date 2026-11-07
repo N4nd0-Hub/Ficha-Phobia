@@ -379,3 +379,8 @@ body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active .sheet-nav-copy 
   body.hud #characterPage .sheet-page-tabs .sheet-page-tab{flex:none}
   body.hud #characterPage .sheet-page-tabs .sheet-page-tab.active{width:auto;transform:none}
 }
+/* o botão FICHA tem fundo claro em todos os temas: letras sempre pretas */
+body.hud .topbar .workspace-btn[data-workspace="sheet"],
+body.hud .topbar .workspace-btn[data-workspace="sheet"]:is(.active,:hover,:focus-visible),
+body.hud[data-site-theme] .topbar .workspace-btn[data-workspace="sheet"].active,
+body.hud.workspace-sheet .topbar .workspace-btn[data-workspace="sheet"]{color:#0d0c10!important;-webkit-text-fill-color:#0d0c10;text-shadow:none!important}
