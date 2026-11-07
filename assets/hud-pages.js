@@ -399,6 +399,80 @@
   }
 
   /* ======================================================
+     PERSONA — linhas equilibradas + habilidades no padrão novo
+     ====================================================== */
+  var persona = { done: false };
+  var EMAIL = /^\s*[^\s@]+@[^\s@]+\.[^\s@]+\s*$/;
+
+  function layoutPersona() {
+    if (persona.done) return;
+    var hero = $('#sheet-panel-persona .persona-v2-hero');
+    var section = $('#personaAffinitySection');
+    var inst = $('#personaInstrumentPane');
+    var secondary = $('#sheet-panel-persona .persona-secondary');
+    if (!hero || !section || !inst || !secondary) return;
+    persona.done = true;
+    /* instrumentos sobem para a coluna da direita, ao lado da carta */
+    section.appendChild(inst);
+    /* Dissonante + consulta rápida viram uma linha inteira abaixo */
+    secondary.classList.add('hp-dissonant-row');
+    hero.parentNode.insertBefore(secondary, hero.nextSibling);
+    buildAbilities();
+  }
+
+  var ABIL = [
+    { key: 'naturalAbility', sel: '.exclusive-ability-card.natural', label: 'HABILIDADE NATURAL', fallback: '✦', extra: ['uses'] },
+    { key: 'combatAbility', sel: '.exclusive-ability-card.combat', label: 'HABILIDADE DE COMBATE', fallback: '✹', extra: ['cost', 'uses'] }
+  ];
+  function buildAbilities() {
+    ABIL.forEach(function (a) {
+      var card = $(a.sel);
+      if (!card || card.dataset.hpReady) return;
+      card.dataset.hpReady = '1';
+      card.classList.add('hp-ability');
+      var sum = card.querySelector(':scope > summary');
+      if (!sum) return;
+      sum.innerHTML =
+        '<span class="hp-ab-sigil" aria-hidden="true"></span>' +
+        '<span class="hp-ab-copy"><small>' + a.label + '</small><b></b></span>' +
+        '<span class="hp-ab-chips"></span>' +
+        '<span class="hp-ab-chev" aria-hidden="true"></span>';
+      card.addEventListener('input', function () { renderAbility(a); });
+      renderAbility(a);
+    });
+  }
+  function field(a, f) { var n = document.querySelector('[data-sheet="' + a.key + '.' + f + '"]'); return n ? n.value.trim() : ''; }
+  function renderAbility(a) {
+    var card = $(a.sel); if (!card) return;
+    var name = field(a, 'name'), sig = field(a, 'sigil') || a.fallback, tag = field(a, 'tag');
+    $('.hp-ab-sigil', card).textContent = sig;
+    var b = $('.hp-ab-copy b', card);
+    b.textContent = name || 'Sem nome ainda';
+    b.classList.toggle('is-empty', !name);
+    var chips = [tag].concat(a.extra.map(function (f) { return field(a, f); })).filter(Boolean).slice(0, 3);
+    $('.hp-ab-chips', card).innerHTML = chips.map(function (c) { return '<i>' + E(c) + '</i>'; }).join('');
+  }
+
+  /* o navegador preenchia campos da ficha com o e-mail salvo */
+  function noAutofill() {
+    document.querySelectorAll('#characterPage input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]), #characterPage textarea').forEach(function (n) {
+      n.setAttribute('autocomplete', 'off');
+      if (n.type === 'text' || !n.type || n.tagName === 'TEXTAREA') n.setAttribute('data-lpignore', 'true');
+    });
+    var cs = S().charSheet, changed = false;
+    if (!cs) return;
+    ['naturalAbility', 'combatAbility'].forEach(function (k) {
+      var o = cs[k]; if (!o) return;
+      ['tag', 'uses', 'trigger', 'cost', 'name'].forEach(function (f) {
+        if (typeof o[f] === 'string' && EMAIL.test(o[f])) { o[f] = ''; changed = true; var n = document.querySelector('[data-sheet="' + k + '.' + f + '"]'); if (n) n.value = ''; }
+      });
+    });
+    var q = document.querySelector('#backpackSection input[type=search], #bpSearch');
+    if (q && EMAIL.test(q.value)) { q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })); }
+    if (changed) { call('saveState', true); ABIL.forEach(renderAbility); }
+  }
+
+  /* ======================================================
      LIGAÇÕES
      ====================================================== */
   function wrap(name, after) {
@@ -419,11 +493,14 @@
   function init() {
     document.body.classList.add('hud-pages');
     renderGuide(false); renderCal(false); renderHero(false);
+    layoutPersona(); noAutofill();
+    setTimeout(noAutofill, 1500);
     wrap('renderSummaries', function () { renderGuide(false); });
     wrap('renderCalendar', function () { if (cal.root) renderCal(false); });
     wrap('setCampaignDate', function () { cal.sel = S().campaignDate; renderCal(false); });
     wrap('setTime', function () { renderCal(false); });
-    wrap('renderCharacterSheet', function () { renderHero(false); });
+    wrap('renderCharacterSheet', function () { renderHero(false); layoutPersona(); ABIL.forEach(renderAbility); });
+    wrap('hydrateCharacterSheet', function () { ABIL.forEach(renderAbility); noAutofill(); });
     wrap('renderDistricts', function () { if (guide.root) renderGuide(false); });
     wrap('updateWorkspaceUI', function () { setTimeout(onPage, 0); });
     var search = $('#areaSearch');

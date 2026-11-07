@@ -20,7 +20,7 @@ body.hud.workspace-sheet #characterPage .hs-stripes{display:none!important}
 body.hud.workspace-sheet #characterPage :is(
   .hs-bar,.hs-attr,.hs-integ,.hs-skill,.hs-derived-wrap .derived-editor,.hs-derived-wrap .combat-status-pod,
   .hs-res-meta label,.core-status-board > details,.core-status-board > section,
-  .persona-v2-hero > *,.persona-v2-dissonant,.persona-v2-affinities,.persona-v2-journal,.dissonant-recap,.affinity-hud-card,
+  .persona-v2-hero > *,.persona-v2-dissonant,.persona-v2-affinities,.persona-v2-journal,.dissonant-recap,
   .magic-lab-grid > *,#sheetMagicDeck,.magic-lab details,
   .eq-slot,.eq-setup-grid > *,.eq-collection,.eq-page details:not(.bp-dashboard *),.bp-section,
   #traitCatalogPanel,.tr-tabs,.tr-alert,.tr-budget-note,
@@ -89,3 +89,133 @@ body.hud.workspace-sheet #characterPage .hs-levels .level-unit :is(input,small,b
 
 /* 11. Só uma faixa rosa (a fixa); a antiga da lista de páginas sai */
 body.hud.workspace-sheet #characterPage .sheet-page-tabs::before{content:none!important;display:none!important}
+
+
+/* ==========================================================
+   12. PERSONA em linhas equilibradas
+   linha 1: carta | arcana, nome, regras, elementos, instrumentos
+   linha 2: Dissonante | consulta rápida (mesma altura)
+   linha 3: Habilidade Natural | Habilidade de Combate
+   ========================================================== */
+body.hud.workspace-sheet #characterPage .persona-v2-hero{grid-template-columns:minmax(220px,24%) minmax(0,1fr)!important;align-items:start}
+body.hud.workspace-sheet #characterPage #personaArcanaTraits{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))!important;gap:10px!important}
+body.hud.workspace-sheet #characterPage #personaArcanaTraits > *{width:auto!important;max-width:none!important;min-width:0}
+body.hud.workspace-sheet #characterPage #personaAffinitySection{display:flex!important;flex-direction:column;gap:14px}
+body.hud.workspace-sheet #characterPage #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+body.hud.workspace-sheet #characterPage #personaInstrumentPane .instrument-hud-card{min-height:54px!important;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+
+body.hud.workspace-sheet #characterPage .hp-dissonant-row{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;
+  align-items:stretch!important;margin:0 0 26px!important;
+}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row > div{display:contents!important}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row #personaDissonantSection{height:100%;box-sizing:border-box;justify-content:flex-start}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row #personaDissonantRecap{min-width:0;margin:0!important}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row #personaDissonantRecap[hidden]{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row:has(#personaDissonantRecap[hidden]) #personaDissonantSection{grid-column:1/-1}
+body.hud.workspace-sheet #characterPage .hp-dissonant-row .dissonant-recap-card{height:100%;box-sizing:border-box;margin:0!important}
+body.hud.workspace-sheet #characterPage .hud-section-label{margin:0 0 10px!important}
+
+/* ==========================================================
+   13. HABILIDADE NATURAL / DE COMBATE no padrão novo
+   ========================================================== */
+body.hud.workspace-sheet #characterPage .exclusive-ability-grid{align-items:start!important;gap:16px!important}
+body.hud.workspace-sheet #characterPage .hp-ability{
+  --ab:var(--hud-acc,#ef2b97);
+  background:var(--hud-card,#1b1e33)!important;border:2px solid #0d0c10!important;border-top:0!important;
+  box-shadow:6px 6px 0 rgba(0,0,0,.45)!important;border-radius:0!important;overflow:visible!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability.combat{--ab:var(--hud-acc2,#6ce6ff)}
+body.hud.workspace-sheet #characterPage .hp-ability::before,body.hud.workspace-sheet #characterPage .hp-ability::after{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-hero{display:none!important}
+
+/* cabeçalho (o próprio botão de abrir/fechar) */
+body.hud.workspace-sheet #characterPage .hp-ability > summary{
+  list-style:none;display:grid!important;grid-template-columns:58px minmax(0,1fr) auto 22px;align-items:center;gap:14px;
+  padding:12px 16px!important;background:#0d0c10!important;border-top:4px solid var(--ab);cursor:pointer;
+  font:inherit!important;color:#fff0d8!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability > summary::-webkit-details-marker{display:none}
+body.hud.workspace-sheet #characterPage .hp-ab-sigil{
+  width:52px;height:52px;display:grid;place-items:center;background:var(--ab);color:#0d0c10;
+  font:400 24px/1 var(--hud-display,"Arial Black");transform:rotate(-6deg);box-shadow:4px 4px 0 #fff0d8;
+  overflow:hidden;white-space:nowrap;
+}
+body.hud.workspace-sheet #characterPage .hp-ab-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+body.hud.workspace-sheet #characterPage .hp-ab-copy small{font:800 11px var(--hud-cond,"Arial Narrow");letter-spacing:2px;color:var(--ab)}
+body.hud.workspace-sheet #characterPage .hp-ab-copy b{font:400 clamp(18px,1.6vw,24px)/1.05 var(--hud-display,"Arial Black");letter-spacing:-.5px;color:#fff0d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hud.workspace-sheet #characterPage .hp-ab-copy b.is-empty{color:rgba(255,240,216,.45)}
+body.hud.workspace-sheet #characterPage .hp-ab-chips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:240px}
+body.hud.workspace-sheet #characterPage .hp-ab-chips i{
+  font:800 11px var(--hud-cond,"Arial Narrow");font-style:normal;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 8px;background:#1c1f36;color:#fff0d8;border-left:3px solid var(--ab);
+  max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+body.hud.workspace-sheet #characterPage .hp-ab-chev{width:12px;height:12px;border-right:3px solid #fff0d8;border-bottom:3px solid #fff0d8;transform:rotate(45deg) translateY(-3px);transition:transform .25s var(--hud-ease,ease)}
+body.hud.workspace-sheet #characterPage .hp-ability[open] .hp-ab-chev{transform:rotate(-135deg) translate(-2px,-2px)}
+
+/* corpo */
+body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-body{
+  display:flex!important;flex-direction:column;gap:12px;padding:16px!important;background:transparent!important;border:0!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability :is(.exclusive-ability-identity,.ability-meta-grid){
+  display:grid!important;gap:10px!important;padding:0!important;margin:0!important;background:none!important;border:0!important;box-shadow:none!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-identity{grid-template-columns:64px minmax(0,1.3fr) minmax(0,1fr)!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-meta-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
+body.hud.workspace-sheet #characterPage .hp-ability label{
+  display:flex!important;flex-direction:column;gap:6px;min-width:0;margin:0!important;padding:0!important;
+  background:none!important;border:0!important;box-shadow:none!important;
+  font:800 11px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1.5px;color:rgba(255,240,216,.62)!important;text-transform:uppercase;
+}
+body.hud.workspace-sheet #characterPage .hp-ability label > span{font:inherit!important;color:inherit!important;background:none!important;padding:0!important}
+body.hud.workspace-sheet #characterPage .hp-ability label::before,body.hud.workspace-sheet #characterPage .hp-ability label::after{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability :is(input,textarea){
+  width:100%;box-sizing:border-box;padding:10px 12px!important;background:#0d0c10!important;color:#fff0d8!important;
+  border:1px solid rgba(255,240,216,.18)!important;border-left:3px solid var(--ab)!important;border-radius:0!important;
+  font:600 15px var(--hud-body,Barlow)!important;letter-spacing:0;text-transform:none;box-shadow:none!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability :is(input,textarea):focus{border-color:var(--ab)!important;outline:0}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-sigil-field input{text-align:center;font:400 22px var(--hud-display,"Arial Black")!important;padding:8px 4px!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-name-field input{font:400 17px var(--hud-display,"Arial Black")!important;letter-spacing:-.3px}
+body.hud.workspace-sheet #characterPage .hp-ability textarea{min-height:120px;resize:vertical;line-height:1.5}
+
+/* gaveta de melhorias: barra simples */
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone{margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone::before,body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-zone::after{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle{
+  display:flex!important;align-items:center;gap:12px;width:100%;min-height:0!important;padding:11px 14px!important;
+  background:#0d0c10!important;background-image:none!important;border:0!important;border-left:4px solid var(--ab)!important;border-radius:0!important;box-shadow:none!important;
+  color:#fff0d8!important;cursor:pointer;text-align:left;
+}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle::before,body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-toggle::after,
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-grip{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy{display:flex!important;flex-direction:column;gap:2px;flex:1;min-width:0}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy small{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy strong{font:400 15px var(--hud-display,"Arial Black")!important;color:#fff0d8!important;letter-spacing:0;text-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-handle-copy strong em{display:none}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-count{
+  padding:4px 9px!important;background:var(--ab)!important;color:#0d0c10!important;border:0!important;border-radius:0!important;
+  font:800 11px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1px;box-shadow:none!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-chevron{width:auto!important;height:auto!important;border:0!important;background:none!important;color:#fff0d8!important;font-size:16px!important;box-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer{background:#151729!important;border:0!important;border-left:4px solid var(--ab)!important;box-shadow:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-drawer-intro b{font:400 14px var(--hud-display,"Arial Black")!important;color:#fff0d8!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add{
+  display:flex!important;align-items:center;gap:8px;width:auto!important;min-height:0!important;padding:9px 14px!important;
+  background:var(--ab)!important;color:#0d0c10!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);font:800 13px var(--hud-body,Barlow)!important;
+}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add small{display:none!important}
+body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add :is(b,span){color:inherit!important;font:inherit!important}
+
+@media (max-width:1100px){
+  body.hud.workspace-sheet #characterPage .hp-dissonant-row{grid-template-columns:1fr!important}
+  body.hud.workspace-sheet #characterPage #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  body.hud.workspace-sheet #characterPage .hp-ability > summary{grid-template-columns:48px minmax(0,1fr) 22px}
+  body.hud.workspace-sheet #characterPage .hp-ab-chips{display:none}
+}
+@media (max-width:700px){
+  body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-identity{grid-template-columns:56px minmax(0,1fr)!important}
+  body.hud.workspace-sheet #characterPage .hp-ability .ability-tag-field{grid-column:1/-1}
+}
