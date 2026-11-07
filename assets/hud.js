@@ -50,6 +50,44 @@
     });
     var notes = $('#openNotesTop'); if (notes) notes.textContent = 'NOTAS';
     var theme = $('#siteThemeButton'); if (theme) theme.setAttribute('aria-label', 'Trocar o tema do site');
+
+    /* celular: tudo do cabeçalho vai para um menu */
+    ui.menuBtn = el('button', 'hud-menu-btn', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>MENU');
+    ui.menuBtn.type = 'button';
+    ui.menuBtn.setAttribute('aria-expanded', 'false');
+    top.appendChild(ui.menuBtn);
+    ui.menuExtra = el('div', 'hud-menu-extra');
+    top.appendChild(ui.menuExtra);
+    ui.menuBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !document.body.classList.contains('hud-menu-open');
+      document.body.classList.toggle('hud-menu-open', open);
+      ui.menuBtn.setAttribute('aria-expanded', String(open));
+      if (open) anim(top, [{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: EASE });
+    });
+    top.addEventListener('click', function (e) {
+      if (e.target.closest('.global-tab, .workspace-btn, #siteThemeButton, .hud-opts-btn, .hud-master-btn')) closeMenu();
+    });
+  }
+  function closeMenu() {
+    document.body.classList.remove('hud-menu-open');
+    if (ui.menuBtn) ui.menuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  /* move camada, botões do canto e ferramentas da barra para o menu no celular */
+  var phoneQ = window.matchMedia('(max-width: 700px)');
+  function place() {
+    if (!ui.menuExtra || !ui.layer) return;
+    var phone = phoneQ.matches, shell = $('#mapPage .map-shell'), tools = $('#phobiaDeckBar .deck-tools'), area = $('#phobiaDeckBar .deck-area');
+    if (phone) {
+      ui.menuExtra.appendChild(ui.layer);
+      ui.menuExtra.appendChild(ui.corner);
+      if (tools) ui.menuExtra.appendChild(tools);
+    } else {
+      if (shell) { shell.appendChild(ui.layer); shell.appendChild(ui.corner); }
+      if (tools && area) area.appendChild(tools);
+      closeMenu();
+    }
   }
 
   function currentSheetPage() {
@@ -130,6 +168,7 @@
     optsBtn.type = 'button';
     corner.appendChild(masterBtn); corner.appendChild(optsBtn);
     shell.appendChild(corner);
+    ui.corner = corner;
 
     ui.masterPop = el('div', 'hud-pop hud-master-pop hud-map-only', '<div class="hud-pop-title">◆ MESTRE<button type="button" aria-label="Fechar">×</button></div>');
     ui.masterPop.hidden = true;
@@ -178,6 +217,7 @@
   function openPop(panel, trigger) {
     if (openPanel === panel) return;
     closeAll();
+    closeMenu();
     panel.hidden = false;
     openPanel = panel; openTrigger = trigger || null;
     if (trigger) trigger.setAttribute('aria-expanded', 'true');
@@ -312,6 +352,18 @@
     });
 
     lastSelected = S().selected || null;
+    place();
+    /* no celular o mapa abre aproximado no distrito escolhido */
+    if (phoneQ.matches) setTimeout(function () {
+      try {
+        var cam = atlasTokyoCamera, box = DISTRICT_ART_LAYOUT[S().selected];
+        if (cam && cam.fitScale && box) { cam.zoomBy(2.6); cam.centerOn(box.cx, box.cy + 110); }
+      } catch (e) {}
+    }, 400);
+    if (phoneQ.addEventListener) phoneQ.addEventListener('change', place); else phoneQ.addListener(place);
+    document.addEventListener('click', function (e) {
+      if (document.body.classList.contains('hud-menu-open') && !e.target.closest('.topbar') && document.contains(e.target)) closeMenu();
+    });
     updateAll();
     onView();
   }

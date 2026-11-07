@@ -25,3 +25,14 @@ test('the HUD only wraps functions the site defines',()=>{
   const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.js'),'utf8');
   for(const name of wrapped)assert.match(sources,new RegExp(`function ${name}\\(`),name);
 });
+
+test('the redesigned pages only call functions the site defines',()=>{
+  const pages=fs.readFileSync(path.join(__dirname,'..','assets','hud-pages.js'),'utf8');
+  assert.ok(html.indexOf('assets/hud-pages.js')>html.indexOf('assets/hud.js'));
+  const called=[...pages.matchAll(/call\('([A-Za-z]+)'/g)].map(m=>m[1]);
+  const wrapped=[...pages.matchAll(/wrap\('([A-Za-z]+)'/g)].map(m=>m[1]);
+  const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.js'),'utf8');
+  for(const name of new Set([...called,...wrapped]))assert.match(sources,new RegExp(`function ${name}\\(`),name);
+  for(const id of ['areaSearch','sheetPhotoInput','sheetPVMaxText','sheetPMMaxText','sheetCarry','sheetMovement','sheetIntegrityState'])
+    assert.match(html,new RegExp(`id="${id}"`),id);
+});
