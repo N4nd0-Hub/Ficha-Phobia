@@ -405,3 +405,44 @@
   #phobiaDeckBar *, .dk-panel, .dk-panel *{animation:none!important;transition:none!important}
   #phobiaDeckBar.is-playing .deck-eq b{height:70%}
 }
+
+/* ---------- links: YouTube / Spotify ---------- */
+.dk-addrow{display:flex;gap:6px}
+.dk-addlink{border:0;background:var(--dk-paper)}
+.dk-addlink:hover,.dk-addlink[aria-expanded="true"]{background:var(--dk-acc);color:var(--dk-black)}
+.dk-linkform{display:grid;gap:7px;padding:10px 14px 12px;background:rgba(0,0,0,.35);border-top:1px solid var(--dk-line);animation:dkIn .22s cubic-bezier(.22,1,.36,1)}
+.dk-linkform[hidden]{display:none}
+.dk-linkline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.dk-linkline input{min-width:0;padding:9px 10px;border:2px solid var(--dk-black);background:var(--dk-paper);color:var(--dk-black);font:700 13px/1.1 Barlow,Arial,sans-serif;outline:none}
+.dk-linkline input:focus{border-color:var(--dk-acc2);box-shadow:3px 3px 0 var(--dk-acc2)}
+.dk-linkline button{padding:0 14px;border:0;background:var(--dk-acc);color:var(--dk-black);font:900 11px/1 Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.dk-linkline button:hover{background:var(--dk-paper)}
+.dk-linkform small{font:600 11px/1.4 Barlow,Arial,sans-serif;color:var(--dk-mute)}
+.dk-linkform small span{display:inline-flex;align-items:center;gap:3px;font-weight:800;color:var(--dk-ink)}
+.dk-linkform small svg{width:13px;height:13px;display:inline-block}
+.dk-src-yt svg,.dk-src.dk-src-yt{color:#ff3b3b}
+.dk-src-sp svg,.dk-src.dk-src-sp{color:#1ed760}
+.dk-src{display:inline-block;width:13px;height:13px;margin-right:5px;vertical-align:-2px}
+.dk-gen.dk-gen-yt,.dk-gen.dk-gen-sp{display:grid;place-items:center;width:100%;height:100%;background:#111}
+.dk-gen.dk-gen-yt svg{width:60%;height:60%;color:#ff3b3b}
+.dk-gen.dk-gen-sp svg{width:60%;height:60%;color:#1ed760}
+.dk-edit-actions a{display:inline-flex;align-items:center;padding:6px 10px;color:var(--dk-ink);border:1px solid var(--dk-line);font:700 11px/1 Barlow,Arial,sans-serif;text-decoration:none}
+.dk-edit-actions a:hover{border-color:var(--dk-acc2);color:var(--dk-acc2)}
+
+/* palco do player embutido: o iframe fica fixo e é encaixado no espaço do painel */
+.dk-stage-slot{height:0;margin:0 14px;transition:height .3s cubic-bezier(.22,1,.36,1);flex:none}
+.dk-panel.has-stage .dk-stage-slot{margin:4px 14px 6px}
+.dk-stage{position:fixed;left:-10000px;top:0;width:352px;height:198px;z-index:1201;pointer-events:none;opacity:0;background:#000;
+  box-shadow:4px 4px 0 var(--dk-black,#0d0c10);transition:opacity .25s}
+.dk-stage.is-on{pointer-events:auto;opacity:1;outline:2px solid var(--theme-deep-ink,#fff0d8)}
+.dk-stage[data-src="sp"]{background:transparent;box-shadow:none;outline:0}
+.dk-stage > div{position:absolute;inset:0;display:none}
+.dk-stage[data-src="yt"] .dk-stage-yt,.dk-stage[data-src="sp"] .dk-stage-sp{display:block}
+.dk-stage iframe{width:100%!important;height:100%!important;border:0;display:block;border-radius:0}
+.dk-stage[data-src="sp"] iframe{border-radius:12px}
+/* no Spotify o próprio player tem a barra de tempo: o volume do site não vale lá */
+.dk-panel.is-sp .dk-vol{opacity:.35;pointer-events:none}
+.dk-panel.has-stage{max-height:min(800px,calc(100vh - 110px))}
+.dk-panel.has-stage .dk-list{min-height:90px}
+.dk-panel.has-stage{overflow-y:auto;overscroll-behavior:contain}
+.dk-panel.has-stage .dk-list{flex:none;overflow:visible}

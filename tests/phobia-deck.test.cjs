@@ -50,3 +50,16 @@ test('the footer keeps every id the rest of the site binds to',()=>{
   assert.doesNotMatch(html,/bindMusicPlayer|mediaRenderMeta/);
   assert.match(html,/window\.PhobiaDeck\?\.init\(\)/);
 });
+
+test('YouTube and Spotify links are recognised',()=>{
+  const {_parseLink:p}=freshDeck({});
+  assert.deepEqual(p('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),{src:'yt',kind:'video',ref:'dQw4w9WgXcQ',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'});
+  assert.equal(p('https://youtu.be/dQw4w9WgXcQ?si=abc').ref,'dQw4w9WgXcQ');
+  assert.equal(p('https://music.youtube.com/playlist?list=PLabc123').kind,'playlist');
+  assert.equal(p('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLxyz').ref,'PLxyz');
+  assert.equal(p('https://www.youtube.com/shorts/abcdefGHIJ1').ref,'abcdefGHIJ1');
+  assert.deepEqual(p('https://open.spotify.com/intl-pt/playlist/37i9dQZF1DXcBWIGoYBM5M?si=1'),{src:'sp',kind:'playlist',ref:'37i9dQZF1DXcBWIGoYBM5M',url:'https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M'});
+  assert.equal(p('spotify:album:1DFixLWuPkv3KT3TnV35m3').kind,'album');
+  assert.equal(p('https://example.com/song.mp3'),null);
+  assert.equal(p('não é link'),null);
+});
