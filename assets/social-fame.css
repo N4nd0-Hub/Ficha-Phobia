@@ -103,7 +103,56 @@ body.hud.workspace-sheet #characterPage .sf-top{display:grid;grid-template-colum
 #characterPage .sf-rule.on .sf-rule-state{color:var(--hud-acc3,#96ff45)}
 
 /* ---------- monitor de habilidades (veio da Ficha Base) ---------- */
-#characterPage .sf-monitor:empty{display:none}
+#characterPage .sf-monitor,#characterPage #socialMonitorSlot{display:none!important}
+
+/* ---------- habilidades dos Tiers: lista de faixas ---------- */
+#characterPage .sf-tiers{position:relative;padding:18px 20px 20px;background:var(--hud-card,#1c1f36);border-top:4px solid var(--sk);box-shadow:6px 6px 0 var(--hud-black,#0d0c10);transition:border-color .3s}
+#characterPage .sf-tiers-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+#characterPage .sf-tiers-head small{display:block;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--sk)}
+#characterPage .sf-tiers-head b{display:block;margin-top:4px;font:400 clamp(24px,2.6vw,34px)/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--hud-paper,#fff0d8);letter-spacing:-.5px}
+#characterPage .sf-tiers-now{display:flex;align-items:center;gap:10px}
+#characterPage .sf-tiers-now span{padding:6px 12px 5px;background:var(--sk);color:var(--hud-black,#0d0c10);font:400 15px/1 var(--hud-display,"Archivo Black"),sans-serif;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+#characterPage .sf-tiers-now em{font:800 13px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:var(--hud-paper,#fff0d8);font-style:normal}
+#characterPage .sf-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 16px}
+#characterPage .sf-tab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:7px 14px 6px 12px;border:0;cursor:pointer;background:var(--hud-black,#0d0c10);color:var(--hud-paper,#fff0d8);border-bottom:3px solid var(--sk);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:transform .25s cubic-bezier(.34,1.56,.64,1),background-color .2s,color .2s}
+#characterPage .sf-tab b{font:400 13px/1 var(--hud-display,"Archivo Black"),sans-serif}
+#characterPage .sf-tab span{font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;color:var(--sk)}
+#characterPage .sf-tab:hover{transform:translateY(-3px)}
+#characterPage .sf-tab.on{background:var(--sk);color:var(--hud-black,#0d0c10);transform:translateY(-3px)}
+#characterPage .sf-tab.on span{color:var(--hud-black,#0d0c10)}
+#characterPage .sf-tab:focus-visible{outline:2px solid var(--hud-paper,#fff0d8);outline-offset:2px}
+#characterPage .sf-tiers-zero{margin:0 0 12px;padding:10px 14px;background:var(--hud-black,#0d0c10);border-left:4px solid var(--hud-mute);font:600 14px/1.35 var(--hud-body,Barlow),sans-serif;color:var(--hud-mute)}
+#characterPage .sf-tracks{display:flex;flex-direction:column;gap:8px}
+#characterPage .sf-track{display:grid;grid-template-columns:74px minmax(0,1fr);background:var(--hud-black,#0d0c10);border-left:5px solid var(--sk);transition:opacity .3s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+#characterPage .sf-track:hover{transform:translateX(4px)}
+#characterPage .sf-track-num{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;background:color-mix(in srgb,var(--sk) 18%,var(--hud-black,#0d0c10));color:var(--sk)}
+#characterPage .sf-track-num small{font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;opacity:.8}
+#characterPage .sf-track-num b{font:400 28px/1 var(--hud-display,"Archivo Black"),sans-serif}
+#characterPage .sf-track-body{padding:11px 16px 12px;min-width:0}
+#characterPage .sf-track-body header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#characterPage .sf-track-body header b{font:400 18px/1.1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--hud-paper,#fff0d8);letter-spacing:-.2px}
+#characterPage .sf-track-tag{display:inline-flex;align-items:center;gap:5px;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:var(--sk)}
+#characterPage .sf-track-body p{margin:6px 0 0;font:500 14.5px/1.45 var(--hud-body,Barlow),sans-serif;color:var(--hud-paper,#fff0d8);opacity:.88}
+#characterPage .sf-track.now{box-shadow:inset 0 0 0 2px var(--sk),6px 6px 0 color-mix(in srgb,var(--sk) 55%,transparent)}
+#characterPage .sf-track.now .sf-track-num{background:var(--sk);color:var(--hud-black,#0d0c10)}
+#characterPage .sf-track.now .sf-track-tag{padding:3px 8px 2px;background:var(--sk);color:var(--hud-black,#0d0c10)}
+#characterPage .sf-track.lock{border-left-color:color-mix(in srgb,var(--hud-paper,#fff0d8) 18%,transparent)}
+#characterPage .sf-track.lock .sf-track-num{background:transparent;color:var(--hud-mute)}
+#characterPage .sf-track.lock .sf-track-body b,#characterPage .sf-track.lock .sf-track-body p{opacity:.42}
+#characterPage .sf-track.lock .sf-track-tag{color:var(--hud-mute)}
+#characterPage .sf-lock{width:9px;height:8px;margin-top:3px;position:relative;background:currentColor;border-radius:1px}
+#characterPage .sf-lock::before{content:"";position:absolute;left:1px;top:-5px;width:5px;height:5px;border:1.5px solid currentColor;border-bottom:0;border-radius:4px 4px 0 0}
+#characterPage .sf-tracks.is-in .sf-track{animation:sfTrackIn .5s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--d)}
+@keyframes sfTrackIn{from{opacity:0;transform:translateX(-26px) skewX(-6deg)}to{opacity:1;transform:none}}
+@media (max-width:520px){
+  #characterPage .sf-tiers{padding:14px 12px 16px}
+  #characterPage .sf-track{grid-template-columns:52px minmax(0,1fr)}
+  #characterPage .sf-track-num b{font-size:22px}
+  #characterPage .sf-track-body{padding:9px 11px 10px}
+  #characterPage .sf-track-body header b{font-size:15px}
+  #characterPage .sf-track-body p{font-size:13.5px}
+  #characterPage .sf-tab{padding:6px 10px 5px 9px}
+}
 
 /* ---------- Ficha Base: botão discreto para Recursos ---------- */
 body.hud.workspace-sheet #characterPage .hs-extra > summary{

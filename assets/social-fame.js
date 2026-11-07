@@ -91,7 +91,7 @@
     stage.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.sfSkill) { e.preventDefault(); focusSkill(e.target.dataset.sfSkill); } });
     var side = $('#sfSkills');
     side.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-sf-set]'); if (b) { setTier(b.dataset.sfSkillRow, +b.dataset.sfSet); return; }
+      var b = e.target.closest('[data-sf-set]'); if (b) { setTier(b.dataset.sfSkillRow, +b.dataset.sfSet); paintTiers(true); return; }
       var r = e.target.closest('[data-sf-pick]'); if (r) focusSkill(r.dataset.sfPick);
     });
     var auto = $('#sfAuto');
@@ -100,6 +100,11 @@
       try { ensureCharacterUI().socialAutoStats = e.target.checked; } catch (x) {}
       if (typeof renderCharacterSheet === 'function') renderCharacterSheet();
       try { saveState(true); } catch (x) {}
+    });
+    var tiers = document.getElementById('sfTiers');
+    if (!tiers && auto) { tiers = document.createElement('section'); tiers.id = 'sfTiers'; tiers.className = 'sf-tiers'; tiers.setAttribute('aria-label', 'Habilidades liberadas por Tier'); auto.parentNode.insertBefore(tiers, auto.nextSibling); }
+    if (tiers) tiers.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-sf-tab]'); if (t) { pickSkill(t.dataset.sfTab, true); return; }
     });
     built = true;
     return true;
@@ -115,10 +120,14 @@
     if (typeof renderCharacterSheet === 'function') renderCharacterSheet();
     try { saveState(true); } catch (e) {}
   }
+  function pickSkill(skill, anim) {
+    try { ensureCharacterUI().socialSkillMonitor = skill; } catch (e) {}
+    paintSide(); paintTiers(anim);
+    try { saveState(true); } catch (e) {}
+  }
   function focusSkill(skill) {
-    try { ensureCharacterUI().socialSkillMonitor = skill; renderSocialTierMonitor(); } catch (e) {}
-    paintSide();
-    var mon = document.getElementById('socialTierMonitorSection');
+    pickSkill(skill, true);
+    var mon = document.getElementById('sfTiers');
     if (mon && mon.getBoundingClientRect().top > window.innerHeight * .7) mon.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
   }
 
@@ -160,6 +169,42 @@
         var i = SK.indexOf(r.skill);
         return '<div class="sf-rule' + (r.on ? ' on' : '') + '" style="--sk:' + (col[i] || '#fff') + '"><span class="sf-rule-tag">' + SHORT[i] + ' ' + ROM[r.tier] + '</span><span class="sf-rule-text">' + E(r.text) + '</span><span class="sf-rule-state">' + (r.on ? (st.enabled ? '✓ SOMADO' : 'LIBERADO') : '🔒 TIER ' + ROM[r.tier]) + '</span></div>';
       }).join('') + '</div>';
+  }
+
+  /* ---------- habilidades dos Tiers (lista de faixas) ---------- */
+  var lastTiersKey = '';
+  function paintTiers(animate) {
+    var box = $('#sfTiers'); if (!box) return;
+    var col = colors(), act = '';
+    try { act = ensureCharacterUI().socialSkillMonitor; } catch (e) {}
+    if (SK.indexOf(act) < 0) act = SK[0];
+    var i = SK.indexOf(act), t = tierOf(act), ab = arcanaOf(act), rows = [];
+    try { rows = SOCIAL_TIER_SKILLS[act] || []; } catch (e) {}
+    var key = act + '|' + t + '|' + col.join();
+    if (key === lastTiersKey && !animate) return;
+    lastTiersKey = key;
+    var tabs = SK.map(function (s, k) {
+      var tt = tierOf(s);
+      return '<button type="button" class="sf-tab' + (s === act ? ' on' : '') + '" data-sf-tab="' + E(s) + '" style="--sk:' + col[k] + '" role="tab" aria-selected="' + (s === act) + '"><b>' + E(s).toUpperCase() + '</b><span>' + (tt ? 'TIER ' + ROM[tt] : 'TIER 0') + '</span></button>';
+    }).join('');
+    var base = rows.filter(function (r) { return String(r.tier) === '0'; })[0];
+    var list = [1, 2, 3, 4, 5].map(function (k) {
+      var r = rows.filter(function (x) { return String(x.tier) === ROM[k]; })[0] || { title: '—', effect: '' };
+      var txt = String(r.effect || '').replace(/\s*=+\s*$/, '').trim();
+      var st = k < t ? 'got' : k === t ? 'now' : 'lock';
+      var tag = st === 'now' ? 'TIER ATUAL' : st === 'got' ? 'LIBERADA' : 'BLOQUEADA';
+      return '<article class="sf-track ' + st + (k <= ab ? ' arc' : '') + '" style="--d:' + (k - 1) * 55 + 'ms">' +
+        '<div class="sf-track-num"><small>TIER</small><b>' + ROM[k] + '</b></div>' +
+        '<div class="sf-track-body"><header><b>' + E(r.title) + '</b><span class="sf-track-tag">' + (st === 'lock' ? '<i class="sf-lock"></i>' : '') + tag + (k <= ab ? ' · ARCANA' : '') + '</span></header>' +
+        '<p>' + E(txt) + '</p></div></article>';
+    }).join('');
+    box.style.setProperty('--sk', col[i]);
+    box.innerHTML =
+      '<header class="sf-tiers-head"><div><small>LADO A // HABILIDADES DOS TIERS</small><b>' + E(act).toUpperCase() + '</b></div>' +
+      '<div class="sf-tiers-now"><span>' + (t ? 'TIER ' + ROM[t] : 'TIER 0') + '</span><em>' + E(titleOf(act, t) || '') + '</em></div></header>' +
+      '<nav class="sf-tabs" role="tablist">' + tabs + '</nav>' +
+      (t === 0 && base ? '<p class="sf-tiers-zero">TIER 0 · ' + E(base.title) + ' — nenhuma habilidade liberada ainda. Suba o Tier lá em cima para destravar a primeira faixa.</p>' : '') +
+      '<div class="sf-tracks' + (animate && !reduced() ? ' is-in' : '') + '">' + list + '</div>';
   }
 
   /* ---------- animação da estrela ---------- */
@@ -234,7 +279,7 @@
     if (fromSwitch && !reduced()) { anim.cur = [0, 0, 0, 0, 0, 0]; anim.vel = [0, 0, 0, 0, 0, 0]; }
     animateTo(vals, !last && !fromSwitch);
     last = vals;
-    paintRank(total); paintSide(); paintAuto();
+    paintRank(total); paintSide(); paintAuto(); paintTiers(false);
   }
   window.renderSocialFame = render;
 
