@@ -332,3 +332,10 @@ body.cognition #subDistrictMap .dl-head{border-bottom-color:var(--dl-a)!importan
 }
 body.hs-calm #subDistrictMap .dl *,body.hs-calm #subDistrictMap .dl *::after{animation:none!important}
 body.cognition #subDistrictMap .dl-badge{--bd-a:var(--theme-accent-3,#96ff45);--bd-b:var(--theme-accent-2,#6ce6ff)}
+
+/* malha de ruas (grade do bairro) */
+.dl-scene .dl-street{fill:none;stroke:color-mix(in srgb,var(--dl-ground) 70%,var(--dl-ink));stroke-width:26;stroke-linecap:square}
+.dl-scene .dl-street-line{fill:none;stroke:color-mix(in srgb,var(--dl-paper) 70%,transparent);stroke-width:1.6;stroke-dasharray:8 10}
+body.time-night #subDistrictMap .dl-scene .dl-street{stroke:color-mix(in srgb,var(--dl-ink) 85%,var(--dl-b))}
+body.cognition #subDistrictMap .dl-scene .dl-street{stroke:#030809}
+body.cognition #subDistrictMap .dl-scene .dl-street-line{stroke:color-mix(in srgb,var(--dl-b) 45%,transparent)}

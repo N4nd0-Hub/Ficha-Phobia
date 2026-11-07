@@ -120,13 +120,51 @@
     }
     return pos;
   }
-  /* árvore mínima entre os locais (as ruas que os ligam) */
+  /* ==========================================================
+     MALHA DE RUAS
+     Tudo segue uma grade (girada no ângulo do bairro):
+     os locais ficam nos cruzamentos e os caminhos andam pelas
+     ruas da grade, em vez de linhas soltas pela tela.
+     ========================================================== */
+  var PX = 152, PY = 126, GAP = 34, NI = 7, NJ = 6;
+  var G = { ang: 0 };
+  function toWorld(x, y, ang) { var a = (ang == null ? G.ang : ang) * Math.PI / 180, cx = W / 2, cy = H / 2, dx = x - cx, dy = y - cy; return { x: cx + dx * Math.cos(a) - dy * Math.sin(a), y: cy + dx * Math.sin(a) + dy * Math.cos(a) }; }
+  function toLocal(x, y) { var a = -G.ang * Math.PI / 180, cx = W / 2, cy = H / 2, dx = x - cx, dy = y - cy; return { x: cx + dx * Math.cos(a) - dy * Math.sin(a), y: cy + dx * Math.sin(a) + dy * Math.cos(a) }; }
+  function gx(i) { return W / 2 + i * PX; }
+  function gy(j) { return H / 2 + j * PY; }
+  function wet(x, y, sc) {
+    if (sc.water && !sc.water.island && inPath(sc.water.d, x, y)) return true;
+    if (sc.water && sc.water.island && !inPath(sc.water.island, x, y)) return true;
+    return false;
+  }
+  /* encaixa cada local num cruzamento livre, perto de onde ele estaria */
+  function snap(raw, sc) {
+    G.ang = sc.angle || 0;
+    var taken = [], out = [];
+    raw.forEach(function (p) {
+      var l = toLocal(p.x, p.y), ti = Math.round((l.x - W / 2) / PX), tj = Math.round((l.y - H / 2) / PY), best = null;
+      for (var i = -NI; i <= NI; i++) for (var j = -NJ; j <= NJ; j++) {
+        var w = toWorld(gx(i), gy(j));
+        if (w.x < 150 || w.x > W - 150 || w.y < 140 || w.y > H - 100) continue;
+        if (wet(w.x, w.y, sc)) continue;
+        if (taken.some(function (t) { return Math.abs(t.i - i) < 2 && Math.abs(t.j - j) < 2; })) continue;
+        var d = Math.hypot((i - ti) * PX, (j - tj) * PY);
+        if (!best || d < best.d) best = { i: i, j: j, d: d };
+      }
+      if (!best) best = { i: ti, j: tj };
+      taken.push(best);
+      var w2 = toWorld(gx(best.i), gy(best.j));
+      out.push({ x: w2.x, y: w2.y, i: best.i, j: best.j });
+    });
+    return out;
+  }
+  /* árvore mínima entre os locais (distância andando pela grade) */
   function mst(pos) {
     var inTree = [0], edges = [];
     if (!pos.length) return edges;
     while (inTree.length < pos.length) {
       var best = null;
-      inTree.forEach(function (a) { pos.forEach(function (p, b) { if (inTree.indexOf(b) >= 0) return; var d = Math.hypot(p.x - pos[a].x, p.y - pos[a].y); if (!best || d < best.d) best = { a: a, b: b, d: d }; }); });
+      inTree.forEach(function (a) { pos.forEach(function (p, b) { if (inTree.indexOf(b) >= 0) return; var d = Math.abs(p.i - pos[a].i) * PX + Math.abs(p.j - pos[a].j) * PY; if (!best || d < best.d) best = { a: a, b: b, d: d }; }); });
       inTree.push(best.b); edges.push([best.a, best.b]);
     }
     return edges;
@@ -138,6 +176,23 @@
     if (!seen[to]) return [from, to];
     var out = [to]; while (out[0] !== from) out.unshift(prev[out[0]]); return out;
   }
+  /* trecho pela grade (coordenadas locais): primeiro ao longo da rua horizontal, depois da vertical */
+  function legLocal(a, b) {
+    var pts = [[gx(a.i), gy(a.j)]];
+    if (a.i !== b.i && a.j !== b.j) pts.push([gx(b.i), gy(a.j)]);
+    pts.push([gx(b.i), gy(b.j)]);
+    return pts;
+  }
+  function routePoints(pos, edges, from, to) {
+    var nodes = pathBetween(edges, from, to), pts = [];
+    for (var k = 1; k < nodes.length; k++) {
+      var seg = legLocal(pos[nodes[k - 1]], pos[nodes[k]]);
+      if (k > 1) seg = seg.slice(1);
+      pts = pts.concat(seg);
+    }
+    if (!pts.length) pts = [[gx(pos[from].i), gy(pos[from].j)]];
+    return pts.map(function (p) { var w = toWorld(p[0], p[1]); return [w.x, w.y]; });
+  }
 
   /* ---------- desenho do cenário ---------- */
   function poly(pts) { return 'M' + pts.map(function (p) { return n(p[0]) + ' ' + n(p[1]); }).join('L'); }
@@ -146,107 +201,101 @@
     return '<g class="dl-road ' + (cls || '') + '"><path d="' + d + '" class="r-shadow"/><path d="' + d + '" class="r-outer"/><path d="' + d + '" class="r-edge"/><path d="' + d + '" class="r-inner"/><path d="' + d + '" class="r-lane"/></g>';
   }
   function scene(id, pos, edges) {
-    var sc = SCENE[id] || { angle: 0, avenue: [[-20, H / 2], [W + 20, H / 2]] };
+    var sc = SCENE[id] || { angle: 0 };
+    G.ang = sc.angle || 0;
     setSeed('scene-' + id);
+    var L0 = -NI - 3, L1 = NI + 3, M0 = -NJ - 3, M1 = NJ + 3;
+    var railCell = sc.rail ? (sc.railCell != null ? sc.railCell : -2) : null;      // coluna de quarteirões ocupada pelo trilho
+    var hwCell = sc.highway ? (sc.hwCell != null ? sc.hwCell : -2) : null;         // linha de quarteirões ocupada pela via expressa
+    var aveRow = sc.aveRow != null ? sc.aveRow : 0, aveCol = sc.aveCol != null ? sc.aveCol : null;
+    var occupied = function (wx, wy) { return pos.some(function (p) { return Math.hypot(p.x - wx, p.y - wy) < 40; }); };
+    var plaza = null;
+    if (sc.plaza) { var pl = toLocal(sc.plaza.x, sc.plaza.y); plaza = { i: Math.round((pl.x - W / 2) / PX), j: Math.round((pl.y - H / 2) / PY), kind: sc.plaza.kind }; }
+    var rot = ' transform="rotate(' + G.ang + ' ' + W / 2 + ' ' + H / 2 + ')"';
+
     var s = '<defs>' +
       '<pattern id="dlDots" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="4.5" cy="4.5" r="1.4" class="dl-dot"/></pattern>' +
       '<pattern id="dlHatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="14" height="2" class="dl-hatch"/></pattern>' +
-      '<pattern id="dlTies" width="16" height="16" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="5" height="16" class="dl-tie"/></pattern>' +
+      (sc.water && sc.water.island ? '<clipPath id="dlIsle"><path d="' + sc.water.island + '"/></clipPath>' : '') +
       '</defs>';
     s += '<rect x="-700" y="-500" width="' + (W + 1400) + '" height="' + (H + 1000) + '" class="dl-ground"/><rect x="-700" y="-500" width="' + (W + 1400) + '" height="' + (H + 1000) + '" fill="url(#dlHatch)" class="dl-ground-hatch"/>';
-    // água de fundo (Odaiba é cercada de água)
     if (sc.water && sc.water.island) {
       s += '<path d="' + sc.water.d + '" class="dl-water"/>' + waves(W, H);
       s += '<path d="' + sc.water.island + '" class="dl-island-shadow" transform="translate(10 12)"/><path d="' + sc.water.island + '" class="dl-island"/>';
     }
-    // quarteirões
-    s += '<g class="dl-blocks" transform="rotate(' + sc.angle + ' ' + W / 2 + ' ' + H / 2 + ')">';
-    var bw = 118, bh = 92, gap = 34;
-    for (var gx = -560; gx < W + 560; gx += bw + gap) for (var gy = -420; gy < H + 420; gy += bh + gap) {
-      var x = gx + (rnd() - .5) * 10, y = gy + (rnd() - .5) * 8, w = bw - rnd() * 26, h = bh - rnd() * 22;
-      var c = toWorld(x + w / 2, y + h / 2, sc.angle);
-      if (pos.some(function (p) { return Math.hypot(p.x - c.x, p.y - c.y) < 105; })) continue;
-      if (sc.water && sc.water.island && !inIsland(c.x, c.y)) continue;
-      var tone = rnd(), cls = tone < .55 ? 'b1' : tone < .85 ? 'b2' : 'b3';
-      s += '<rect x="' + n(x + 5) + '" y="' + n(y + 6) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-block-shadow"/>';
-      s += '<rect x="' + n(x) + '" y="' + n(y) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-block ' + cls + '"/>';
-      if (rnd() > .55) { // telhados
-        var k = 1 + Math.floor(rnd() * 3);
-        for (var r = 0; r < k; r++) s += '<rect x="' + n(x + 8 + rnd() * (w - 34)) + '" y="' + n(y + 8 + rnd() * (h - 30)) + '" width="' + n(14 + rnd() * 16) + '" height="' + n(10 + rnd() * 12) + '" class="dl-roof"/>';
-      }
+
+    /* ruas da grade + quarteirões (tudo no mesmo ângulo) */
+    var city = '<g' + rot + '>';
+    var st = '';
+    for (var i = L0; i <= L1; i++) st += 'M' + gx(i) + ' ' + gy(M0) + 'V' + gy(M1);
+    for (var j = M0; j <= M1; j++) st += 'M' + gx(L0) + ' ' + gy(j) + 'H' + gx(L1);
+    city += '<path d="' + st + '" class="dl-street"/><path d="' + st + '" class="dl-street-line"/>';
+    for (var ci = L0; ci < L1; ci++) for (var cj = M0; cj < M1; cj++) {
+      if (ci === railCell || cj === hwCell) continue;
+      var x0 = gx(ci) + GAP / 2, y0 = gy(cj) + GAP / 2, bw = PX - GAP, bh = PY - GAP;
+      var cw = toWorld(x0 + bw / 2, y0 + bh / 2);
+      if (wet(cw.x, cw.y, sc) && !(sc.water && sc.water.island)) continue;
+      if (sc.park && inPath(sc.park.d, cw.x, cw.y)) continue;
+      if (plaza && Math.abs(ci + .5 - plaza.i) < 1 && Math.abs(cj + .5 - plaza.j) < 1) continue;
+      var tower = sc.towers && cw.x > sc.towers.x && cw.x < sc.towers.x + sc.towers.w && cw.y > sc.towers.y && cw.y < sc.towers.y + sc.towers.h;
+      // às vezes o quarteirão é dividido em dois prédios
+      var parts = rnd() > .62 ? (rnd() > .5 ? [[0, 0, bw / 2 - 5, bh], [bw / 2 + 5, 0, bw / 2 - 5, bh]] : [[0, 0, bw, bh / 2 - 5], [0, bh / 2 + 5, bw, bh / 2 - 5]]) : [[0, 0, bw, bh]];
+      parts.forEach(function (q) {
+        var bx = x0 + q[0], by = y0 + q[1], w = q[2], h = q[3];
+        if (tower) {
+          city += '<rect x="' + n(bx + 6) + '" y="' + n(by + 8) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-block-shadow"/><rect x="' + n(bx) + '" y="' + n(by) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-tower"/>';
+          var ln = ''; for (var yy = by + 10; yy < by + h - 6; yy += 12) ln += 'M' + n(bx + 8) + ' ' + n(yy) + 'h' + n(w - 16);
+          city += '<path d="' + ln + '" class="dl-tower-lines"/>';
+          return;
+        }
+        var tone = rnd(), cls = tone < .55 ? 'b1' : tone < .85 ? 'b2' : 'b3';
+        city += '<rect x="' + n(bx + 5) + '" y="' + n(by + 6) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-block-shadow"/>';
+        city += '<rect x="' + n(bx) + '" y="' + n(by) + '" width="' + n(w) + '" height="' + n(h) + '" class="dl-block ' + cls + '"/>';
+        if (rnd() > .5 && w > 40 && h > 34) { var k = 1 + Math.floor(rnd() * 2); for (var r = 0; r < k; r++) city += '<rect x="' + n(bx + 8 + rnd() * (w - 34)) + '" y="' + n(by + 8 + rnd() * (h - 28)) + '" width="' + n(12 + rnd() * 12) + '" height="' + n(9 + rnd() * 9) + '" class="dl-roof"/>'; }
+      });
     }
-    s += '</g>';
-    if (sc.towers) { // distrito de arranha-céus
-      for (var t = 0; t < 7; t++) { var tx = sc.towers.x + rnd() * (sc.towers.w - 60), ty = sc.towers.y + rnd() * (sc.towers.h - 70); s += '<rect x="' + n(tx + 8) + '" y="' + n(ty + 10) + '" width="52" height="62" class="dl-block-shadow"/><rect x="' + n(tx) + '" y="' + n(ty) + '" width="52" height="62" class="dl-tower"/><path d="M' + n(tx + 10) + ' ' + n(ty + 10) + 'h32M' + n(tx + 10) + ' ' + n(ty + 22) + 'h32M' + n(tx + 10) + ' ' + n(ty + 34) + 'h32M' + n(tx + 10) + ' ' + n(ty + 46) + 'h32" class="dl-tower-lines"/>'; }
+    // praça num cruzamento
+    if (plaza) {
+      var px = gx(plaza.i), py = gy(plaza.j);
+      city += '<g class="dl-plaza"><circle cx="' + px + '" cy="' + py + '" r="' + (PY * .62) + '" class="pl-base"/>';
+      if (plaza.kind === 'scramble') for (var d = -3; d <= 3; d++) city += '<path d="M' + (px - 64) + ' ' + (py + d * 15) + 'h128" class="pl-stripe" transform="rotate(45 ' + px + ' ' + py + ')"/><path d="M' + (px - 64) + ' ' + (py + d * 15) + 'h128" class="pl-stripe" transform="rotate(-45 ' + px + ' ' + py + ')"/>';
+      else city += '<circle cx="' + px + '" cy="' + py + '" r="' + (PY * .45) + '" class="pl-line"/>';
+      city += '</g>';
     }
-    // parque
+    // trilho e via expressa ocupam uma faixa de quarteirões inteira
+    if (railCell != null) { var rx = gx(railCell) + PX / 2, rp = [[rx, gy(M0)], [rx, gy(M1)]]; city += '<g class="dl-rail"><path d="' + poly(rp) + '" class="t-bed"/><path d="' + poly(rp) + '" class="t-ties"/><path d="' + poly(rp) + '" class="t-steel"/></g>'; }
+    if (hwCell != null) { var hy = gy(hwCell) + PY / 2, hp = [[gx(L0), hy], [gx(L1), hy]]; city += '<g class="dl-highway"><path d="' + poly(hp) + '" class="h-shadow"/><path d="' + poly(hp) + '" class="h-deck"/><path d="' + poly(hp) + '" class="h-line"/></g>'; }
+    city += '</g>';
+    s += sc.water && sc.water.island ? '<g clip-path="url(#dlIsle)">' + city + '</g>' : city;
+
+    // parque e rio por cima da malha
     if (sc.park) {
       s += '<path d="' + sc.park.d + '" class="dl-park"/><path d="' + sc.park.d + '" fill="url(#dlDots)" class="dl-park-dots"/>';
       var bb = bbox(sc.park.d);
-      for (var i = 0; i < 46; i++) { var px = bb.x + rnd() * bb.w, py = bb.y + rnd() * bb.h; if (!inPath(sc.park.d, px, py)) continue; if (pos.some(function (p) { return Math.hypot(p.x - px, p.y - py) < 80; })) continue; var rr = 10 + rnd() * 14; s += '<circle cx="' + n(px + 4) + '" cy="' + n(py + 5) + '" r="' + n(rr) + '" class="dl-tree-shadow"/><circle cx="' + n(px) + '" cy="' + n(py) + '" r="' + n(rr) + '" class="dl-tree"/>'; }
+      for (var t = 0; t < 46; t++) { var tx = bb.x + rnd() * bb.w, ty = bb.y + rnd() * bb.h; if (!inPath(sc.park.d, tx, ty)) continue; if (pos.some(function (p) { return Math.hypot(p.x - tx, p.y - ty) < 80; })) continue; var rr = 10 + rnd() * 14; s += '<circle cx="' + n(tx + 4) + '" cy="' + n(ty + 5) + '" r="' + n(rr) + '" class="dl-tree-shadow"/><circle cx="' + n(tx) + '" cy="' + n(ty) + '" r="' + n(rr) + '" class="dl-tree"/>'; }
     }
-    // rio / lago
     if (sc.water && !sc.water.island) {
       s += '<path d="' + sc.water.d + '" class="dl-water-edge" transform="translate(0 6)"/><path d="' + sc.water.d + '" class="dl-water"/>';
       var wb = bbox(sc.water.d);
       for (var w2 = 0; w2 < 16; w2++) { var wx = wb.x + rnd() * wb.w, wy = wb.y + rnd() * wb.h; if (inPath(sc.water.d, wx, wy)) s += '<path d="M' + n(wx) + ' ' + n(wy) + 'q8-6 16 0t16 0" class="dl-wave"/>'; }
       if (sc.water.sakura) for (var sk = 0; sk < 60; sk++) { var t2 = rnd(), sx = -20 + t2 * 1240, sy = 640 - t2 * 340 + (rnd() > .5 ? -40 - rnd() * 30 : 90 + rnd() * 30); s += '<circle cx="' + n(sx) + '" cy="' + n(sy) + '" r="' + n(8 + rnd() * 10) + '" class="dl-bloom"/>'; }
     }
-    // praça especial
-    if (sc.plaza) s += plaza(sc.plaza);
-    // via expressa elevada
-    if (sc.highway) s += '<g class="dl-highway"><path d="' + poly(sc.highway) + '" class="h-shadow"/><path d="' + poly(sc.highway) + '" class="h-deck"/><path d="' + poly(sc.highway) + '" class="h-line"/></g>';
-    // trilho
-    if (sc.rail) s += '<g class="dl-rail"><path d="' + poly(sc.rail) + '" class="t-bed"/><path d="' + poly(sc.rail) + '" class="t-ties"/><path d="' + poly(sc.rail) + '" class="t-steel"/></g>';
-    // avenidas
-    if (sc.avenue) s += roadPath(sc.avenue, 'is-avenue');
-    if (sc.avenue2) s += roadPath(sc.avenue2, 'is-avenue');
-    if (sc.bridge) s += roadPath(sc.bridge, 'is-avenue is-bridge');
-    // ruas até cada local: liga cada um ao ponto mais perto da avenida
-    var av = sample(sc.avenue || [[-20, H / 2], [W + 20, H / 2]]);
-    pos.forEach(function (p) {
-      var best = av[0]; av.forEach(function (q) { if (Math.hypot(q[0] - p.x, q[1] - p.y) < Math.hypot(best[0] - p.x, best[1] - p.y)) best = q; });
-      if (Math.hypot(best[0] - p.x, best[1] - p.y) > 30) s += roadPath([[p.x, p.y], [p.x, best[1]], [best[0], best[1]]], 'is-spur');
-    });
-    // ruas entre os locais (a rota)
-    edges.forEach(function (e, i) { s += '<g data-edge="' + e[0] + '-' + e[1] + '">' + roadPath(elbow(pos[e[0]], pos[e[1]], i), 'is-route') + '</g>'; });
+
+    // avenidas principais e caminhos entre os locais, todos sobre a grade
+    var roads = '<g' + rot + '>';
+    var avW = sc.water && sc.water.island ? [-4, 4] : [L0, L1];
+    roads += roadPath([[gx(avW[0]), gy(aveRow)], [gx(avW[1]), gy(aveRow)]], 'is-avenue');
+    if (aveCol != null) roads += roadPath([[gx(aveCol), gy(-NJ)], [gx(aveCol), gy(NJ)]], 'is-avenue');
+    // liga cada local à avenida pela rua vertical dele
+    pos.forEach(function (p) { if (p.j !== aveRow) roads += roadPath([[gx(p.i), gy(p.j)], [gx(p.i), gy(aveRow)]], 'is-spur'); });
+    edges.forEach(function (e) { roads += '<g data-edge="' + e[0] + '-' + e[1] + '">' + roadPath(legLocal(pos[e[0]], pos[e[1]]), 'is-route') + '</g>'; });
+    roads += '</g>';
+    s += sc.water && sc.water.island ? '<g clip-path="url(#dlIsle)">' + roads + '</g>' : roads;
     s += '<path id="dlTrail" class="dl-trail" d=""/>';
     return s;
   }
-  function elbow(a, b, i) {
-    var mid = i % 2 ? [a.x, b.y] : [b.x, a.y];
-    return [[a.x, a.y], mid, [b.x, b.y]];
-  }
-  function routePoints(pos, edges, from, to) {
-    var nodes = pathBetween(edges, from, to), pts = [[pos[nodes[0]].x, pos[nodes[0]].y]];
-    for (var i = 1; i < nodes.length; i++) {
-      var a = nodes[i - 1], b = nodes[i], idx = -1, rev = false;
-      edges.forEach(function (e, j) { if (e[0] === a && e[1] === b) idx = j; if (e[0] === b && e[1] === a) { idx = j; rev = true; } });
-      var seg = idx >= 0 ? elbow(pos[edges[idx][0]], pos[edges[idx][1]], idx) : [[pos[a].x, pos[a].y], [pos[b].x, pos[b].y]];
-      if (rev) seg = seg.slice().reverse();
-      pts = pts.concat(seg.slice(1));
-    }
-    return pts;
-  }
-  function plaza(p) {
-    var s = '<g class="dl-plaza">';
-    if (p.kind === 'scramble') {
-      s += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" class="pl-base"/>';
-      for (var i = -3; i <= 3; i++) s += '<path d="M' + (p.x - 70) + ' ' + (p.y + i * 16) + 'h140" class="pl-stripe" transform="rotate(45 ' + p.x + ' ' + p.y + ')"/><path d="M' + (p.x - 70) + ' ' + (p.y + i * 16) + 'h140" class="pl-stripe" transform="rotate(-45 ' + p.x + ' ' + p.y + ')"/>';
-    } else if (p.kind === 'temple') {
-      s += '<rect x="' + (p.x - p.r) + '" y="' + (p.y - p.r * .7) + '" width="' + p.r * 2 + '" height="' + p.r * 1.4 + '" class="pl-base"/><path d="M' + (p.x - p.r + 16) + ' ' + (p.y - p.r * .7 + 16) + 'h' + (p.r * 2 - 32) + 'v' + (p.r * 1.4 - 32) + 'h' + -(p.r * 2 - 32) + 'z" class="pl-line"/>';
-    } else if (p.kind === 'tower') {
-      s += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" class="pl-base"/><path d="M' + p.x + ' ' + (p.y - 40) + 'l24 60h-48z" class="pl-line"/>';
-    } else {
-      s += '<rect x="' + (p.x - p.r) + '" y="' + (p.y - p.r * .6) + '" width="' + p.r * 2 + '" height="' + p.r * 1.2 + '" rx="18" class="pl-base"/>';
-    }
-    return s + '</g>';
-  }
   function waves(w, h) { var s = ''; for (var i = 0; i < 40; i++) { var x = rnd() * w, y = rnd() * h; s += '<path d="M' + n(x) + ' ' + n(y) + 'q8-6 16 0t16 0" class="dl-wave"/>'; } return s; }
-  function sample(pts) { var out = []; for (var i = 1; i < pts.length; i++) for (var t = 0; t <= 1; t += .04) out.push([pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t]); return out; }
-  function toWorld(x, y, ang) { var a = ang * Math.PI / 180, cx = W / 2, cy = H / 2, dx = x - cx, dy = y - cy; return { x: cx + dx * Math.cos(a) - dy * Math.sin(a), y: cy + dx * Math.sin(a) + dy * Math.cos(a) }; }
   var islandPath = null;
-  function inIsland(x, y) { return islandPath ? inPath(islandPath, x, y) : true; }
   var pathCache = {};
   function pathObj(d) { if (!pathCache[d]) { var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); svg.appendChild(p); svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden'; document.body.appendChild(svg); pathCache[d] = p; } return pathCache[d]; }
   function inPath(d, x, y) { try { var p = pathObj(d), pt = p.ownerSVGElement.createSVGPoint(); pt.x = x; pt.y = y; return p.isPointInFill(pt); } catch (e) { return true; } }
@@ -276,7 +325,7 @@
     if (atlasLocalCamera) atlasLocalCamera.destroy(); atlasLocalCamera = null; atlasUi.district = id;
     var places = state.places[id] || [];
     var sc = SCENE[id] || {}; islandPath = sc.water && sc.water.island ? sc.water.island : null;
-    var pos = layout(id, places), edges = mst(pos);
+    var pos = snap(layout(id, places), sc), edges = mst(pos);
     atlasUi.geometry = { width: W, height: H, positions: pos };
     cur = { id: id, pos: pos, edges: edges, places: places, token: null, last: null };
     var visible = places.filter(function (p) { return !locked(p); });
