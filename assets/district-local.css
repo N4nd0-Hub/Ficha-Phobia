@@ -339,3 +339,68 @@ body.cognition #subDistrictMap .dl-badge{--bd-a:var(--theme-accent-3,#96ff45);--
 body.time-night #subDistrictMap .dl-scene .dl-street{stroke:color-mix(in srgb,var(--dl-ink) 85%,var(--dl-b))}
 body.cognition #subDistrictMap .dl-scene .dl-street{stroke:#030809}
 body.cognition #subDistrictMap .dl-scene .dl-street-line{stroke:color-mix(in srgb,var(--dl-b) 45%,transparent)}
+
+/* ---------- celular: painel do distrito ocupa a tela toda ---------- */
+@media (max-width:900px){
+  body.hud #mapPage .sub-district-map{top:0!important;bottom:0!important;overflow:auto;-webkit-overflow-scrolling:touch}
+  #subDistrictMap .dl{height:auto!important;min-height:100%}
+  #subDistrictMap .dl-head{padding-top:70px!important}
+  /* ← TOKYO vai para o topo, ao lado do MENU; EXPANDIR não faz sentido no celular */
+  body.hud #mapPage .map-layout.submap-workspace .atlas-toolbar{position:fixed!important;left:12px!important;right:auto!important;top:14px!important;bottom:auto!important;z-index:60}
+  body.hud #mapPage .map-layout.submap-workspace #atlasExpand{display:none!important}
+  #subDistrictMap .dl-grid{grid-template-rows:auto auto!important}
+  #subDistrictMap .dl-main{grid-template-rows:auto auto!important}
+  #subDistrictMap .dl-surface{height:min(62vh,480px);min-height:340px}
+  #subDistrictMap .dl-surface:has(#atlasPlaceCards:not([hidden])){height:auto;min-height:0}
+  #subDistrictMap .dl-cards{position:static!important;overflow:visible;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px!important;padding:12px!important}
+  #subDistrictMap .dl-card-art{height:96px}
+  #subDistrictMap .dl-card-txt b{font-size:15px!important}
+  #subDistrictMap .dl-card-txt em{display:none}
+  #subDistrictMap .dl-tools{padding:8px 10px!important;gap:8px}
+  #subDistrictMap .dl-chips{flex-wrap:nowrap;width:100%}
+  #subDistrictMap .dl-caption{display:none}
+  #subDistrictMap .dl-compass{width:42px;height:42px;top:10px;right:10px}
+  #subDistrictMap .dl-route{left:10px;right:10px;top:auto;bottom:62px;transform:none;max-width:none;font-size:11px;padding:7px 10px}
+  #subDistrictMap .dl-step{left:10px;right:auto;bottom:10px}
+  #subDistrictMap .dl-zoom{top:auto!important;bottom:10px!important;right:10px!important}
+  #subDistrictMap .dl-zoom output{display:none}
+  #subDistrictMap .dl-zoom button,#subDistrictMap .dl-zoom output{min-width:40px;height:40px}
+  #subDistrictMap .dl-pin-card{max-width:200px;padding:6px 10px 6px 6px;gap:7px}
+  #subDistrictMap .dl-pin-ico{width:30px;height:30px}
+  #subDistrictMap .dl-pin-ico svg{width:19px;height:19px}
+  #subDistrictMap .dl-pin-txt b{font-size:13px}
+  #subDistrictMap .dl-pin-txt small{font-size:10px}
+  #subDistrictMap .dl-stamp{font-size:54px;right:16px;bottom:60px}
+  #subDistrictMap .dl-detail{padding:14px!important;overflow:visible}
+  #subDistrictMap .dl-detail .atlas-photo img{height:170px!important}
+  #subDistrictMap .dl-head{grid-template-columns:auto minmax(0,1fr)!important}
+  #subDistrictMap .dl-meters{display:none}
+  #subDistrictMap .dl-tabs{grid-column:1/-1}
+  #subDistrictMap .dl-name{font-size:clamp(20px,6.4vw,28px)!important;flex-wrap:wrap}
+  #subDistrictMap .dl-badge{width:84px;height:64px}
+}
+#subDistrictMap .dl-back{display:none}
+@media (max-width:900px){
+  body.hud #mapPage .map-layout.submap-workspace .atlas-toolbar{display:none!important}
+  #subDistrictMap .dl-back{display:inline-flex;position:absolute;left:12px;top:14px;z-index:3;align-items:center;gap:6px;padding:10px 14px;border:0;cursor:pointer;background:var(--dl-ink);color:var(--dl-paper);font:800 14px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;box-shadow:4px 4px 0 var(--dl-a);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+  #subDistrictMap .dl-pin-card{grid-template-columns:auto auto auto!important}
+  #subDistrictMap .dl-pin-txt{max-width:118px}
+  #subDistrictMap .dl-detail .atlas-photo{float:none!important;width:auto!important;margin:0 0 6px!important}
+  #subDistrictMap .dl-detail .atlas-photo-note{clear:none}
+}
+#subDistrictMap .dl-world .dl-pin{transform:scale(var(--ps,1))!important;transform-origin:0 0}
+#subDistrictMap .dl-world .dl-token{scale:var(--ps,1)}
+#subDistrictMap .dl-pin-txt{width:max-content;max-width:150px}
+#mapPage #subDistrictMap .dl-pin .dl-pin-txt b{display:block!important;-webkit-line-clamp:unset}
+#mapPage #subDistrictMap .dl-pin .dl-pin-txt small{display:block!important}
+@media (max-width:900px){
+  /* só o local escolhido mostra o nome; os outros ficam com número e ícone para não se sobreporem */
+  #mapPage #subDistrictMap .dl-pin:not(.active) .dl-pin-txt{display:none!important}
+  #mapPage #subDistrictMap .dl-pin:not(.active) .dl-pin-card{padding:5px 7px 5px 5px}
+  #mapPage #subDistrictMap .dl-pin.active{z-index:9}
+}
+@media (max-width:900px){
+  body.hud #mapPage .map-layout.submap-workspace .atlas-toolbar.atlas-toolbar{display:none!important}
+  #mapPage #subDistrictMap .dl-pin.active .dl-pin-card{max-width:270px}
+  #mapPage #subDistrictMap .dl-pin.active .dl-pin-txt{max-width:190px}
+}

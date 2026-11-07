@@ -312,3 +312,67 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset
   body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{min-height:84px!important}
   body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr input{font-size:36px!important}
 }
+
+/* ==========================================================
+   17. CELULAR — Ficha Base
+   (as regras 14–16 usam seletor mais forte, então o celular
+    precisa repetir o encaixe com a mesma força)
+   ========================================================== */
+@media (max-width:900px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-root{grid-template-columns:minmax(150px,200px) minmax(0,1fr)!important;gap:20px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-id{max-width:200px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attrs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-ribbon{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+}
+@media (max-width:640px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-root{grid-template-columns:minmax(0,1fr)!important;gap:16px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-id{display:grid!important;grid-template-columns:minmax(96px,36%) minmax(0,1fr);align-items:center;gap:12px;max-width:none!important;padding-top:0!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-portrait{width:100%!important;max-width:none!important;grid-row:span 2}
+  body.hud.workspace-sheet #characterPage:not(#_z) :is(.hs-main,.hs-levels,.hs-res,.hs-integ,.hs-social,.hs-extra,.hs-social-details){min-width:0;max-width:100%}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-levels{display:flex!important;flex-wrap:wrap!important;gap:8px!important;width:100%}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-levels .level-unit{flex:1 1 150px;min-width:0;width:auto!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-levels .level-unit input{width:44px!important;min-width:0}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-res{grid-template-columns:minmax(0,1fr)!important;display:grid!important;gap:10px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-res-meta .resource-meta{grid-template-columns:minmax(0,1fr)!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{min-height:76px!important;padding:8px 10px 10px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr input{font-size:30px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr::before{font-size:44px}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr small{left:10px;top:8px;font-size:11px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor,.combat-status-pod){padding:10px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input{font-size:26px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot{flex-wrap:wrap}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small{font-size:11px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-social{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-integ-labels{overflow-x:auto;scrollbar-width:none}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-bar-top > b{font-size:20px!important}
+}
+
+/* 18. CELULAR — Persona (a regra 12 é mais forte que a do editorial) */
+@media (max-width:900px){
+  body.hud.workspace-sheet #characterPage .persona-v2-hero{grid-template-columns:minmax(140px,34%) minmax(0,1fr)!important;gap:16px!important}
+  body.hud.workspace-sheet #characterPage #personaArcanaTraits{grid-template-columns:minmax(0,1fr)!important}
+}
+@media (max-width:640px){
+  body.hud.workspace-sheet #characterPage .persona-v2-hero{grid-template-columns:minmax(0,1fr)!important}
+  body.hud.workspace-sheet #characterPage .persona-v2-art-side{max-width:220px;justify-self:center;width:100%}
+  body.hud.workspace-sheet #characterPage #sheetAffinityGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+  body.hud.workspace-sheet #characterPage #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  body.hud.workspace-sheet #characterPage .hp-ability > summary{grid-template-columns:44px minmax(0,1fr) 20px;gap:10px;padding:10px 12px!important}
+  body.hud.workspace-sheet #characterPage .hp-ab-sigil{width:40px;height:40px;font-size:18px}
+}
+@media (max-width:420px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor-top{flex-wrap:wrap;gap:4px}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor-top strong{font-size:11px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attrs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (max-width:380px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-ribbon{grid-template-columns:minmax(0,1fr)!important}
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .combat-status-pod .pod-copy{min-width:0;flex:1}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .pod-value-line{flex-wrap:wrap}
+@media (max-width:640px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .combat-status-pods{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (max-width:380px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .combat-status-pods{grid-template-columns:minmax(0,1fr)!important}
+}

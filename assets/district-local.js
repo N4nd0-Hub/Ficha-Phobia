@@ -337,6 +337,7 @@
     panel.innerHTML =
       '<div class="atlas-local dl" data-district="' + E(id) + '">' +
         '<header class="atlas-local-head dl-head">' +
+          '<button type="button" class="dl-back" data-dl-back>← TOKYO</button>' +
           '<div class="dl-badge" id="dlBadge" aria-hidden="true"></div>' +
           '<div class="dl-title">' +
             '<div class="atlas-eyebrow dl-eyebrow">ARQUIVO DE EXPLORAÇÃO <b>' + E(d.code) + '</b></div>' +
@@ -412,16 +413,18 @@
       width: W, height: H, onChange: function (percent) {
         document.getElementById('atlasLocalZoom').textContent = percent + '%';
         panel.querySelector('[data-local-zoom="out"]').disabled = percent <= 100; panel.querySelector('[data-local-zoom="in"]').disabled = percent >= 400;
-        world.style.setProperty('--zoom', String(atlasLocalCamera ? atlasLocalCamera.view.k / (atlasLocalCamera.fitScale || 1) : 1));
+        world.style.setProperty('--zoom', String(atlasLocalCamera ? atlasLocalCamera.view.k / (atlasLocalCamera.fitScale || 1) : 1)); pinScale();
       }
     });
     atlasLocalCamera.districtId = id;
+    pinScale();
     if (prev && prev.fit && atlasLocalCamera.fitScale) { atlasLocalCamera.view = prev.view; atlasLocalCamera.paint(); }
 
     panel.querySelectorAll('[data-local-zoom]').forEach(function (b) { b.onclick = function () { b.dataset.localZoom === 'fit' ? atlasLocalCamera.fit() : atlasLocalCamera.zoomBy(b.dataset.localZoom === 'in' ? 1.25 : .8); }; });
     panel.querySelectorAll('[data-atlas-view]').forEach(function (b) { b.onclick = function () { atlasSetLocalView(b.dataset.atlasView); }; });
     panel.querySelectorAll('[data-dl-type]').forEach(function (b) { b.onclick = function () { atlasUi.type = b.dataset.dlType; var sel = document.getElementById('atlasLocalType'); if (sel) sel.value = atlasUi.type; atlasFilterLocal(); paintChips(); }; });
     panel.querySelectorAll('[data-dl-step]').forEach(function (b) { b.onclick = function () { step(+b.dataset.dlStep); }; });
+    var bk = panel.querySelector('[data-dl-back]'); if (bk) bk.onclick = function () { setMapMode('collage'); };
     document.getElementById('atlasLocalSearch').oninput = function (e) { atlasUi.localQuery = e.target.value; atlasFilterLocal(); };
     document.getElementById('atlasLocalType').onchange = function (e) { atlasUi.type = e.target.value; atlasFilterLocal(); paintChips(); };
     document.getElementById('atlasLocalDistrictStatus').onchange = function (e) { setDistrictPlayerStatus(id, e.target.value); };
@@ -433,6 +436,12 @@
     paintChips();
     focusSubmapPlace(submapFocusPlaceId, false); atlasSetLocalView(atlasUi.view); atlasFilterLocal(); atlasUpdateCrumb();
     if (window.matchMedia && !matchMedia('(prefers-reduced-motion: reduce)').matches && !document.body.classList.contains('hs-calm')) intro(panel);
+  }
+  /* no celular o mapa fica bem pequeno: os marcadores compensam o zoom para continuar legíveis */
+  function pinScale() {
+    var w = document.getElementById('atlasLocalWorld'); if (!w || !atlasLocalCamera) return;
+    var k = atlasLocalCamera.view && atlasLocalCamera.view.k || 1;
+    w.style.setProperty('--ps', String(Math.min(2.4, Math.max(1, .62 / k))));
   }
   function paintChips() {
     document.querySelectorAll('#subDistrictMap [data-dl-type]').forEach(function (b) { b.classList.toggle('on', b.dataset.dlType === atlasUi.type); b.setAttribute('aria-pressed', String(b.dataset.dlType === atlasUi.type)); });
