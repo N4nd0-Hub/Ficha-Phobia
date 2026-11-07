@@ -11,6 +11,7 @@
   if (window.__themeFx) return; window.__themeFx = true;
 
   var KINDS = { naoya: 1, tatsuya: 1, maya: 1, kotone: 1 };
+  var TRANS_ONLY = { makoto: 1, narukami: 1, joker: 1 };   /* esses só têm a transição de aba */
   var SVGNS = 'http://www.w3.org/2000/svg';
   var HOVER = 'button,a[href],summary,select,input[type=checkbox],[role=button],[role=tab],.hs-attr,.er-slot,.eq-item,.hs-skill';
 
@@ -133,7 +134,7 @@
     '<rect x="25" y="20" width="12" height="11" fill="#3a3a40" stroke="#f5a524" stroke-width="1.5"/><circle cx="29" cy="25.5" r="1.4" fill="#f5a524"/><circle cx="33" cy="25.5" r="1.4" fill="#f5a524"/>' +
     '<g class="lid"><rect x="8" y="10" width="44" height="21" rx="4" fill="#2a2a2e" stroke="#f5a524" stroke-width="2.5"/></g></svg>';
   function transition(k) {
-    if (!KINDS[k] || calm()) return;
+    if (!(KINDS[k] || TRANS_ONLY[k]) || calm()) return;
     var old = document.querySelector('.tf-trans'); if (old) old.remove();
     var t = document.createElement('div'); t.className = 'tf-trans ' + k; t.setAttribute('aria-hidden', 'true');
     if (k === 'naoya') t.innerHTML = '<i class="roll"><i></i></i><i class="sliver s1"></i><i class="sliver s2"></i><i class="sliver s3"></i>';
@@ -143,10 +144,17 @@
       t.innerHTML = '<i class="strip a"></i><i class="strip b"></i><i class="strip c"></i>' + deco;
     }
     else if (k === 'kotone') t.innerHTML = '<i class="glow"></i><i class="wave"></i>';
+    else if (k === 'makoto') {
+      var sh = '';
+      for (var j = 0; j < 9; j++) sh += '<i class="shard" style="left:' + (8 + j * 10 + Math.random() * 6).toFixed(0) + '%;top:' + (20 + Math.random() * 50).toFixed(0) + '%;--r:' + (Math.random() * 360).toFixed(0) + 'deg;--x:' + (Math.random() * 80 - 40).toFixed(0) + 'px;animation-delay:' + (120 + Math.random() * 120).toFixed(0) + 'ms"></i>';
+      t.innerHTML = '<i class="tint"></i><i class="ring"></i><i class="ring r2"></i><i class="clock">00:00</i>' + sh;
+    }
+    else if (k === 'narukami') t.innerHTML = '<i class="fog f1"></i><i class="fog f2"></i><i class="band b1"></i><i class="band b2"></i><i class="glasses"></i>';
+    else if (k === 'joker') t.innerHTML = '<i class="pan p1"></i><i class="pan p2"></i><i class="pan p3"></i><i class="jstar"></i>';
     else if (k === 'tatsuya') t.innerHTML = '<i class="burn"></i>' + ZIPPO;
     document.body.appendChild(t);
     if (k === 'tatsuya') burn(t.querySelector('.burn'));
-    kill(t, k === 'tatsuya' ? 1000 : 800);
+    kill(t, k === 'tatsuya' || k === 'makoto' ? 1050 : 850);
   }
   /* "derrete" a tela: um buraco de fogo abre a partir do isqueiro */
   function burn(el) {
@@ -207,7 +215,7 @@
     var w = function (section) {
       var before = '';
       try { before = state.charSheet.sheetSection; } catch (e) {}
-      var k = kind();
+      var k = kind() || (document.body.classList.contains('workspace-sheet') && TRANS_ONLY[document.body.dataset.hsFx] ? document.body.dataset.hsFx : '');
       var r = o.apply(this, arguments);
       if (k && section && section !== before) transition(k);
       return r;
