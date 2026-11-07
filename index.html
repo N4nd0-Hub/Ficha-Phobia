@@ -13098,6 +13098,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/map-roads.css?v=2">
 <link rel="stylesheet" href="assets/district-badges.css?v=4">
 <link rel="stylesheet" href="assets/district-local.css?v=3">
+<link rel="stylesheet" href="assets/magic-cd.css?v=4">
 <link rel="stylesheet" href="assets/phobia-deck.css?v=1">
 <link rel="stylesheet" href="assets/hud.css?v=4">
 <link rel="stylesheet" href="assets/hud-pages.css?v=3">
@@ -19087,13 +19088,13 @@ function deckLabPreview(){
       <div class="deck-custom-two"><label>CUSTO<input data-deck-edit="cost" value="${esc(m.cost||'')}"></label><label>ALVO<input data-deck-edit="target" value="${esc(m.target||'')}"></label></div>
       <label>EFEITO<textarea data-deck-edit="effect" rows="4">${esc(m.effect||'')}</textarea></label>
       <label>DESCRIÇÃO<textarea data-deck-edit="description" rows="3">${esc(m.description||'')}</textarea></label>
-      <small>As alterações são salvas na ficha. Use o Deck para mudar a ordem da fita.</small>
+      <small>As alterações são salvas na ficha. Use o Deck para mudar a ordem dos CDs.</small>
     </div>`:'';
   let actions='';
   if(libraryOnly){
     actions=`<button type="button" data-deck-inspector-add="${esc(id)}" ${locked||inDeck?'disabled':''}>${locked?'TIER AINDA BLOQUEADO':inDeck?'✓ MAGIA JÁ EQUIPADA':'＋ ADICIONAR AO MEU DECK'}</button>`;
   }else{
-    actions=`<button type="button" class="secondary" data-deck-jump="deckLibrary">♫ EXPLORAR GRIMÓRIO</button><button type="button" class="secondary" data-deck-inspector-remove="${ownIndex}">× REMOVER ESTA FITA</button>`;
+    actions=`<button type="button" class="secondary" data-deck-jump="deckLibrary">♫ EXPLORAR GRIMÓRIO</button><button type="button" class="secondary" data-deck-inspector-remove="${ownIndex}">× TIRAR ESTE CD</button>`;
   }
   box.innerHTML=view+form+`<div class="deck-inspector-actions">${actions}</div>`;
 }
@@ -19101,7 +19102,7 @@ function renderMagicDeck(){
   const box=document.getElementById('sheetMagicDeck');if(!box)return;
   const slots=getFilledMagicSlots();deckLabMetrics(slots);
   const mix=document.getElementById('deckMixline');
-  if(mix)mix.innerHTML=slots.length?slots.map((m,i)=>`<button type="button" data-deck-select="${i}" class="${deckLabUi.source==='deck'&&deckLabUi.index===i?'active':''}" style="--spell-color:${deckLabColor(deckLabSpell(m))}" title="Fita ${i+1}: ${esc(m.name)}">${i+1}</button>`).join(''):'<span class="deck-mixline-empty">[ LADO A VAZIO · INICIE SUA MIXTAPE ]</span>';
+  if(mix)mix.innerHTML=slots.length?slots.map((m,i)=>`<button type="button" data-deck-select="${i}" class="${deckLabUi.source==='deck'&&deckLabUi.index===i?'active':''}" style="--spell-color:${deckLabColor(deckLabSpell(m))}" title="CD ${i+1}: ${esc(m.name)}">${i+1}</button>`).join(''):'<span class="deck-mixline-empty">[ LADO A VAZIO · INICIE SUA MIXTAPE ]</span>';
   box.innerHTML=slots.length?slots.map((m,i)=>{
     const s=deckLabSpell(m),category=s.category||m.type||'Personalizada',selected=deckLabUi.source==='deck'&&deckLabUi.index===i;
     const bands=deckLabBands(m,s);
@@ -19112,21 +19113,21 @@ function renderMagicDeck(){
         <span class="deck-card-meta"><small>TIER ${romanTier(s.tier||m.tier)}</small><small>${esc(s.cost||m.cost||'SEM CUSTO')}</small></span>
       </button>
       <div class="deck-cassette-controls">
-        <button type="button" class="deck-palette-toggle" data-deck-palette-toggle="${i}" aria-expanded="false" aria-controls="deckPalette${i}" aria-label="Personalizar cores da fita ${esc(s.name||m.name)}"><span class="deck-palette-preview" aria-hidden="true"></span>CORES</button>
+        <button type="button" class="deck-palette-toggle" data-deck-palette-toggle="${i}" aria-expanded="false" aria-controls="deckPalette${i}" aria-label="Personalizar cores do CD ${esc(s.name||m.name)}"><span class="deck-palette-preview" aria-hidden="true"></span>CORES</button>
         <button type="button" title="Mover para cima" aria-label="Mover ${esc(s.name||m.name)} para cima" data-deck-move="${i}:-1" ${i===0?'disabled':''}>↑</button>
         <button type="button" title="Mover para baixo" aria-label="Mover ${esc(s.name||m.name)} para baixo" data-deck-move="${i}:1" ${i===slots.length-1?'disabled':''}>↓</button>
         <button type="button" class="deck-remove" title="Remover magia" aria-label="Remover ${esc(s.name||m.name)}" data-deck-remove="${i}">×</button>
       </div>
       <div class="deck-palette-panel" id="deckPalette${i}" data-deck-palette-editor hidden>
-        <div class="deck-palette-heading"><b>CORES DA FITA</b><small data-deck-palette-status>${deckLabCustomBands(m)?'PERSONALIZADA':'COR DO ELEMENTO'}</small></div>
-        <div class="deck-palette-swatches" role="group" aria-label="Cores das cinco faixas de ${esc(s.name||m.name)}">
-          ${bands.map((color,band)=>`<label>FAIXA ${band+1}<input type="color" value="${color}" data-deck-palette-index="${i}" data-deck-band="${band}" aria-label="Cor da faixa ${band+1} da fita ${esc(s.name||m.name)}" draggable="false" autocomplete="off"></label>`).join('')}
+        <div class="deck-palette-heading"><b>CORES DO CD</b><small data-deck-palette-status>${deckLabCustomBands(m)?'PERSONALIZADA':'COR DO ELEMENTO'}</small></div>
+        <div class="deck-palette-swatches" role="group" aria-label="Cores das cinco faixas do CD ${esc(s.name||m.name)}">
+          ${bands.map((color,band)=>`<label>FAIXA ${band+1}<input type="color" value="${color}" data-deck-palette-index="${i}" data-deck-band="${band}" aria-label="Cor da faixa ${band+1} do CD ${esc(s.name||m.name)}" draggable="false" autocomplete="off"></label>`).join('')}
         </div>
-        <p>Faixas de cima para baixo. As cores ficam salvas na ficha.</p>
+        <p>As cinco cores pintam o encarte e o disco. Ficam salvas na ficha.</p>
         <div class="deck-palette-actions"><button type="button" data-deck-palette-reset="${i}">COR DO ELEMENTO</button><button type="button" data-deck-palette-classic="${i}">ARCO-ÍRIS CLÁSSICO</button></div>
       </div>
     </article>`;
-  }).join(''):`<div class="deck-lab-empty" role="status">♪ <b>SEU DECK AINDA ESTÁ VAZIO.</b><br>Explore o Grimório, escolha uma magia e clique em <b>＋ ADICIONAR</b>. As fitas aparecerão aqui.</div>`;
+  }).join(''):`<div class="deck-lab-empty" role="status">♪ <b>SEU DECK AINDA ESTÁ VAZIO.</b><br>Explore o Grimório, escolha uma magia e clique em <b>＋ ADICIONAR</b>. Os CDs aparecerão aqui.</div>`;
   deckLabPreview();
 }
 function deckLabQuickFilters(){
@@ -21840,5 +21841,6 @@ initializePhobiaLargeSave();
 <script src="assets/sheet-style.js?v=5"></script>
 <script src="assets/district-badges.js?v=3"></script>
 <script src="assets/district-local.js?v=3"></script>
+<script src="assets/magic-cd.js?v=1"></script>
 </body>
 </html>

@@ -1,0 +1,124 @@
+/* ==========================================================
+   PERSONA // PHOBIA — magic-cd.css
+   Magias do deck como CDs do fim dos anos 90.
+   Cores: --cassette-band-1..5 (o editor CORES continua valendo).
+   ========================================================== */
+body.hud.workspace-sheet #characterPage #sheetMagicDeck.cd-rack{
+  grid-template-columns:repeat(auto-fill,minmax(178px,1fr))!important;gap:26px 54px!important;padding:14px 48px 18px 6px!important;
+}
+body.hud.workspace-sheet #characterPage .cd-case{
+  --c1:var(--cassette-band-1,#f6a);--c2:var(--cassette-band-2,#fcd);--c3:var(--cassette-band-3,var(--spell-color,#ef2b97));--c4:var(--cassette-band-4,#612);--c5:var(--cassette-band-5,#934);
+  background:none!important;border:0!important;box-shadow:none!important;transform:rotate(1.2deg);
+  transition:transform .35s var(--hud-back,cubic-bezier(.34,1.56,.64,1));
+}
+body.hud.workspace-sheet #characterPage .cd-case:nth-child(even){transform:rotate(-1.4deg)}
+body.hud.workspace-sheet #characterPage .cd-case:hover{transform:rotate(0) translateY(-4px)}
+body.hud.workspace-sheet #characterPage .cd-case.selected{transform:rotate(-2.5deg) translateY(-4px);border:0!important;box-shadow:none!important}
+
+/* a caixinha */
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-window{
+  position:relative;display:block!important;aspect-ratio:1/.9!important;min-height:0!important;width:100%;padding:0!important;
+  overflow:visible!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:0;
+}
+body.hud.workspace-sheet #characterPage .cd-cover{
+  position:absolute;inset:0;z-index:2;display:block;overflow:hidden;
+  background:var(--c3);border:2px solid var(--hud-black);
+  box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 55%,transparent),5px 6px 0 var(--hud-black);
+}
+body.hud.workspace-sheet #characterPage .cd-case.selected .cd-cover{box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 55%,transparent),6px 7px 0 var(--hud-paper),0 0 0 3px var(--hud-paper)}
+/* arte do encarte */
+body.hud.workspace-sheet #characterPage .cd-art{
+  position:absolute;inset:0;display:block;
+  background:
+    radial-gradient(circle,color-mix(in srgb,var(--c4) 55%,transparent) 1.3px,transparent 1.8px) 0 0/8px 8px,
+    linear-gradient(150deg,var(--c2) 0 18%,var(--c3) 18% 58%,var(--c5) 58% 62%,var(--c4) 62%);
+}
+body.hud.workspace-sheet #characterPage .cd-kanji{
+  position:absolute;right:-6%;top:-10%;font:900 clamp(88px,9vw,124px)/1 "Noto Sans JP",sans-serif;font-style:normal;
+  color:transparent;-webkit-text-stroke:3px var(--hud-black);opacity:.42;transform:rotate(8deg);
+}
+body.hud.workspace-sheet #characterPage .cd-burst{
+  position:absolute;left:30%;bottom:-24%;width:70%;aspect-ratio:1;background:var(--c1);opacity:.55;
+  clip-path:polygon(50% 0,57% 34%,88% 14%,68% 42%,100% 50%,68% 58%,88% 86%,57% 66%,50% 100%,43% 66%,12% 86%,32% 58%,0 50%,32% 42%,12% 14%,43% 34%);
+}
+/* obi japonês (faixa vertical) */
+body.hud.workspace-sheet #characterPage .cd-obi{
+  position:absolute;left:0;top:0;bottom:0;width:22%;max-width:40px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 6px;
+  background:var(--hud-paper);border-right:2px solid var(--hud-black);color:var(--hud-black);
+}
+body.hud.workspace-sheet #characterPage .cd-obi b{display:grid;place-items:center;width:78%;aspect-ratio:1;background:var(--c3);border:2px solid var(--hud-black);font:900 16px/1 "Noto Sans JP",sans-serif}
+body.hud.workspace-sheet #characterPage .cd-obi small{flex:1;writing-mode:vertical-rl;font:900 10px/1 "Noto Sans JP",sans-serif;letter-spacing:2px;overflow:hidden}
+body.hud.workspace-sheet #characterPage .cd-obi em{writing-mode:vertical-rl;transform:rotate(180deg);font:800 9px/1 var(--hud-cond),sans-serif;font-style:normal;letter-spacing:1.4px;padding:3px 2px;background:var(--hud-black);color:var(--hud-paper)}
+/* textos */
+body.hud.workspace-sheet #characterPage .cd-copy{position:absolute;inset:0 0 0 22%;z-index:3;display:flex;flex-direction:column;padding:8px 10px 8px 12px;min-width:0}
+body.hud.workspace-sheet #characterPage .cd-track{align-self:flex-start;padding:2px 6px 1px;background:var(--hud-black);color:var(--hud-paper);font:800 10px/1.2 var(--hud-cond),sans-serif;letter-spacing:1.6px}
+body.hud.workspace-sheet #characterPage .cd-copy .deck-card-type{
+  align-self:flex-start;margin-top:5px;padding:3px 6px!important;background:var(--hud-paper)!important;color:var(--hud-black)!important;
+  font:800 10px/1.1 var(--hud-cond),sans-serif!important;letter-spacing:1.2px!important;transform:rotate(-2deg);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+body.hud.workspace-sheet #characterPage .cd-copy .deck-card-name{
+  flex:1;display:flex!important;align-items:flex-end;padding:6px 0 4px!important;
+  font:400 clamp(17px,1.5vw,23px)/.98 var(--hud-display)!important;color:var(--hud-paper)!important;text-transform:uppercase;letter-spacing:-.4px;
+  text-shadow:2px 2px 0 var(--hud-black),-1px -1px 0 var(--hud-black),1px -1px 0 var(--hud-black),-1px 1px 0 var(--hud-black);overflow-wrap:anywhere;
+}
+body.hud.workspace-sheet #characterPage .cd-copy .deck-card-meta{display:flex!important;justify-content:space-between;gap:4px;padding:4px 6px!important;margin:0 -4px 0 -6px;background:var(--hud-black);transform:skewX(-8deg)}
+body.hud.workspace-sheet #characterPage .cd-copy .deck-card-meta small{font:800 10px/1.1 var(--hud-cond),sans-serif!important;letter-spacing:1px;color:var(--hud-paper)!important;transform:skewX(8deg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hud.workspace-sheet #characterPage .cd-logo{position:absolute;right:7px;top:auto;bottom:34px;z-index:3;display:flex;flex-direction:column;align-items:center;font:800 6px/1 var(--hud-cond),sans-serif;letter-spacing:.6px;color:var(--hud-black);text-align:center;opacity:.8}
+body.hud.workspace-sheet #characterPage .cd-logo i{width:14px;height:14px;margin-bottom:2px;border-radius:50%;border:2px solid var(--hud-black);background:radial-gradient(circle,var(--hud-black) 0 2px,transparent 2.5px)}
+/* acrílico: brilho e dobradiça */
+body.hud.workspace-sheet #characterPage .cd-glare{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(115deg,transparent 0 30%,rgba(255,255,255,.34) 31% 38%,transparent 39% 46%,rgba(255,255,255,.14) 47% 49%,transparent 50%);transition:transform .6s var(--hud-ease,ease);transform:translateX(-30%)}
+body.hud.workspace-sheet #characterPage .cd-case:hover .cd-glare{transform:translateX(30%)}
+body.hud.workspace-sheet #characterPage .cd-hinge{position:absolute;left:0;top:0;bottom:0;width:6px;z-index:5;background:repeating-linear-gradient(180deg,rgba(255,255,255,.55) 0 3px,rgba(0,0,0,.25) 3px 6px);opacity:.5;pointer-events:none}
+
+/* o disco */
+body.hud.workspace-sheet #characterPage .cd-disc{
+  position:absolute;z-index:1;top:4%;right:-2%;width:92%;aspect-ratio:1;border-radius:50%;
+  background:
+    radial-gradient(circle,transparent 0 6.5%,#cfd5dc 7% 13%,rgba(255,255,255,.65) 13.5% 15%,transparent 15.5%),
+    conic-gradient(from 30deg,#e8eef3,var(--c1),#bfe8ff,var(--c2),#f6f0ff,var(--c3),#d6fff1,var(--c5),#fff6c9,var(--c1),#e8eef3);
+  box-shadow:0 0 0 2px var(--hud-black),4px 5px 0 var(--hud-black);
+  transition:transform .55s var(--hud-back,cubic-bezier(.34,1.56,.64,1));
+  transform:translateX(18%) rotate(0deg);
+}
+body.hud.workspace-sheet #characterPage .cd-disc-data{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,rgba(0,0,0,.06) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+body.hud.workspace-sheet #characterPage .cd-disc-print{
+  position:absolute;inset:17%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:13%;text-align:center;
+  background:radial-gradient(circle,transparent 0 23%,var(--c3) 23.5%);border:2px solid var(--hud-black);
+  -webkit-mask:radial-gradient(circle,transparent 0 22%,#000 22.5%);mask:radial-gradient(circle,transparent 0 22%,#000 22.5%);
+}
+body.hud.workspace-sheet #characterPage .cd-disc-print b{max-width:70%;font:400 9px/1 var(--hud-display),sans-serif;color:var(--hud-black);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hud.workspace-sheet #characterPage .cd-disc-print small{margin-top:2px;font:800 7px/1 var(--hud-cond),sans-serif;letter-spacing:.8px;color:var(--hud-black);opacity:.8}
+body.hud.workspace-sheet #characterPage .cd-disc-hub{position:absolute;left:50%;top:50%;width:13%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);border:2px solid var(--hud-black);background:var(--hud-bg)}
+body.hud.workspace-sheet #characterPage .cd-case:hover .cd-disc{transform:translateX(34%) rotate(120deg)}
+body.hud.workspace-sheet #characterPage .cd-case.selected .cd-disc{transform:translateX(40%);animation:cdSpin 3.2s linear infinite}
+@keyframes cdSpin{from{transform:translateX(40%) rotate(0)}to{transform:translateX(40%) rotate(360deg)}}
+
+/* botões debaixo da caixa */
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls{position:relative;z-index:3;margin-top:10px!important;padding:3px!important;background:var(--hud-black)!important;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls button{background:color-mix(in srgb,var(--hud-paper) 8%,transparent)!important;color:var(--hud-paper)!important;border:0!important;border-radius:0!important}
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls button:hover:not(:disabled){background:var(--c3)!important;color:var(--hud-black)!important}
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls .deck-remove:hover{background:#ff4b5c!important;color:#140608!important}
+body.hud.workspace-sheet #characterPage .cd-case .deck-palette-preview{background:conic-gradient(var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c1))!important;border-radius:50%;width:14px;height:14px}
+body.hud.workspace-sheet #characterPage .cd-case:has(.deck-palette-panel:not([hidden])){z-index:6;transform:none}
+body.hud.workspace-sheet #characterPage .cd-case.drag-target .cd-cover{outline:3px dashed var(--hud-acc);outline-offset:4px}
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-window:focus-visible .cd-cover{outline:3px solid var(--hud-acc2);outline-offset:3px}
+
+/* inspetor: CD girando ao lado do título */
+body.hud.workspace-sheet #characterPage .deck-spell-title{position:relative;overflow:hidden;padding-right:84px!important}
+body.hud.workspace-sheet #characterPage .deck-spell-title::after{
+  content:"";position:absolute;right:-26px;top:50%;width:92px;aspect-ratio:1;border-radius:50%;transform:translateY(-50%);
+  background:radial-gradient(circle,transparent 0 9%,var(--hud-black) 9.5% 12%,#d7dde4 12.5% 20%,transparent 20.5%),conic-gradient(from 30deg,#eef3f6,var(--spell-color),#c9f0ff,#fff3c4,var(--spell-color),#eef3f6);
+  box-shadow:0 0 0 2px var(--hud-black);animation:cdSpinT 4s linear infinite;
+}
+@keyframes cdSpinT{to{transform:translateY(-50%) rotate(360deg)}}
+
+@media (max-width:700px){
+  body.hud.workspace-sheet #characterPage #sheetMagicDeck.cd-rack{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:20px 30px!important;padding-right:26px!important}
+  body.hud.workspace-sheet #characterPage .cd-copy .deck-card-name{font-size:15px!important}
+  body.hud.workspace-sheet #characterPage .cd-kanji{font-size:76px}
+  body.hud.workspace-sheet #characterPage .cd-logo{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  body.hud.workspace-sheet #characterPage :is(.cd-disc,.cd-glare,.deck-spell-title::after){animation:none!important;transition:none!important}
+}
+body.hs-calm #characterPage .cd-disc,body.hs-calm #characterPage .deck-spell-title::after{animation:none!important}
