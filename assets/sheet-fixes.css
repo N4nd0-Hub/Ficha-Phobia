@@ -376,3 +376,11 @@ body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .pod-value-lin
 @media (max-width:380px){
   body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .combat-status-pods{grid-template-columns:minmax(0,1fr)!important}
 }
+
+/* faixa lateral encostada no topo (sem vão entre a barra do topo e a faixa) */
+body.hud.workspace-sheet #characterPage::before,
+body.hud.workspace-sheet #characterPage:has(#sheet-panel-core.active)::before{top:var(--hs-topbar-h,90px)!important}
+/* Magias: respiro à esquerda para os CDs não encostarem na borda do painel */
+body.hud.workspace-sheet #characterPage:not(#_z) #deckWorkspace{padding:16px 20px 18px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #deckWorkspace #sheetMagicDeck{padding:10px 6px 14px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .magic-lab{padding-left:10px}

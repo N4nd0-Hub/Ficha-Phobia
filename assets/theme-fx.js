@@ -224,3 +224,15 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wrapSection); else wrapSection();
 })();
+/* mede a altura da barra do topo para a faixa lateral da ficha começar colada nela */
+(function () {
+  function measure() {
+    var t = document.querySelector('.topbar'); if (!t) return;
+    var h = Math.round(t.offsetTop + t.offsetHeight);
+    if (h > 20 && h < 260) document.documentElement.style.setProperty('--hs-topbar-h', h + 'px');
+  }
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
+  document.addEventListener('click', function () { setTimeout(measure, 50); }, true);
+  setTimeout(measure, 300); setInterval(measure, 3000);
+})();
