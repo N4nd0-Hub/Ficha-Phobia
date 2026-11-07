@@ -298,24 +298,59 @@
     var panel = $('#sheet-panel-core');
     if (!panel || hero.root) return;
     hero.root = el('section', 'hs-root');
-    hero.root.setAttribute('aria-label', 'Resumo do personagem');
+    hero.root.setAttribute('aria-label', 'Status do personagem');
     hero.root.innerHTML =
       '<div class="hs-stripes" aria-hidden="true"><i></i><i></i></div>' +
       '<div class="hs-id"><button type="button" class="hs-portrait" aria-label="Trocar o retrato"><span class="hs-ph"><svg viewBox="0 0 130 170" aria-hidden="true"><circle cx="65" cy="52" r="34"/><path d="M8 170c0-40 25-66 57-66s57 26 57 66z"/></svg></span><img alt=""><small>TOQUE PARA TROCAR O RETRATO</small></button>' +
-        '<div class="hs-name"><b></b><span></span></div></div>' +
+        '<div class="hs-name"><b></b><span></span></div><div class="hs-tools"></div></div>' +
       '<div class="hs-main">' +
-        '<div class="hs-levels"><span class="hs-cnv"></span><span class="hs-pnv"></span></div>' +
-        '<div class="hs-res"><div class="hs-bar pv"><div class="hs-bar-top"><b>PV</b><span></span></div><div class="hs-track"><i></i></div></div>' +
-          '<div class="hs-bar pm"><div class="hs-bar-top"><b>PM</b><span></span></div><div class="hs-track"><i></i></div></div></div>' +
-        '<div class="hs-attrs">' + ATTR.map(function (a) { return '<div class="hs-attr" data-a="' + a + '"><small>' + a + '</small><b>0</b></div>'; }).join('') + '</div>' +
-        '<div class="hs-derived"><div><span>Carga</span><b data-d="carry"></b></div><div><span>Movimento</span><b data-d="move"></b></div><div><span>Crítico</span><b data-d="crit"></b></div><div><span>Reação</span><b data-d="react"></b></div></div>' +
+        '<div class="hs-levels"></div>' +
+        '<div class="hs-res">' +
+          '<div class="hs-bar pv"><div class="hs-bar-top"><b>PV</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div><div class="hs-res-meta"></div></div>' +
+          '<div class="hs-bar pm"><div class="hs-bar-top"><b>PM</b><span class="hs-cur"></span><small class="hs-max"></small></div><div class="hs-track"><i></i></div><div class="hs-res-meta"></div></div>' +
+        '</div>' +
+        '<div class="hs-attrs">' + ATTR.map(function (a) { return '<label class="hs-attr" data-a="' + a + '"><small>' + a + '</small><em class="hs-eq" hidden></em></label>'; }).join('') + '</div>' +
+        '<div class="hs-derived-wrap"></div>' +
         '<div class="hs-integ"><div class="hs-integ-top"><span>INTEGRIDADE</span><b></b></div><div class="hs-integ-track"><i></i><i></i><i></i><i></i><i></i><i></i><span class="hs-needle"></span></div>' +
-          '<div class="hs-integ-labels"><span>Morte</span><span>Ruína</span><span>Fraturado</span><span>Estável</span><span>Íntegro</span><span>Plenitude</span></div></div>' +
-        '<div class="hs-social">' + SOCIAL.map(function (s) { return '<div class="hs-skill" data-s="' + s + '"><div><span>' + s + '</span><b></b></div><div class="hs-pips"><i></i><i></i><i></i><i></i><i></i></div></div>'; }).join('') + '</div>' +
-      '</div>' +
-      '<p class="hs-edit-hint">Os valores se atualizam sozinhos. Para editar, use os blocos logo abaixo.</p>';
+          '<div class="hs-integ-labels">' +
+            [[0, 'Morte'], [1, 'Ruína'], [25, 'Fraturado'], [50, 'Estável'], [75, 'Íntegro'], [100, 'Plenitude']].map(function (z) { return '<button type="button" data-integrity-stage="' + z[0] + '">' + z[1] + '</button>'; }).join('') +
+          '</div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></div>' +
+        '<div class="hs-social">' + SOCIAL.map(function (s) {
+          var pips = ''; for (var t = 1; t <= 5; t++) pips += '<button type="button" data-hs-tier="' + t + '" aria-label="' + s + ' Tier ' + ROMAN[t] + '"></button>';
+          return '<div class="hs-skill" data-s="' + s + '"><div><span>' + s + '</span><b></b></div><div class="hs-pips">' + pips + '</div></div>';
+        }).join('') + '</div>' +
+      '</div>';
     panel.insertBefore(hero.root, panel.firstChild);
+
+    /* move os campos verdadeiros para o novo topo (mesmos eventos e cálculos) */
+    var mv = function (sel, into) { var n = typeof sel === 'string' ? $(sel, panel) : sel; if (n && into) into.appendChild(n); return n; };
+    var levels = $('.hs-levels', hero.root);
+    mv('.level-unit.cnv', levels); mv('.level-unit.pnv', levels);
+    mv('#sheetAppearanceBtn', $('.hs-tools', hero.root));
+    var pv = $('.hs-bar.pv', hero.root), pm = $('.hs-bar.pm', hero.root);
+    mv('[data-sheet="resources.pvCurrent"]', $('.hs-cur', pv));
+    mv('[data-sheet="resources.pmCurrent"]', $('.hs-cur', pm));
+    var metas = panel.querySelectorAll('.resources-game-panel .resource-meta');
+    if (metas[0]) mv(metas[0], $('.hs-res-meta', pv));
+    if (metas[1]) mv(metas[1], $('.hs-res-meta', pm));
+    ATTR.forEach(function (a) { mv('[data-sheet="attrs.' + a + '"]', $('.hs-attr[data-a="' + a + '"]', hero.root)); });
+    var dw = $('.hs-derived-wrap', hero.root);
+    mv('.derived-ribbon', dw); mv('.combat-status-pods', dw);
+    var range = mv('.integrity-game-range', $('.hs-integ-track', hero.root));
+    if (range) range.setAttribute('aria-label', 'Integridade');
+    mv('#sheetIntegrityEffects', $('.hs-integ-effects', hero.root));
+
+    panel.classList.add('hs-ready');
     $('.hs-portrait', hero.root).addEventListener('click', function () { var i = $('#sheetPhotoInput'); if (i) i.click(); });
+    $('.hs-social', hero.root).addEventListener('click', function (e) {
+      var b = e.target.closest('[data-hs-tier]'); if (!b) return;
+      var skill = b.closest('.hs-skill').dataset.s, t = +b.dataset.hsTier, cur = 0;
+      try { cur = socialEffectiveTier(skill); } catch (x) {}
+      var next = cur === t ? t - 1 : t;
+      try { setSocialEffectiveTier(skill, next); } catch (x) { return; }
+      document.querySelectorAll('[data-social]').forEach(function (s) { if (s.dataset.social === skill) s.value = String(next); });
+      call('renderCharacterSheet'); call('saveState', true);
+    });
   }
 
   function renderHero(animate) {
@@ -327,38 +362,37 @@
     else { img.removeAttribute('src'); img.hidden = true; $('.hs-ph', hero.root).hidden = false; }
     $('.hs-name b', hero.root).textContent = (pr.name || pr.codename || 'SEU PERSONAGEM').toUpperCase();
     $('.hs-name span', hero.root).textContent = 'Arcana: ' + (pr.arcana || '—') + ' · Persona: ' + (pr.persona || '—');
-    $('.hs-cnv', hero.root).textContent = 'CNv ' + (cs.cnv || 1);
-    $('.hs-pnv', hero.root).textContent = 'PNv ' + (cs.pnv || 1);
 
     [['pv', 'sheetPVMaxText', 'pvCurrent'], ['pm', 'sheetPMMaxText', 'pmCurrent']].forEach(function (r) {
       var max = num(txt(r[1])) || 0, res = cs.resources || {}, cur = res[r[2]] == null ? max : +res[r[2]];
       var box = $('.hs-bar.' + r[0], hero.root);
-      $('.hs-bar-top span', box).innerHTML = cur + '<small> / ' + max + '</small>';
+      $('.hs-max', box).textContent = '/ ' + max;
       $('.hs-track i', box).style.transform = 'scaleX(' + (max ? Math.max(0, Math.min(1, cur / max)) : 0) + ')';
     });
 
-    var attrs = cs.attrs || {};
-    ATTR.forEach(function (a) { $('.hs-attr[data-a="' + a + '"] b', hero.root).textContent = attrs[a] || 0; });
-    $('[data-d="carry"]', hero.root).textContent = txt('sheetCarry') || '—';
-    $('[data-d="move"]', hero.root).textContent = (txt('sheetMovement') || '—').replace(/\s*m$/, ' m');
-    $('[data-d="crit"]', hero.root).textContent = txt('sheetCritRange') || txt('sheetCritical') || '—';
-    var rb = txt('sheetReactionBonus');
-    $('[data-d="react"]', hero.root).textContent = rb ? '1d20 + ' + num(rb) : '—';
-
-    var integ = Math.max(0, Math.min(100, +cs.integrity || 0));
-    var stateTxt = txt('sheetIntegrityState') || '';
-    $('.hs-integ-top b', hero.root).innerHTML = E(stateTxt.toUpperCase()) + ' <span>' + integ + '%</span>';
-    $('.hs-needle', hero.root).style.left = integ + '%';
-
-    SOCIAL.forEach(function (s) {
-      var t = 0;
-      try { t = socialEffectiveTier(s); } catch (e) {}
-      var box = $('.hs-skill[data-s="' + s + '"]', hero.root);
-      $('b', box).textContent = 'Tier ' + ROMAN[t];
-      box.querySelectorAll('.hs-pips i').forEach(function (p, i) { p.classList.toggle('on', i < t); });
+    var calc = null;
+    try { calc = calculateSheet(); } catch (e) {}
+    ATTR.forEach(function (a) {
+      var bonus = calc && calc.equipmentModifiers && calc.equipmentModifiers.attrs ? (calc.equipmentModifiers.attrs[a] || 0) : 0;
+      var tag = $('.hs-attr[data-a="' + a + '"] .hs-eq', hero.root);
+      tag.hidden = !bonus;
+      tag.textContent = bonus ? (bonus > 0 ? '+' : '') + bonus + ' EQP = ' + calc[a] : '';
     });
 
-    if (animate) enter(hero.root.querySelectorAll('.hs-portrait, .hs-name, .hs-levels, .hs-bar, .hs-attr, .hs-derived > div, .hs-integ, .hs-skill'));
+    var integ = Math.max(0, Math.min(100, +cs.integrity || 0));
+    $('.hs-integ-top b', hero.root).innerHTML = E((txt('sheetIntegrityState') || '').toUpperCase()) + ' <span>' + integ + '%</span>';
+    $('.hs-needle', hero.root).style.left = integ + '%';
+    $('.hs-integ-flavor', hero.root).textContent = txt('sheetIntegrityFlavor');
+
+    SOCIAL.forEach(function (s) {
+      var t = 0, bonus = '';
+      try { t = socialEffectiveTier(s); bonus = '+' + socialEffectiveBonus(s); } catch (e) {}
+      var box = $('.hs-skill[data-s="' + s + '"]', hero.root);
+      $('b', box).textContent = 'Tier ' + ROMAN[t] + (bonus ? ' · ' + bonus : '');
+      box.querySelectorAll('.hs-pips button').forEach(function (p, i) { p.classList.toggle('on', i < t); p.setAttribute('aria-pressed', String(i < t)); });
+    });
+
+    if (animate) enter(hero.root.querySelectorAll('.hs-portrait, .hs-name, .hs-levels, .hs-bar, .hs-attr, .derived-editor, .combat-status-pod, .hs-integ, .hs-skill'));
   }
 
   /* ======================================================

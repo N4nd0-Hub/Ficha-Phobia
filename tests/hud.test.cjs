@@ -36,3 +36,13 @@ test('the redesigned pages only call functions the site defines',()=>{
   for(const id of ['areaSearch','sheetPhotoInput','sheetPVMaxText','sheetPMMaxText','sheetCarry','sheetMovement','sheetIntegrityState'])
     assert.match(html,new RegExp(`id="${id}"`),id);
 });
+
+test('the Ficha Base hero moves the real inputs instead of copying them',()=>{
+  const pages=fs.readFileSync(path.join(__dirname,'..','assets','hud-pages.js'),'utf8');
+  for(const sel of ['.level-unit.cnv','.level-unit.pnv','[data-sheet="resources.pvCurrent"]','[data-sheet="resources.pmCurrent"]','.derived-ribbon','.combat-status-pods','.integrity-game-range','#sheetIntegrityEffects'])
+    assert.ok(pages.includes(`mv('${sel}'`),sel);
+  assert.match(pages,/\[data-sheet="attrs\.' \+ a \+ '"\]/);
+  for(const cls of ['level-unit cnv','level-unit pnv','derived-ribbon','combat-status-pods','integrity-game-range'])
+    assert.match(html,new RegExp(cls.replace(' ','\\s')),cls);
+  assert.match(html,/assets\/hud-sheet\.css/);
+});

@@ -1,0 +1,296 @@
+/* ==========================================================
+   PERSONA // PHOBIA — hud-sheet.css
+   A ficha inteira no padrão HUD.
+   1) topo da Ficha Base como editor (campos reais movidos);
+   2) blocos antigos repetidos escondidos;
+   3) componentes que continuam (habilidades, grimório, despertares,
+      equipamentos, vantagens, vínculos, dossiê) com a paleta,
+      as fontes e as molduras novas, sem enfeites antigos.
+   ========================================================== */
+
+/* ---------- paleta única da ficha ---------- */
+body.hud #characterPage{
+  --hud-card:#1c1f36;
+  --hud-card2:#151729;
+  --theme-surface:#1c1f36; --theme-surface-2:#151729; --theme-surface-3:#23274a;
+  --theme-panel:#1c1f36; --theme-ink:#fff0d8; --theme-muted:rgba(255,240,216,.62);
+  --theme-line:#0d0c10; --theme-accent:#ef2b97; --theme-accent-2:#6ce6ff; --theme-accent-3:#96ff45;
+  --theme-input:#0d0c10; --theme-input-ink:#fff0d8; --theme-deep:#0d0c10; --theme-deep-ink:#fff0d8;
+  --core-accent:#ef2b97; --core-accent-2:#6ce6ff; --core-accent-soft:rgba(239,43,151,.12);
+  --core-field:#0d0c10; --core-field-2:#151729; --core-field-line:rgba(255,240,216,.2);
+  --core-muted:rgba(255,240,216,.62); --core-focus:rgba(108,230,255,.3); --core-panel-shadow:6px 6px 0 #0d0c10;
+  --access-body:#121424; --access-card:#1c1f36; --access-panel:#1c1f36; --access-panel-alt:#151729; --access-panel-card:#151729;
+  --access-input:#0d0c10; --access-input-line:rgba(255,240,216,.2); --access-line:#0d0c10; --access-text:#fff0d8; --access-subtext:rgba(255,240,216,.62);
+  --access-shell:#0d0c10; --access-shell-ink:#fff0d8; --access-shell-line:#0d0c10; --access-shell-muted:rgba(255,240,216,.6);
+  --access-shell-badge:#ef2b97; --access-shell-badge-ink:#0d0c10; --access-tab:#151729; --access-placeholder:rgba(255,240,216,.4);
+  --access-screen-bezel:#0d0c10; --access-screen-border:#0d0c10;
+  --eq-cream:#fff0d8; --eq-cyan:#6ce6ff; --eq-deep:#0d0c10; --eq-ink:#fff0d8; --eq-line:#0d0c10; --eq-pane:#1c1f36; --eq-pink:#ef2b97;
+  --aw-frame:#0d0c10; --aw-shadow:6px 6px 0 #0d0c10;
+  font-family:var(--hud-body);
+}
+body.hud #characterPage .sheet-book{background:transparent!important;border:0!important;box-shadow:none!important}
+body.hud #characterPage .sheet-book::after{display:none!important}
+
+/* ==========================================================
+   1. FICHA BASE — topo editável
+   ========================================================== */
+body.hud #sheet-panel-core.hs-ready :is(.core-remake-head,.resources-game-panel,#sheetIntegrityBlock){display:none!important}
+body.hud #sheet-panel-core.hs-ready .attributes-remake > :not(.derived-help){display:none!important}
+body.hud #sheet-panel-core.hs-ready .attributes-remake{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+body.hud #sheet-panel-core.hs-ready .attributes-remake .derived-help{display:none!important}
+body.hud #sheet-panel-core.hs-ready .social-remake > :not(#socialTierMonitorSection){display:none!important}
+body.hud #sheet-panel-core.hs-ready .social-remake{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+body.hud #sheet-panel-core .core-status-board{display:flex!important;flex-direction:column;gap:26px}
+
+#characterPage .hs-root input{
+  font:inherit;color:inherit;background:transparent;border:0;outline:0;margin:0;padding:0;
+  -moz-appearance:textfield;
+}
+#characterPage .hs-root input::-webkit-outer-spin-button,#characterPage .hs-root input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#characterPage .hs-root input:focus-visible{outline:2px solid var(--hud-acc2);outline-offset:2px}
+#characterPage .hs-tools{display:flex}
+#characterPage .hs-tools .sheet-tool-btn{
+  display:flex!important;align-items:center;gap:8px;padding:8px 12px!important;border:2px solid #0d0c10!important;
+  background:#0d0c10!important;color:#fff0d8!important;box-shadow:4px 4px 0 var(--hud-acc)!important;border-radius:0!important;
+  font:800 13px var(--hud-cond)!important;letter-spacing:1.4px;cursor:pointer;min-height:0!important;
+}
+#characterPage .hs-tools .sheet-tool-btn small{display:none}
+#characterPage .hs-tools .sheet-tool-btn span{color:var(--hud-acc)}
+
+/* níveis */
+#characterPage .hs-levels{display:flex;gap:14px;flex-wrap:wrap}
+#characterPage .hs-levels .level-unit{
+  display:flex!important;align-items:center;gap:6px;padding:6px 10px!important;margin:0!important;min-height:0!important;
+  transform:skewX(-10deg);border:0!important;border-radius:0!important;box-shadow:none!important;background:var(--hud-paper)!important;color:var(--hud-black)!important;
+}
+#characterPage .hs-levels .level-unit.pnv{background:var(--hud-black)!important;color:#fff0d8!important;box-shadow:4px 4px 0 var(--hud-acc2)!important}
+#characterPage .hs-levels .level-unit-name{display:flex!important;flex-direction:column;line-height:1}
+#characterPage .hs-levels .level-unit-name small{font:400 20px/1 var(--hud-display)!important;color:inherit!important;letter-spacing:0;opacity:1}
+#characterPage .hs-levels .level-unit-name b{font:800 9px var(--hud-cond)!important;letter-spacing:1.4px;opacity:.65;color:inherit!important}
+#characterPage .hs-levels .level-unit input{
+  width:44px!important;height:32px!important;text-align:center;font:400 24px/1 var(--hud-display)!important;
+  background:transparent!important;border:0!important;color:inherit!important;box-shadow:none!important;padding:0!important;
+}
+#characterPage .hs-levels .level-step{
+  width:26px!important;height:26px!important;min-height:0!important;padding:0!important;border:2px solid currentColor!important;border-radius:0!important;
+  background:transparent!important;color:inherit!important;box-shadow:none!important;font:800 15px/1 Arial!important;cursor:pointer;
+}
+
+/* PV / PM */
+#characterPage .hs-bar-top{display:flex;align-items:baseline;gap:8px}
+#characterPage .hs-bar-top > b{margin-right:auto}
+#characterPage .hs-cur input{
+  width:92px;text-align:right;font:400 30px/1 var(--hud-display)!important;color:#fff0d8!important;
+  background:transparent!important;border:0!important;border-bottom:2px dashed rgba(255,240,216,.25)!important;box-shadow:none!important;padding:0!important;
+}
+#characterPage .hs-cur input:hover{border-bottom-color:var(--hud-acc2)!important}
+#characterPage .hs-max{font:700 16px var(--hud-body);color:var(--hud-mute)}
+#characterPage .hs-res-meta .resource-meta{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 0!important;padding:0!important;border:0!important;background:none!important}
+#characterPage .hs-res-meta label{display:flex!important;align-items:center;justify-content:space-between;gap:8px;padding:5px 10px!important;background:rgba(255,255,255,.04)!important;border:0!important;border-left:3px solid rgba(255,240,216,.25)!important}
+#characterPage .hs-res-meta label span{font:800 11px var(--hud-cond)!important;letter-spacing:1.2px;color:var(--hud-mute)!important}
+#characterPage .hs-res-meta input{width:56px;text-align:right;font:800 16px var(--hud-body)!important;color:#fff0d8!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+
+/* atributos */
+#characterPage .hs-attr{cursor:text;position:relative}
+#characterPage .hs-attr input{width:100%;text-align:center;font:400 32px/1 var(--hud-display)!important;color:#fff0d8!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+#characterPage .hs-attr .hs-eq{font:800 10px var(--hud-cond);font-style:normal;color:var(--hud-acc3);letter-spacing:.5px}
+#characterPage .hs-attr .hs-eq[hidden]{display:none}
+
+/* derivados (cards reais movidos) */
+#characterPage .hs-derived-wrap{display:flex;flex-direction:column;gap:8px}
+#characterPage .hs-derived-wrap .derived-ribbon,
+#characterPage .hs-derived-wrap .combat-status-pods{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;margin:0!important;padding:0!important;background:none!important;border:0!important}
+#characterPage .hs-derived-wrap :is(.derived-editor,.combat-status-pod){
+  display:flex!important;flex-direction:column;gap:4px;min-height:0!important;padding:8px 12px!important;margin:0!important;
+  background:rgba(255,255,255,.04)!important;border:0!important;border-left:3px solid var(--hud-acc2)!important;border-radius:0!important;box-shadow:none!important;color:#fff0d8!important;
+}
+#characterPage .hs-derived-wrap .combat-status-pod{border-left-color:var(--hud-acc)!important;flex-direction:row!important;align-items:center}
+#characterPage .hs-derived-wrap .pod-glyph{display:none!important}
+#characterPage .hs-derived-wrap :is(.derived-editor-top strong,.pod-copy > small){font:700 13px var(--hud-body)!important;color:var(--hud-mute)!important;letter-spacing:0!important;text-transform:none}
+#characterPage .hs-derived-wrap .derived-editor-top{display:flex!important;justify-content:space-between;align-items:center}
+#characterPage .hs-derived-wrap .derived-mode{font:800 9px var(--hud-cond)!important;letter-spacing:1px;padding:2px 5px!important;border:1px solid rgba(255,240,216,.3)!important;background:transparent!important;color:var(--hud-mute)!important;border-radius:0!important}
+#characterPage .hs-derived-wrap .is-manual .derived-mode{background:#ffcf59!important;color:#0d0c10!important;border-color:#ffcf59!important}
+#characterPage .hs-derived-wrap :is(.derived-value-line,.pod-value-line){display:flex!important;align-items:baseline;gap:6px}
+#characterPage .hs-derived-wrap input{width:64px!important;font:800 18px var(--hud-body)!important;color:#fff0d8!important;background:transparent!important;border:0!important;border-bottom:2px dashed rgba(255,240,216,.2)!important;box-shadow:none!important;padding:0!important;border-radius:0!important;height:auto!important}
+#characterPage .hs-derived-wrap :is(.derived-units,.derived-foot small,.pod-copy small:not(:first-child),.derived-crit-tail){font:700 12px var(--hud-body)!important;color:var(--hud-mute)!important}
+#characterPage .hs-derived-wrap .derived-foot{display:flex!important;align-items:center;gap:8px;justify-content:space-between}
+#characterPage .hs-derived-wrap .derived-reset{width:22px!important;height:22px!important;min-height:0!important;padding:0!important;border:1px solid rgba(255,240,216,.25)!important;background:transparent!important;color:var(--hud-mute)!important;border-radius:0!important;box-shadow:none!important;cursor:pointer}
+#characterPage .hs-derived-wrap .derived-reset:disabled{opacity:.25}
+#characterPage .hs-derived-wrap .bp-core-carry{font:800 11px var(--hud-cond)!important;color:var(--hud-acc3)!important;background:none!important;border:0!important;padding:0!important}
+
+/* integridade */
+#characterPage .hs-integ-track .integrity-game-range{
+  position:absolute;left:0;top:-8px;width:100%;height:26px;margin:0;opacity:0;cursor:pointer;z-index:2;
+}
+#characterPage .hs-integ-labels{display:flex;justify-content:space-between}
+#characterPage .hs-integ-labels button{padding:2px 0;border:0;background:none;color:var(--hud-mute);font:700 11px var(--hud-body);cursor:pointer}
+#characterPage .hs-integ-labels button:hover,#characterPage .hs-integ-labels button.current{color:#fff0d8}
+#characterPage .hs-integ-labels button.current{text-decoration:underline;text-decoration-color:var(--hud-acc2);text-underline-offset:4px}
+#characterPage .hs-integ-flavor{margin:2px 0 0;font:600 13px/1.4 var(--hud-body);color:rgba(255,240,216,.75)}
+#characterPage .hs-integ-effects .integrity-effects{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:0!important}
+#characterPage .hs-integ-effects .integrity-effects > *{background:rgba(255,255,255,.04)!important;border:0!important;border-left:3px solid var(--hud-acc2)!important;border-radius:0!important;box-shadow:none!important;color:#fff0d8!important;padding:8px 12px!important}
+
+/* tiers sociais clicáveis */
+#characterPage .hs-pips button{height:10px;padding:0;border:0;background:rgba(255,255,255,.14);transform:skewX(-20deg);cursor:pointer;transition:background .25s,transform .2s}
+#characterPage .hs-pips button:hover{transform:skewX(-20deg) scaleY(1.5)}
+#characterPage .hs-pips button.on{background:#6ce6ff}
+
+/* ==========================================================
+   2. ENFEITES ANTIGOS QUE SAEM
+   ========================================================== */
+body.hud #characterPage :is(
+  .persona-v2-top,.eq-hero,.eq-section-heading,.aw-layout-picker,
+  .mag-ribbon,.exclusive-ability-kicker,.exclusive-ability-hero-side,.cover-shine,.tr-rules
+){display:none!important}
+
+/* ==========================================================
+   3. TUDO QUE FICA, NO PADRÃO NOVO
+   ========================================================== */
+/* cartões / seções */
+body.hud #characterPage :is(
+  .zine-card,.persona-v2-hero > *,.persona-v2-dissonant,.persona-v2-affinities,.persona-v2-journal,.dissonant-recap,
+  .magic-lab-grid > *,.eq-collection,.bp-section,.eq-setup-grid > *,#traitCatalogPanel,.tr-tabs,
+  .bond-toolbar,.bond-grid > *,.arcana-overview-grid > *,.arcana-lower-grid > *,.aw-refined > *,
+  .social-monitor-shell,.exclusive-ability-card
+){
+  background:var(--hud-card)!important;background-image:none!important;
+  border:2px solid #0d0c10!important;border-radius:0!important;
+  box-shadow:6px 6px 0 rgba(0,0,0,.45)!important;color:#fff0d8;
+}
+body.hud #characterPage :is(.zine-card,.exclusive-ability-card,.bond-grid > *)::before,
+body.hud #characterPage :is(.zine-card,.exclusive-ability-card,.bond-grid > *)::after{opacity:0!important}
+
+/* faixas de título */
+body.hud #characterPage :is(.section-strip,.social-monitor-head,.exclusive-ability-hero,.bp-head,.eq-panel-head,.deck-head){
+  background:#0d0c10!important;background-image:none!important;color:#fff0d8!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+body.hud #characterPage .section-strip{border-left:4px solid var(--hud-acc)!important;font:800 13px var(--hud-cond)!important;letter-spacing:2px!important}
+body.hud #characterPage .section-strip.cyan{border-left-color:var(--hud-acc2)!important}
+
+/* títulos */
+body.hud #characterPage :is(h2,h3,h4,.exclusive-ability-title,.eq-title,.bond-name-display){
+  font-family:var(--hud-display)!important;letter-spacing:-.5px!important;color:#fff0d8;text-shadow:none!important;
+}
+body.hud #characterPage .exclusive-ability-title{font-size:30px!important;line-height:1!important}
+body.hud #characterPage .exclusive-ability-title em{color:var(--hud-acc)!important}
+
+/* campos */
+body.hud #characterPage :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea):not(.hs-root *){
+  background-color:#0d0c10!important;color:#fff0d8!important;border:1px solid rgba(255,240,216,.2)!important;
+  border-radius:0!important;box-shadow:none!important;font-family:var(--hud-body)!important;
+}
+body.hud #characterPage .hs-root :is(input,select){background-color:transparent!important;border:0!important}
+body.hud #characterPage .hs-cur input,body.hud #characterPage .hs-derived-wrap input{border-bottom:2px dashed rgba(255,240,216,.22)!important}
+body.hud #characterPage :is(input,select,textarea):focus{border-color:var(--hud-acc2)!important;outline:0}
+body.hud #characterPage ::placeholder{color:rgba(255,240,216,.38)!important}
+body.hud #characterPage label{color:var(--hud-mute)}
+
+/* botões */
+body.hud #characterPage .sheet-subpage button:not(.hs-root button):not([data-hs-tier]):not(.sheet-page-tab){
+  border-radius:0!important;font-family:var(--hud-cond);letter-spacing:1px;
+}
+body.hud #characterPage :is(.mag-add,.add-btn,.ability-upgrade-add,.bond-add,.eq-add,[class*="-add"]):not(.hs-root *){
+  background:var(--hud-acc2)!important;color:#0d0c10!important;border:0!important;box-shadow:none!important;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);font:800 13px var(--hud-body)!important;
+}
+
+/* textos menores */
+body.hud #characterPage :is(small,.kicker,[class*="kicker"]){color:var(--hud-mute)}
+body.hud #characterPage p{color:rgba(255,240,216,.8)}
+
+/* cabeçalhos com informação: ficam, compactos */
+body.hud #characterPage :is(.magic-lab-hero,.tr-hero,.bond-hero,.spread-head){
+  background:#0d0c10!important;background-image:none!important;border:2px solid #0d0c10!important;border-radius:0!important;
+  box-shadow:8px 8px 0 var(--hud-acc2)!important;color:#fff0d8!important;padding:16px 20px!important;min-height:0!important;margin-bottom:22px!important;
+}
+body.hud #characterPage :is(.magic-lab-hero,.tr-hero,.bond-hero,.spread-head) :is(h1,h2,h3){font-size:26px!important;line-height:1!important;margin:0!important}
+body.hud #characterPage :is(.magic-lab-hero,.tr-hero,.bond-hero,.spread-head) :is(svg,.magic-lab-hero-note,[class*="hero-art"],[class*="hero-visual"],[class*="hero-badge"]){display:none!important}
+
+/* dossiê: o papel continua papel */
+body.hud #characterPage .record-paper{box-shadow:12px 12px 0 #0d0c10!important;transform:rotate(-.8deg)}
+body.hud #characterPage .record-paper :is(input,textarea,select){background-color:transparent!important;color:#1b1a20!important;border:0!important;border-bottom:1.5px solid #1b1a20!important}
+body.hud #characterPage .record-paper label,body.hud #characterPage .record-paper small,body.hud #characterPage .record-paper p{color:#1b1a20}
+body.hud #characterPage .record-paper ::placeholder{color:rgba(27,26,32,.45)!important}
+
+@media (prefers-reduced-motion:reduce){
+  #characterPage .hs-pips button{transition:none}
+}
+
+/* faixa rosa diagonal fixa à esquerda (fica atrás do conteúdo) */
+body.hud #characterPage .sheet-page-tabs::before{display:none!important}
+body.hud.workspace-sheet #characterPage::before{
+  content:"";position:fixed;left:9px;top:93px;bottom:65px;width:370px;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(13,12,16,.2) 2px,transparent 2.5px) 0 0/14px 14px,var(--hud-acc);
+  clip-path:polygon(0 0,100% 0,58% 100%,0 100%)!important;
+  display:block!important;opacity:1!important;transform:none!important;
+}
+body.hud #characterPage .sheet-book{position:relative;z-index:1}
+body.hud #characterPage .sheet-page-tabs{z-index:1}
+body.hud #characterPage .sheet-book > :not(.sheet-book-head){z-index:2}
+
+/* habilidades: sem gradientes do cabeçalho */
+body.hud #characterPage .exclusive-ability-hero::before,body.hud #characterPage .exclusive-ability-hero::after,
+body.hud #characterPage .exclusive-ability-card::before,body.hud #characterPage .exclusive-ability-card::after{display:none!important}
+body.hud #characterPage .exclusive-ability-hero{border-bottom:3px solid var(--hud-acc)!important;padding:18px 20px!important}
+body.hud #characterPage .combat-exclusive .exclusive-ability-hero{border-bottom-color:var(--hud-acc2)!important}
+body.hud #characterPage .exclusive-ability-tags span,body.hud #characterPage .exclusive-ability-tags b{background:#0d0c10!important;border:1px solid rgba(255,240,216,.3)!important;color:#fff0d8!important;border-radius:0!important}
+
+/* ==========================================================
+   DOSSIÊ: ficha de inscrição em papel
+   ========================================================== */
+body.hud #characterPage .record-file{
+  max-width:900px;background:#f4ecd6!important;background-image:none!important;color:#1b1a20!important;
+  border:1px solid #c9bfa4!important;box-shadow:12px 12px 0 #0d0c10!important;transform:rotate(-.8deg);
+  padding:26px 30px!important;font-family:"Special Elite","Courier New",monospace!important;position:relative;
+}
+body.hud #characterPage .record-file::before,body.hud #characterPage .record-file::after,
+body.hud #characterPage .record-paper::before,body.hud #characterPage .record-paper::after{display:none!important}
+body.hud #characterPage .record-head{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:end;
+  background:none!important;border:0!important;border-bottom:3px solid #1b1a20!important;box-shadow:none!important;padding:0 0 12px!important;color:#1b1a20!important;
+}
+body.hud #characterPage .record-logo{font:400 24px/1 var(--hud-display)!important;color:#1b1a20!important;background:none!important;border:0!important;padding:0!important;letter-spacing:-1px}
+body.hud #characterPage .record-head h2{font:400 20px/1.1 var(--hud-display)!important;color:#1b1a20!important;margin:4px 0!important}
+body.hud #characterPage .record-head small,body.hud #characterPage .record-head p{color:#1b1a20!important;font:12px "Special Elite","Courier New",monospace!important;letter-spacing:1px;margin:0}
+body.hud #characterPage .record-head p{color:#d0213d!important;font-weight:700!important}
+body.hud #characterPage .record-stamp{border:3px solid #d0213d!important;color:#d0213d!important;background:none!important;font:400 15px/1.1 var(--hud-display)!important;padding:6px 10px!important;transform:rotate(-10deg);text-align:center}
+body.hud #characterPage .record-paper{background:none!important;border:0!important;box-shadow:none!important;transform:none!important;padding:16px 0 0!important;color:#1b1a20!important}
+body.hud #characterPage .record-number{color:#1b1a20!important;font:13px "Special Elite","Courier New",monospace!important}
+body.hud #characterPage .record-grid label{color:#1b1a20!important;font:11px "Special Elite","Courier New",monospace!important;letter-spacing:.5px}
+body.hud #characterPage .record-file :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),textarea){
+  background:transparent!important;color:#1b1a20!important;border:0!important;border-bottom:1.5px solid #1b1a20!important;
+  font:15px "Special Elite","Courier New",monospace!important;padding:4px 2px!important;
+}
+body.hud #characterPage .record-file textarea:is(textarea){
+  border:0!important;background:repeating-linear-gradient(180deg,transparent 0 27px,rgba(27,26,32,.35) 27px 28px)!important;line-height:28px!important;resize:vertical;
+}
+body.hud #characterPage .record-bottom{border-top:1px dashed rgba(27,26,32,.4)!important;background:none!important}
+body.hud #characterPage .record-bottom :is(b,span,small){color:#1b1a20!important;font-family:"Special Elite","Courier New",monospace!important}
+body.hud #characterPage .signature-render{font-family:Allura,cursive!important;font-size:30px!important;color:#1b1a20!important}
+body.hud #characterPage .record-polaroid{background:#fff!important;color:#1b1a20!important;box-shadow:6px 6px 0 rgba(0,0,0,.35)!important;border:0!important}
+body.hud #characterPage .record-polaroid :is(b,span,div){color:#1b1a20!important}
+body.hud #characterPage .record-polaroid-image{background:#2a2e4d!important}
+body.hud #characterPage .record-polaroid-placeholder :is(b,span){color:rgba(255,240,216,.8)!important}
+
+/* topo: listras só entre o retrato e os números */
+#characterPage .hs-stripes{top:-10px!important;bottom:auto!important;height:560px;left:252px!important}
+#characterPage .hs-stripes i{transform-origin:top;transform:skewX(-14deg)}
+#characterPage .hs-res-meta label{flex-direction:row!important}
+#characterPage .hs-attr small{font-size:13px!important}
+
+/* cabeçalhos com informação: só os números (o título já está no topo) */
+body.hud #characterPage :is(.tr-hero-copy,.bond-hero-copy,.magic-lab-kicker,.magic-lab-hero-deco){display:none!important}
+body.hud #characterPage .magic-lab-hero h2{display:none!important}
+body.hud #characterPage .spread-head > div:first-child{display:none!important}
+body.hud #characterPage :is(.tr-hero,.bond-hero,.magic-lab-hero,.spread-head){display:flex!important;justify-content:flex-start;padding:12px 16px!important}
+body.hud #characterPage :is(.tr-budget,.bond-hero-counts,.magic-lab-meter,.arcana-head-controls){display:flex!important;flex-wrap:wrap;gap:8px;width:100%;margin:0!important;background:none!important;border:0!important;padding:0!important;box-shadow:none!important}
+body.hud #characterPage :is(.tr-budget-tile,.bond-hero-counts > div,.magic-lab-meter > div){
+  flex:1;min-width:130px;display:flex!important;flex-direction:column;gap:2px;padding:8px 12px!important;
+  background:rgba(255,255,255,.04)!important;border:0!important;border-left:3px solid var(--hud-acc2)!important;border-radius:0!important;box-shadow:none!important;transform:none!important;color:#fff0d8!important;
+}
+body.hud #characterPage :is(.tr-budget-tile,.bond-hero-counts > div,.magic-lab-meter > div) small{font:800 11px var(--hud-cond)!important;letter-spacing:1.2px;color:var(--hud-mute)!important}
+body.hud #characterPage :is(.tr-budget-tile,.bond-hero-counts > div,.magic-lab-meter > div) b{font:400 26px/1 var(--hud-display)!important;color:#fff0d8!important}
+body.hud #characterPage .tr-budget-tile.is-balance{border-left-color:var(--hud-acc3)!important;background:rgba(150,255,69,.1)!important}
+body.hud #characterPage .tr-budget-tile.is-balance b{color:var(--hud-acc3)!important}
+body.hud #characterPage :is(.tr-hero,.bond-hero,.magic-lab-hero,.spread-head)::before,
+body.hud #characterPage :is(.tr-hero,.bond-hero,.magic-lab-hero,.spread-head)::after{display:none!important}
