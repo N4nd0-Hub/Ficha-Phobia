@@ -219,3 +219,96 @@ body.hud.workspace-sheet #characterPage .hp-ability .ability-upgrade-add :is(b,s
   body.hud.workspace-sheet #characterPage .hp-ability .exclusive-ability-identity{grid-template-columns:56px minmax(0,1fr)!important}
   body.hud.workspace-sheet #characterPage .hp-ability .ability-tag-field{grid-column:1/-1}
 }
+
+/* ==========================================================
+   14. FICHA BASE — foto colada nas informações
+   ========================================================== */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-root{grid-template-columns:minmax(210px,280px) minmax(0,1fr)!important;gap:clamp(24px,2.6vw,44px)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-id{max-width:280px!important;width:100%;padding-top:12px!important}
+
+/* ==========================================================
+   15. ATRIBUTOS — placas P5
+   ========================================================== */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attrs{gap:12px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{
+  --at:var(--hud-acc);
+  position:relative;display:flex!important;flex-direction:column;justify-content:flex-end;align-items:stretch;
+  min-height:96px!important;padding:10px 16px 12px!important;overflow:hidden;
+  background:#0d0c10!important;border:0!important;box-shadow:none!important;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)!important;
+  transition:transform .25s var(--hud-ease,ease),background-color .25s;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:nth-child(even){--at:var(--hud-acc2)}
+/* barra de cor embaixo */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--at);
+  transform-origin:left;transition:height .25s var(--hud-ease,ease);
+}
+/* sigla gigante de fundo */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr::before{
+  content:attr(data-a);position:absolute;right:-6px;top:-10px;pointer-events:none;
+  font:400 64px/1 var(--hud-display,"Arial Black");letter-spacing:-3px;color:var(--at);opacity:.07;
+}
+/* etiqueta */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr small{
+  position:absolute;left:16px;top:10px;margin:0!important;padding:3px 9px 2px!important;
+  background:var(--at)!important;color:#0d0c10!important;transform:skewX(-10deg);
+  font:400 13px/1 var(--hud-display,"Arial Black")!important;letter-spacing:1px!important;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr input{
+  position:relative;z-index:1;width:100%!important;text-align:left!important;padding:0!important;height:auto!important;
+  font:400 44px/1 var(--hud-display,"Arial Black")!important;letter-spacing:-1px;color:#fff0d8!important;
+  background:transparent!important;border:0!important;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr .hs-eq{position:absolute;right:14px;bottom:12px;z-index:1;color:var(--hud-acc3)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:hover{background:#15172a!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:hover::after,
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:focus-within::after{height:7px}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr:focus-within input{color:var(--at)!important}
+
+/* ==========================================================
+   16. CARGA / MOVIMENTO / CRÍTICO / REAÇÃO (+ pods de Sorte)
+   ========================================================== */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-ribbon{gap:12px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor,.combat-status-pod){
+  --dv:var(--hud-acc2);
+  position:relative;gap:6px!important;padding:12px 14px 10px!important;overflow:hidden;
+  background:#0d0c10!important;border:0!important;border-top:3px solid var(--dv)!important;
+  box-shadow:4px 4px 0 rgba(0,0,0,.4)!important;transform:none;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor.carry{--dv:var(--hud-acc3)}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor.critical{--dv:var(--hud-acc)}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-editor.reaction{--dv:#ffcf59}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .combat-status-pod{--dv:var(--hud-acc);border-left:0!important}
+/* canto cortado colorido */
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor,.combat-status-pod)::before{
+  content:"";position:absolute;right:0;bottom:0;width:22px;height:22px;background:var(--dv);opacity:.18;
+  clip-path:polygon(100% 0,100% 100%,0 100%);pointer-events:none;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-editor-top strong,.pod-copy > small){
+  font:400 13px/1 var(--hud-display,"Arial Black")!important;letter-spacing:1px!important;color:#fff0d8!important;text-transform:uppercase;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-mode{
+  padding:3px 6px!important;border:0!important;background:rgba(255,240,216,.08)!important;color:var(--dv)!important;
+  font:800 10px/1 var(--hud-cond,"Arial Narrow")!important;letter-spacing:1.5px;transform:skewX(-10deg);
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .is-manual .derived-mode{background:#ffcf59!important;color:#0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line){align-items:baseline!important;gap:8px!important;min-height:38px}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input{
+  width:3.2ch!important;field-sizing:content;min-width:1.4ch;font:400 34px/1 var(--hud-display,"Arial Black")!important;letter-spacing:-1px;
+  color:#fff0d8!important;border:0!important;border-bottom:2px solid transparent!important;transition:border-color .2s;
+}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input:hover{border-bottom-color:rgba(255,240,216,.25)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap :is(.derived-value-line,.pod-value-line) input:focus{border-bottom-color:var(--dv)!important;outline:0}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-units{font:800 14px var(--hud-cond,"Arial Narrow")!important;letter-spacing:1px;color:var(--dv)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot{padding-top:7px;border-top:1px solid rgba(255,240,216,.1)}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small{font:700 12px var(--hud-body,Barlow)!important;color:var(--hud-mute)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-foot small b{color:#fff0d8!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .bp-core-carry{margin-left:auto;padding:2px 6px!important;background:rgba(150,255,69,.1)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset{border:0!important;background:rgba(255,240,216,.06)!important;color:#fff0d8!important;transition:background-color .2s,color .2s}
+body.hud.workspace-sheet #characterPage:not(#_z) .hs-derived-wrap .derived-reset:not(:disabled):hover{background:var(--dv)!important;color:#0d0c10!important}
+
+@media (max-width:1100px){
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr{min-height:84px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) .hs-attr input{font-size:36px!important}
+}
