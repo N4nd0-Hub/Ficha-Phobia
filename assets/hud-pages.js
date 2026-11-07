@@ -319,7 +319,7 @@
           var pips = ''; for (var t = 1; t <= 5; t++) pips += '<button type="button" data-hs-tier="' + t + '" aria-label="' + s + ' Tier ' + ROMAN[t] + '"></button>';
           return '<div class="hs-skill" data-s="' + s + '"><div><span>' + s + '</span><b></b></div><div class="hs-pips">' + pips + '</div></div>';
         }).join('') + '</div>' +
-        '<details class="hs-extra"><summary>Recursos, combate e efeitos de integridade</summary><div class="hs-res"><div class="hs-res-meta"></div><div class="hs-res-meta"></div></div><div class="hs-derived-wrap"><div class="hs-more-combat"></div></div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></details><details class="hs-social-details"><summary>Habilidades sociais e efeitos por Tier</summary></details>' +
+        '<details class="hs-extra"><summary>Recursos, combate e efeitos de integridade</summary><div class="hs-res"><div class="hs-res-meta"></div><div class="hs-res-meta"></div></div><div class="hs-derived-wrap"><div class="hs-more-combat"></div></div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></details>' +
       '</div>';
     panel.insertBefore(hero.root, panel.firstChild);
 
@@ -341,7 +341,7 @@
     var range = mv('.integrity-game-range', $('.hs-integ-track', hero.root));
     if (range) range.setAttribute('aria-label', 'Integridade');
     mv('#sheetIntegrityEffects', $('.hs-integ-effects', hero.root));
-    mv('#socialTierMonitorSection', $('.hs-social-details', hero.root));
+    mv('#socialTierMonitorSection', $('#socialMonitorSlot'));
 
     panel.classList.add('hs-ready');
     $('.hs-portrait', hero.root).addEventListener('click', function () { var i = $('#sheetPhotoInput'); if (i) i.click(); });
@@ -376,10 +376,11 @@
     var calc = null;
     try { calc = calculateSheet(); } catch (e) {}
     ATTR.forEach(function (a) {
-      var bonus = calc && calc.equipmentModifiers && calc.equipmentModifiers.attrs ? (calc.equipmentModifiers.attrs[a] || 0) : 0;
-      var tag = $('.hs-attr[data-a="' + a + '"] .hs-eq', hero.root);
-      tag.hidden = !bonus;
-      tag.textContent = bonus ? (bonus > 0 ? '+' : '') + bonus + ' EQP = ' + calc[a] : '';
+      var eq = calc && calc.equipmentModifiers && calc.equipmentModifiers.attrs ? (calc.equipmentModifiers.attrs[a] || 0) : 0;
+      var tb = calc && calc.socialTierStats && calc.socialTierStats.attrs ? (calc.socialTierStats.attrs[a] || 0) : 0;
+      var tag = $('.hs-attr[data-a="' + a + '"] .hs-eq', hero.root), sg = function (n) { return (n > 0 ? '+' : '') + n; };
+      tag.hidden = !(eq || tb);
+      tag.textContent = (eq || tb) ? [eq ? sg(eq) + ' EQP' : '', tb ? sg(tb) + ' TIER' : ''].filter(Boolean).join(' ') + ' = ' + calc[a] : '';
     });
 
     var integ = Math.max(0, Math.min(100, +cs.integrity || 0));

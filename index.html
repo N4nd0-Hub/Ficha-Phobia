@@ -12967,6 +12967,7 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
 #characterPage .sheet-page-tabs .sheet-page-tab{--nav-tone:#b2f570;position:relative;display:grid;grid-template-columns:39px minmax(0,1fr);align-items:center;gap:11px;min-width:0;min-height:76px;padding:12px 31px 12px 13px;border:2px solid var(--theme-line,#15141c);border-left:5px solid var(--nav-tone);border-radius:2px;background:var(--theme-input,#fff7e7);color:var(--theme-input-ink,#19161d);box-shadow:3px 4px 0 color-mix(in srgb,var(--theme-shadow,#111) 55%,transparent);text-align:left;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;font-size:12px!important}
 #characterPage .sheet-page-tab[data-sheet-page="persona"]{--nav-tone:#b8a3fb}
 #characterPage .sheet-page-tab[data-sheet-page="magic"]{--nav-tone:#7ed9ed}
+#characterPage .sheet-page-tab[data-sheet-page="social"]{--nav-tone:#ffd23f}
 #characterPage .sheet-page-tab[data-sheet-page="awakening"]{--nav-tone:#ff9fd1}
 #characterPage .sheet-page-tab[data-sheet-page="equipment"]{--nav-tone:#efcb82}
 #characterPage .sheet-page-tab[data-sheet-page="traits"]{--nav-tone:#ffa58e}
@@ -13099,6 +13100,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/district-badges.css?v=4">
 <link rel="stylesheet" href="assets/district-local.css?v=10">
 <link rel="stylesheet" href="assets/magic-cd.css?v=4">
+<link rel="stylesheet" href="assets/social-fame.css?v=1">
 <link rel="stylesheet" href="assets/phobia-deck.css?v=1">
 <link rel="stylesheet" href="assets/hud.css?v=4">
 <link rel="stylesheet" href="assets/hud-pages.css?v=4">
@@ -13383,11 +13385,12 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
           <button type="button" id="sheet-tab-core" class="sheet-page-tab active" role="tab" data-sheet-page="core" aria-controls="sheet-panel-core" aria-selected="true" tabindex="0"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h8M8 11h8M8 15h4M8 18h6"/></svg></span><span class="sheet-nav-copy"><b>FICHA BASE</b><small>Status e social</small></span><span class="sheet-nav-number" aria-hidden="true">01</span></button>
           <button type="button" id="sheet-tab-persona" class="sheet-page-tab" role="tab" data-sheet-page="persona" aria-controls="sheet-panel-persona" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4 12 7l8-3v9c0 4-4 7-8 8-4-1-8-4-8-8z"/><path d="m7 11 3 1m4 0 3-1m-8 6 3-1 3 1"/></svg></span><span class="sheet-nav-copy"><b>PERSONA</b><small>Identidade e afinidades</small></span><span class="sheet-nav-number" aria-hidden="true">02</span></button>
           <button type="button" id="sheet-tab-magic" class="sheet-page-tab" role="tab" data-sheet-page="magic" aria-controls="sheet-panel-magic" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/><path d="m19 3 2 2m-18 14 2 2"/></svg></span><span class="sheet-nav-copy"><b>MAGIAS</b><small>Deck e habilidades</small></span><span class="sheet-nav-number" aria-hidden="true">03</span></button>
-          <button type="button" id="sheet-tab-awakening" class="sheet-page-tab" role="tab" data-sheet-page="awakening" aria-controls="sheet-panel-awakening" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 4 2.5 5 5.5 1-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1zM12 1v1M3 4l1 1m16-1-1 1M1 12h2m18 0h2"/></svg></span><span class="sheet-nav-copy"><b>DESPERTARES</b><small>Trama e ressonância</small></span><span class="sheet-nav-number" aria-hidden="true">04</span></button>
-          <button type="button" id="sheet-tab-equipment" class="sheet-page-tab" role="tab" data-sheet-page="equipment" aria-controls="sheet-panel-equipment" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M9 7V4h6v3M4 12h16M9 12v3h6v-3"/></svg></span><span class="sheet-nav-copy"><b>EQUIPAMENTOS</b><small>Itens e mochila</small></span><span class="sheet-nav-number" aria-hidden="true">05</span></button>
-          <button type="button" id="sheet-tab-traits" class="sheet-page-tab" role="tab" data-sheet-page="traits" aria-controls="sheet-panel-traits" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v18M5 7h14M4 7l-3 6h6zm16 0-3 6h6zM8 21h8"/><path d="M10 3h4"/></svg></span><span class="sheet-nav-copy"><b>VANTAGENS</b><small>& Defeitos</small></span><span class="sheet-nav-number" aria-hidden="true">06</span></button>
-          <button type="button" id="sheet-tab-bonds" class="sheet-page-tab" role="tab" data-sheet-page="bonds" aria-controls="sheet-panel-bonds" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 15-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m0 12a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-1 1M8 16l8-8"/></svg></span><span class="sheet-nav-copy"><b>VÍNCULOS</b><small>Relações e laços</small></span><span class="sheet-nav-number" aria-hidden="true">07</span></button>
-          <button type="button" id="sheet-tab-record" class="sheet-page-tab" role="tab" data-sheet-page="record" aria-controls="sheet-panel-record" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5C8 2 4 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-2-1-6-2-10 1zM12 5v16M5 8l4 1m-4 3 4 1m6-4 4-1m-4 5 4-1"/></svg></span><span class="sheet-nav-copy"><b>DOSSIÊ</b><small>História e memórias</small></span><span class="sheet-nav-number" aria-hidden="true">08</span></button>
+          <button type="button" id="sheet-tab-social" class="sheet-page-tab" role="tab" data-sheet-page="social" aria-controls="sheet-panel-social" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="m12 6 1.6 3.6 3.9.4-2.9 2.6.8 3.9L12 14.6 8.6 16.5l.8-3.9L6.5 10l3.9-.4z"/></svg></span><span class="sheet-nav-copy"><b>SOCIAL</b><small>Disco de fama</small></span><span class="sheet-nav-number" aria-hidden="true">04</span></button>
+          <button type="button" id="sheet-tab-awakening" class="sheet-page-tab" role="tab" data-sheet-page="awakening" aria-controls="sheet-panel-awakening" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 4 2.5 5 5.5 1-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1zM12 1v1M3 4l1 1m16-1-1 1M1 12h2m18 0h2"/></svg></span><span class="sheet-nav-copy"><b>DESPERTARES</b><small>Trama e ressonância</small></span><span class="sheet-nav-number" aria-hidden="true">05</span></button>
+          <button type="button" id="sheet-tab-equipment" class="sheet-page-tab" role="tab" data-sheet-page="equipment" aria-controls="sheet-panel-equipment" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M9 7V4h6v3M4 12h16M9 12v3h6v-3"/></svg></span><span class="sheet-nav-copy"><b>EQUIPAMENTOS</b><small>Itens e mochila</small></span><span class="sheet-nav-number" aria-hidden="true">06</span></button>
+          <button type="button" id="sheet-tab-traits" class="sheet-page-tab" role="tab" data-sheet-page="traits" aria-controls="sheet-panel-traits" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v18M5 7h14M4 7l-3 6h6zm16 0-3 6h6zM8 21h8"/><path d="M10 3h4"/></svg></span><span class="sheet-nav-copy"><b>VANTAGENS</b><small>& Defeitos</small></span><span class="sheet-nav-number" aria-hidden="true">07</span></button>
+          <button type="button" id="sheet-tab-bonds" class="sheet-page-tab" role="tab" data-sheet-page="bonds" aria-controls="sheet-panel-bonds" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 15-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m0 12a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-1 1M8 16l8-8"/></svg></span><span class="sheet-nav-copy"><b>VÍNCULOS</b><small>Relações e laços</small></span><span class="sheet-nav-number" aria-hidden="true">08</span></button>
+          <button type="button" id="sheet-tab-record" class="sheet-page-tab" role="tab" data-sheet-page="record" aria-controls="sheet-panel-record" aria-selected="false" tabindex="-1"><span class="sheet-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5C8 2 4 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-2-1-6-2-10 1zM12 5v16M5 8l4 1m-4 3 4 1m6-4 4-1m-4 5 4-1"/></svg></span><span class="sheet-nav-copy"><b>DOSSIÊ</b><small>História e memórias</small></span><span class="sheet-nav-number" aria-hidden="true">09</span></button>
         </nav>
       </header>
 
@@ -14180,6 +14183,23 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
       <!-- =====================================================
            PAGE 04 — ARCANA / AWAKENINGS
            ===================================================== -->
+      <!-- =====================================================
+           PAGE 04 — SOCIAL / DISCO DE FAMA
+           ===================================================== -->
+      <section class="sheet-subpage" data-sheet-panel="social" id="sheet-panel-social" role="tabpanel" aria-labelledby="sheet-tab-social" hidden>
+        <div class="sf-page">
+          <div class="sf-top">
+            <div class="sf-stage" id="sfStage"></div>
+            <div class="sf-side">
+              <div class="sf-rank" id="sfRank"></div>
+              <div class="sf-skills" id="sfSkills" role="list" aria-label="Tiers das Habilidades Sociais"></div>
+            </div>
+          </div>
+          <section class="sf-auto" id="sfAuto" aria-label="Bônus automáticos dos Tiers"></section>
+          <div class="sf-monitor" id="socialMonitorSlot"></div>
+        </div>
+      </section>
+
       <section class="sheet-subpage" data-sheet-panel="awakening" id="sheet-panel-awakening" role="tabpanel" aria-labelledby="sheet-tab-awakening" hidden>
         <div class="aw-layout-picker" id="awLayoutPicker" role="group" aria-label="Versão da seção Despertares">
           <span>Visualização dos Despertares</span>
@@ -17669,6 +17689,27 @@ function arcanaSocialModifiers(){
   }
   return mods
 }
+/* Bônus permanentes concedidos pelos Tiers sociais (somados automaticamente à ficha). */
+const SOCIAL_TIER_STAT_RULES=[
+  {skill:'Disciplina',tier:1,pv:10,pm:10,text:'+10 PV Máximo e +10 PM Máximo'},
+  {skill:'Disciplina',tier:2,pmPerLevel:2,text:'+2 PM por Nível (PNv)'},
+  {skill:'Coragem',tier:2,pv:25,attrs:{VIT:1},text:'+25 PV Máximo e +1 VIT'},
+  {skill:'Coragem',tier:3,attrs:{FOR:1,VIT:1},text:'+1 FOR e +1 VIT'},
+  {skill:'Conhecimento',tier:3,attrs:{MAG:1,TEC:1},text:'+1 MAG e +1 TEC'},
+  {skill:'Charme',tier:2,attrs:{MAG:1},text:'+1 MAG'},
+  {skill:'Charme',tier:5,attrs:{MAG:2},text:'+2 MAG'}
+];
+function socialTierStatBonuses(pnv){
+  const out={attrs:{},pv:0,pm:0,rules:[],enabled:state.charSheet?.ui?.socialAutoStats!==false};
+  SOCIAL_TIER_STAT_RULES.forEach(rule=>{
+    let tier=0;try{tier=socialEffectiveTier(rule.skill)}catch(e){}
+    const on=tier>=rule.tier;out.rules.push({...rule,on});
+    if(!on||!out.enabled)return;
+    Object.entries(rule.attrs||{}).forEach(([k,v])=>{out.attrs[k]=(out.attrs[k]||0)+v});
+    out.pv+=rule.pv||0;out.pm+=(rule.pm||0)+(rule.pmPerLevel||0)*pnv;
+  });
+  return out;
+}
 function socialBaseTier(skill){return Math.max(0,Math.min(5,Number(state.charSheet.social?.[skill]||0)))}
 function socialArcanaTierBonus(skill){return Number(arcanaSocialModifiers()[skill]?.tier)||0}
 function socialArcanaPermanentBonus(skill){return Number(arcanaSocialModifiers()[skill]?.permanent)||0}
@@ -17704,7 +17745,7 @@ function renderSocialTierMonitor(){
   document.getElementById('socialTierMonitorCount').textContent=`${unlocked.length} ${unlocked.length===1?'HABILIDADE LIBERADA':'HABILIDADES LIBERADAS'}`;
   document.getElementById('socialTierMonitorUnlockNote').textContent=tier<=0?
     'Este personagem ainda está no Tier 0 desta Habilidade Social. Quando subir de Tier, as habilidades liberadas vão aparecer aqui e serão somadas às anteriores.':
-    `Com ${socialTierFullLabel(active)}, este personagem mantém todas as habilidades dos Tiers anteriores de ${active}.`;
+    `Com ${socialTierFullLabel(tier)}, este personagem mantém todas as habilidades dos Tiers anteriores de ${active}.`;
   const colors={Conhecimento:'#08a3cf',Disciplina:'#e13eb3',Empatia:'#8e49d6',Charme:'#e8ab2d',Coragem:'#8cf12f',Expressão:'#58d9ff'};
   if(!unlocked.length){
     list.innerHTML='<div class="social-tier-entry-empty">TIER 0 // Nenhuma habilidade especial liberada ainda nesta categoria.</div>';
@@ -18510,12 +18551,12 @@ function calculateSheet(){
   const s=state.charSheet;
   const cnv=Math.max(1,Math.min(20,Number(s.cnv)||1));
   const pnv=Math.max(1,Math.min(20,Number(s.pnv)||1));
-  const A=s.attrs||{},equipmentModifiers=getEquippedModifiers();
-  const effective=k=>(Number(A[k])||0)+(equipmentModifiers.attrs[k]||0);
+  const A=s.attrs||{},equipmentModifiers=getEquippedModifiers(),socialTierStats=socialTierStatBonuses(pnv);
+  const effective=k=>(Number(A[k])||0)+(equipmentModifiers.attrs[k]||0)+(socialTierStats.attrs[k]||0);
   const FOR=effective('FOR'),MAG=effective('MAG'),TEC=effective('TEC'),AGI=effective('AGI'),VIT=effective('VIT'),SOR=effective('SOR');
   const pvProg=countReached(cnv,CNV_PV_LEVELS)*10;
-  const pvMax=25+((5+VIT)*cnv)+pvProg+(Number(s.resources.pvPermanentBonus)||0);
-  const pmMax=15+((MAG+5)*2)+((pnv-1)*5)+((Number(s.progress.pmChoices)||0)*10)+(Number(s.resources.pmPermanentBonus)||0);
+  const pvMax=25+((5+VIT)*cnv)+pvProg+(Number(s.resources.pvPermanentBonus)||0)+socialTierStats.pv;
+  const pmMax=15+((MAG+5)*2)+((pnv-1)*5)+((Number(s.progress.pmChoices)||0)*10)+(Number(s.resources.pmPermanentBonus)||0)+socialTierStats.pm;
   const baseCrit=20-Math.floor(Math.min(Math.max(SOR,0),12)/3);
   const integrity=Number(s.integrity??50),integrityData=integrityInfo(integrity);
   const derivedAuto={
@@ -18530,7 +18571,7 @@ function calculateSheet(){
   const awakeningLevelEarned=pointBudget.levelPoints;
   const awakeningSpent=pointBudget.spent;
   return {
-    cnv,pnv,FOR,MAG,TEC,AGI,VIT,SOR,equipmentModifiers,pvProg,pvMax,pmMax,
+    cnv,pnv,FOR,MAG,TEC,AGI,VIT,SOR,equipmentModifiers,socialTierStats,pvProg,pvMax,pmMax,
     carry:derivedValue('carry'),movement:derivedValue('movement'),
     critStart:Math.max(1,Math.min(20,Math.trunc(derivedValue('crit')))),
     reaction:derivedValue('reaction'),integrity,integrityData,
@@ -19273,7 +19314,7 @@ function setPersonaAffinityView(mode='elements',persist=false){
 
 function setSheetSection(section,persist=true){
   if(section==='feats')section='traits';
-  const allowed=['core','persona','magic','awakening','equipment','traits','bonds','record'];
+  const allowed=['core','persona','magic','social','awakening','equipment','traits','bonds','record'];
   if(!allowed.includes(section))section='core';
   const changed=state.charSheet.sheetSection!==section;
   state.charSheet.sheetSection=section;
@@ -19287,6 +19328,7 @@ function setSheetSection(section,persist=true){
   if(section==='traits')renderTraitsPage();
   if(section==='bonds')renderBondsPage();
   if(section==='record')renderRecordMemories();
+  if(section==='social'&&typeof window.renderSocialFame==='function')window.renderSocialFame(true);
   if(persist)saveState(true)
 }
 /* The new dynamic deck renderer is defined with the workshop above. */
@@ -21836,11 +21878,12 @@ initializePhobiaLargeSave();
 })();
 </script>
 
-<script src="assets/hud.js?v=3"></script>
-<script src="assets/hud-pages.js?v=6"></script>
+<script src="assets/hud.js?v=4"></script>
+<script src="assets/hud-pages.js?v=7"></script>
 <script src="assets/sheet-style.js?v=5"></script>
 <script src="assets/district-badges.js?v=3"></script>
 <script src="assets/district-local.js?v=6"></script>
 <script src="assets/magic-cd.js?v=1"></script>
+<script src="assets/social-fame.js?v=2"></script>
 </body>
 </html>

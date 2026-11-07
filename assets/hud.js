@@ -36,6 +36,7 @@
   var PAGE_TITLE = { areasPage: ['GUIA DE ÁREAS', 'TOKYO POCKET GUIDE'], calendarPage: ['AGENDA', 'TOKYO 2000'], hackPage: ['NET//TRACE', 'REDE PRIVADA'] };
   var SHEET_TITLE = {
     core: ['STATUS', 'FICHA DE PERSONAGEM'], persona: ['PERSONA', 'IDENTIDADE E AFINIDADES'], magic: ['MAGIAS', 'DECK E GRIMÓRIO'],
+    social: ['SOCIAL', 'DISCO DE FAMA'],
     awakening: ['DESPERTARES', 'TRAMA E RESSONÂNCIA'], equipment: ['EQUIPAMENTOS', 'ITENS E MOCHILA'], traits: ['VANTAGENS & DEFEITOS', ''],
     bonds: ['VÍNCULOS', 'SOCIAL LINKS'], record: ['DOSSIÊ', 'HISTÓRIA E MEMÓRIAS']
   };
