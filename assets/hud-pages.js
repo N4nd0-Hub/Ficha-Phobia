@@ -106,12 +106,12 @@
 
     var cards = $('.hg-cards', guide.root);
     cards.innerHTML = shown.length ? shown.map(function (id, i) {
-      var d = ds[id], h = HEADS[i % 3], photo = h.photo && districtPhoto(id);
+      var d = ds[id], h = HEADS[i % 3], photo = districtPhoto(id), tag = HEADS[i % 2];
       var vis = (places[id] || []).filter(function (p) { return !(player && p.state === 'locked'); });
       var chipsHtml = vis.slice(0, 3).map(function (p) { return '<span>' + E(p.name) + '</span>'; }).join('') + (vis.length > 3 ? '<span>+' + (vis.length - 3) + '</span>' : '');
       var summary = String(d.summary || '').split(/(?<=\.)\s/)[0];
       var head = photo
-        ? '<div class="hg-head"><img src="' + E(photo) + '" alt="' + E(d.name) + '" loading="lazy"><span class="hg-stamp" style="--s:#fff0d8;background:rgba(13,12,16,.5)">' + E(d.code) + '</span></div>'
+        ? '<div class="hg-head"><img src="' + E(photo) + '" alt="' + E(d.name) + '" loading="lazy"><span class="hg-kanji-tag" style="background:' + tag.bg + ';color:' + tag.fg + '">' + E(d.jp) + '</span><span class="hg-stamp" style="--s:#fff0d8;background:rgba(13,12,16,.5)">' + E(d.code) + '</span></div>'
         : '<div class="hg-head" style="background:' + (h.bg || '#ef2b97') + '"><span class="hg-kanji" style="color:' + h.fg + '">' + E(d.jp) + '</span><span class="hg-stamp" style="--s:' + h.stamp + '">' + E(d.code) + '</span></div>';
       return '<article class="hg-card" data-hg-open="' + id + '" tabindex="0" role="button" aria-label="Abrir ' + E(d.name) + ' no mapa" style="--sh:' + h.shadow + ';--r:' + [-1.5, 1, -.5][i % 3] + 'deg">' + head +
         '<div class="hg-card-body"><div class="hg-card-title"><h3>' + E(d.name).toUpperCase() + '</h3><span class="hg-badge" style="color:' + (STATUS_COLOR[d.state] || '#fff3d2') + '">' + (STATUS_LABEL[d.state] || '') + '</span></div>' +

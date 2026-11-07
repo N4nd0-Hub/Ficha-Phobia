@@ -366,3 +366,6 @@ body.hud .hud-menu-btn,body.hud .hud-menu-extra{display:none}
   body.hud #dossier .atlas-open{order:2}
   body.hud #dossier .atlas-status{order:3;margin-top:10px}
 }
+.hg-head img{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.hg-card:hover .hg-head img{transform:scale(1.06)}
+.hg-kanji-tag{position:absolute;left:10px;bottom:10px;padding:2px 10px 4px;font:900 30px/1.1 "Noto Sans JP",sans-serif;border:3px solid #0d0c10;box-shadow:4px 4px 0 #0d0c10;transform:rotate(-3deg)}
