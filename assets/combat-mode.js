@@ -16,15 +16,15 @@
   if (window.__combatMode) return; window.__combatMode = true;
 
   var SPLASH = {
-    vantagem: { t: 'VANTAGEM!', s: 'O inimigo foi ao chão', c: '#ef2b97', k: 'good', state: 'vantagem' },
-    cercado: { t: 'CERCADO!', s: 'As Sombras têm a vantagem', c: '#7a1cff', k: 'bad', state: 'cercado' },
-    emboscada: { t: 'EMBOSCADA!', s: 'Vocês atacam primeiro', c: '#ffd84d', k: 'good', state: 'vantagem' },
-    critico: { t: 'CRÍTICO!', s: 'Golpe perfeito', c: '#ff4d6a', k: 'good' },
+    vantagem: { t: 'VANTAGEM!', s: 'A primeira Magia do combate é de graça', c: '#ef2b97', k: 'good', state: 'vantagem' },
+    cercado: { t: 'CERCADO!', s: 'Sombras têm Vantagem em testes de Ataque', c: '#7a1cff', k: 'bad', state: 'cercado' },
+    emboscada: { t: 'EMBOSCADA!', s: 'Vantagem em testes de Ataque', c: '#ffd84d', k: 'good', state: 'emboscada' },
+    critico: { t: 'CRÍTICO!', s: '+1 Ataque adicional nesta Rodada', c: '#ff4d6a', k: 'good', hidden: true },
     fraqueza: { t: 'FRAQUEZA!', s: 'Acertou o ponto fraco', c: '#6ce6ff', k: 'good' },
-    onemore: { t: '1 MORE!', s: 'Ação extra', c: '#96ff45', k: 'good' },
     allout: { t: 'ALL-OUT ATTACK!', s: 'Todos juntos, agora!', c: '#ff2a2a', k: 'good' },
-    vitoria: { t: 'VITÓRIA!', s: 'Combate encerrado', c: '#ffd84d', k: 'good', state: 'neutro' }
+    vitoria: { t: 'VITÓRIA!', s: 'Combate encerrado', c: '#ffd84d', k: 'good' }
   };
+  var STATUS_TXT = { vantagem: ['VANTAGEM', ''], cercado: ['CERCADO', 'Sombras com Vantagem no Ataque'], emboscada: ['EMBOSCADA', 'Vantagem nos seus Ataques'] };
   var ACTIONS = [['standardSpent', 'Padrão'], ['quickSpent', 'Rápida'], ['reactionSpent', 'Reação'], ['interruptSpent', 'Interromper']];
   var REACT_ORDER = { Fraqueza: 0, Resiste: 1, Anula: 2, Drena: 3, Reflete: 4 };
   function reactName(r) { try { return PERSONA_REACTION_LABEL[r] || r; } catch (e) { return r; } }
@@ -299,7 +299,8 @@
     var mods = null; try { mods = getEquippedModifiers(); } catch (e) {}
     var st = u.status || 'neutro';
     /* coluna 1: personagem */
-    var acts = ACTIONS.map(function (a) { var used = !!(s.actions && s.actions[a[0]]); return '<button type="button" class="cm-act' + (used ? ' used' : '') + '" data-cm-action="' + a[0] + '" aria-pressed="' + used + '"><i></i>' + a[1] + '</button>'; }).join('');
+    var critNow = u.critRound === u.round;
+    var acts = (critNow ? '<button type="button" class="cm-act crit' + (u.critUsed ? ' used' : '') + '" data-cm-critatk aria-pressed="' + !!u.critUsed + '"><i></i>ATAQUE EXTRA · CRÍTICO</button>' : '') + ACTIONS.map(function (a) { var used = !!(s.actions && s.actions[a[0]]); return '<button type="button" class="cm-act' + (used ? ' used' : '') + '" data-cm-action="' + a[0] + '" aria-pressed="' + used + '"><i></i>' + a[1] + '</button>'; }).join('');
     var derived = c ? [['REAÇÃO', c.reaction], ['MOVIMENTO', c.movement + ' m'], ['CRÍTICO', c.critStart >= 20 ? '20' : c.critStart + '–20'], ['FUGA', c.escape], ['ESQUIVA EQP', (mods && mods.dodge ? (mods.dodge > 0 ? '+' : '') + mods.dodge : '—')]] : [];
     var attrs = c ? ['FOR', 'MAG', 'TEC', 'AGI', 'VIT', 'SOR'].map(function (k) { return '<span><small>' + k + '</small><b>' + c[k] + '</b></span>'; }).join('') : '';
     var aff = (s.persona && s.persona.affinities || []).map(function (a) { return { type: a.type, reaction: reactName(a.reaction) }; }).filter(function (a) { return a.reaction && a.reaction !== 'Normal'; }).sort(function (a, b) { return (REACT_ORDER[a.reaction] == null ? 9 : REACT_ORDER[a.reaction]) - (REACT_ORDER[b.reaction] == null ? 9 : REACT_ORDER[b.reaction]); });
@@ -309,7 +310,7 @@
     var col1 =
       '<div class="cm-me">' +
         '<div class="cm-photo">' + (/^data:image|^https?:/.test(photo) ? '<img src="' + E(photo) + '" alt="">' : '<span>' + E(name.slice(0, 1).toUpperCase()) + '</span>') + '</div>' +
-        '<div class="cm-me-name"><small>' + (st === 'cercado' ? 'CERCADO // EM PERIGO' : st === 'vantagem' ? 'COM VANTAGEM' : 'EM COMBATE') + '</small><b>' + E(name) + '</b></div>' +
+        '<div class="cm-me-name"><small>' + (st === 'cercado' ? 'CERCADO // EM PERIGO' : st === 'vantagem' ? 'COM VANTAGEM' : st === 'emboscada' ? 'EMBOSCADA // ATAQUE COM VANTAGEM' : 'EM COMBATE') + '</small><b>' + E(name) + '</b></div>' +
       '</div>' +
       bar('pv', r.pv, r.pvMax, r.pvTemp) + bar('pm', r.pm, r.pmMax, r.pmTemp) +
       '<div class="cm-box"><h4>AÇÕES DA RODADA</h4><div class="cm-acts">' + acts + '</div></div>' +
@@ -342,7 +343,8 @@
       var pv = pvp ? Math.max(1, Math.ceil(r.pvMax * Number(pvp[1].replace(',', '.')) / 100)) : pvf ? Number(pvf[1]) : 0;
       var extra = '<em class="cm-cost' + (pv ? ' hp' : '') + '">' + E(m.cost || '—') + (pvp ? ' · ' + pv + ' PV' : '') + '</em>';
       var body = (m.target ? '<p class="cm-meta">ALVO · ' + E(m.target) + ' · TIER ' + E(m.tier || '') + '</p>' : '') + '<p>' + rich(m.effect) + '</p>' + (m.desc ? '<p class="cm-desc">' + rich(m.desc) + '</p>' : '') +
-        (pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pm[1] + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pm[1] + ' PM</button>' :
+        (u.freeSpell && (pm || pv) ? '<button type="button" class="cm-cast free" data-cm-free data-cm-spell="' + E(m.name) + '">' + (pv ? 'USAR' : 'CONJURAR') + ' · GRÁTIS <small>(VANTAGEM)</small></button>' :
+         pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pm[1] + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pm[1] + ' PM</button>' :
          pv ? '<button type="button" class="cm-cast hp" data-cm-castpv="' + pv + '" data-cm-spell="' + E(m.name) + '">USAR · −' + pv + ' PV' + (pvp ? ' <small>(' + E(pvp[1]) + '% de ' + r.pvMax + ')</small>' : '') + '</button>' : '');
       return skillRow('m' + i + m.name, (m.cat || 'MAGIA').toUpperCase() + ' · TIER ' + (m.tier || ''), m.name, body, m.color, extra);
     }).join('');
@@ -353,7 +355,7 @@
       '<h3 class="cm-h">MAGIAS <span>' + sp.length + '</span></h3><div class="cm-sks">' + (spHTML || '<p class="cm-empty">Deck de magias vazio.</p>') + '</div>' +
       '<h3 class="cm-h">HABILIDADES</h3><div class="cm-sks">' + (pers || '<p class="cm-empty">Sem Habilidade de Combate ou Natural registrada.</p>') + '</div>' +
       '<h3 class="cm-h">ARCANA' + (ar.arcana ? ' <span>' + E(ar.arcana.romano + ' · ' + (ar.arcana.nomeFicha || ar.arcana.nome)) + '</span>' : '') + '</h3><div class="cm-sks">' + (arHTML || '<p class="cm-empty">Nenhuma Arcana escolhida.</p>') + '</div>';
-    var splashBtns = Object.keys(SPLASH).map(function (k) { var o = SPLASH[k]; return '<button type="button" class="cm-fx ' + o.k + '" data-cm-splash="' + k + '" style="--fc:' + o.c + '">' + o.t + '</button>'; }).join('');
+    var splashBtns = Object.keys(SPLASH).filter(function (k) { return !SPLASH[k].hidden; }).map(function (k) { var o = SPLASH[k]; return '<button type="button" class="cm-fx ' + o.k + '" data-cm-splash="' + k + '" style="--fc:' + o.c + '">' + o.t + '</button>'; }).join('');
     var scroll = root.querySelector('.cm-grid'); var keep = scroll ? [].map.call(root.querySelectorAll('.cm-col'), function (x) { return x.scrollTop; }) : null;
     root.dataset.status = st;
     root.innerHTML =
@@ -362,7 +364,7 @@
         '<div class="cm-title"><small>PERSONA // PHOBIA</small><b>MODO DE <span>COMBATE</span></b></div>' +
         '<div class="cm-round"><button type="button" data-cm-round="-1" aria-label="Rodada anterior">−</button><span><small>RODADA</small><b>' + u.round + '</b></span><button type="button" data-cm-round="1" aria-label="Próxima rodada">+</button>' +
           '<button type="button" class="cm-next" data-cm-next>NOVA RODADA ▸</button></div>' +
-        '<div class="cm-status st-' + st + '"><small>SITUAÇÃO</small><b>' + (st === 'vantagem' ? 'VANTAGEM' : st === 'cercado' ? 'CERCADO' : 'NEUTRO') + '</b>' + (st !== 'neutro' ? '<button type="button" data-cm-neutral title="Voltar ao neutro">×</button>' : '') + '</div>' +
+        '<div class="cm-status st-' + st + '"><small>SITUAÇÃO</small><b>' + (STATUS_TXT[st] ? STATUS_TXT[st][0] : 'NEUTRO') + '</b>' + (STATUS_TXT[st] ? '<em>' + (st === 'vantagem' ? (u.freeSpell ? 'Próxima Magia grátis' : 'Magia grátis já usada') : STATUS_TXT[st][1]) + '</em>' : '') + (st !== 'neutro' ? '<button type="button" data-cm-neutral title="Voltar ao neutro">×</button>' : '') + '</div>' +
         '<button type="button" class="cm-exit" data-cm-exit>SAIR DO COMBATE ✕</button>' +
       '</header>' +
       '<nav class="cm-fxbar" aria-label="Animações de combate"><span class="cm-views"><button type="button" data-cm-view="batalha" class="' + (u.view !== 'musica' ? 'on' : '') + '">⚔ BATALHA</button><button type="button" data-cm-view="musica" class="' + (u.view === 'musica' ? 'on' : '') + '">♫ PALCO MUSICAL' + (mus().bd.active ? ' <i>BREAKDOWN!</i>' : '') + '</button></span>' + splashBtns + '</nav>' +
@@ -415,17 +417,70 @@
     if (t.dataset.cmCast) {
       var cost = Number(t.dataset.cmCast), rr = res();
       if (rr.pm + rr.pmTemp < cost) { banner('PM INSUFICIENTE', true); return; }
-      changeRes('pm', -cost); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
+      ui().spellCast = true; changeRes('pm', -cost); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
     }
     if (t.dataset.cmCastpv) {
       var hp = Number(t.dataset.cmCastpv), r2 = res();
       if (r2.pv + r2.pvTemp <= hp) { banner('PV INSUFICIENTE', true); return; }
-      changeRes('pv', -hp); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
+      ui().spellCast = true; changeRes('pv', -hp); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
     }
-    if (t.dataset.cmSplash) { var sp = SPLASH[t.dataset.cmSplash]; if (sp.state) { ui().status = sp.state; save(); render(); } splash(sp); return; }
+    if (t.hasAttribute('data-cm-free')) { var uf = ui(); uf.freeSpell = false; uf.spellCast = true; save(); render(); banner(String(t.dataset.cmSpell).toUpperCase() + ' · GRÁTIS!'); return; }
+    if (t.hasAttribute('data-cm-critatk')) { var uc = ui(); uc.critUsed = !uc.critUsed; save(); render(); return; }
+    if (t.dataset.cmSplash) { effect(t.dataset.cmSplash); return; }
     if (t.hasAttribute('data-cm-neutral')) { ui().status = 'neutro'; save(); render(); return; }
     if (t.hasAttribute('data-cm-exit')) { close(); }
   }
+
+  /* ---------- efeitos dos botões ---------- */
+  function weaponDamage() {
+    var w = weapons()[0]; if (!w || !w.it.damage) return '';
+    var d = String(w.it.damage);
+    try { var a = calc(), p = window.PhobiaFormulas && PhobiaFormulas.parse(d, { FOR: a.FOR, MAG: a.MAG, TEC: a.TEC, AGI: a.AGI, VIT: a.VIT, SOR: a.SOR }); if (p) d = p.map(function (x) { return x.t != null ? x.t : x.v; }).join(''); } catch (e) {}
+    return d;
+  }
+  function maxOf(expr) {
+    var m, re = /([+\-]?)(\d*)d(\d+)|([+\-]?)(\d+)/gi, tot = 0, ok = false;
+    String(expr).replace(/\s+/g, '').replace(/^.*?(?=[\dd])/, '');
+    while ((m = re.exec(String(expr).replace(/\s+/g, '')))) { ok = true; if (m[3]) tot += (m[1] === '-' ? -1 : 1) * Number(m[2] || 1) * Number(m[3]); else tot += (m[4] === '-' ? -1 : 1) * Number(m[5]); }
+    return ok ? tot : null;
+  }
+  function chance() { var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % 100; }
+  function effect(k) {
+    var u = ui(), o = SPLASH[k];
+    if (k === 'vantagem') { u.status = 'vantagem'; u.freeSpell = !u.spellCast; save(); render(); splash(u.freeSpell ? o : { t: o.t, s: 'Uma Magia já foi usada neste combate', c: o.c, k: 'good' }); return; }
+    if (k === 'cercado' || k === 'emboscada') { u.status = o.state; save(); render(); splash(o); return; }
+    if (k === 'fraqueza') {
+      var r = chance(), down = r < 50, dmg = weaponDamage(), mx = dmg ? maxOf(dmg) : null;
+      splash({ t: 'FRAQUEZA!', s: (down ? 'DERRUBADO! ' : 'Não derrubou ') + '(' + r + ' de 100)' + (mx != null ? ' · Dano máximo: ' + mx + ' (' + dmg + ')' : ''), c: o.c, k: 'good' });
+      if (down) setTimeout(function () { banner('ALVO DERRUBADO'); }, 2300);
+      return;
+    }
+    if (k === 'allout') {
+      var dm = weaponDamage(); splash(o);
+      if (dm && window.PhobiaDice) setTimeout(function () { PhobiaDice.roll(dm, 'ALL-OUT ATTACK · SEU DANO'); }, 1900);
+      else setTimeout(function () { banner('EQUIPE UM INSTRUMENTO PARA ROLAR O DANO', true); }, 1900);
+      return;
+    }
+    if (k === 'vitoria') {
+      var s = S(), m = mus();
+      u.round = 1; u.status = 'neutro'; u.freeSpell = false; u.spellCast = false; u.critRound = 0; u.critUsed = false;
+      ACTIONS.forEach(function (a) { s.actions[a[0]] = false; });
+      s.resources.pvTemp = 0; s.resources.pmTemp = 0;
+      m.compasso.forEach(function (st) { st.done = false; }); m.seq = []; m.lastCombo = ''; m.harmonyUsed = false; m.ruptures = 0; m.bd = { active: false, round: 0, etapas: 0 };
+      save(); syncSheet(); render();
+      splash({ t: 'VITÓRIA!', s: 'Rodada, ações, PV/PM temporários e efeitos de combate reiniciados', c: o.c, k: 'good' });
+      return;
+    }
+    splash(o);
+  }
+  /* crítico no dado (chamado pelo rola dados) */
+  function crit() {
+    if (!root || root.hidden) return;
+    var u = ui(), first = u.critRound !== u.round;
+    if (first) { u.critRound = u.round; u.critUsed = false; save(); render(); }
+    splash({ t: 'CRÍTICO!', s: first ? '+1 Ataque adicional nesta Rodada' : 'Ataque extra já ganho nesta Rodada', c: '#ff4d6a', k: 'good' });
+  }
+  function attackMode() { var st = root && !root.hidden ? ui().status : ''; return st === 'emboscada' ? 'vant' : 'normal'; }
 
   /* ---------- animações de tela ---------- */
   function splash(o) {
@@ -460,7 +515,7 @@
     root.hidden = true; document.body.classList.remove('cm-open');
     var b = document.getElementById('cmEnter'); if (b) b.focus({ preventScroll: true });
   }
-  window.PhobiaCombat = { open: open, close: close, splash: function (k) { splash(SPLASH[k] || SPLASH.vantagem); }, render: render };
+  window.PhobiaCombat = { open: open, close: close, splash: function (k) { splash(SPLASH[k] || SPLASH.vantagem); }, render: render, crit: crit, attackMode: attackMode };
 
   function init() {
     if (typeof calculateSheet !== 'function' || typeof state === 'undefined' || !state.charSheet || !document.querySelector('#characterPage .sheet-page-tabs')) { setTimeout(init, 250); return; }

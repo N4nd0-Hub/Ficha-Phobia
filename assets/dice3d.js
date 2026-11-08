@@ -151,7 +151,7 @@
     document.body.appendChild(stage);
     cv = stage.querySelector('canvas'); ctx = cv.getContext('2d'); resultEl = stage.querySelector('.dr-result');
     stage.addEventListener('click', function (e) { if (e.target.closest('.dr-again')) { roll(current.expr, current.label, current.opts); return; } if (!e.target.closest('.dr-result') || e.target.closest('.dr-close')) hide(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !stage.hidden) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !stage.hidden) { e.stopImmediatePropagation(); hide(); } }, true);
     addEventListener('resize', size);
   }
   function size() {
@@ -231,6 +231,7 @@
 
   function roll(expr, label, opts) {
     opts = opts || {};
+    if ((!opts.mode || opts.mode === 'normal') && /ACERTO/i.test(label || '') && window.PhobiaCombat && PhobiaCombat.attackMode && PhobiaCombat.attackMode() === 'vant') opts.mode = 'vant';
     var terms = parseExpr(expr); if (!terms) return;
     ensureStage(); size();
     var rolls = [], bonus = 0, mode = opts.mode || 'normal';
@@ -282,6 +283,7 @@
       '<div class="dr-expr">' + esc(String(c.expr)) + (c.opts.extra ? ' ' + (c.opts.extra > 0 ? '+' : '') + c.opts.extra : '') + '</div>' +
       '<div class="dr-actions"><button type="button" class="dr-again">↻ ROLAR DE NOVO</button><button type="button" class="dr-close">FECHAR</button></div></div>';
     resultEl.classList.add('in');
+    if (isCrit && window.PhobiaCombat && document.body.classList.contains('cm-open')) setTimeout(function () { PhobiaCombat.crit(); }, 700);
   }
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
 

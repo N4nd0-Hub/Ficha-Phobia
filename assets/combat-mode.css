@@ -330,3 +330,11 @@ body.cm-open{overflow:hidden}
 .cm-cost.hp{background:#ff4d6a;color:#fff!important;-webkit-text-fill-color:#fff}
 .cm-cast.hp{background:#ff4d6a;color:#fff!important;-webkit-text-fill-color:#fff}
 .cm-cast small{font-size:11px;opacity:.85;letter-spacing:.5px}
+.cm-splash{z-index:2300}
+.cm-status em{display:block;font:600 11.5px/1.2 var(--hud-body,Barlow),sans-serif;font-style:normal;color:var(--p);opacity:.85;max-width:190px}
+.cm-status.st-emboscada{border-color:#ffd84d;background:color-mix(in srgb,#ffd84d 22%,var(--card))}
+.cm[data-status="emboscada"] .cm-bg i:last-child{background:radial-gradient(ellipse at 80% 0%,rgba(255,216,77,.35),transparent 55%),radial-gradient(ellipse at 10% 100%,color-mix(in srgb,var(--a) 22%,transparent),transparent 50%)}
+.cm-act.crit{grid-column:1/-1;background:color-mix(in srgb,#ff4d6a 30%,var(--card));animation:cmLow .8s ease-in-out infinite alternate}
+.cm-act.crit i{background:#ff4d6a;box-shadow:0 0 8px #ff4d6a}
+.cm-act.crit.used{animation:none}
+.cm-cast.free{background:#ffd84d;color:#0d0c10!important;-webkit-text-fill-color:#0d0c10;animation:cmLow .8s ease-in-out infinite alternate}
