@@ -156,11 +156,6 @@ body.cm-open{overflow:hidden}
 @keyframes cmBan{0%{transform:translate(-160%,-50%) skewX(-10deg)}20%,70%{transform:translate(-50%,-50%) skewX(-10deg)}100%{transform:translate(80%,-50%) skewX(-10deg);opacity:0}}
 
 /* botão na barra lateral da ficha */
-#characterPage .cm-enter{display:flex;align-items:center;gap:12px;width:calc(100% - 20px);margin:14px 0 0 10px;padding:12px 14px;border:0;cursor:pointer;background:#0d0c10;color:#fff0d8;box-shadow:5px 5px 0 #ef2b97;transform:rotate(-2deg);text-align:left;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
-#characterPage .cm-enter:hover{transform:rotate(0) translateX(6px);box-shadow:7px 7px 0 #ef2b97}
-#characterPage .cm-enter i{font-style:normal;font-size:26px;color:#ef2b97}
-#characterPage .cm-enter b{display:block;font:400 15px/1.1 var(--hud-display,"Archivo Black"),sans-serif;color:#fff0d8!important}
-#characterPage .cm-enter small{display:block;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;color:#9b93a8!important}
 
 /* ---------- animações de tela (estilo Persona 5) ---------- */
 .cm-splash{position:fixed;inset:0;z-index:2100;overflow:hidden;cursor:pointer;display:grid;place-items:center}
@@ -340,3 +335,32 @@ body.cm-open{overflow:hidden}
 .cm-cast.free{background:#ffd84d;color:#0d0c10!important;-webkit-text-fill-color:#0d0c10;animation:cmLow .8s ease-in-out infinite alternate}
 .cm-cost.up{background:#7a1cff;color:#fff!important;-webkit-text-fill-color:#fff}
 .cm-cost s{opacity:.6;margin-right:2px}
+
+/* ---------- botão de entrar: parte da faixa de abas, segue o tema ---------- */
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter{
+  --cme-on:var(--hs-on-slab,var(--hud-black,#0d0c10));
+  position:relative;display:flex;align-items:center;gap:10px;width:calc(100% - 26px);max-width:196px;margin:16px 0 0 12px;padding:8px 12px 8px 8px;
+  border:2px solid var(--cme-on);background:transparent;color:var(--cme-on);cursor:pointer;text-align:left;
+  clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .18s,color .18s,box-shadow .2s}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter::before{content:"";position:absolute;left:0;right:10px;top:-11px;border-top:2px dashed color-mix(in srgb,var(--cme-on) 40%,transparent);pointer-events:none}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i{display:grid;place-items:center;flex:none;width:34px;height:34px;background:var(--cme-on);color:var(--hs-slab,var(--hud-acc));transform:rotate(-6deg);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:21px;height:21px}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter span{flex:1;min-width:0}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter small{display:block;font:800 10px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;text-transform:uppercase;opacity:.75;color:inherit!important}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter b{display:block;font:400 19px/1.05 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:-.4px;color:inherit!important}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter em{font-style:normal;font-size:11px;opacity:.8;animation:cmeNudge 1.6s ease-in-out infinite}
+@keyframes cmeNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible){
+  background:var(--hud-black,#0d0c10);color:var(--hud-ink,var(--hud-paper,#fff0d8));border-color:var(--hud-black,#0d0c10);
+  transform:rotate(-3deg) translateX(4px);clip-path:none;box-shadow:6px 6px 0 var(--hud-acc2,#46d9ff);outline:none}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible) i{background:var(--hud-acc,#ef2b97);color:var(--hud-black,#0d0c10);transform:rotate(8deg) scale(1.08)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:active{transform:rotate(-3deg) translate(6px,2px);box-shadow:3px 3px 0 var(--hud-acc2,#46d9ff)}
+body.hs-calm #characterPage .cm-enter em{animation:none}
+@media (prefers-reduced-motion:reduce){#characterPage .cm-enter em{animation:none}}
+@media(max-width:900px){
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter{width:auto;max-width:none;margin:0 0 0 auto;padding:4px 10px 4px 4px;gap:7px}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter::before,#characterPage:not(#_z) .sheet-page-tabs .cm-enter small,#characterPage:not(#_z) .sheet-page-tabs .cm-enter em{display:none}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:26px;height:26px}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter b{font-size:13px}
+}

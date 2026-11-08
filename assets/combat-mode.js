@@ -264,7 +264,9 @@
   function sideButton() {
     var nav = document.querySelector('#characterPage .sheet-page-tabs'); if (!nav || document.getElementById('cmEnter')) return;
     var b = document.createElement('button'); b.type = 'button'; b.id = 'cmEnter'; b.className = 'cm-enter';
-    b.innerHTML = '<i aria-hidden="true">⚔</i><span><b>MODO DE COMBATE</b><small>Entrar na batalha</small></span>';
+    b.title = 'Abrir o Modo de Combate';
+    b.innerHTML = '<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10M4 4h4M4 4v4M13 16l3 3M16 13l3 3M14.5 17.5l3-3M20 4L10 14M20 4h-4M20 4v4M11 16l-3 3M8 13l-3 3M9.5 17.5l-3-3"/></svg></i>' +
+      '<span><small>Entrar em</small><b>COMBATE</b></span><em aria-hidden="true">▶</em>';
     b.addEventListener('click', open);
     nav.appendChild(b);
   }
