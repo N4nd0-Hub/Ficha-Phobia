@@ -14505,6 +14505,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
             <li>Os pré-requisitos precisam ser atendidos na aquisição. Pontos podem ser guardados para uma compra futura.</li>
             <li>Uma escolha pode ser adquirida uma única vez. Escolhas incompatíveis não podem coexistir.</li>
             <li>Antes de remover um Defeito ou Dissonante, libere os pontos que já foram gastos em Vantagens.</li>
+            <li>As Vantagens compradas neste catálogo valem no Mundo Real. Aplique o efeito de apenas uma delas por teste.</li>
             <li>Os efeitos sociais são usados nas situações descritas. Os modificadores deste catálogo são limitados a +4 em bônus e -4 em penalidades por teste.</li>
             <li>Um gasto cotidiano equivale a uma refeição simples, passagem local ou pequeno material básico. Um gasto relevante equivale a cinco gastos cotidianos.</li>
           </ul></details>
@@ -20212,7 +20213,1772 @@ function bindEquipmentUI(){
 
 
 /* VANTAGENS E DEFEITOS // CATALOG AND PURCHASES */
-const SOCIAL_TRAIT_CATALOG=[{"id":"V-REL-01","kind":"vantagem","name":"Rosto do Bairro","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Escolha um bairro onde você vive ou circula regularmente. Recebe +2 em Charme para pedir informações cotidianas ou pequenos favores a moradores que já o conheçam. O favor não pode exigir dinheiro, exposição a perigo ou quebra de uma obrigação.","frequency":"Permanente","configuration":[{"key":"bairro","label":"Bairro","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REL-02","kind":"vantagem","name":"Bom Ouvinte","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Empatia I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":1}]},"description":"Depois de ouvir alguém por pelo menos cinco minutos sem interromper, recebe +2 no próximo teste de Empatia para compreender o problema que essa pessoa decidiu compartilhar. O bônus permanece até o fim da cena e não revela informações que ela desconheça ou esconda deliberadamente.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-REL-03","kind":"vantagem","name":"Lembranças Atenciosas","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Você recorda nomes, preferências e datas pessoais que lhe foram contados. Ao usar uma dessas informações para demonstrar atenção sincera, recebe +2 no próximo teste de Charme para iniciar uma conversa amistosa com aquela pessoa.","frequency":"Uma vez por pessoa por dia","configuration":[],"incompatible_with":[]},{"id":"V-REL-04","kind":"vantagem","name":"Círculo de Estudos","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Conhecimento I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":1}]},"description":"Escolha um grupo de estudo e uma área de conhecimento. Depois de uma hora estudando com o grupo, você e até dois participantes recebem +2 no primeiro teste de Conhecimento dessa área realizado até o fim do dia seguinte.","frequency":"Uma vez por semana","configuration":[{"key":"grupo_de_estudo","label":"Grupo de estudo","type":"text","required":true},{"key":"area_de_conhecimento","label":"Area de conhecimento","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REL-05","kind":"vantagem","name":"Contato Confiável","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Charme I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":1}]},"description":"Escolha um contato e seu campo de atuação. Quando puder falar com ele, pode obter uma informação cotidiana desse campo ou ser apresentado a alguém acessível ao contato. Informações sigilosas, favores arriscados e serviços pagos conservam suas exigências normais.","frequency":"Uma consulta por sessão","configuration":[{"key":"contato","label":"Contato","type":"text","required":true},{"key":"campo_de_atuacao","label":"Campo de atuacao","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REL-06","kind":"vantagem","name":"Bom Anfitrião","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Empatia I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":1}]},"description":"Ao organizar um encontro e dedicar pelo menos trinta minutos a receber os convidados, escolha até três participantes. Eles recebem +2 no primeiro teste de Empatia ou Charme para conversar entre si durante o encontro. O bônus termina quando o encontro acaba.","frequency":"Uma vez por encontro","configuration":[],"incompatible_with":[]},{"id":"V-REL-07","kind":"vantagem","name":"Pessoa de Confiança","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Empatia II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":2}]},"description":"Quando uma pessoa que confia em você aceitar conversar em particular por dez minutos, pode repetir um teste de Empatia que tenha falhado para abordar uma preocupação dela. Usa o novo resultado. A conversa precisa ser voluntária e a repetição trata da mesma preocupação.","frequency":"Uma vez por pessoa por sessão","configuration":[],"incompatible_with":[]},{"id":"V-REL-08","kind":"vantagem","name":"Ponte Entre Grupos","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Charme II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":2}]},"description":"Escolha dois círculos sociais dos quais participa. Pode organizar uma apresentação entre representantes acessíveis desses círculos, desde que ambos aceitem conversar. Recebe +2 em Charme para apresentar uma proposta comum durante esse encontro.","frequency":"Uma vez por sessão","configuration":[{"key":"primeiro_circulo","label":"Primeiro circulo","type":"text","required":true},{"key":"segundo_circulo","label":"Segundo circulo","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REL-09","kind":"vantagem","name":"Abrigo Solidário","category_id":"REL","category":"Relações e vínculos","points":4,"requirement":"Empatia II; possuir uma rede de apoio estabelecida","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":2},{"type":"narrative","text":"possuir uma rede de apoio estabelecida"}]},"description":"Sua rede de apoio oferece até três noites consecutivas de hospedagem simples e alimentação para você e até dois acompanhantes. Os anfitriões fornecem também +2 ao primeiro teste de Conhecimento para obter informações públicas sobre a região. O abrigo não oculta procurados nem suporta ameaças deliberadamente levadas até ele.","frequency":"Uma vez por sessão","configuration":[{"key":"rede_de_apoio","label":"Rede de apoio","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REL-10","kind":"vantagem","name":"Comunidade Organizada","category_id":"REL","category":"Relações e vínculos","points":5,"requirement":"Empatia III; Charme II; manter participação em uma comunidade","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":3},{"type":"social_tier","skill":"Charme","minimum":2},{"type":"narrative","text":"manter participação em uma comunidade"}]},"description":"Ao dedicar um dia a uma demanda pública da comunidade, reúne uma equipe para uma tarefa coletiva de até uma semana, como organizar um evento, buscar uma pessoa ou distribuir ajuda. Cada participante recebe +2 em testes sociais dessa tarefa. A comunidade fornece alimentação e transporte local durante a mobilização.","frequency":"Uma mobilização por arco","configuration":[{"key":"comunidade","label":"Comunidade","type":"text","required":true}],"incompatible_with":[]},{"id":"V-COM-01","kind":"vantagem","name":"Etiqueta Situacional","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Escolha um ambiente social, como cerimônias, reuniões escolares ou atendimento comercial. Recebe +2 em Conhecimento para reconhecer seu protocolo e em Charme para realizar apresentações e cumprimentos adequados nesse ambiente.","frequency":"Permanente","configuration":[{"key":"ambiente_social","label":"Ambiente social","type":"text","required":true}],"incompatible_with":[]},{"id":"V-COM-02","kind":"vantagem","name":"Conversa de Elevador","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe +2 no primeiro teste de Charme para iniciar uma conversa breve sobre um assunto cotidiano com alguém que não esteja hostil. O bônus se encerra quando a conversa passa a envolver um pedido importante, uma acusação ou uma negociação.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-COM-03","kind":"vantagem","name":"Mensagem Cuidadosa","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Ao dedicar dez minutos à revisão de uma carta ou mensagem, recebe +2 no teste de Expressão para comunicar seu conteúdo com clareza e no teste de Conhecimento para identificar ambiguidades do próprio texto. O benefício não fornece fatos ou provas ausentes.","frequency":"Uma vez por mensagem","configuration":[],"incompatible_with":[]},{"id":"V-COM-04","kind":"vantagem","name":"Explicação Clara","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Expressão I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Expressão","minimum":1}]},"description":"Ao explicar por cinco minutos um assunto que domina, escolha um ouvinte. Ele recebe +2 no próximo teste de Conhecimento para compreender ou aplicar aquela explicação até o fim da cena. Você precisa conhecer a informação transmitida.","frequency":"Uma vez por pessoa por cena","configuration":[],"incompatible_with":[]},{"id":"V-COM-05","kind":"vantagem","name":"Negociador Paciente","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Charme I; Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":1},{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Depois de ouvir a proposta inicial da outra parte e apresentar uma contraproposta sem ameaças, pode repetir um teste de Charme para negociar preço, prazo ou condições. Usa o novo resultado. As condições propostas precisam estar ao alcance dos participantes.","frequency":"Uma vez por negociação","configuration":[],"incompatible_with":[]},{"id":"V-COM-06","kind":"vantagem","name":"Falar em Público","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Expressão I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Expressão","minimum":1}]},"description":"Após dez minutos de preparação, recebe +2 em Expressão durante uma apresentação sobre um tema conhecido. Uma vez durante a apresentação, pode ignorar uma penalidade de -2 causada por interrupções do público. Hostilidade ativa e ameaças continuam produzindo seus demais efeitos.","frequency":"Uma vez por apresentação","configuration":[],"incompatible_with":[]},{"id":"V-COM-07","kind":"vantagem","name":"Mediador","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Empatia II; Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":2},{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Se duas partes aceitarem sua mediação, escolha uma concessão concreta que cada uma esteja disposta a considerar. Recebe Vantagem no teste de Empatia para identificar um acordo possível e +2 em Charme para apresentá-lo. Cada parte conserva a decisão de aceitar o acordo.","frequency":"Uma vez por discussão","configuration":[],"incompatible_with":[]},{"id":"V-COM-08","kind":"vantagem","name":"Entrevistador","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Empatia II; Conhecimento I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":2},{"type":"social_tier","skill":"Conhecimento","minimum":1}]},"description":"Depois de dez minutos de perguntas a um interlocutor disposto a conversar, pode repetir um teste de Empatia para perceber uma contradição entre as respostas dadas. Usa o novo resultado. Uma contradição identificada não determina, por si só, qual resposta é verdadeira.","frequency":"Uma vez por entrevista","configuration":[],"incompatible_with":[]},{"id":"V-COM-09","kind":"vantagem","name":"Porta Voz","category_id":"COM","category":"Comunicação e convivência","points":4,"requirement":"Expressão II; Charme II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Expressão","minimum":2},{"type":"social_tier","skill":"Charme","minimum":2}]},"description":"Ao representar um grupo que concordou com a mesma proposta, pode permitir que outro integrante forneça a fundamentação factual com Conhecimento. Se ele obtiver sucesso no teste solicitado, você recebe Vantagem no teste de Expressão ou Charme para apresentar essa proposta. O auxílio é usado em um único teste.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-COM-10","kind":"vantagem","name":"Articulação Pública","category_id":"COM","category":"Comunicação e convivência","points":5,"requirement":"Expressão III; Charme II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Expressão","minimum":3},{"type":"social_tier","skill":"Charme","minimum":2}]},"description":"Com dois dias de preparação e um canal público acessível, organiza uma audiência, debate ou apresentação sobre um problema documentado. A exposição alcança o público habitual do canal e garante oportunidade de apresentar sua posição. Você recebe Vantagem em até três testes de Expressão dessa apresentação; as reações dependem dos resultados e das provas.","frequency":"Uma vez por arco","configuration":[{"key":"canal_publico","label":"Canal publico","type":"text","required":true}],"incompatible_with":[]},{"id":"V-EST-01","kind":"vantagem","name":"Memória Precisa","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Conhecimento I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":1}]},"description":"Recebe +2 em Conhecimento para recordar nomes, fatos e detalhes que percebeu conscientemente nos últimos sete dias. Informações cotidianas simples, como um endereço anotado ou um horário combinado, são lembradas sem teste. O benefício não recupera algo que você não chegou a perceber.","frequency":"Permanente","configuration":[],"incompatible_with":[]},{"id":"V-EST-02","kind":"vantagem","name":"Anotações Úteis","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Quando registra uma conversa, aula ou visita e pode consultar essas anotações, recebe +2 no próximo teste de Conhecimento sobre o conteúdo registrado. Produzir as notas exige tempo e um meio de escrita ou gravação disponível.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-EST-03","kind":"vantagem","name":"Habilidade Manual","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"TEC 3","prerequisites":{"mode":"all","conditions":[{"type":"attribute","attribute":"TEC","minimum":3}]},"description":"Escolha uma atividade manual cotidiana, como costura, culinária ou reparos domésticos. Recebe +2 em testes de TEC para executá-la com ferramentas adequadas. O bônus se aplica à atividade escolhida e não altera dano, acerto ou atributos.","frequency":"Permanente","configuration":[{"key":"atividade_manual","label":"Atividade manual","type":"text","required":true}],"incompatible_with":[]},{"id":"V-EST-04","kind":"vantagem","name":"Pesquisador Metódico","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Conhecimento I; Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":1},{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Depois de trinta minutos consultando fontes disponíveis, pode repetir um teste de Conhecimento para localizar uma informação sobre um tema definido. Usa o novo resultado. A informação precisa existir entre as fontes consultadas; a repetição não concede acesso a material restrito.","frequency":"Uma vez por pesquisa","configuration":[],"incompatible_with":[]},{"id":"V-EST-05","kind":"vantagem","name":"Aprendizado Compartilhado","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Empatia I; Conhecimento I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":1},{"type":"social_tier","skill":"Conhecimento","minimum":1}]},"description":"Ao estudar com outro personagem por uma hora, escolha um tema conhecido por pelo menos um dos participantes. Ambos recebem +2 no primeiro teste de Conhecimento sobre esse tema realizado até o fim do dia seguinte. Cada personagem pode manter apenas um benefício desta vantagem ativo.","frequency":"Uma vez por dia","configuration":[],"incompatible_with":[]},{"id":"V-EST-06","kind":"vantagem","name":"Trabalhador Confiável","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Disciplina I; possuir ocupação ou função regular","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1},{"type":"narrative","text":"possuir ocupação ou função regular"}]},"description":"Ao avisar uma pessoa responsável com antecedência e apresentar uma solução viável, recebe Vantagem em Charme para negociar uma mudança de horário, tarefa ou prazo na sua ocupação. A alteração precisa preservar a parte essencial da obrigação e depende da disponibilidade de quem a recebe.","frequency":"Uma vez por obrigação","configuration":[{"key":"ocupacao","label":"Ocupacao","type":"text","required":true}],"incompatible_with":[]},{"id":"V-EST-07","kind":"vantagem","name":"Especialista","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"Conhecimento II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":2}]},"description":"Escolha uma área específica de estudo ou atuação profissional. Recebe +2 em Conhecimento dentro dessa área. Uma vez por sessão, pode repetir um teste dessa especialidade após consultar uma fonte apropriada por dez minutos, usando o novo resultado.","frequency":"Permanente","configuration":[{"key":"especialidade","label":"Especialidade","type":"text","required":true}],"incompatible_with":[]},{"id":"V-EST-08","kind":"vantagem","name":"Improviso Técnico","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"TEC 4; Conhecimento I","prerequisites":{"mode":"all","conditions":[{"type":"attribute","attribute":"TEC","minimum":4},{"type":"social_tier","skill":"Conhecimento","minimum":1}]},"description":"Ao dedicar dez minutos a um reparo cotidiano, pode adaptar ferramentas comuns para substituir a falta de uma ferramenta especializada, ignorando uma penalidade de até -2 por essa falta. Recebe também +2 no teste de TEC do reparo. Peças necessárias e condições de segurança continuam sendo exigidas.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-EST-09","kind":"vantagem","name":"Dossiê Preparado","category_id":"EST","category":"Estudo e trabalho","points":4,"requirement":"Conhecimento II; Disciplina II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":2},{"type":"social_tier","skill":"Disciplina","minimum":2}]},"description":"Depois de duas horas reunindo e verificando informações sobre um assunto, produz um dossiê consultável. Você e até dois leitores recebem Vantagem no primeiro teste de Conhecimento ou Expressão que cada um realizar para usar fatos documentados nele. Os três usos expiram após sete dias ou quando os fatos se tornarem desatualizados.","frequency":"Um dossiê ativo por vez","configuration":[{"key":"tema_do_dossie","label":"Tema do dossie","type":"text","required":true}],"incompatible_with":[]},{"id":"V-EST-10","kind":"vantagem","name":"Projeto Próprio","category_id":"EST","category":"Estudo e trabalho","points":5,"requirement":"Conhecimento III; Disciplina II; manter um projeto público ou profissional","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":3},{"type":"social_tier","skill":"Disciplina","minimum":2},{"type":"narrative","text":"manter um projeto público ou profissional"}]},"description":"Seu projeto mantém um espaço de trabalho equipado para uma área escolhida e o apoio de dois colaboradores. Dentro desse espaço, você e até dois aliados recebem +2 em Conhecimento ou TEC para tarefas dessa área. Uma vez por sessão, um colaborador realiza uma pesquisa pública simples enquanto você cuida de outra atividade.","frequency":"Benefícios permanentes; uma consulta por sessão","configuration":[{"key":"projeto","label":"Projeto","type":"text","required":true},{"key":"area_de_trabalho","label":"Area de trabalho","type":"text","required":true},{"key":"colaboradores","label":"Colaboradores","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-01","kind":"vantagem","name":"Pequena Reserva","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Pode pagar um gasto cotidiano seu ou de outra pessoa sem reduzir o dinheiro registrado na ficha. O pagamento cobre uma necessidade comum, como uma refeição, passagem local ou material escolar simples. A reserva é usada diretamente no pagamento e não pode ser acumulada ou convertida em dinheiro.","frequency":"Uma vez por semana","configuration":[],"incompatible_with":[]},{"id":"V-REC-02","kind":"vantagem","name":"Arquivo Organizado","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Quando procura um documento, registro ou objeto pequeno que você próprio guardou em seu espaço organizado, reduz o tempo normal de procura pela metade, com mínimo de um minuto. Recebe +2 em Disciplina se ainda for necessário um teste para localizá-lo.","frequency":"Permanente","configuration":[],"incompatible_with":["D-EST-05"]},{"id":"V-REC-03","kind":"vantagem","name":"Rotas Conhecidas","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Escolha uma região urbana. Recebe +2 em Conhecimento para planejar trajetos, reconhecer conexões de transporte público e estimar deslocamentos nessa região. Quando existe uma rota pública alternativa viável, consegue identificá-la sem teste em condições normais.","frequency":"Permanente","configuration":[{"key":"regiao_urbana","label":"Regiao urbana","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-04","kind":"vantagem","name":"Oficina Emprestada","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"TEC 3; possuir vínculo com uma oficina ou ateliê","prerequisites":{"mode":"all","conditions":[{"type":"attribute","attribute":"TEC","minimum":3},{"type":"narrative","text":"possuir vínculo com uma oficina ou ateliê"}]},"description":"Pode usar um conjunto de ferramentas comuns e uma bancada de trabalho para uma atividade manual escolhida. Durante esse uso, recebe +2 em TEC para reparos ou produção cotidiana dessa atividade. Consumíveis e peças especiais precisam ser obtidos normalmente.","frequency":"Duas horas de uso por semana","configuration":[{"key":"oficina_ou_atelie","label":"Oficina ou atelie","type":"text","required":true},{"key":"atividade_manual","label":"Atividade manual","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-05","kind":"vantagem","name":"Renda Estável","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Possuir uma fonte regular de renda","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma fonte regular de renda"}]},"description":"Enquanto cumprir as obrigações definidas de sua fonte de renda, pode pagar até três gastos cotidianos por dia sem reduzir o dinheiro registrado. Esse benefício cobre alimentação simples, transporte local e materiais básicos. Moradia, dívidas, equipamento especializado e compras para revenda são pagos normalmente.","frequency":"Até três gastos cotidianos por dia","configuration":[{"key":"fonte_de_renda","label":"Fonte de renda","type":"text","required":true},{"key":"obrigacoes","label":"Obrigacoes","type":"text","required":true}],"incompatible_with":["D-REC-06"]},{"id":"V-REC-06","kind":"vantagem","name":"Credencial de Acesso","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Manter vínculo legítimo com a instituição escolhida","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Manter vínculo legítimo com a instituição escolhida"}]},"description":"Escolha uma instituição e um setor de acesso regular. Pode utilizar esse setor nos horários permitidos e recebe +2 em Conhecimento para localizar informações públicas ou materiais comuns de seu acervo. Áreas restritas, empréstimos especiais e documentos sigilosos mantêm suas exigências.","frequency":"Permanente enquanto o vínculo existir","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"setor","label":"Setor","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-07","kind":"vantagem","name":"Sala Reservada","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"Disciplina II; possuir acesso regular ao local escolhido","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":2},{"type":"narrative","text":"possuir acesso regular ao local escolhido"}]},"description":"Mantém uma sala onde até seis pessoas podem se reunir com privacidade comum, iluminação e material de anotações. Durante um planejamento feito ali, cada participante recebe +2 no primeiro teste de Disciplina para organizar uma tarefa. A sala não fornece proteção contra vigilância deliberada ou entrada autorizada.","frequency":"Um encontro de até quatro horas por semana","configuration":[{"key":"local_da_sala","label":"Local da sala","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-08","kind":"vantagem","name":"Equipamento Especializado","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"TEC 4","prerequisites":{"mode":"all","conditions":[{"type":"attribute","attribute":"TEC","minimum":4}]},"description":"Escolha um equipamento civil de trabalho, como uma câmera profissional, gravador ou conjunto de instrumentos de medição. Recebe +2 em TEC para utilizá-lo em sua finalidade. Uma vez por sessão, pode repetir um teste desse uso, ficando com o novo resultado. O equipamento não pode ser uma arma.","frequency":"Permanente enquanto o equipamento estiver disponível","configuration":[{"key":"equipamento","label":"Equipamento","type":"text","required":true},{"key":"finalidade","label":"Finalidade","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-09","kind":"vantagem","name":"Patrocínio","category_id":"REC","category":"Recursos e acesso","points":4,"requirement":"Charme II; manter um projeto com contrapartida definida","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":2},{"type":"narrative","text":"manter um projeto com contrapartida definida"}]},"description":"Um patrocinador paga serviços, locações ou materiais diretamente ligados ao projeto escolhido, até dois gastos relevantes por semana. As contrapartidas são definidas na aquisição. O patrocínio não gera dinheiro livre, não paga dívidas pessoais e é suspenso enquanto uma contrapartida vencida permanecer descumprida.","frequency":"Até dois gastos relevantes por semana","configuration":[{"key":"patrocinador","label":"Patrocinador","type":"text","required":true},{"key":"projeto","label":"Projeto","type":"text","required":true},{"key":"contrapartidas","label":"Contrapartidas","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REC-10","kind":"vantagem","name":"Fundo de Emergência","category_id":"REC","category":"Recursos e acesso","points":5,"requirement":"Disciplina II; Charme II; possuir uma rede capaz de financiar o fundo","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":2},{"type":"social_tier","skill":"Charme","minimum":2},{"type":"narrative","text":"possuir uma rede capaz de financiar o fundo"}]},"description":"Pode acionar um fundo para cobrir uma necessidade civil de grande porte: um mês de moradia simples para até quatro pessoas, uma viagem de ida e volta para até quatro pessoas ou o conserto de um veículo ou espaço de trabalho. O pagamento leva um dia e é feito ao prestador do serviço.","frequency":"Uma vez por arco","configuration":[{"key":"rede_financiadora","label":"Rede financiadora","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-01","kind":"vantagem","name":"Apresentação Cuidadosa","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Ao dedicar dez minutos a adequar roupas e apresentação a um encontro conhecido, recebe +2 no primeiro teste de Expressão para se apresentar nesse encontro. Precisa ter acesso às roupas e materiais utilizados; o benefício não altera documentos, credenciais ou sua identidade.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-REP-02","kind":"vantagem","name":"Conhece a Cena","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Escolha uma cena cultural, esportiva ou estudantil da qual participa. Recebe +2 em Conhecimento para reconhecer seus eventos, referências e figuras públicas. Informações particulares de seus integrantes continuam exigindo uma fonte apropriada.","frequency":"Permanente","configuration":[{"key":"cena_social","label":"Cena social","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-03","kind":"vantagem","name":"Presença Discreta","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Recebe +2 em Disciplina para se comportar de maneira pouco chamativa em ambientes civis movimentados aos quais tem acesso normal. O bônus ajuda a evitar destaque involuntário e não substitui testes para se esconder de alguém que o procura ativamente.","frequency":"Permanente","configuration":[],"incompatible_with":[]},{"id":"V-REP-04","kind":"vantagem","name":"Boa Reputação","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Charme I; ter realizado algo reconhecido pelo círculo escolhido","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":1},{"type":"narrative","text":"ter realizado algo reconhecido pelo círculo escolhido"}]},"description":"Escolha um círculo social que conheça um feito positivo seu. Recebe +2 em Charme para solicitar ajuda ou negociar com integrantes que valorizem esse feito. O bônus se aplica a pedidos proporcionais à relação e não remove custos, riscos ou obrigações.","frequency":"Permanente enquanto a reputação for mantida","configuration":[{"key":"circulo_social","label":"Circulo social","type":"text","required":true},{"key":"feito_reconhecido","label":"Feito reconhecido","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-05","kind":"vantagem","name":"Credibilidade","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Conhecimento I; Expressão I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Conhecimento","minimum":1},{"type":"social_tier","skill":"Expressão","minimum":1}]},"description":"Ao apresentar uma afirmação apoiada em uma prova verificável que você compreenda, recebe +2 em Expressão para explicar a prova ou em Charme para pedir que ela seja examinada. O bônus vale para um teste e não garante que sua interpretação seja correta.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-REP-06","kind":"vantagem","name":"Nome Artístico","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Expressão I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Expressão","minimum":1}]},"description":"Escolha um pseudônimo e um meio artístico onde ele é utilizado. Recebe +2 em Charme ao tratar de trabalhos e apresentações nesse meio usando o pseudônimo. Documentos e compromissos formais continuam vinculados à sua identidade civil, quando exigidos.","frequency":"Permanente no meio escolhido","configuration":[{"key":"pseudonimo","label":"Pseudonimo","type":"text","required":true},{"key":"meio_artistico","label":"Meio artistico","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-07","kind":"vantagem","name":"Adaptação Social","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Empatia II; Expressão I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":2},{"type":"social_tier","skill":"Expressão","minimum":1}]},"description":"Depois de observar por dez minutos um ambiente social desconhecido, escolha Charme ou Expressão. Recebe +2 nos testes escolhidos para seguir o tom, o ritmo e as convenções daquele ambiente até o fim da cena. O benefício não concede conhecimento de idiomas ou informações ausentes.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-REP-08","kind":"vantagem","name":"Referência Profissional","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Charme II; manter uma relação profissional de confiança","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":2},{"type":"narrative","text":"manter uma relação profissional de confiança"}]},"description":"Uma referência acessível apresenta seu nome a um empregador, cliente ou responsável de sua área. Recebe Vantagem no primeiro teste de Charme ou Expressão dessa apresentação. A referência garante a oportunidade de conversar; contratação, acesso e aprovação dependem dos resultados e das condições do encontro.","frequency":"Uma apresentação por semana","configuration":[{"key":"referencia","label":"Referencia","type":"text","required":true},{"key":"area_profissional","label":"Area profissional","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-09","kind":"vantagem","name":"Amparo Institucional","category_id":"REP","category":"Reputação e identidade","points":4,"requirement":"Charme II; possuir vínculo formal ativo com uma instituição","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":2},{"type":"narrative","text":"possuir vínculo formal ativo com uma instituição"}]},"description":"Sua instituição fornece orientação, um representante e encaminhamento formal para um problema relacionado ao vínculo escolhido. Recebe +2 em Conhecimento para compreender o procedimento e em Charme para apresentar sua demanda com esse representante. O amparo cobre acompanhamento e documentos comuns, sem alterar decisões ou fatos.","frequency":"Uma solicitação por sessão","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"vinculo_formal","label":"Vinculo formal","type":"text","required":true}],"incompatible_with":[]},{"id":"V-REP-10","kind":"vantagem","name":"Influência Local","category_id":"REP","category":"Reputação e identidade","points":5,"requirement":"Charme III; Conhecimento II; manter um cargo ou representação reconhecida","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Charme","minimum":3},{"type":"social_tier","skill":"Conhecimento","minimum":2},{"type":"narrative","text":"manter um cargo ou representação reconhecida"}]},"description":"Escolha uma organização ou comunidade na qual sua representação seja reconhecida. Recebe +2 em Charme e Expressão ao tratar de assuntos dessa representação. Uma vez por sessão, consegue agendar, em até três dias, uma audiência com um responsável acessível do círculo para apresentar uma demanda acompanhada de documentos.","frequency":"Uma audiência por sessão; bônus permanente no círculo escolhido","configuration":[{"key":"organizacao_ou_comunidade","label":"Organizacao ou comunidade","type":"text","required":true},{"key":"representacao","label":"Representacao","type":"text","required":true}],"incompatible_with":[]},{"id":"V-AUT-01","kind":"vantagem","name":"Pontualidade","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Ao planejar previamente um compromisso e reservar tempo de deslocamento, recebe +2 em Disciplina para organizar tarefas e sair no horário. Reconhece sem teste conflitos entre horários que já conhece. Atrasos causados por acontecimentos imprevistos precisam ser resolvidos normalmente.","frequency":"Permanente","configuration":[],"incompatible_with":[]},{"id":"V-AUT-02","kind":"vantagem","name":"Cabeça Fria","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe +2 no primeiro teste de Disciplina para conter uma resposta impulsiva a uma provocação verbal comum. O bônus ajuda a escolher como responder e não altera efeitos de medo, controle mental ou outros estados aplicados por regras específicas.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-AUT-03","kind":"vantagem","name":"Ritual Pessoal","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Escolha um hábito de preparação de dez minutos que consiga realizar com recursos comuns. Depois de completá-lo sem interrupção, recebe +2 no próximo teste de Disciplina para iniciar uma tarefa de concentração até o fim do dia. Só pode manter um uso preparado.","frequency":"Uma vez por dia","configuration":[{"key":"habito_de_preparacao","label":"Habito de preparacao","type":"text","required":true}],"incompatible_with":[]},{"id":"V-AUT-04","kind":"vantagem","name":"Concentração Treinada","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Durante uma tarefa civil de concentração, pode ignorar uma penalidade de até -2 causada por distrações ambientais comuns por até trinta minutos. Escolha uma única fonte de distração. Ameaças, dor, sono e estados específicos conservam seus efeitos.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-AUT-05","kind":"vantagem","name":"Preparado para Avaliações","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Disciplina I; Coragem I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1},{"type":"social_tier","skill":"Coragem","minimum":1}]},"description":"Depois de trinta minutos de preparação para uma prova, entrevista ou apresentação agendada, recebe +2 no primeiro teste de Disciplina ou Coragem para lidar com a pressão dessa avaliação. O benefício trata da pressão e não fornece as respostas ou a competência exigidas.","frequency":"Uma vez por avaliação","configuration":[],"incompatible_with":[]},{"id":"V-AUT-06","kind":"vantagem","name":"Persistência","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Disciplina I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":1}]},"description":"Depois de falhar em uma tarefa civil que possa ser tentada novamente, pode dedicar dez minutos a revisar seu procedimento e repetir um teste de Disciplina para aquela tarefa. Usa o novo resultado. Materiais consumidos, prazos e consequências já ocorridas permanecem.","frequency":"Uma vez por dia","configuration":[],"incompatible_with":[]},{"id":"V-AUT-07","kind":"vantagem","name":"Limites Claros","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Coragem II; Empatia I","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Coragem","minimum":2},{"type":"social_tier","skill":"Empatia","minimum":1}]},"description":"Ao recusar um pedido que prejudique uma obrigação ou limite pessoal previamente estabelecido, recebe Vantagem em Coragem para sustentar a recusa. Se puder conversar por um minuto, recebe +2 no próximo teste de Charme para explicar sua decisão à mesma pessoa. Ela conserva suas próprias reações.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-AUT-08","kind":"vantagem","name":"Plano do Dia","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Disciplina II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Disciplina","minimum":2}]},"description":"Ao organizar seu dia por quinze minutos, escolha até três tarefas civis específicas e diferentes. Recebe +2 no primeiro teste social necessário a cada tarefa. Os bônus expiram no fim do dia. Trocar uma tarefa planejada exige encerrar seus benefícios pendentes antes de preparar outro plano.","frequency":"Uma vez por dia","configuration":[],"incompatible_with":[]},{"id":"V-AUT-09","kind":"vantagem","name":"Controle em Crise","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"Coragem II; Disciplina II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Coragem","minimum":2},{"type":"social_tier","skill":"Disciplina","minimum":2}]},"description":"Diante de uma ameaça no mundo real, pode receber Vantagem em um teste de Coragem ou Disciplina para manter a capacidade de decidir e agir. Se obtiver sucesso, um aliado que possa ouvi-lo recebe +2 no próximo teste de Coragem ou Disciplina contra a mesma ameaça até o fim da cena. Não concede imunidade a estados.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"V-AUT-10","kind":"vantagem","name":"Preparação Emocional","category_id":"AUT","category":"Autocontrole e rotina","points":5,"requirement":"Empatia III; Disciplina II","prerequisites":{"mode":"all","conditions":[{"type":"social_tier","skill":"Empatia","minimum":3},{"type":"social_tier","skill":"Disciplina","minimum":2}]},"description":"Ao conduzir trinta minutos de conversa e preparação com até quatro participantes voluntários, incluindo você, escolha um desafio real e conhecido. Cada participante pode usar Vantagem em um teste de Coragem ou Disciplina diretamente ligado a esse desafio nas próximas vinte e quatro horas. Cada pessoa recebe apenas um uso desta vantagem por dia.","frequency":"Uma vez por dia","configuration":[{"key":"desafio_preparado","label":"Desafio preparado","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-01","kind":"defeito","name":"Dificuldade de Pedir Ajuda","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia ou Charme no primeiro teste de uma cena para pedir um favor pessoal, admitir que não consegue resolver algo sozinho ou solicitar apoio emocional. Pedidos impessoais de serviço e trocas comerciais comuns não ativam a penalidade.","frequency":"Primeiro pedido pessoal de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-02","kind":"defeito","name":"Ciúme de Atenção","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Manter um vínculo importante presente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Manter um vínculo importante presente na campanha"}]},"description":"Quando a pessoa escolhida dá preferência explícita a outra companhia, recebe -2 no próximo teste de Empatia para compreender suas intenções ou tratar do vínculo com ela até o fim da cena. A penalidade não determina a atitude que você precisa tomar.","frequency":"Uma vez por cena","configuration":[{"key":"pessoa_do_vinculo","label":"Pessoa do vinculo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-03","kind":"defeito","name":"Promessas Precipitadas","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Disciplina para avaliar um prazo antes de aceitar uma tarefa oferecida por alguém que deseja agradar. Se aceitar um prazo inviável, a obrigação assumida e as consequências de seu descumprimento permanecem até serem renegociadas.","frequency":"Primeira negociação de prazo de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-04","kind":"defeito","name":"Orgulho Ferido","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de ser humilhado ou desacreditado publicamente por alguém, recebe -2 em Empatia e Charme para cooperar com essa pessoa ou aceitar sua orientação até o fim da cena. Um pedido de desculpas aceito por você encerra a penalidade.","frequency":"Enquanto durar a cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-05","kind":"defeito","name":"Dependência de Aprovação","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Possuir uma pessoa de referência recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma pessoa de referência recorrente"}]},"description":"Escolha uma pessoa cuja aprovação procura. Depois de tomar uma decisão importante contra uma posição expressa por ela, recebe -2 no próximo teste de Coragem ou Expressão para sustentar essa decisão publicamente. A penalidade expira ao fim da cena.","frequency":"Uma vez por cena","configuration":[{"key":"pessoa_de_referencia","label":"Pessoa de referencia","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-06","kind":"defeito","name":"Vínculo em Crise","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Possuir um vínculo próximo em conflito recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir um vínculo próximo em conflito recorrente"}]},"description":"Recebe -2 em Empatia e Charme ao tratar do conflito com a pessoa escolhida. Quando uma conversa sobre esse conflito termina sem acordo, recebe também -2 no primeiro teste de Disciplina realizado antes de passar vinte minutos em outra atividade.","frequency":"Permanente enquanto a crise existir","configuration":[{"key":"pessoa_do_vinculo","label":"Pessoa do vinculo","type":"text","required":true},{"key":"conflito","label":"Conflito","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-07","kind":"defeito","name":"Responsabilidade de Cuidado","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Ser responsável pelo cuidado regular de uma pessoa","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Ser responsável pelo cuidado regular de uma pessoa"}]},"description":"Precisa reservar duas horas diárias ao cuidado da pessoa escolhida ou organizar uma substituição adequada. Uma substituição paga custa um gasto cotidiano por dia. Enquanto uma necessidade de cuidado previamente conhecida permanecer sem responsável, recebe -2 em Disciplina e não dispõe livremente dessas duas horas.","frequency":"Duas horas por dia","configuration":[{"key":"pessoa_sob_cuidado","label":"Pessoa sob cuidado","type":"text","required":true},{"key":"necessidades_regulares","label":"Necessidades regulares","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-08","kind":"defeito","name":"Chantagem Afetiva","category_id":"REL","category":"Relações e vínculos","points":4,"requirement":"Uma pessoa próxima controlar um recurso cotidiano essencial seu","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa próxima controlar um recurso cotidiano essencial seu"}]},"description":"Escolha uma pessoa e o recurso que ela controla, como transporte, renda ou moradia. Uma vez por sessão, ela exige uma tarefa de quatro horas ou um gasto relevante. Se recusar, perde o acesso ao recurso por até três dias ou até negociar uma solução. A exigência precisa ser possível de cumprir.","frequency":"Uma exigência por sessão","configuration":[{"key":"pessoa_controladora","label":"Pessoa controladora","type":"text","required":true},{"key":"recurso_controlado","label":"Recurso controlado","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-09","kind":"defeito","name":"Conflito de Lealdades","category_id":"REL","category":"Relações e vínculos","points":4,"requirement":"Pertencer a dois círculos com interesses incompatíveis e recorrentes","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Pertencer a dois círculos com interesses incompatíveis e recorrentes"}]},"description":"Uma vez por sessão, os círculos escolhidos apresentam demandas incompatíveis que consomem o mesmo período ou recurso. Ao atender uma delas, recebe -2 em Charme com o outro círculo até oferecer uma reparação de quatro horas de trabalho ou um gasto relevante. Não pode receber uma segunda cobrança enquanto a primeira estiver pendente.","frequency":"Uma cobrança por sessão","configuration":[{"key":"primeiro_circulo","label":"Primeiro circulo","type":"text","required":true},{"key":"segundo_circulo","label":"Segundo circulo","type":"text","required":true},{"key":"interesse_em_disputa","label":"Interesse em disputa","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-10","kind":"defeito","name":"Vida sob Controle","category_id":"REL","category":"Relações e vínculos","points":5,"requirement":"Uma pessoa ou grupo controlar dois recursos essenciais e sua agenda cotidiana","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa ou grupo controlar dois recursos essenciais e sua agenda cotidiana"}]},"description":"Escolha dois recursos essenciais controlados e três períodos de quatro horas por semana sujeitos a obrigações impostas. Para faltar a um período, precisa conseguir uma substituição ou autorização em teste de Charme. Se faltar sem resolver a obrigação, perde acesso aos dois recursos até cumprir quatro horas de reparação. Usa a DT social padrão da cena.","frequency":"Permanente enquanto o controle existir","configuration":[{"key":"pessoa_ou_grupo_controlador","label":"Pessoa ou grupo controlador","type":"text","required":true},{"key":"primeiro_recurso","label":"Primeiro recurso","type":"text","required":true},{"key":"segundo_recurso","label":"Segundo recurso","type":"text","required":true},{"key":"obrigacoes_semanais","label":"Obrigacoes semanais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-01","kind":"defeito","name":"Sotaque Marcante","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Frequentar um meio onde seu sotaque provoque preconceito","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Frequentar um meio onde seu sotaque provoque preconceito"}]},"description":"Escolha um meio social e o preconceito presente nele. Recebe -2 no primeiro teste de Charme da cena com alguém desse meio que manifeste esse preconceito ao ouvir seu sotaque. A penalidade depende dessa reação e não se aplica a ouvintes que o tratem normalmente.","frequency":"Primeira interação afetada de cada cena","configuration":[{"key":"meio_social","label":"Meio social","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-02","kind":"defeito","name":"Sem Filtro","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Charme para tratar de um assunto delicado sem soar invasivo ou ofensivo. O assunto precisa envolver intimidade, dinheiro, família ou outro limite pessoal que o interlocutor tenha demonstrado. Você escolhe o que diz e como tenta corrigir a situação.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-COM-03","kind":"defeito","name":"Formalidade Excessiva","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Expressão ou Charme para criar proximidade em uma conversa informal com pessoas que ainda não conheçam seu jeito. Depois de dez minutos de conversa amistosa com elas, a penalidade deixa de se aplicar até o fim da cena.","frequency":"Primeira aproximação informal de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-COM-04","kind":"defeito","name":"Timidez em Grupo","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Expressão quando precisa falar pessoalmente diante de pelo menos três ouvintes que ainda não conhece. A penalidade termina naquela cena depois que consegue conversar individualmente por cinco minutos com pelo menos dois desses ouvintes.","frequency":"Enquanto a condição estiver presente","configuration":[],"incompatible_with":[]},{"id":"D-COM-05","kind":"defeito","name":"Evita Confrontos","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de receber uma recusa direta, recebe -2 em Charme para insistir no mesmo pedido e em Coragem para enfrentar verbalmente a pessoa que o recusou. Apresentar uma proposta materialmente diferente encerra a penalidade relativa ao pedido anterior.","frequency":"Enquanto durar a negociação","configuration":[],"incompatible_with":[]},{"id":"D-COM-06","kind":"defeito","name":"Idioma em Aprendizado","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Usar cotidianamente um idioma que ainda está aprendendo","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Usar cotidianamente um idioma que ainda está aprendendo"}]},"description":"Escolha o idioma de uso cotidiano que ainda não domina. Recebe -2 em Conhecimento para compreender textos técnicos ou burocráticos e em Expressão para formular instruções complexas nesse idioma. Uma tradução competente ou o dobro do tempo habitual de preparação remove a penalidade daquela tarefa.","frequency":"Permanente no idioma escolhido","configuration":[{"key":"idioma","label":"Idioma","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-07","kind":"defeito","name":"Exposição Difícil","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Participar recorrentemente de apresentações ou reuniões públicas","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Participar recorrentemente de apresentações ou reuniões públicas"}]},"description":"Recebe Desvantagem em Expressão quando precisa apresentar uma posição diante de cinco ou mais ouvintes por pelo menos um minuto. Uma hora de ensaio com um ouvinte de confiança permite realizar o primeiro teste da apresentação sem essa Desvantagem. Os demais testes mantêm a limitação.","frequency":"Durante exposições públicas","configuration":[],"incompatible_with":[]},{"id":"D-COM-08","kind":"defeito","name":"Bloqueio sob Hostilidade","category_id":"COM","category":"Comunicação e convivência","points":4,"requirement":"Enfrentar hostilidade verbal recorrente no ambiente escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Enfrentar hostilidade verbal recorrente no ambiente escolhido"}]},"description":"Quando sofre uma ameaça verbal direta ou humilhação pública no ambiente escolhido, recebe Desvantagem em Charme e Expressão naquela cena até passar dez minutos afastado do conflito. Continua podendo falar, recusar, buscar apoio ou agir; os testes afetados conservam a penalidade.","frequency":"Até se afastar por dez minutos","configuration":[{"key":"ambiente_de_hostilidade","label":"Ambiente de hostilidade","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-09","kind":"defeito","name":"Assunto que Não Consegue Abordar","category_id":"COM","category":"Comunicação e convivência","points":4,"requirement":"O assunto escolhido ser recorrente e necessário na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O assunto escolhido ser recorrente e necessário na campanha"}]},"description":"Escolha um assunto pessoal concreto. Para falar dele com clareza, precisa de vinte minutos de preparação privada antes da conversa; sem isso, recebe -4 em Expressão e Empatia durante a abordagem. Mesmo com preparação, recebe -2 nesses testes se a conversa ocorrer diante de desconhecidos.","frequency":"Enquanto a conversa tratar do assunto","configuration":[{"key":"assunto_pessoal","label":"Assunto pessoal","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-10","kind":"defeito","name":"Comunicação Monitorada","category_id":"COM","category":"Comunicação e convivência","points":5,"requirement":"Uma pessoa ou instituição controlar seus meios habituais de comunicação","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa ou instituição controlar seus meios habituais de comunicação"}]},"description":"Chamadas, correspondência e mensagens enviadas pelos meios habituais ficam disponíveis à pessoa ou instituição escolhida. Uma conversa privada exige encontro presencial fora dos locais monitorados ou acesso temporário a outro meio. Se uma comunicação ocultada for descoberta, perde seus meios habituais por três dias e precisa negociar a recuperação.","frequency":"Permanente enquanto o monitoramento existir","configuration":[{"key":"responsavel_pelo_monitoramento","label":"Responsavel pelo monitoramento","type":"text","required":true},{"key":"meios_monitorados","label":"Meios monitorados","type":"text","required":true},{"key":"locais_monitorados","label":"Locais monitorados","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-01","kind":"defeito","name":"Caligrafia Confusa","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Usar escrita manual regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Usar escrita manual regularmente"}]},"description":"Recebe -2 em Expressão para transmitir instruções, relatos ou pedidos por texto manuscrito produzido com pressa. Dedicar dez minutos à revisão e transcrição remove a penalidade daquele texto. Documentos preenchidos durante um prazo curto continuam sujeitos à limitação.","frequency":"Permanente em textos manuscritos apressados","configuration":[],"incompatible_with":[]},{"id":"D-EST-02","kind":"defeito","name":"Lacuna Escolar","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"A área escolhida aparecer regularmente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"A área escolhida aparecer regularmente na campanha"}]},"description":"Escolha uma área de formação básica, como história, matemática ou ciências. Recebe -2 em Conhecimento para resolver tarefas dessa área sem uma fonte de consulta. Trinta minutos de estudo com material adequado removem a penalidade de uma tarefa específica.","frequency":"Permanente na área escolhida","configuration":[{"key":"area_de_formacao","label":"Area de formacao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-03","kind":"defeito","name":"Receio de Perguntar","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia ou Charme para pedir que um professor, superior ou especialista repita uma explicação ou esclareça uma instrução. A penalidade se aplica ao pedido de esclarecimento e não reduz sua capacidade de compreender uma resposta obtida.","frequency":"Primeiro pedido de esclarecimento de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-EST-04","kind":"defeito","name":"Estimativa Ruim de Prazos","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Para organizar uma tarefa de estudo ou trabalho, precisa reservar um quarto a mais do tempo normalmente previsto. Se começar sem essa margem, recebe -2 em Disciplina para manter o cronograma daquela tarefa. Ajuda ou recursos adicionais podem alterar o tempo necessário pelas regras normais.","frequency":"Em tarefas de estudo ou trabalho com prazo definido","configuration":[],"incompatible_with":[]},{"id":"D-EST-05","kind":"defeito","name":"Papéis Desorganizados","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Precisar de documentos regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Precisar de documentos regularmente"}]},"description":"Localizar um documento sob sua responsabilidade exige dez minutos adicionais de procura. Se precisar apresentá-lo imediatamente sem esse tempo, recebe -2 em Conhecimento ou Expressão para comprovar informações que dependeriam dele. Cópias previamente entregues a outra pessoa continuam disponíveis com ela.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":["V-REC-02"]},{"id":"D-EST-06","kind":"defeito","name":"Turnos Imprevisíveis","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"Possuir uma ocupação com escala variável","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma ocupação com escala variável"}]},"description":"Sua ocupação ocupa dois períodos semanais de quatro horas, informados apenas no dia anterior. Para faltar, precisa conseguir substituição ou perder um gasto relevante de sua renda. Uma falta sem solução também causa -2 em Charme com os responsáveis pelo trabalho até cumprir um turno de compensação.","frequency":"Dois períodos de quatro horas por semana","configuration":[{"key":"ocupacao","label":"Ocupacao","type":"text","required":true},{"key":"responsaveis_pela_escala","label":"Responsaveis pela escala","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-07","kind":"defeito","name":"Pressão de Avaliação","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"Passar por avaliações formais recorrentes","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Passar por avaliações formais recorrentes"}]},"description":"Recebe Desvantagem em Conhecimento e Expressão durante provas, entrevistas de seleção ou avaliações de desempenho que decidam sua permanência ou acesso a uma oportunidade. Uma hora de preparação com alguém de confiança permite fazer o primeiro teste sem essa Desvantagem. Os testes seguintes permanecem afetados.","frequency":"Durante avaliações formais","configuration":[],"incompatible_with":[]},{"id":"D-EST-08","kind":"defeito","name":"Histórico Disciplinar","category_id":"EST","category":"Estudo e trabalho","points":4,"requirement":"Uma instituição importante manter sanções ativas contra você","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma instituição importante manter sanções ativas contra você"}]},"description":"Recebe -2 em Charme em procedimentos formais na instituição escolhida. Pedidos de empréstimo de material, mudança de prazo ou acesso fora do horário exigem a presença de um responsável que aceite se comprometer por você. As sanções e o responsável possível são definidos na escolha.","frequency":"Permanente na instituição escolhida","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"sancoes","label":"Sancoes","type":"text","required":true},{"key":"responsavel_possivel","label":"Responsavel possivel","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-09","kind":"defeito","name":"Formação sem Reconhecimento","category_id":"EST","category":"Estudo e trabalho","points":4,"requirement":"Exercer regularmente uma atividade que exija formação reconhecida","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Exercer regularmente uma atividade que exija formação reconhecida"}]},"description":"Sua formação na atividade escolhida não é aceita pelas instituições relevantes da campanha. Candidaturas formais e autorizações exigem avaliação adicional, dois dias de preparação e um gasto relevante. Enquanto não obtiver a equivalência exigida, recebe -2 em Charme ao solicitar trabalho ou acesso profissional nessas instituições.","frequency":"Permanente nos procedimentos afetados","configuration":[{"key":"atividade_profissional","label":"Atividade profissional","type":"text","required":true},{"key":"instituicoes_relevantes","label":"Instituicoes relevantes","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-10","kind":"defeito","name":"Afastamento Compulsório","category_id":"EST","category":"Estudo e trabalho","points":5,"requirement":"Uma instituição central à sua vida ter imposto seu afastamento","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma instituição central à sua vida ter imposto seu afastamento"}]},"description":"Escolha uma instituição central a seus estudos ou trabalho. Você perde acesso regular aos seus espaços e serviços. Cada entrada autorizada exige um pedido formal com um dia de antecedência e acompanhamento de um responsável. Recebe -4 em Charme e Expressão para defender sua permanência ou recuperar oportunidades dentro dela.","frequency":"Permanente enquanto a sanção existir","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"motivo_do_afastamento","label":"Motivo do afastamento","type":"text","required":true},{"key":"responsavel_pelo_acompanhamento","label":"Responsavel pelo acompanhamento","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-01","kind":"defeito","name":"Dinheiro de Difícil Acesso","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Seus recursos habituais dependerem de retirada ou liberação","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Seus recursos habituais dependerem de retirada ou liberação"}]},"description":"Para pagar o primeiro gasto cotidiano que não tenha planejado naquele dia, precisa de vinte minutos para acessar seus recursos. Se o pagamento não puder esperar, precisa conseguir um adiantamento de outra pessoa ou abandonar aquela compra. Recursos planejados previamente não sofrem essa demora.","frequency":"Primeiro gasto imprevisto do dia","configuration":[{"key":"forma_de_acesso_ao_dinheiro","label":"Forma de acesso ao dinheiro","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-02","kind":"defeito","name":"Moradia Distante","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Viver longe da região principal da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Viver longe da região principal da campanha"}]},"description":"O trajeto entre sua moradia e a região principal da campanha exige vinte minutos adicionais em cada sentido em comparação ao deslocamento comum do grupo. Hospedagem temporária mais próxima suspende a demora enquanto durar, sem alterar suas obrigações na moradia original.","frequency":"Cada ida e volta","configuration":[{"key":"moradia","label":"Moradia","type":"text","required":true},{"key":"regiao_principal","label":"Regiao principal","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-03","kind":"defeito","name":"Material Emprestado","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Depender regularmente do item escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender regularmente do item escolhido"}]},"description":"Escolha um item civil necessário à sua rotina que pertença a outra pessoa. Em dois dias fixos da semana, ele fica indisponível para você. Conseguir um substituto depende de empréstimo ou locação normal. Os dias de indisponibilidade são definidos na escolha.","frequency":"Dois dias por semana","configuration":[{"key":"item","label":"Item","type":"text","required":true},{"key":"proprietario","label":"Proprietario","type":"text","required":true},{"key":"dias_indisponiveis","label":"Dias indisponiveis","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-04","kind":"defeito","name":"Transporte Irregular","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Depender de uma rota ou serviço instável","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de uma rota ou serviço instável"}]},"description":"Uma vez por sessão, seu deslocamento habitual sofre uma interrupção que acrescenta uma hora ao trajeto. Pode evitar a demora pagando um gasto cotidiano por uma alternativa disponível. O efeito é aplicado ao seu trajeto pessoal, mesmo quando os demais usam outra rota.","frequency":"Uma vez por sessão","configuration":[{"key":"rota_ou_servico","label":"Rota ou servico","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-05","kind":"defeito","name":"Equipamento Precário","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Utilizar regularmente o equipamento escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Utilizar regularmente o equipamento escolhido"}]},"description":"Escolha um equipamento civil essencial à sua atividade. Ele causa -2 em TEC nos testes de uso. Dedicar quinze minutos à regulagem permite realizar o primeiro teste da cena sem essa penalidade. A substituição definitiva por equipamento adequado exige resolver o defeito.","frequency":"Permanente enquanto o equipamento for utilizado","configuration":[{"key":"equipamento","label":"Equipamento","type":"text","required":true},{"key":"atividade","label":"Atividade","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-06","kind":"defeito","name":"Renda Irregular","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"Depender de recebimentos variáveis ou atrasados","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de recebimentos variáveis ou atrasados"}]},"description":"O primeiro recebimento pessoal de cada semana chega com três dias de atraso. Durante esse intervalo, precisa pagar despesas com dinheiro já disponível ou obter um adiantamento. Ao fim da semana, um gasto cotidiano adicional é consumido por taxas, deslocamentos ou custos de cobrança.","frequency":"Uma vez por semana","configuration":[{"key":"fonte_de_renda","label":"Fonte de renda","type":"text","required":true}],"incompatible_with":["V-REC-05"]},{"id":"D-REC-07","kind":"defeito","name":"Dívida Recorrente","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"Possuir uma dívida e um credor presente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma dívida e um credor presente na campanha"}]},"description":"Precisa pagar um gasto relevante ao credor a cada semana. Se atrasar, recebe -2 em Charme com o credor e seus representantes, e fica sem novos empréstimos ou serviços deles até acertar o pagamento. Valores atrasados permanecem devidos.","frequency":"Um pagamento por semana","configuration":[{"key":"credor","label":"Credor","type":"text","required":true},{"key":"origem_da_divida","label":"Origem da divida","type":"text","required":true}],"incompatible_with":["D-REC-10"]},{"id":"D-REC-08","kind":"defeito","name":"Moradia Instável","category_id":"REC","category":"Recursos e acesso","points":4,"requirement":"Depender de hospedagem temporária e frequente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de hospedagem temporária e frequente"}]},"description":"Precisa mudar de hospedagem duas vezes por semana, gastando uma hora por mudança para transportar seus pertences. Em cada mudança, paga um gasto cotidiano ou obtém acolhimento de outra pessoa. Sem hospedagem resolvida, recebe -2 em Disciplina para estudar, trabalhar ou preparar compromissos até garantir um local para a noite.","frequency":"Duas mudanças de local por semana","configuration":[{"key":"hospedagens_habituais","label":"Hospedagens habituais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-09","kind":"defeito","name":"Sustento de Terceiros","category_id":"REC","category":"Recursos e acesso","points":4,"requirement":"Ser responsável por despesas essenciais de outra pessoa","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Ser responsável por despesas essenciais de outra pessoa"}]},"description":"Além das próprias despesas, precisa pagar dois gastos relevantes semanais para o sustento da pessoa escolhida. Se um pagamento atrasar, recebe -2 em Disciplina enquanto busca recursos e precisa reservar quatro horas para solucionar a necessidade por trabalho, negociação ou apoio. Os pagamentos ainda permanecem devidos.","frequency":"Dois gastos relevantes por semana","configuration":[{"key":"pessoa_sustentada","label":"Pessoa sustentada","type":"text","required":true},{"key":"despesas_essenciais","label":"Despesas essenciais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-10","kind":"defeito","name":"Dívida sob Coação","category_id":"REC","category":"Recursos e acesso","points":5,"requirement":"Possuir um credor com meios concretos de restringir sua vida cotidiana","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir um credor com meios concretos de restringir sua vida cotidiana"}]},"description":"Precisa pagar dois gastos relevantes por semana. Cada pagamento atrasado bloqueia um recurso essencial previamente definido, como moradia, renda ou acesso a material de trabalho, até a quitação. Enquanto houver atraso, recebe -2 em Charme e Disciplina ao lidar com compromissos relacionados ao recurso bloqueado. Há no máximo dois bloqueios simultâneos.","frequency":"Dois pagamentos por semana","configuration":[{"key":"credor","label":"Credor","type":"text","required":true},{"key":"origem_da_divida","label":"Origem da divida","type":"text","required":true},{"key":"primeiro_recurso","label":"Primeiro recurso","type":"text","required":true},{"key":"segundo_recurso","label":"Segundo recurso","type":"text","required":true}],"incompatible_with":["D-REC-07"]},{"id":"D-REP-01","kind":"defeito","name":"Homônimo Indesejado","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"O homônimo ser conhecido em um meio recorrente da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O homônimo ser conhecido em um meio recorrente da campanha"}]},"description":"Você compartilha nome ou apelido com alguém de má reputação no meio escolhido. Recebe -2 no primeiro teste de Charme quando for confundido com essa pessoa. Apresentar identificação ou uma referência verificável encerra a penalidade para aqueles interlocutores.","frequency":"Primeira identificação afetada de cada cena","configuration":[{"key":"homonimo","label":"Homonimo","type":"text","required":true},{"key":"meio_social","label":"Meio social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-02","kind":"defeito","name":"Visual Fora do Padrão","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"Frequentar um ambiente com preconceito recorrente contra seu visual","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Frequentar um ambiente com preconceito recorrente contra seu visual"}]},"description":"Escolha um ambiente e o aspecto visual que provoca rejeição nele. Recebe -2 no primeiro teste de Charme para solicitar atendimento ou acolhimento a alguém que manifeste esse preconceito. A penalidade se aplica à reação daquele interlocutor, sem alterar sua competência ou aparência.","frequency":"Primeira aproximação afetada de cada cena","configuration":[{"key":"ambiente","label":"Ambiente","type":"text","required":true},{"key":"aspecto_visual","label":"Aspecto visual","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-03","kind":"defeito","name":"Boato Local","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"O boato circular em um grupo relevante da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O boato circular em um grupo relevante da campanha"}]},"description":"Escolha um boato falso ou distorcido conhecido por um grupo. Recebe -2 no primeiro teste de Charme com alguém desse grupo que acredite nele. Uma explicação de dez minutos acompanhada de uma prova verificável encerra a penalidade com essa pessoa.","frequency":"Primeira abordagem afetada de cada cena","configuration":[{"key":"boato","label":"Boato","type":"text","required":true},{"key":"grupo","label":"Grupo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-04","kind":"defeito","name":"Fama Indesejada","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Um acontecimento público ter tornado você reconhecível","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Um acontecimento público ter tornado você reconhecível"}]},"description":"Escolha o acontecimento e o meio onde seu rosto é conhecido. Recebe -2 em Disciplina para evitar chamar atenção ou passar despercebido em situações sociais desse meio. Pessoas que o reconheçam podem abordar você, mesmo quando pretendia manter a visita discreta.","frequency":"Permanente no meio em que é reconhecido","configuration":[{"key":"acontecimento","label":"Acontecimento","type":"text","required":true},{"key":"meio_social","label":"Meio social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-05","kind":"defeito","name":"Má Fama","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Uma reputação negativa ser conhecida por um círculo relevante","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma reputação negativa ser conhecida por um círculo relevante"}]},"description":"Escolha uma reputação negativa e o círculo onde ela circula. Recebe -2 em Charme com integrantes que acreditem nela. A penalidade permanece até recuperar a confiança daquela pessoa ou resolver publicamente a causa da reputação.","frequency":"Permanente com quem conhece e aceita a reputação","configuration":[{"key":"reputacao","label":"Reputacao","type":"text","required":true},{"key":"circulo_social","label":"Circulo social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-06","kind":"defeito","name":"Documentação Inconsistente","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Precisar regularmente dos documentos afetados","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Precisar regularmente dos documentos afetados"}]},"description":"Escolha uma inconsistência real entre seus documentos. Procedimentos que dependam desse dado exigem uma verificação adicional de um dia e a apresentação de um comprovante definido na escolha. Sem o comprovante, recebe -2 em Charme e Conhecimento para esclarecer sua situação e o procedimento permanece pendente.","frequency":"Cada procedimento formal afetado","configuration":[{"key":"inconsistencia","label":"Inconsistencia","type":"text","required":true},{"key":"documentos","label":"Documentos","type":"text","required":true},{"key":"comprovante_necessario","label":"Comprovante necessario","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-07","kind":"defeito","name":"Estigma Social","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Enfrentar discriminação recorrente em um meio importante","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Enfrentar discriminação recorrente em um meio importante"}]},"description":"Escolha um meio social e o preconceito que você enfrenta nele. Recebe -2 em Charme e Expressão em interações formais com pessoas que adotem esse preconceito. Para obter uma referência ou recomendação dessas pessoas, precisa apresentar também um avalista ou uma prova adicional de competência.","frequency":"Permanente nas interações afetadas","configuration":[{"key":"meio_social","label":"Meio social","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-08","kind":"defeito","name":"Segredo sob Chantagem","category_id":"REP","category":"Reputação e identidade","points":4,"requirement":"Alguém possuir provas de um segredo com consequências sociais concretas","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Alguém possuir provas de um segredo com consequências sociais concretas"}]},"description":"Escolha o segredo, quem conhece suas provas e a consequência de sua divulgação. Uma vez por sessão, essa pessoa exige uma tarefa de quatro horas ou um gasto relevante. Se recusar, ela divulga a prova ao círculo definido. Quando a divulgação tornar a chantagem inviável, este defeito é substituído por uma consequência equivalente, sem novos pontos.","frequency":"Uma exigência por sessão","configuration":[{"key":"segredo","label":"Segredo","type":"text","required":true},{"key":"chantagista","label":"Chantagista","type":"text","required":true},{"key":"provas","label":"Provas","type":"text","required":true},{"key":"circulo_afetado","label":"Circulo afetado","type":"text","required":true},{"key":"consequencia_da_divulgacao","label":"Consequencia da divulgacao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-09","kind":"defeito","name":"Família Marcada","category_id":"REP","category":"Reputação e identidade","points":4,"requirement":"Sua família enfrentar uma acusação ou escândalo conhecido e persistente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Sua família enfrentar uma acusação ou escândalo conhecido e persistente"}]},"description":"Escolha a acusação e um círculo institucional que a associe à sua família. Recebe -4 em Charme quando se identifica com seu nome familiar nesse círculo. Pedidos de recomendação, matrícula ou contratação também exigem duas referências externas dispostas a confirmar sua conduta.","frequency":"Permanente no círculo afetado","configuration":[{"key":"acusacao_ou_escandalo","label":"Acusacao ou escandalo","type":"text","required":true},{"key":"circulo_institucional","label":"Circulo institucional","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-10","kind":"defeito","name":"Perseguição Organizada","category_id":"REP","category":"Reputação e identidade","points":5,"requirement":"Um grupo hostil possuir recursos e presença recorrente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Um grupo hostil possuir recursos e presença recorrente na campanha"}]},"description":"Escolha o grupo e dois locais ou serviços cotidianos onde ele mantém informantes. Identificar-se nesses lugares informa sua presença ao grupo até o fim da cena. Usá-los sem expor sua identidade exige um intermediário e um gasto cotidiano por visita. Recebe -2 em Disciplina para ocultar sua rotina dos perseguidores; uma falha revela o próximo compromisso que tenha deixado registrado.","frequency":"Permanente enquanto a perseguição existir","configuration":[{"key":"grupo_perseguidor","label":"Grupo perseguidor","type":"text","required":true},{"key":"primeiro_local_ou_servico","label":"Primeiro local ou servico","type":"text","required":true},{"key":"segundo_local_ou_servico","label":"Segundo local ou servico","type":"text","required":true},{"key":"motivo_da_perseguicao","label":"Motivo da perseguicao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-01","kind":"defeito","name":"Impulsivo","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Disciplina para conter uma reação imediata diante de uma provocação, oportunidade urgente ou decisão sob pressão. A penalidade se limita à contenção da reação; você continua escolhendo se espera, responde ou procura outra solução.","frequency":"Primeiro teste afetado de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-02","kind":"defeito","name":"Competitivo","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de perder uma disputa social, acadêmica ou recreativa, recebe -2 no próximo teste de Empatia para reconhecer o mérito de quem venceu ou aceitar sua orientação até o fim da cena. Uma conversa de cinco minutos com essa pessoa encerra a penalidade.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-03","kind":"defeito","name":"Vaidade Sensível","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de receber uma crítica pública à sua apresentação ou produção pessoal, recebe -2 no próximo teste de Expressão para se apresentar diante do mesmo público até o fim da cena. Dez minutos para revisar sua apresentação permitem encerrar a penalidade antes do teste.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-04","kind":"defeito","name":"Ruminação","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Quando uma falha sua em Charme, Empatia ou Expressão causa uma consequência concreta, recebe -2 no primeiro teste de Conhecimento ou Disciplina realizado nos trinta minutos seguintes. Dedicar dez minutos a registrar o ocorrido ou conversar com alguém disposto a ouvir encerra essa penalidade.","frequency":"Depois de uma falha social relevante","configuration":[],"incompatible_with":[]},{"id":"D-AUT-05","kind":"defeito","name":"Desconfiança Inicial","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia para interpretar uma oferta de ajuda feita por alguém que ainda não conhece. Se aceitar o auxílio dessa pessoa antes de conversar com ela por dez minutos ou receber uma referência confiável, recebe -2 no primeiro teste realizado com esse auxílio.","frequency":"Primeiro encontro com cada pessoa","configuration":[],"incompatible_with":[]},{"id":"D-AUT-06","kind":"defeito","name":"Fixação em Projeto","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Manter um projeto ou objetivo pessoal recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Manter um projeto ou objetivo pessoal recorrente"}]},"description":"Depois de passar uma hora no projeto escolhido, precisa de quinze minutos para organizar sua interrupção. Se mudar imediatamente para outra tarefa civil, recebe -2 no primeiro teste social necessário a ela. A penalidade se aplica novamente quando retoma e interrompe outra sessão de uma hora de trabalho.","frequency":"Cada mudança de atividade enquanto o projeto estiver pendente","configuration":[{"key":"projeto_ou_objetivo","label":"Projeto ou objetivo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-07","kind":"defeito","name":"Culpa Persistente","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Quando uma decisão ou falha sua causa a perda de uma oportunidade, recurso ou relação importante para outra pessoa, recebe -2 em Coragem e Disciplina até o próximo descanso longo. Uma hora dedicada a uma reparação aceita pela pessoa afetada encerra a penalidade antes desse descanso.","frequency":"Depois de uma falha que prejudique outra pessoa","configuration":[],"incompatible_with":[]},{"id":"D-AUT-08","kind":"defeito","name":"Rotina Obrigatória","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"Uma rotina específica ser viável e relevante na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma rotina específica ser viável e relevante na campanha"}]},"description":"Escolha uma rotina diária de organização ou preparação que consuma uma hora. Enquanto não a completar, recebe -2 nos testes sociais de tarefas imprevistas ou mudanças de plano. Se a rotina for interrompida, precisa completar o tempo que faltava em outro momento do mesmo dia.","frequency":"Uma hora por dia","configuration":[{"key":"rotina_diaria","label":"Rotina diaria","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-09","kind":"defeito","name":"Medo Enraizado","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"O gatilho ser concreto e aparecer recorrentemente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O gatilho ser concreto e aparecer recorrentemente na campanha"}]},"description":"Escolha um gatilho concreto, como espaços fechados, alturas ou uma situação associada ao seu passado. Recebe Desvantagem em Coragem e Disciplina para se aproximar, permanecer ou agir diante dele no mundo real. A limitação não determina sua ação nem se estende automaticamente a criaturas ou efeitos com o mesmo nome no mundo cognitivo.","frequency":"Enquanto enfrentar diretamente o gatilho no mundo real","configuration":[{"key":"gatilho","label":"Gatilho","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-10","kind":"defeito","name":"Exaustão Social","category_id":"AUT","category":"Autocontrole e rotina","points":5,"requirement":"A campanha exigir interação social prolongada regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"A campanha exigir interação social prolongada regularmente"}]},"description":"Depois de acumular duas horas de aulas participativas, atendimento, reuniões, apresentações ou conversas exigentes, recebe -2 em todos os testes sociais no mundo real. Duas horas sem demandas sociais, em repouso ou atividade solitária tranquila, encerram a penalidade e reiniciam a contagem de exposição daquele dia.","frequency":"Após duas horas de interação ativa no mesmo dia","configuration":[],"incompatible_with":[]}];
+const SOCIAL_TRAIT_CATALOG=[
+  {
+    "id": "V-REL-01",
+    "kind": "vantagem",
+    "name": "Rosto do Bairro",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Charme ao pedir informação, orientação ou um pequeno favor onde você já tem alguma convivência. Vale em bairros, escolas, trabalhos e outros grupos que frequentam o mesmo lugar.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "bairro",
+        "label": "Bairro ou comunidade",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-02",
+    "kind": "vantagem",
+    "name": "Bom Ouvinte",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 1,
+    "requirement": "Empatia I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Empatia ao tentar entender o que alguém sente, precisa ou teme.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-03",
+    "kind": "vantagem",
+    "name": "Lembranças Atenciosas",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Empatia ou Charme ao retomar uma conversa, fazer as pazes ou demonstrar que se importa.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-04",
+    "kind": "vantagem",
+    "name": "Círculo de Estudos",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 2,
+    "requirement": "Conhecimento I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao pesquisar ou estudar em grupo, escolha até dois participantes, incluindo você. Cada um recebe +2 no próximo teste de Conhecimento daquela tarefa.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "grupo_de_estudo",
+        "label": "Grupo de estudo",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "area_de_conhecimento",
+        "label": "Área de conhecimento",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-05",
+    "kind": "vantagem",
+    "name": "Contato Confiável",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 2,
+    "requirement": "Charme I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Consulte um contato acessível para obter uma informação comum ou ser apresentado a alguém útil. Escolha quem procurar conforme o assunto.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "contato",
+        "label": "Contato",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "campo_de_atuacao",
+        "label": "Campo de atuacao",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-06",
+    "kind": "vantagem",
+    "name": "Bom Anfitrião",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 2,
+    "requirement": "Empatia I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao receber ou reunir pessoas, escolha até dois participantes. Cada um recebe +2 no primeiro teste de Charme ou Empatia para conversar com alguém da reunião.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-07",
+    "kind": "vantagem",
+    "name": "Pessoa de Confiança",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 3,
+    "requirement": "Empatia II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Ao falhar em Empatia para ajudar alguém a falar sobre um problema ou aceitar apoio, repita o teste e use o melhor resultado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-08",
+    "kind": "vantagem",
+    "name": "Ponte Entre Grupos",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 3,
+    "requirement": "Charme II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Ao juntar pessoas de grupos diferentes, receba Vantagem em Charme ou Empatia para abrir diálogo, mediar a conversa ou propor cooperação.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "primeiro_circulo",
+        "label": "Primeiro circulo",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "segundo_circulo",
+        "label": "Segundo circulo",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-09",
+    "kind": "vantagem",
+    "name": "Abrigo Solidário",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 4,
+    "requirement": "Empatia II; possuir uma rede de apoio estabelecida",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "possuir uma rede de apoio estabelecida"
+        }
+      ]
+    },
+    "description": "Acione sua rede para conseguir um local seguro para conversar ou descansar, ou hospedagem simples para você e até três acompanhantes até a manhã seguinte.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "rede_de_apoio",
+        "label": "Rede de apoio",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REL-10",
+    "kind": "vantagem",
+    "name": "Comunidade Organizada",
+    "category_id": "REL",
+    "category": "Relações e vínculos",
+    "points": 5,
+    "requirement": "Empatia III; Charme II; manter participação em uma comunidade",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 3
+        },
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "manter participação em uma comunidade"
+        }
+      ]
+    },
+    "description": "Reúna pessoas da sua comunidade para ajudar em uma tarefa civil. Escolha duas contribuições viáveis, como reunir informações, organizar transporte, conseguir um espaço ou dividir o trabalho.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "comunidade",
+        "label": "Comunidade",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-01",
+    "kind": "vantagem",
+    "name": "Etiqueta Situacional",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Conhecimento para identificar uma norma social ou em Charme para se portar de forma adequada em um ambiente.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "ambiente_social",
+        "label": "Ambiente social",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-02",
+    "kind": "vantagem",
+    "name": "Quebra-Gelo",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Charme ao iniciar uma conversa, se apresentar ou incluir alguém em um grupo.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-03",
+    "kind": "vantagem",
+    "name": "Mensagem Cuidadosa",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 1,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Expressão ao escrever ou revisar uma mensagem importante, qualquer que seja o meio.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-04",
+    "kind": "vantagem",
+    "name": "Explicação Clara",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 2,
+    "requirement": "Expressão I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao orientar alguém, dê +2 ao próximo teste que essa pessoa fizer para colocar sua explicação em prática na cena.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-05",
+    "kind": "vantagem",
+    "name": "Negociador Paciente",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 2,
+    "requirement": "Charme I; Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 1
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao falhar em Charme numa negociação, você pode apresentar uma nova proposta e repetir o teste. Use o novo resultado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-06",
+    "kind": "vantagem",
+    "name": "Falar em Público",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 2,
+    "requirement": "Expressão I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba Vantagem em um teste de Expressão ao falar para um grupo, conduzir uma reunião ou fazer uma apresentação.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-07",
+    "kind": "vantagem",
+    "name": "Mediador",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 3,
+    "requirement": "Empatia II; Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Empatia ou Charme para mediar uma discussão, diminuir a tensão ou propor um acordo.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-08",
+    "kind": "vantagem",
+    "name": "Entrevistador",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 3,
+    "requirement": "Empatia II; Conhecimento I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao falhar em Empatia ou Conhecimento numa conversa para obter informações, faça uma pergunta de acompanhamento e repita o teste. Use o melhor resultado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-09",
+    "kind": "vantagem",
+    "name": "Porta-voz",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 4,
+    "requirement": "Expressão II; Charme II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Ao defender uma proposta em nome do grupo, receba Vantagem em Charme ou Expressão. Se passar, um aliado recebe +2 no próximo teste para dar continuidade à proposta na cena.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-COM-10",
+    "kind": "vantagem",
+    "name": "Articulação Pública",
+    "category_id": "COM",
+    "category": "Comunicação e convivência",
+    "points": 5,
+    "requirement": "Expressão III; Charme II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 3
+        },
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Consiga espaço em um canal público acessível para divulgar uma causa, convocar pessoas ou responder a uma acusação. Receba Vantagem em até dois testes sociais distintos ligados a essa divulgação.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "canal_publico",
+        "label": "Canal publico",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-01",
+    "kind": "vantagem",
+    "name": "Memória Precisa",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 1,
+    "requirement": "Conhecimento I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Conhecimento para lembrar um fato, uma conversa ou um detalhe que você já tenha observado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-02",
+    "kind": "vantagem",
+    "name": "Anotações Úteis",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 1,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Conhecimento ao cruzar informações que você ou um aliado já registraram.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-03",
+    "kind": "vantagem",
+    "name": "Habilidade Manual",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 1,
+    "requirement": "TEC 3",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "attribute",
+          "attribute": "TEC",
+          "minimum": 3
+        }
+      ]
+    },
+    "description": "Escolha um ofício civil amplo, como culinária, costura ou manutenção. Receba +2 em um teste de TEC para praticá-lo.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "atividade_manual",
+        "label": "Atividade manual",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-04",
+    "kind": "vantagem",
+    "name": "Pesquisador Metódico",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 2,
+    "requirement": "Conhecimento I; Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao falhar em Conhecimento numa pesquisa, consulte outra fonte acessível ou mude o método e repita o teste. Use o novo resultado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-05",
+    "kind": "vantagem",
+    "name": "Aprendizado Compartilhado",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 2,
+    "requirement": "Empatia I; Conhecimento I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 1
+        },
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao trabalhar numa tarefa de estudo ou prática com um aliado, escolha quem recebe Vantagem no próximo teste de Conhecimento ou TEC dessa tarefa.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-06",
+    "kind": "vantagem",
+    "name": "Trabalhador Confiável",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 2,
+    "requirement": "Disciplina I; ter uma função regular no trabalho, nos estudos ou em outra atividade",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        },
+        {
+          "type": "narrative",
+          "text": "ter uma função regular no trabalho, nos estudos ou em outra atividade"
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Charme para pedir apoio, ajustar uma obrigação ou negociar condições no trabalho, nos estudos ou em outra função regular.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "ocupacao",
+        "label": "Ocupação",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-07",
+    "kind": "vantagem",
+    "name": "Especialista",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 3,
+    "requirement": "Conhecimento II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Escolha uma área ampla de atuação. Receba Vantagem em Conhecimento ou TEC ao resolver um problema civil dessa área.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "especialidade",
+        "label": "Especialidade",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-08",
+    "kind": "vantagem",
+    "name": "Improviso Técnico",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 3,
+    "requirement": "TEC 4; Conhecimento I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "attribute",
+          "attribute": "TEC",
+          "minimum": 4
+        },
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Use materiais disponíveis para substituir uma ferramenta em uma tarefa civil viável. Ignore até −2 de penalidade por improviso e receba +2 no teste de TEC.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-09",
+    "kind": "vantagem",
+    "name": "Dossiê Preparado",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 4,
+    "requirement": "Conhecimento II; Disciplina II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Reúna fatos e registros já descobertos sobre um assunto. Até três pessoas, incluindo você, recebem Vantagem uma vez cada em um teste para investigar, explicar ou defender algo com base nesses registros até o fim da sessão.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "tema_do_dossie",
+        "label": "Tema do dossie",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-EST-10",
+    "kind": "vantagem",
+    "name": "Projeto Próprio",
+    "category_id": "EST",
+    "category": "Estudo e trabalho",
+    "points": 5,
+    "requirement": "Conhecimento III; Disciplina II; manter um projeto em andamento",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 3
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "manter um projeto em andamento"
+        }
+      ]
+    },
+    "description": "Tenha acesso a um espaço equipado para seu projeto. Uma vez por sessão, mobilize colaboradores para realizar uma tarefa civil viável do projeto enquanto você cuida de outra coisa.",
+    "frequency": "Benefício permanente e um pedido de apoio por sessão",
+    "configuration": [
+      {
+        "key": "projeto",
+        "label": "Projeto",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "area_de_trabalho",
+        "label": "Área de trabalho",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "colaboradores",
+        "label": "Colaboradores",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-01",
+    "kind": "vantagem",
+    "name": "Pequena Reserva",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Pague uma despesa cotidiana, como refeição, passagem ou material simples, sem descontar o valor do dinheiro da ficha.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-02",
+    "kind": "vantagem",
+    "name": "Arquivo Organizado",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 1,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Encontre sem teste um registro ou objeto cotidiano que você já tenha guardado. Se o desafio for interpretar o que encontrou, receba +2 em Conhecimento.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": [
+      "D-EST-05"
+    ]
+  },
+  {
+    "id": "V-REC-03",
+    "kind": "vantagem",
+    "name": "Rotas Conhecidas",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Em área urbana, identifique uma rota pública alternativa disponível ou receba +2 em Conhecimento para planejar um deslocamento.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "regiao_urbana",
+        "label": "Região urbana",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-04",
+    "kind": "vantagem",
+    "name": "Oficina Emprestada",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 2,
+    "requirement": "TEC 3; possuir vínculo com uma oficina ou ateliê",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "attribute",
+          "attribute": "TEC",
+          "minimum": 3
+        },
+        {
+          "type": "narrative",
+          "text": "possuir vínculo com uma oficina ou ateliê"
+        }
+      ]
+    },
+    "description": "Consiga uma bancada e ferramentas comuns para realizar um reparo ou trabalho manual civil. Receba +2 em um teste de TEC dessa tarefa.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "oficina_ou_atelie",
+        "label": "Oficina ou atelie",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "atividade_manual",
+        "label": "Atividade manual",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-05",
+    "kind": "vantagem",
+    "name": "Renda Estável",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 2,
+    "requirement": "Possuir uma fonte regular de renda",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "narrative",
+          "text": "Possuir uma fonte regular de renda"
+        }
+      ]
+    },
+    "description": "Cubra até três despesas básicas por dia com sua renda, como alimentação, transporte e material de rotina. Despesas grandes saem do dinheiro registrado na ficha.",
+    "frequency": "Até três despesas cotidianas por dia",
+    "configuration": [
+      {
+        "key": "fonte_de_renda",
+        "label": "Fonte de renda",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "obrigacoes",
+        "label": "Obrigações",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": [
+      "D-REC-06"
+    ]
+  },
+  {
+    "id": "V-REC-06",
+    "kind": "vantagem",
+    "name": "Credencial de Acesso",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 2,
+    "requirement": "Manter vínculo legítimo com a instituição escolhida",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "narrative",
+          "text": "Manter vínculo legítimo com a instituição escolhida"
+        }
+      ]
+    },
+    "description": "Use sua credencial para entrar em áreas de acesso regular de uma instituição à qual você esteja ligado e consultar os serviços e materiais oferecidos a pessoas com esse vínculo.",
+    "frequency": "Permanente enquanto o vínculo existir",
+    "configuration": [
+      {
+        "key": "instituicao",
+        "label": "Instituição",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "setor",
+        "label": "Setor",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-07",
+    "kind": "vantagem",
+    "name": "Sala Reservada",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 3,
+    "requirement": "Disciplina II; possuir acesso regular ao local escolhido",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "possuir acesso regular ao local escolhido"
+        }
+      ]
+    },
+    "description": "Disponibilize um espaço privado para o grupo conversar, descansar ou planejar. Dois participantes recebem +2 em um teste cada para colocar o plano em prática até o fim da sessão.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "local_da_sala",
+        "label": "Local da sala",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-08",
+    "kind": "vantagem",
+    "name": "Equipamento Especializado",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 3,
+    "requirement": "TEC 4",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "attribute",
+          "attribute": "TEC",
+          "minimum": 4
+        }
+      ]
+    },
+    "description": "Escolha um equipamento civil. Receba Vantagem em um teste de TEC para resolver um problema com ele.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "equipamento",
+        "label": "Equipamento",
+        "type": "text",
+        "required": true
+      },
+      {
+        "key": "finalidade",
+        "label": "Finalidade",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-09",
+    "kind": "vantagem",
+    "name": "Patrocínio",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 4,
+    "requirement": "Charme II; manter um projeto com contrapartida definida",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "manter um projeto com contrapartida definida"
+        }
+      ]
+    },
+    "description": "Peça que um patrocinador cubra um gasto relevante ou forneça um recurso de valor equivalente ligado ao seu projeto, como material, transporte, locação ou serviço. A contrapartida faz parte do acordo.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "patrocinador",
+        "label": "Patrocinador",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "projeto",
+        "label": "Projeto",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "contrapartidas",
+        "label": "Contrapartidas",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REC-10",
+    "kind": "vantagem",
+    "name": "Fundo de Emergência",
+    "category_id": "REC",
+    "category": "Recursos e acesso",
+    "points": 5,
+    "requirement": "Disciplina II; Charme II; possuir uma rede capaz de financiar o fundo",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "possuir uma rede capaz de financiar o fundo"
+        }
+      ]
+    },
+    "description": "Acione seu fundo para cobrir uma emergência civil relevante do grupo, como hospedagem, viagem ou reparo. O fundo paga a despesa diretamente, até o valor de três gastos relevantes.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "rede_financiadora",
+        "label": "Rede financiadora",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-01",
+    "kind": "vantagem",
+    "name": "Apresentação Cuidadosa",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Expressão ou Charme para causar uma primeira impressão ou apresentar uma versão profissional de si.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-02",
+    "kind": "vantagem",
+    "name": "Conhece a Cena",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Conhecimento para reconhecer referências, figuras públicas ou oportunidades de um meio cultural, esportivo ou estudantil que você acompanhe.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "cena_social",
+        "label": "Cena social",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-03",
+    "kind": "vantagem",
+    "name": "Presença Discreta",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 1,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Disciplina para circular sem chamar atenção ou manter a discrição numa situação civil.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-04",
+    "kind": "vantagem",
+    "name": "Boa Reputação",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 2,
+    "requirement": "Charme I; ter boa reputação em pelo menos um grupo",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 1
+        },
+        {
+          "type": "narrative",
+          "text": "ter boa reputação em pelo menos um grupo"
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Charme para pedir ajuda ou abrir uma negociação com alguém que conheça seu trabalho ou sua reputação.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "circulo_social",
+        "label": "Circulo social",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "feito_reconhecido",
+        "label": "Feito reconhecido",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-05",
+    "kind": "vantagem",
+    "name": "Credibilidade",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 2,
+    "requirement": "Conhecimento I; Expressão I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 1
+        },
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Expressão ou Charme para sustentar uma afirmação com fatos, registros ou testemunhos que você possa apresentar.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-06",
+    "kind": "vantagem",
+    "name": "Nome Artístico",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 2,
+    "requirement": "Expressão I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao agir pela sua identidade artística, receba Vantagem em Charme ou Expressão para conseguir uma oportunidade, falar sobre seu trabalho ou lidar com seu público.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "pseudonimo",
+        "label": "Pseudônimo",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "meio_artistico",
+        "label": "Meio artistico",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-07",
+    "kind": "vantagem",
+    "name": "Adaptação Social",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 3,
+    "requirement": "Empatia II; Expressão I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Expressão",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Em um ambiente ou grupo novo, escolha Charme ou Expressão. Você pode usar Empatia no lugar da habilidade escolhida em um teste para se adaptar à situação.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-08",
+    "kind": "vantagem",
+    "name": "Referência Profissional",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 3,
+    "requirement": "Charme II; ter uma referência de confiança no trabalho, nos estudos ou em um projeto",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "ter uma referência de confiança no trabalho, nos estudos ou em um projeto"
+        }
+      ]
+    },
+    "description": "Peça a uma referência acessível que apresente você ou um aliado a alguém relevante no trabalho, nos estudos ou em um projeto. A pessoa apresentada recebe Vantagem no primeiro teste social do encontro.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "referencia",
+        "label": "Referência",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "area_profissional",
+        "label": "Área profissional",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-09",
+    "kind": "vantagem",
+    "name": "Amparo Institucional",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 4,
+    "requirement": "Charme II; possuir vínculo formal ativo com uma instituição",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "possuir vínculo formal ativo com uma instituição"
+        }
+      ]
+    },
+    "description": "Acione uma instituição à qual você esteja ligado para obter orientação, documentação comum ou um representante. Receba Vantagem em um teste para resolver o problema com esse apoio.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "instituicao",
+        "label": "Instituição",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "vinculo_formal",
+        "label": "Vínculo formal",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-REP-10",
+    "kind": "vantagem",
+    "name": "Influência Local",
+    "category_id": "REP",
+    "category": "Reputação e identidade",
+    "points": 5,
+    "requirement": "Charme III; Conhecimento II; manter um cargo ou representação reconhecida",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Charme",
+          "minimum": 3
+        },
+        {
+          "type": "social_tier",
+          "skill": "Conhecimento",
+          "minimum": 2
+        },
+        {
+          "type": "narrative",
+          "text": "manter um cargo ou representação reconhecida"
+        }
+      ]
+    },
+    "description": "Use sua posição para conseguir acesso a uma pessoa responsável ou pôr uma demanda do grupo em pauta. Você e um aliado recebem Vantagem em um teste social cada ao tratar da demanda na sessão.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "organizacao_ou_comunidade",
+        "label": "Organização ou comunidade",
+        "type": "text",
+        "required": false
+      },
+      {
+        "key": "representacao",
+        "label": "Representação",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-01",
+    "kind": "vantagem",
+    "name": "Pontualidade",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 1,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba +2 em Disciplina ao organizar compromissos, conciliar tarefas ou cumprir um prazo.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-02",
+    "kind": "vantagem",
+    "name": "Cabeça Fria",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Receba +2 em Disciplina para manter a calma sob pressão, durante uma discussão ou diante de um imprevisto.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-03",
+    "kind": "vantagem",
+    "name": "Ritual Pessoal",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 1,
+    "requirement": "Nenhum",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": []
+    },
+    "description": "Quando tiver espaço para fazer uma breve pausa e se recompor, receba +2 no próximo teste de Disciplina ou Coragem da cena.",
+    "frequency": "Uma vez por cena",
+    "configuration": [
+      {
+        "key": "habito_de_preparacao",
+        "label": "Hábito de preparação",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-04",
+    "kind": "vantagem",
+    "name": "Concentração Treinada",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 2,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ignore até −2 de penalidade de circunstância por distração ou interrupção em um teste civil que exija concentração.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-05",
+    "kind": "vantagem",
+    "name": "Preparado para Avaliações",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 2,
+    "requirement": "Disciplina I; Coragem I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        },
+        {
+          "type": "social_tier",
+          "skill": "Coragem",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Disciplina ou Coragem para lidar com a pressão de uma avaliação, entrevista, apresentação ou situação em que estejam julgando seu desempenho.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-06",
+    "kind": "vantagem",
+    "name": "Persistência",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 2,
+    "requirement": "Disciplina I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Ao falhar em Disciplina numa tarefa civil, repita o teste se ainda houver oportunidade de insistir. Use o novo resultado.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-07",
+    "kind": "vantagem",
+    "name": "Limites Claros",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 3,
+    "requirement": "Coragem II; Empatia I",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Coragem",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 1
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Coragem para dizer não, sustentar uma decisão ou resistir a pressão social. Se passar, receba +2 no próximo teste de Charme ou Expressão para explicar sua posição na cena.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-08",
+    "kind": "vantagem",
+    "name": "Plano do Dia",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 3,
+    "requirement": "Disciplina II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Escolha um objetivo civil quando for começar a planejá-lo. Receba +2 em até três testes diferentes ligados ao objetivo até o fim da sessão.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-09",
+    "kind": "vantagem",
+    "name": "Controle em Crise",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 4,
+    "requirement": "Coragem II; Disciplina II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Coragem",
+          "minimum": 2
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Receba Vantagem em Coragem ou Disciplina ao reagir a uma crise civil. Se passar, um aliado recebe Vantagem no próximo teste de Coragem ou Disciplina para lidar com a mesma crise.",
+    "frequency": "Uma vez por cena",
+    "configuration": [],
+    "incompatible_with": []
+  },
+  {
+    "id": "V-AUT-10",
+    "kind": "vantagem",
+    "name": "Preparação Emocional",
+    "category_id": "AUT",
+    "category": "Autocontrole e rotina",
+    "points": 5,
+    "requirement": "Empatia III; Disciplina II",
+    "prerequisites": {
+      "mode": "all",
+      "conditions": [
+        {
+          "type": "social_tier",
+          "skill": "Empatia",
+          "minimum": 3
+        },
+        {
+          "type": "social_tier",
+          "skill": "Disciplina",
+          "minimum": 2
+        }
+      ]
+    },
+    "description": "Ao preparar o grupo para um desafio civil, escolha até quatro participantes, incluindo você. Cada um pode usar Vantagem uma vez em um teste de Coragem ou Disciplina ligado ao desafio até o fim da sessão.",
+    "frequency": "Uma vez por sessão",
+    "configuration": [
+      {
+        "key": "desafio_preparado",
+        "label": "Desafio preparado",
+        "type": "text",
+        "required": false
+      }
+    ],
+    "incompatible_with": []
+  },
+{"id":"D-REL-01","kind":"defeito","name":"Dificuldade de Pedir Ajuda","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia ou Charme no primeiro teste de uma cena para pedir um favor pessoal, admitir que não consegue resolver algo sozinho ou solicitar apoio emocional. Pedidos impessoais de serviço e trocas comerciais comuns não ativam a penalidade.","frequency":"Primeiro pedido pessoal de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-02","kind":"defeito","name":"Ciúme de Atenção","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Manter um vínculo importante presente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Manter um vínculo importante presente na campanha"}]},"description":"Quando a pessoa escolhida dá preferência explícita a outra companhia, recebe -2 no próximo teste de Empatia para compreender suas intenções ou tratar do vínculo com ela até o fim da cena. A penalidade não determina a atitude que você precisa tomar.","frequency":"Uma vez por cena","configuration":[{"key":"pessoa_do_vinculo","label":"Pessoa do vinculo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-03","kind":"defeito","name":"Promessas Precipitadas","category_id":"REL","category":"Relações e vínculos","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Disciplina para avaliar um prazo antes de aceitar uma tarefa oferecida por alguém que deseja agradar. Se aceitar um prazo inviável, a obrigação assumida e as consequências de seu descumprimento permanecem até serem renegociadas.","frequency":"Primeira negociação de prazo de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-04","kind":"defeito","name":"Orgulho Ferido","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de ser humilhado ou desacreditado publicamente por alguém, recebe -2 em Empatia e Charme para cooperar com essa pessoa ou aceitar sua orientação até o fim da cena. Um pedido de desculpas aceito por você encerra a penalidade.","frequency":"Enquanto durar a cena","configuration":[],"incompatible_with":[]},{"id":"D-REL-05","kind":"defeito","name":"Dependência de Aprovação","category_id":"REL","category":"Relações e vínculos","points":2,"requirement":"Possuir uma pessoa de referência recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma pessoa de referência recorrente"}]},"description":"Escolha uma pessoa cuja aprovação procura. Depois de tomar uma decisão importante contra uma posição expressa por ela, recebe -2 no próximo teste de Coragem ou Expressão para sustentar essa decisão publicamente. A penalidade expira ao fim da cena.","frequency":"Uma vez por cena","configuration":[{"key":"pessoa_de_referencia","label":"Pessoa de referencia","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-06","kind":"defeito","name":"Vínculo em Crise","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Possuir um vínculo próximo em conflito recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir um vínculo próximo em conflito recorrente"}]},"description":"Recebe -2 em Empatia e Charme ao tratar do conflito com a pessoa escolhida. Quando uma conversa sobre esse conflito termina sem acordo, recebe também -2 no primeiro teste de Disciplina realizado antes de passar vinte minutos em outra atividade.","frequency":"Permanente enquanto a crise existir","configuration":[{"key":"pessoa_do_vinculo","label":"Pessoa do vinculo","type":"text","required":true},{"key":"conflito","label":"Conflito","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-07","kind":"defeito","name":"Responsabilidade de Cuidado","category_id":"REL","category":"Relações e vínculos","points":3,"requirement":"Ser responsável pelo cuidado regular de uma pessoa","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Ser responsável pelo cuidado regular de uma pessoa"}]},"description":"Precisa reservar duas horas diárias ao cuidado da pessoa escolhida ou organizar uma substituição adequada. Uma substituição paga custa um gasto cotidiano por dia. Enquanto uma necessidade de cuidado previamente conhecida permanecer sem responsável, recebe -2 em Disciplina e não dispõe livremente dessas duas horas.","frequency":"Duas horas por dia","configuration":[{"key":"pessoa_sob_cuidado","label":"Pessoa sob cuidado","type":"text","required":true},{"key":"necessidades_regulares","label":"Necessidades regulares","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-08","kind":"defeito","name":"Chantagem Afetiva","category_id":"REL","category":"Relações e vínculos","points":4,"requirement":"Uma pessoa próxima controlar um recurso cotidiano essencial seu","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa próxima controlar um recurso cotidiano essencial seu"}]},"description":"Escolha uma pessoa e o recurso que ela controla, como transporte, renda ou moradia. Uma vez por sessão, ela exige uma tarefa de quatro horas ou um gasto relevante. Se recusar, perde o acesso ao recurso por até três dias ou até negociar uma solução. A exigência precisa ser possível de cumprir.","frequency":"Uma exigência por sessão","configuration":[{"key":"pessoa_controladora","label":"Pessoa controladora","type":"text","required":true},{"key":"recurso_controlado","label":"Recurso controlado","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-09","kind":"defeito","name":"Conflito de Lealdades","category_id":"REL","category":"Relações e vínculos","points":4,"requirement":"Pertencer a dois círculos com interesses incompatíveis e recorrentes","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Pertencer a dois círculos com interesses incompatíveis e recorrentes"}]},"description":"Uma vez por sessão, os círculos escolhidos apresentam demandas incompatíveis que consomem o mesmo período ou recurso. Ao atender uma delas, recebe -2 em Charme com o outro círculo até oferecer uma reparação de quatro horas de trabalho ou um gasto relevante. Não pode receber uma segunda cobrança enquanto a primeira estiver pendente.","frequency":"Uma cobrança por sessão","configuration":[{"key":"primeiro_circulo","label":"Primeiro circulo","type":"text","required":true},{"key":"segundo_circulo","label":"Segundo circulo","type":"text","required":true},{"key":"interesse_em_disputa","label":"Interesse em disputa","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REL-10","kind":"defeito","name":"Vida sob Controle","category_id":"REL","category":"Relações e vínculos","points":5,"requirement":"Uma pessoa ou grupo controlar dois recursos essenciais e sua agenda cotidiana","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa ou grupo controlar dois recursos essenciais e sua agenda cotidiana"}]},"description":"Escolha dois recursos essenciais controlados e três períodos de quatro horas por semana sujeitos a obrigações impostas. Para faltar a um período, precisa conseguir uma substituição ou autorização em teste de Charme. Se faltar sem resolver a obrigação, perde acesso aos dois recursos até cumprir quatro horas de reparação. Usa a DT social padrão da cena.","frequency":"Permanente enquanto o controle existir","configuration":[{"key":"pessoa_ou_grupo_controlador","label":"Pessoa ou grupo controlador","type":"text","required":true},{"key":"primeiro_recurso","label":"Primeiro recurso","type":"text","required":true},{"key":"segundo_recurso","label":"Segundo recurso","type":"text","required":true},{"key":"obrigacoes_semanais","label":"Obrigacoes semanais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-01","kind":"defeito","name":"Sotaque Marcante","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Frequentar um meio onde seu sotaque provoque preconceito","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Frequentar um meio onde seu sotaque provoque preconceito"}]},"description":"Escolha um meio social e o preconceito presente nele. Recebe -2 no primeiro teste de Charme da cena com alguém desse meio que manifeste esse preconceito ao ouvir seu sotaque. A penalidade depende dessa reação e não se aplica a ouvintes que o tratem normalmente.","frequency":"Primeira interação afetada de cada cena","configuration":[{"key":"meio_social","label":"Meio social","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-02","kind":"defeito","name":"Sem Filtro","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Charme para tratar de um assunto delicado sem soar invasivo ou ofensivo. O assunto precisa envolver intimidade, dinheiro, família ou outro limite pessoal que o interlocutor tenha demonstrado. Você escolhe o que diz e como tenta corrigir a situação.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-COM-03","kind":"defeito","name":"Formalidade Excessiva","category_id":"COM","category":"Comunicação e convivência","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Expressão ou Charme para criar proximidade em uma conversa informal com pessoas que ainda não conheçam seu jeito. Depois de dez minutos de conversa amistosa com elas, a penalidade deixa de se aplicar até o fim da cena.","frequency":"Primeira aproximação informal de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-COM-04","kind":"defeito","name":"Timidez em Grupo","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Expressão quando precisa falar pessoalmente diante de pelo menos três ouvintes que ainda não conhece. A penalidade termina naquela cena depois que consegue conversar individualmente por cinco minutos com pelo menos dois desses ouvintes.","frequency":"Enquanto a condição estiver presente","configuration":[],"incompatible_with":[]},{"id":"D-COM-05","kind":"defeito","name":"Evita Confrontos","category_id":"COM","category":"Comunicação e convivência","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de receber uma recusa direta, recebe -2 em Charme para insistir no mesmo pedido e em Coragem para enfrentar verbalmente a pessoa que o recusou. Apresentar uma proposta materialmente diferente encerra a penalidade relativa ao pedido anterior.","frequency":"Enquanto durar a negociação","configuration":[],"incompatible_with":[]},{"id":"D-COM-06","kind":"defeito","name":"Idioma em Aprendizado","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Usar cotidianamente um idioma que ainda está aprendendo","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Usar cotidianamente um idioma que ainda está aprendendo"}]},"description":"Escolha o idioma de uso cotidiano que ainda não domina. Recebe -2 em Conhecimento para compreender textos técnicos ou burocráticos e em Expressão para formular instruções complexas nesse idioma. Uma tradução competente ou o dobro do tempo habitual de preparação remove a penalidade daquela tarefa.","frequency":"Permanente no idioma escolhido","configuration":[{"key":"idioma","label":"Idioma","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-07","kind":"defeito","name":"Exposição Difícil","category_id":"COM","category":"Comunicação e convivência","points":3,"requirement":"Participar recorrentemente de apresentações ou reuniões públicas","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Participar recorrentemente de apresentações ou reuniões públicas"}]},"description":"Recebe Desvantagem em Expressão quando precisa apresentar uma posição diante de cinco ou mais ouvintes por pelo menos um minuto. Uma hora de ensaio com um ouvinte de confiança permite realizar o primeiro teste da apresentação sem essa Desvantagem. Os demais testes mantêm a limitação.","frequency":"Durante exposições públicas","configuration":[],"incompatible_with":[]},{"id":"D-COM-08","kind":"defeito","name":"Bloqueio sob Hostilidade","category_id":"COM","category":"Comunicação e convivência","points":4,"requirement":"Enfrentar hostilidade verbal recorrente no ambiente escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Enfrentar hostilidade verbal recorrente no ambiente escolhido"}]},"description":"Quando sofre uma ameaça verbal direta ou humilhação pública no ambiente escolhido, recebe Desvantagem em Charme e Expressão naquela cena até passar dez minutos afastado do conflito. Continua podendo falar, recusar, buscar apoio ou agir; os testes afetados conservam a penalidade.","frequency":"Até se afastar por dez minutos","configuration":[{"key":"ambiente_de_hostilidade","label":"Ambiente de hostilidade","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-09","kind":"defeito","name":"Assunto que Não Consegue Abordar","category_id":"COM","category":"Comunicação e convivência","points":4,"requirement":"O assunto escolhido ser recorrente e necessário na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O assunto escolhido ser recorrente e necessário na campanha"}]},"description":"Escolha um assunto pessoal concreto. Para falar dele com clareza, precisa de vinte minutos de preparação privada antes da conversa; sem isso, recebe -4 em Expressão e Empatia durante a abordagem. Mesmo com preparação, recebe -2 nesses testes se a conversa ocorrer diante de desconhecidos.","frequency":"Enquanto a conversa tratar do assunto","configuration":[{"key":"assunto_pessoal","label":"Assunto pessoal","type":"text","required":true}],"incompatible_with":[]},{"id":"D-COM-10","kind":"defeito","name":"Comunicação Monitorada","category_id":"COM","category":"Comunicação e convivência","points":5,"requirement":"Uma pessoa ou instituição controlar seus meios habituais de comunicação","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma pessoa ou instituição controlar seus meios habituais de comunicação"}]},"description":"Chamadas, correspondência e mensagens enviadas pelos meios habituais ficam disponíveis à pessoa ou instituição escolhida. Uma conversa privada exige encontro presencial fora dos locais monitorados ou acesso temporário a outro meio. Se uma comunicação ocultada for descoberta, perde seus meios habituais por três dias e precisa negociar a recuperação.","frequency":"Permanente enquanto o monitoramento existir","configuration":[{"key":"responsavel_pelo_monitoramento","label":"Responsavel pelo monitoramento","type":"text","required":true},{"key":"meios_monitorados","label":"Meios monitorados","type":"text","required":true},{"key":"locais_monitorados","label":"Locais monitorados","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-01","kind":"defeito","name":"Caligrafia Confusa","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Usar escrita manual regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Usar escrita manual regularmente"}]},"description":"Recebe -2 em Expressão para transmitir instruções, relatos ou pedidos por texto manuscrito produzido com pressa. Dedicar dez minutos à revisão e transcrição remove a penalidade daquele texto. Documentos preenchidos durante um prazo curto continuam sujeitos à limitação.","frequency":"Permanente em textos manuscritos apressados","configuration":[],"incompatible_with":[]},{"id":"D-EST-02","kind":"defeito","name":"Lacuna Escolar","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"A área escolhida aparecer regularmente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"A área escolhida aparecer regularmente na campanha"}]},"description":"Escolha uma área de formação básica, como história, matemática ou ciências. Recebe -2 em Conhecimento para resolver tarefas dessa área sem uma fonte de consulta. Trinta minutos de estudo com material adequado removem a penalidade de uma tarefa específica.","frequency":"Permanente na área escolhida","configuration":[{"key":"area_de_formacao","label":"Area de formacao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-03","kind":"defeito","name":"Receio de Perguntar","category_id":"EST","category":"Estudo e trabalho","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia ou Charme para pedir que um professor, superior ou especialista repita uma explicação ou esclareça uma instrução. A penalidade se aplica ao pedido de esclarecimento e não reduz sua capacidade de compreender uma resposta obtida.","frequency":"Primeiro pedido de esclarecimento de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-EST-04","kind":"defeito","name":"Estimativa Ruim de Prazos","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Para organizar uma tarefa de estudo ou trabalho, precisa reservar um quarto a mais do tempo normalmente previsto. Se começar sem essa margem, recebe -2 em Disciplina para manter o cronograma daquela tarefa. Ajuda ou recursos adicionais podem alterar o tempo necessário pelas regras normais.","frequency":"Em tarefas de estudo ou trabalho com prazo definido","configuration":[],"incompatible_with":[]},{"id":"D-EST-05","kind":"defeito","name":"Papéis Desorganizados","category_id":"EST","category":"Estudo e trabalho","points":2,"requirement":"Precisar de documentos regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Precisar de documentos regularmente"}]},"description":"Localizar um documento sob sua responsabilidade exige dez minutos adicionais de procura. Se precisar apresentá-lo imediatamente sem esse tempo, recebe -2 em Conhecimento ou Expressão para comprovar informações que dependeriam dele. Cópias previamente entregues a outra pessoa continuam disponíveis com ela.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":["V-REC-02"]},{"id":"D-EST-06","kind":"defeito","name":"Turnos Imprevisíveis","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"Possuir uma ocupação com escala variável","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma ocupação com escala variável"}]},"description":"Sua ocupação ocupa dois períodos semanais de quatro horas, informados apenas no dia anterior. Para faltar, precisa conseguir substituição ou perder um gasto relevante de sua renda. Uma falta sem solução também causa -2 em Charme com os responsáveis pelo trabalho até cumprir um turno de compensação.","frequency":"Dois períodos de quatro horas por semana","configuration":[{"key":"ocupacao","label":"Ocupacao","type":"text","required":true},{"key":"responsaveis_pela_escala","label":"Responsaveis pela escala","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-07","kind":"defeito","name":"Pressão de Avaliação","category_id":"EST","category":"Estudo e trabalho","points":3,"requirement":"Passar por avaliações formais recorrentes","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Passar por avaliações formais recorrentes"}]},"description":"Recebe Desvantagem em Conhecimento e Expressão durante provas, entrevistas de seleção ou avaliações de desempenho que decidam sua permanência ou acesso a uma oportunidade. Uma hora de preparação com alguém de confiança permite fazer o primeiro teste sem essa Desvantagem. Os testes seguintes permanecem afetados.","frequency":"Durante avaliações formais","configuration":[],"incompatible_with":[]},{"id":"D-EST-08","kind":"defeito","name":"Histórico Disciplinar","category_id":"EST","category":"Estudo e trabalho","points":4,"requirement":"Uma instituição importante manter sanções ativas contra você","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma instituição importante manter sanções ativas contra você"}]},"description":"Recebe -2 em Charme em procedimentos formais na instituição escolhida. Pedidos de empréstimo de material, mudança de prazo ou acesso fora do horário exigem a presença de um responsável que aceite se comprometer por você. As sanções e o responsável possível são definidos na escolha.","frequency":"Permanente na instituição escolhida","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"sancoes","label":"Sancoes","type":"text","required":true},{"key":"responsavel_possivel","label":"Responsavel possivel","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-09","kind":"defeito","name":"Formação sem Reconhecimento","category_id":"EST","category":"Estudo e trabalho","points":4,"requirement":"Exercer regularmente uma atividade que exija formação reconhecida","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Exercer regularmente uma atividade que exija formação reconhecida"}]},"description":"Sua formação na atividade escolhida não é aceita pelas instituições relevantes da campanha. Candidaturas formais e autorizações exigem avaliação adicional, dois dias de preparação e um gasto relevante. Enquanto não obtiver a equivalência exigida, recebe -2 em Charme ao solicitar trabalho ou acesso profissional nessas instituições.","frequency":"Permanente nos procedimentos afetados","configuration":[{"key":"atividade_profissional","label":"Atividade profissional","type":"text","required":true},{"key":"instituicoes_relevantes","label":"Instituicoes relevantes","type":"text","required":true}],"incompatible_with":[]},{"id":"D-EST-10","kind":"defeito","name":"Afastamento Compulsório","category_id":"EST","category":"Estudo e trabalho","points":5,"requirement":"Uma instituição central à sua vida ter imposto seu afastamento","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma instituição central à sua vida ter imposto seu afastamento"}]},"description":"Escolha uma instituição central a seus estudos ou trabalho. Você perde acesso regular aos seus espaços e serviços. Cada entrada autorizada exige um pedido formal com um dia de antecedência e acompanhamento de um responsável. Recebe -4 em Charme e Expressão para defender sua permanência ou recuperar oportunidades dentro dela.","frequency":"Permanente enquanto a sanção existir","configuration":[{"key":"instituicao","label":"Instituicao","type":"text","required":true},{"key":"motivo_do_afastamento","label":"Motivo do afastamento","type":"text","required":true},{"key":"responsavel_pelo_acompanhamento","label":"Responsavel pelo acompanhamento","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-01","kind":"defeito","name":"Dinheiro de Difícil Acesso","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Seus recursos habituais dependerem de retirada ou liberação","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Seus recursos habituais dependerem de retirada ou liberação"}]},"description":"Para pagar o primeiro gasto cotidiano que não tenha planejado naquele dia, precisa de vinte minutos para acessar seus recursos. Se o pagamento não puder esperar, precisa conseguir um adiantamento de outra pessoa ou abandonar aquela compra. Recursos planejados previamente não sofrem essa demora.","frequency":"Primeiro gasto imprevisto do dia","configuration":[{"key":"forma_de_acesso_ao_dinheiro","label":"Forma de acesso ao dinheiro","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-02","kind":"defeito","name":"Moradia Distante","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Viver longe da região principal da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Viver longe da região principal da campanha"}]},"description":"O trajeto entre sua moradia e a região principal da campanha exige vinte minutos adicionais em cada sentido em comparação ao deslocamento comum do grupo. Hospedagem temporária mais próxima suspende a demora enquanto durar, sem alterar suas obrigações na moradia original.","frequency":"Cada ida e volta","configuration":[{"key":"moradia","label":"Moradia","type":"text","required":true},{"key":"regiao_principal","label":"Regiao principal","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-03","kind":"defeito","name":"Material Emprestado","category_id":"REC","category":"Recursos e acesso","points":1,"requirement":"Depender regularmente do item escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender regularmente do item escolhido"}]},"description":"Escolha um item civil necessário à sua rotina que pertença a outra pessoa. Em dois dias fixos da semana, ele fica indisponível para você. Conseguir um substituto depende de empréstimo ou locação normal. Os dias de indisponibilidade são definidos na escolha.","frequency":"Dois dias por semana","configuration":[{"key":"item","label":"Item","type":"text","required":true},{"key":"proprietario","label":"Proprietario","type":"text","required":true},{"key":"dias_indisponiveis","label":"Dias indisponiveis","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-04","kind":"defeito","name":"Transporte Irregular","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Depender de uma rota ou serviço instável","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de uma rota ou serviço instável"}]},"description":"Uma vez por sessão, seu deslocamento habitual sofre uma interrupção que acrescenta uma hora ao trajeto. Pode evitar a demora pagando um gasto cotidiano por uma alternativa disponível. O efeito é aplicado ao seu trajeto pessoal, mesmo quando os demais usam outra rota.","frequency":"Uma vez por sessão","configuration":[{"key":"rota_ou_servico","label":"Rota ou servico","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-05","kind":"defeito","name":"Equipamento Precário","category_id":"REC","category":"Recursos e acesso","points":2,"requirement":"Utilizar regularmente o equipamento escolhido","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Utilizar regularmente o equipamento escolhido"}]},"description":"Escolha um equipamento civil essencial à sua atividade. Ele causa -2 em TEC nos testes de uso. Dedicar quinze minutos à regulagem permite realizar o primeiro teste da cena sem essa penalidade. A substituição definitiva por equipamento adequado exige resolver o defeito.","frequency":"Permanente enquanto o equipamento for utilizado","configuration":[{"key":"equipamento","label":"Equipamento","type":"text","required":true},{"key":"atividade","label":"Atividade","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-06","kind":"defeito","name":"Renda Irregular","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"Depender de recebimentos variáveis ou atrasados","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de recebimentos variáveis ou atrasados"}]},"description":"O primeiro recebimento pessoal de cada semana chega com três dias de atraso. Durante esse intervalo, precisa pagar despesas com dinheiro já disponível ou obter um adiantamento. Ao fim da semana, um gasto cotidiano adicional é consumido por taxas, deslocamentos ou custos de cobrança.","frequency":"Uma vez por semana","configuration":[{"key":"fonte_de_renda","label":"Fonte de renda","type":"text","required":true}],"incompatible_with":["V-REC-05"]},{"id":"D-REC-07","kind":"defeito","name":"Dívida Recorrente","category_id":"REC","category":"Recursos e acesso","points":3,"requirement":"Possuir uma dívida e um credor presente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir uma dívida e um credor presente na campanha"}]},"description":"Precisa pagar um gasto relevante ao credor a cada semana. Se atrasar, recebe -2 em Charme com o credor e seus representantes, e fica sem novos empréstimos ou serviços deles até acertar o pagamento. Valores atrasados permanecem devidos.","frequency":"Um pagamento por semana","configuration":[{"key":"credor","label":"Credor","type":"text","required":true},{"key":"origem_da_divida","label":"Origem da divida","type":"text","required":true}],"incompatible_with":["D-REC-10"]},{"id":"D-REC-08","kind":"defeito","name":"Moradia Instável","category_id":"REC","category":"Recursos e acesso","points":4,"requirement":"Depender de hospedagem temporária e frequente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Depender de hospedagem temporária e frequente"}]},"description":"Precisa mudar de hospedagem duas vezes por semana, gastando uma hora por mudança para transportar seus pertences. Em cada mudança, paga um gasto cotidiano ou obtém acolhimento de outra pessoa. Sem hospedagem resolvida, recebe -2 em Disciplina para estudar, trabalhar ou preparar compromissos até garantir um local para a noite.","frequency":"Duas mudanças de local por semana","configuration":[{"key":"hospedagens_habituais","label":"Hospedagens habituais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-09","kind":"defeito","name":"Sustento de Terceiros","category_id":"REC","category":"Recursos e acesso","points":4,"requirement":"Ser responsável por despesas essenciais de outra pessoa","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Ser responsável por despesas essenciais de outra pessoa"}]},"description":"Além das próprias despesas, precisa pagar dois gastos relevantes semanais para o sustento da pessoa escolhida. Se um pagamento atrasar, recebe -2 em Disciplina enquanto busca recursos e precisa reservar quatro horas para solucionar a necessidade por trabalho, negociação ou apoio. Os pagamentos ainda permanecem devidos.","frequency":"Dois gastos relevantes por semana","configuration":[{"key":"pessoa_sustentada","label":"Pessoa sustentada","type":"text","required":true},{"key":"despesas_essenciais","label":"Despesas essenciais","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REC-10","kind":"defeito","name":"Dívida sob Coação","category_id":"REC","category":"Recursos e acesso","points":5,"requirement":"Possuir um credor com meios concretos de restringir sua vida cotidiana","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Possuir um credor com meios concretos de restringir sua vida cotidiana"}]},"description":"Precisa pagar dois gastos relevantes por semana. Cada pagamento atrasado bloqueia um recurso essencial previamente definido, como moradia, renda ou acesso a material de trabalho, até a quitação. Enquanto houver atraso, recebe -2 em Charme e Disciplina ao lidar com compromissos relacionados ao recurso bloqueado. Há no máximo dois bloqueios simultâneos.","frequency":"Dois pagamentos por semana","configuration":[{"key":"credor","label":"Credor","type":"text","required":true},{"key":"origem_da_divida","label":"Origem da divida","type":"text","required":true},{"key":"primeiro_recurso","label":"Primeiro recurso","type":"text","required":true},{"key":"segundo_recurso","label":"Segundo recurso","type":"text","required":true}],"incompatible_with":["D-REC-07"]},{"id":"D-REP-01","kind":"defeito","name":"Homônimo Indesejado","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"O homônimo ser conhecido em um meio recorrente da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O homônimo ser conhecido em um meio recorrente da campanha"}]},"description":"Você compartilha nome ou apelido com alguém de má reputação no meio escolhido. Recebe -2 no primeiro teste de Charme quando for confundido com essa pessoa. Apresentar identificação ou uma referência verificável encerra a penalidade para aqueles interlocutores.","frequency":"Primeira identificação afetada de cada cena","configuration":[{"key":"homonimo","label":"Homonimo","type":"text","required":true},{"key":"meio_social","label":"Meio social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-02","kind":"defeito","name":"Visual Fora do Padrão","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"Frequentar um ambiente com preconceito recorrente contra seu visual","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Frequentar um ambiente com preconceito recorrente contra seu visual"}]},"description":"Escolha um ambiente e o aspecto visual que provoca rejeição nele. Recebe -2 no primeiro teste de Charme para solicitar atendimento ou acolhimento a alguém que manifeste esse preconceito. A penalidade se aplica à reação daquele interlocutor, sem alterar sua competência ou aparência.","frequency":"Primeira aproximação afetada de cada cena","configuration":[{"key":"ambiente","label":"Ambiente","type":"text","required":true},{"key":"aspecto_visual","label":"Aspecto visual","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-03","kind":"defeito","name":"Boato Local","category_id":"REP","category":"Reputação e identidade","points":1,"requirement":"O boato circular em um grupo relevante da campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O boato circular em um grupo relevante da campanha"}]},"description":"Escolha um boato falso ou distorcido conhecido por um grupo. Recebe -2 no primeiro teste de Charme com alguém desse grupo que acredite nele. Uma explicação de dez minutos acompanhada de uma prova verificável encerra a penalidade com essa pessoa.","frequency":"Primeira abordagem afetada de cada cena","configuration":[{"key":"boato","label":"Boato","type":"text","required":true},{"key":"grupo","label":"Grupo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-04","kind":"defeito","name":"Fama Indesejada","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Um acontecimento público ter tornado você reconhecível","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Um acontecimento público ter tornado você reconhecível"}]},"description":"Escolha o acontecimento e o meio onde seu rosto é conhecido. Recebe -2 em Disciplina para evitar chamar atenção ou passar despercebido em situações sociais desse meio. Pessoas que o reconheçam podem abordar você, mesmo quando pretendia manter a visita discreta.","frequency":"Permanente no meio em que é reconhecido","configuration":[{"key":"acontecimento","label":"Acontecimento","type":"text","required":true},{"key":"meio_social","label":"Meio social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-05","kind":"defeito","name":"Má Fama","category_id":"REP","category":"Reputação e identidade","points":2,"requirement":"Uma reputação negativa ser conhecida por um círculo relevante","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma reputação negativa ser conhecida por um círculo relevante"}]},"description":"Escolha uma reputação negativa e o círculo onde ela circula. Recebe -2 em Charme com integrantes que acreditem nela. A penalidade permanece até recuperar a confiança daquela pessoa ou resolver publicamente a causa da reputação.","frequency":"Permanente com quem conhece e aceita a reputação","configuration":[{"key":"reputacao","label":"Reputacao","type":"text","required":true},{"key":"circulo_social","label":"Circulo social","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-06","kind":"defeito","name":"Documentação Inconsistente","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Precisar regularmente dos documentos afetados","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Precisar regularmente dos documentos afetados"}]},"description":"Escolha uma inconsistência real entre seus documentos. Procedimentos que dependam desse dado exigem uma verificação adicional de um dia e a apresentação de um comprovante definido na escolha. Sem o comprovante, recebe -2 em Charme e Conhecimento para esclarecer sua situação e o procedimento permanece pendente.","frequency":"Cada procedimento formal afetado","configuration":[{"key":"inconsistencia","label":"Inconsistencia","type":"text","required":true},{"key":"documentos","label":"Documentos","type":"text","required":true},{"key":"comprovante_necessario","label":"Comprovante necessario","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-07","kind":"defeito","name":"Estigma Social","category_id":"REP","category":"Reputação e identidade","points":3,"requirement":"Enfrentar discriminação recorrente em um meio importante","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Enfrentar discriminação recorrente em um meio importante"}]},"description":"Escolha um meio social e o preconceito que você enfrenta nele. Recebe -2 em Charme e Expressão em interações formais com pessoas que adotem esse preconceito. Para obter uma referência ou recomendação dessas pessoas, precisa apresentar também um avalista ou uma prova adicional de competência.","frequency":"Permanente nas interações afetadas","configuration":[{"key":"meio_social","label":"Meio social","type":"text","required":true},{"key":"preconceito_recorrente","label":"Preconceito recorrente","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-08","kind":"defeito","name":"Segredo sob Chantagem","category_id":"REP","category":"Reputação e identidade","points":4,"requirement":"Alguém possuir provas de um segredo com consequências sociais concretas","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Alguém possuir provas de um segredo com consequências sociais concretas"}]},"description":"Escolha o segredo, quem conhece suas provas e a consequência de sua divulgação. Uma vez por sessão, essa pessoa exige uma tarefa de quatro horas ou um gasto relevante. Se recusar, ela divulga a prova ao círculo definido. Quando a divulgação tornar a chantagem inviável, este defeito é substituído por uma consequência equivalente, sem novos pontos.","frequency":"Uma exigência por sessão","configuration":[{"key":"segredo","label":"Segredo","type":"text","required":true},{"key":"chantagista","label":"Chantagista","type":"text","required":true},{"key":"provas","label":"Provas","type":"text","required":true},{"key":"circulo_afetado","label":"Circulo afetado","type":"text","required":true},{"key":"consequencia_da_divulgacao","label":"Consequencia da divulgacao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-09","kind":"defeito","name":"Família Marcada","category_id":"REP","category":"Reputação e identidade","points":4,"requirement":"Sua família enfrentar uma acusação ou escândalo conhecido e persistente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Sua família enfrentar uma acusação ou escândalo conhecido e persistente"}]},"description":"Escolha a acusação e um círculo institucional que a associe à sua família. Recebe -4 em Charme quando se identifica com seu nome familiar nesse círculo. Pedidos de recomendação, matrícula ou contratação também exigem duas referências externas dispostas a confirmar sua conduta.","frequency":"Permanente no círculo afetado","configuration":[{"key":"acusacao_ou_escandalo","label":"Acusacao ou escandalo","type":"text","required":true},{"key":"circulo_institucional","label":"Circulo institucional","type":"text","required":true}],"incompatible_with":[]},{"id":"D-REP-10","kind":"defeito","name":"Perseguição Organizada","category_id":"REP","category":"Reputação e identidade","points":5,"requirement":"Um grupo hostil possuir recursos e presença recorrente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Um grupo hostil possuir recursos e presença recorrente na campanha"}]},"description":"Escolha o grupo e dois locais ou serviços cotidianos onde ele mantém informantes. Identificar-se nesses lugares informa sua presença ao grupo até o fim da cena. Usá-los sem expor sua identidade exige um intermediário e um gasto cotidiano por visita. Recebe -2 em Disciplina para ocultar sua rotina dos perseguidores; uma falha revela o próximo compromisso que tenha deixado registrado.","frequency":"Permanente enquanto a perseguição existir","configuration":[{"key":"grupo_perseguidor","label":"Grupo perseguidor","type":"text","required":true},{"key":"primeiro_local_ou_servico","label":"Primeiro local ou servico","type":"text","required":true},{"key":"segundo_local_ou_servico","label":"Segundo local ou servico","type":"text","required":true},{"key":"motivo_da_perseguicao","label":"Motivo da perseguicao","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-01","kind":"defeito","name":"Impulsivo","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 no primeiro teste de Disciplina para conter uma reação imediata diante de uma provocação, oportunidade urgente ou decisão sob pressão. A penalidade se limita à contenção da reação; você continua escolhendo se espera, responde ou procura outra solução.","frequency":"Primeiro teste afetado de cada cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-02","kind":"defeito","name":"Competitivo","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de perder uma disputa social, acadêmica ou recreativa, recebe -2 no próximo teste de Empatia para reconhecer o mérito de quem venceu ou aceitar sua orientação até o fim da cena. Uma conversa de cinco minutos com essa pessoa encerra a penalidade.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-03","kind":"defeito","name":"Vaidade Sensível","category_id":"AUT","category":"Autocontrole e rotina","points":1,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Depois de receber uma crítica pública à sua apresentação ou produção pessoal, recebe -2 no próximo teste de Expressão para se apresentar diante do mesmo público até o fim da cena. Dez minutos para revisar sua apresentação permitem encerrar a penalidade antes do teste.","frequency":"Uma vez por cena","configuration":[],"incompatible_with":[]},{"id":"D-AUT-04","kind":"defeito","name":"Ruminação","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Quando uma falha sua em Charme, Empatia ou Expressão causa uma consequência concreta, recebe -2 no primeiro teste de Conhecimento ou Disciplina realizado nos trinta minutos seguintes. Dedicar dez minutos a registrar o ocorrido ou conversar com alguém disposto a ouvir encerra essa penalidade.","frequency":"Depois de uma falha social relevante","configuration":[],"incompatible_with":[]},{"id":"D-AUT-05","kind":"defeito","name":"Desconfiança Inicial","category_id":"AUT","category":"Autocontrole e rotina","points":2,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Recebe -2 em Empatia para interpretar uma oferta de ajuda feita por alguém que ainda não conhece. Se aceitar o auxílio dessa pessoa antes de conversar com ela por dez minutos ou receber uma referência confiável, recebe -2 no primeiro teste realizado com esse auxílio.","frequency":"Primeiro encontro com cada pessoa","configuration":[],"incompatible_with":[]},{"id":"D-AUT-06","kind":"defeito","name":"Fixação em Projeto","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Manter um projeto ou objetivo pessoal recorrente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Manter um projeto ou objetivo pessoal recorrente"}]},"description":"Depois de passar uma hora no projeto escolhido, precisa de quinze minutos para organizar sua interrupção. Se mudar imediatamente para outra tarefa civil, recebe -2 no primeiro teste social necessário a ela. A penalidade se aplica novamente quando retoma e interrompe outra sessão de uma hora de trabalho.","frequency":"Cada mudança de atividade enquanto o projeto estiver pendente","configuration":[{"key":"projeto_ou_objetivo","label":"Projeto ou objetivo","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-07","kind":"defeito","name":"Culpa Persistente","category_id":"AUT","category":"Autocontrole e rotina","points":3,"requirement":"Nenhum","prerequisites":{"mode":"all","conditions":[]},"description":"Quando uma decisão ou falha sua causa a perda de uma oportunidade, recurso ou relação importante para outra pessoa, recebe -2 em Coragem e Disciplina até o próximo descanso longo. Uma hora dedicada a uma reparação aceita pela pessoa afetada encerra a penalidade antes desse descanso.","frequency":"Depois de uma falha que prejudique outra pessoa","configuration":[],"incompatible_with":[]},{"id":"D-AUT-08","kind":"defeito","name":"Rotina Obrigatória","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"Uma rotina específica ser viável e relevante na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"Uma rotina específica ser viável e relevante na campanha"}]},"description":"Escolha uma rotina diária de organização ou preparação que consuma uma hora. Enquanto não a completar, recebe -2 nos testes sociais de tarefas imprevistas ou mudanças de plano. Se a rotina for interrompida, precisa completar o tempo que faltava em outro momento do mesmo dia.","frequency":"Uma hora por dia","configuration":[{"key":"rotina_diaria","label":"Rotina diaria","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-09","kind":"defeito","name":"Medo Enraizado","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"O gatilho ser concreto e aparecer recorrentemente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O gatilho ser concreto e aparecer recorrentemente na campanha"}]},"description":"Escolha um gatilho concreto, como espaços fechados, alturas ou uma situação associada ao seu passado. Recebe Desvantagem em Coragem e Disciplina para se aproximar, permanecer ou agir diante dele no mundo real. A limitação não determina sua ação nem se estende automaticamente a criaturas ou efeitos com o mesmo nome no mundo cognitivo.","frequency":"Enquanto enfrentar diretamente o gatilho no mundo real","configuration":[{"key":"gatilho","label":"Gatilho","type":"text","required":true}],"incompatible_with":[]},{"id":"D-AUT-10","kind":"defeito","name":"Exaustão Social","category_id":"AUT","category":"Autocontrole e rotina","points":5,"requirement":"A campanha exigir interação social prolongada regularmente","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"A campanha exigir interação social prolongada regularmente"}]},"description":"Depois de acumular duas horas de aulas participativas, atendimento, reuniões, apresentações ou conversas exigentes, recebe -2 em todos os testes sociais no mundo real. Duas horas sem demandas sociais, em repouso ou atividade solitária tranquila, encerram a penalidade e reiniciam a contagem de exposição daquele dia.","frequency":"Após duas horas de interação ativa no mesmo dia","configuration":[],"incompatible_with":[]}];
 const SOCIAL_TRAIT_CATEGORIES=[{"id":"REL","name":"Relações e vínculos","order":1},{"id":"COM","name":"Comunicação e convivência","order":2},{"id":"EST","name":"Estudo e trabalho","order":3},{"id":"REC","name":"Recursos e acesso","order":4},{"id":"REP","name":"Reputação e identidade","order":5},{"id":"AUT","name":"Autocontrole e rotina","order":6}];
 const TRAIT_POINT_RULES={initial:1,maxFlawPoints:5,maxFlawCount:3,dissonantPoints:5};
 const DISSONANT_TRAIT_CATALOG=PERSONA_PHOBIA_DISSONANT_ARCANAS.map(arcana=>({
@@ -20354,6 +22120,7 @@ function traitCardHTML(item){
     <header class="tr-card-head"><div><small>${esc(item.kind==='dissonante'?item.roman+' / ARCANAS DISSONANTES':item.category.toUpperCase())}</small><h3>${esc(item.name)}</h3></div><span class="tr-score" aria-label="${esc(traitPointLabel(item))}"><b>${item.kind==='vantagem'?'':'+'}${item.points}</b><small>${item.kind==='vantagem'?'CUSTO':'CONCEDE'}</small></span></header>
     <p class="tr-card-description">${esc(description)}</p>
     <div class="tr-card-meta"><span class="tr-status${owned?' is-owned':''}">${owned?'✓ ADQUIRIDO':requirements.met?(requirements.narrative?'CONFERIR CONDIÇÕES':'REQUISITOS ATENDIDOS'):'PRÉ-REQUISITOS PENDENTES'}</span><span><b>Requer:</b> ${esc(item.requirement||'Nenhum')}${owned&&!requirements.met?' · Confira '+esc(requirements.missing.join(', ')):''}</span></div>
+    ${item.kind==='vantagem'?`<div class="tr-card-meta"><span><b>Uso</b> · ${esc(item.frequency)}</span></div>`:''}
     ${definition.length?`<div class="tr-card-configuration">${definition.slice(0,2).map(field=>`<b>${esc(field.label)}:</b> ${esc(record.configuration[field.key])}`).join('<br>')}${definition.length>2?'<br>+'+(definition.length-2)+' definições':''}</div>`:''}
     <footer class="tr-card-actions"><button type="button" data-trait-action="details" data-trait-id="${item.id}" aria-label="Ler efeito e requisitos de ${esc(item.name)}">${owned&&item.kind!=='dissonante'?'Detalhes / editar':'Ver efeito'}</button><button type="button" class="tr-acquire" data-trait-action="${owned?'remove':'acquire'}" data-trait-id="${item.id}" ${error?'disabled':''}>${traitActionLabel(item,owned)}</button>${error?`<p class="tr-restriction">${esc(error)}</p>`:''}</footer>
   </article>`;
@@ -20449,7 +22216,7 @@ function handleTraitAction(event){
   }
   if(action==='acquire'){
     const error=traitChangeError(item);if(error){toast(error);return;}
-    if((item.configuration||[]).length||traitRequirements(item).narrative){openTraitDialog(id,'purchase');return;}
+    if((item.configuration||[]).some(field=>field.required)||traitRequirements(item).narrative){openTraitDialog(id,'purchase');return;}
     if(completeTraitEdit(acquireCharacterTrait(id)))toast(item.name+' adquirido.');
   }
 }
