@@ -54,7 +54,7 @@
       if (line === 'OU' || line === 'E') return '<div class="isk-or"><span>' + line + '</span></div>';
       if (line[0] === '~') return '<p class="isk-note">' + inline(line.slice(1)) + '</p>';
       var fx = line.match(/^>(\w+)\s+(.*)$/);
-      if (fx) return '<p class="isk-fx isk-' + fx[1] + '"><i title="' + (KIND_LABEL[fx[1]] || '') + '"></i><span>' + inline(fx[2], fx[1]) + '</span></p>';
+      if (fx) return '<p class="isk-fx isk-' + fx[1] + '"><i title="' + (KIND_LABEL[fx[1]] || '') + '"></i><span>' + inline(fx[2].replace(/\.\s*$/, ''), fx[1]) + '</span></p>';
       return '<p>' + inline(line) + '</p>';
     }).join('');
   }
@@ -117,8 +117,8 @@
       '<header class="isk-top"><div><small>' + (target ? 'ESCOLHER PARA · ' + E(slotName) : 'TIPOS DE INSTRUMENTOS') + '</small><b>HABILIDADES BÁSICAS <span>DE INSTRUMENTO</span></b></div><button type="button" class="isk-x" data-isk-close aria-label="Fechar">×</button></header>' +
       '<div class="isk-scroll">' +
         (target ? '' : '<section class="isk-rules"><p>' + inline(R.intro || '') + '</p><div class="isk-sup"><small>INSTRUMENTOS DE QUALIDADE SUPERIOR PODEM RECEBER</small><ul>' + (R.superior || []).map(function (x) { return '<li>' + inline(x) + '</li>'; }).join('') + '</ul></div></section>') +
-        '<div class="isk-bar"><input type="search" id="iskSearch" placeholder="Buscar por nome ou efeito (ex.: Esquiva, Sound Combo, PM)…" value="' + E(query) + '" autocomplete="off"><span class="isk-count">' + shown.length + ' habilidades</span></div>' +
-        '<nav class="isk-tabs">' + tabs + '</nav>' +
+        '<div class="isk-sticky"><div class="isk-bar"><input type="search" id="iskSearch" placeholder="Buscar por nome ou efeito (ex.: Esquiva, Sound Combo, PM)…" value="' + E(query) + '" autocomplete="off"><span class="isk-count">' + shown.length + ' habilidades</span></div>' +
+        '<nav class="isk-tabs">' + tabs + '</nav></div>' +
         '<div class="isk-grid">' + list + '</div>' +
       '</div></div>';
   }

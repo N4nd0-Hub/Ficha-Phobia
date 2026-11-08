@@ -57,15 +57,17 @@ body.hud.workspace-sheet #characterPage:not(#_z) .eq-add-buttons .isk-browse{bac
 .isk-sup ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
 .isk-sup li{position:relative;padding-left:16px;font:600 13.5px/1.4 var(--hud-body,Barlow),sans-serif}
 .isk-sup li::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;background:#ffd84d;transform:rotate(45deg)}
-.isk-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 0;background:var(--isk-card)}
+.isk-sticky{position:sticky;top:0;z-index:3;margin:0 -22px 14px;padding:10px 22px 12px;background:var(--isk-card);box-shadow:0 10px 14px -10px rgba(0,0,0,.6)}
+.isk-bar{display:flex;align-items:center;gap:12px}
 .isk-bar input{flex:1;min-width:0;padding:11px 14px;border:0;border-bottom:3px solid #ffd84d;background:var(--isk-k);color:var(--isk-p);font:600 15px var(--hud-body,Barlow),sans-serif;outline:none}
 .isk-count{flex:none;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;color:var(--hud-mute,#9b93a8);text-transform:uppercase}
-.isk-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+.isk-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
 .isk-tabs button{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:0;cursor:pointer;background:var(--isk-k);color:var(--isk-p);border-bottom:3px solid var(--ic);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .15s,color .15s,transform .2s cubic-bezier(.34,1.56,.64,1)}
 .isk-tabs button i{font-style:normal;opacity:.6}
 .isk-tabs button:hover{transform:translateY(-2px)}
 .isk-tabs button.on{background:var(--ic);color:#0d0c10}
-.isk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;align-items:start}
+.isk-grid{column-width:310px;column-gap:16px}
+.isk-grid .isk-card{break-inside:avoid;margin:0 0 16px;width:100%}
 .isk-grid .isk-card{animation:iskCard .4s cubic-bezier(.22,1,.36,1) both}
 @keyframes iskCard{from{opacity:0;transform:translateY(12px)}}
 .isk-use{align-self:flex-start;margin-top:4px;padding:8px 14px;border:0;cursor:pointer;background:var(--ic);color:#0d0c10;font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
@@ -73,8 +75,15 @@ body.hud.workspace-sheet #characterPage:not(#_z) .eq-add-buttons .isk-browse{bac
 .isk-empty{margin:20px 0;font:600 15px var(--hud-body,Barlow),sans-serif;color:var(--hud-mute,#9b93a8)}
 @media (max-width:760px){
   .isk-rules{grid-template-columns:1fr}
-  .isk-grid{grid-template-columns:1fr}
+  .isk-grid{column-count:1}
+  .isk-sticky{margin:0 -14px 12px;padding:10px 14px}
   .isk-top,.isk-scroll{padding-left:14px;padding-right:14px}
   .isk-wrap{box-shadow:6px 6px 0 #ffd84d}
 }
 @media (prefers-reduced-motion:reduce){.isk-dialog[open],.isk-grid .isk-card{animation:none}}
+
+/* leitura mais limpa */
+.isk-body{gap:6px}
+.isk-fx{padding:6px 10px}
+.isk-fx span{min-width:0}
+.isk-card header{padding-bottom:6px;border-bottom:1px solid color-mix(in srgb,var(--ic) 30%,transparent)}
