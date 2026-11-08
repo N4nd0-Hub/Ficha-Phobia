@@ -338,9 +338,12 @@
     var sp = spells();
     var spHTML = sp.map(function (m, i) {
       var pm = String(m.cost).match(/(\d+)\s*PM/i);
-      var extra = '<em class="cm-cost">' + E(m.cost || '—') + '</em>';
+      var pvp = String(m.cost).match(/(\d+(?:[.,]\d+)?)\s*%\s*(?:do\s+)?PV/i), pvf = !pvp && String(m.cost).match(/(\d+)\s*PV/i);
+      var pv = pvp ? Math.max(1, Math.ceil(r.pvMax * Number(pvp[1].replace(',', '.')) / 100)) : pvf ? Number(pvf[1]) : 0;
+      var extra = '<em class="cm-cost' + (pv ? ' hp' : '') + '">' + E(m.cost || '—') + (pvp ? ' · ' + pv + ' PV' : '') + '</em>';
       var body = (m.target ? '<p class="cm-meta">ALVO · ' + E(m.target) + ' · TIER ' + E(m.tier || '') + '</p>' : '') + '<p>' + rich(m.effect) + '</p>' + (m.desc ? '<p class="cm-desc">' + rich(m.desc) + '</p>' : '') +
-        (pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pm[1] + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pm[1] + ' PM</button>' : '');
+        (pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pm[1] + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pm[1] + ' PM</button>' :
+         pv ? '<button type="button" class="cm-cast hp" data-cm-castpv="' + pv + '" data-cm-spell="' + E(m.name) + '">USAR · −' + pv + ' PV' + (pvp ? ' <small>(' + E(pvp[1]) + '% de ' + r.pvMax + ')</small>' : '') + '</button>' : '');
       return skillRow('m' + i + m.name, (m.cat || 'MAGIA').toUpperCase() + ' · TIER ' + (m.tier || ''), m.name, body, m.color, extra);
     }).join('');
     var pers = personalSkills().map(function (h, i) { return skillRow('p' + i, h.src, h.name, '<p>' + rich(h.text) + '</p>', '#ffd84d'); }).join('');
@@ -413,6 +416,11 @@
       var cost = Number(t.dataset.cmCast), rr = res();
       if (rr.pm + rr.pmTemp < cost) { banner('PM INSUFICIENTE', true); return; }
       changeRes('pm', -cost); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
+    }
+    if (t.dataset.cmCastpv) {
+      var hp = Number(t.dataset.cmCastpv), r2 = res();
+      if (r2.pv + r2.pvTemp <= hp) { banner('PV INSUFICIENTE', true); return; }
+      changeRes('pv', -hp); banner(String(t.dataset.cmSpell).toUpperCase() + '!'); return;
     }
     if (t.dataset.cmSplash) { var sp = SPLASH[t.dataset.cmSplash]; if (sp.state) { ui().status = sp.state; save(); render(); } splash(sp); return; }
     if (t.hasAttribute('data-cm-neutral')) { ui().status = 'neutro'; save(); render(); return; }
