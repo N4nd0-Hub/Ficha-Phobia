@@ -1,0 +1,140 @@
+/* ==========================================================
+   PERSONA // PHOBIA — bonds-net.css   (aba VÍNCULOS)
+   ========================================================== */
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetBondsPage .bond-hero,
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetBondsPage .bond-layout > aside{display:none!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetBondsPage .bond-layout{display:block!important;margin:0!important}
+#sheetBondsPage{--bk:var(--hud-black,#0d0c10);--bp:var(--hud-paper,#fff0d8)}
+
+/* ---------- topo ---------- */
+#characterPage .bn-top{display:grid;gap:14px;margin-bottom:22px}
+#characterPage .bn-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#characterPage .bn-head > div > small{display:block;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--hud-acc2,#6ce6ff)}
+#characterPage .bn-head > div > b{display:block;margin-top:3px;font:400 clamp(28px,3vw,42px)/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--bp);letter-spacing:-.6px}
+#characterPage .bn-head > div > b span{color:var(--hud-acc,#ef2b97)}
+#characterPage .bn-stats{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+#characterPage .bn-stats > div{display:flex;flex-direction:column;justify-content:center;padding:6px 12px;background:var(--bk);min-width:76px}
+#characterPage .bn-stats small{font:800 9.5px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.5px;color:var(--hud-mute)}
+#characterPage .bn-stats b{font:400 20px/1.05 var(--hud-display,"Archivo Black"),sans-serif;color:var(--bp)}
+#characterPage .bn-stats .gold b{color:#ffd84d}
+#characterPage .bn-stats .best b{font-size:14px;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#characterPage .bn-add{padding:0 16px;border:0;cursor:pointer;background:var(--hud-acc2,#6ce6ff);color:var(--bk);font:800 13px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%);transition:transform .2s cubic-bezier(.34,1.56,.64,1),background-color .15s}
+#characterPage .bn-add:hover{transform:translateY(-3px);background:var(--bp)}
+
+/* ---------- rede ---------- */
+#characterPage .bn-map{position:relative;height:clamp(340px,40vw,470px);background:radial-gradient(ellipse at 50% 50%,color-mix(in srgb,var(--hud-acc,#ef2b97) 14%,transparent),transparent 62%),repeating-radial-gradient(circle at 50% 50%,transparent 0 46px,color-mix(in srgb,var(--bp) 5%,transparent) 46px 47px),var(--bk);
+  box-shadow:7px 7px 0 var(--hud-acc,#ef2b97);overflow:hidden}
+#characterPage .bn-lines{position:absolute;inset:0;width:100%;height:100%}
+#characterPage .bn-lines line{stroke:var(--t);stroke-width:var(--w);opacity:var(--o);vector-effect:non-scaling-stroke;stroke-width:calc(var(--w) * 8px);stroke-dasharray:6 5;animation:bnFlow 1.6s linear infinite}
+#characterPage .bn-lines line.on{opacity:1;stroke-dasharray:none;filter:drop-shadow(0 0 4px var(--t))}
+#characterPage .bn-lines line.max{stroke:#ffd84d;stroke-dasharray:none;opacity:.95}
+@keyframes bnFlow{to{stroke-dashoffset:-22}}
+#characterPage .bn-me{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3}
+#characterPage .bn-me .bn-face{width:96px;height:96px;border:4px solid var(--bp);box-shadow:0 0 0 4px var(--hud-acc,#ef2b97),0 0 30px color-mix(in srgb,var(--hud-acc,#ef2b97) 60%,transparent);animation:bnPulse 2.6s ease-in-out infinite}
+#characterPage .bn-me b{padding:3px 10px 2px;background:var(--bp);color:var(--bk);font:400 13px var(--hud-display,"Archivo Black"),sans-serif;transform:rotate(-3deg);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes bnPulse{50%{box-shadow:0 0 0 7px var(--hud-acc,#ef2b97),0 0 44px color-mix(in srgb,var(--hud-acc,#ef2b97) 70%,transparent)}}
+#characterPage .bn-face{display:grid;place-items:center;border-radius:50%;overflow:hidden;background:var(--hud-card,#1c1f36)}
+#characterPage .bn-face img{width:100%;height:100%;object-fit:cover;display:block}
+#characterPage .bn-face i{font:400 20px var(--hud-display,"Archivo Black"),sans-serif;font-style:normal;color:var(--t,var(--bp))}
+#characterPage .bn-node{position:absolute;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;border:0;background:none;cursor:pointer;color:var(--bp);animation:bnIn .55s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d)}
+#characterPage .bn-node .bn-face{width:64px;height:64px;border:3px solid var(--t);box-shadow:3px 3px 0 #000;transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
+#characterPage .bn-node:hover .bn-face,#characterPage .bn-node:focus-visible .bn-face{transform:scale(1.14) rotate(-4deg);box-shadow:0 0 0 3px var(--bk),0 0 0 6px var(--t)}
+#characterPage .bn-node:focus-visible{outline:none}
+#characterPage .bn-node.on .bn-face{width:78px;height:78px;box-shadow:0 0 0 4px var(--bk),0 0 0 7px var(--t),0 0 26px var(--t)}
+#characterPage .bn-node.max .bn-face{border-color:#ffd84d}
+#characterPage .bn-rank{position:absolute;top:-6px;right:-10px;min-width:26px;height:26px;padding:0 5px;display:grid;place-items:center;background:var(--t);color:var(--bk);font:400 12px/1 var(--hud-display,"Archivo Black"),sans-serif;clip-path:polygon(50% 0,100% 30%,100% 75%,50% 100%,0 75%,0 30%)}
+#characterPage .bn-node.max .bn-rank{background:#ffd84d;font-size:9px}
+#characterPage .bn-label{display:flex;flex-direction:column;align-items:center;padding:2px 8px;background:var(--bk);max-width:140px}
+#characterPage .bn-label b{font:400 12px/1.15 var(--hud-display,"Archivo Black"),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+#characterPage .bn-label small{font:700 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+#characterPage .bn-node.on .bn-label{background:var(--t);color:var(--bk)}
+#characterPage .bn-node.on .bn-label small{color:var(--bk)}
+@keyframes bnIn{from{opacity:0;transform:translate(-50%,-50%) scale(.3)}}
+#characterPage .bn-empty{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);margin:0;max-width:420px;text-align:center;font:600 14px/1.4 var(--hud-body,Barlow),sans-serif;color:var(--hud-mute)}
+
+/* ---------- carta + editor ---------- */
+#characterPage .bn-card{position:relative;display:grid!important;grid-template-columns:minmax(240px,320px) minmax(0,1fr);gap:26px;align-items:start;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
+#characterPage .bn-tarot{position:sticky;top:12px;perspective:900px}
+#characterPage .bn-tarot-in{position:relative;aspect-ratio:5/8;padding:14px;background:var(--bp);border:4px solid var(--bk);box-shadow:8px 8px 0 var(--t);display:flex;flex-direction:column;gap:10px;transform:rotate(-2deg);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+#characterPage .bn-tarot:hover .bn-tarot-in{transform:rotate(0) translateY(-4px)}
+#characterPage .bn-tarot.flip .bn-tarot-in{animation:bnFlip .8s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bnFlip{0%{transform:rotate(-2deg) rotateY(0)}45%{transform:rotate(-2deg) rotateY(90deg) scale(.95)}100%{transform:rotate(-2deg) rotateY(0)}}
+#characterPage .bn-tarot.max .bn-tarot-in{background:linear-gradient(160deg,#fff6cf,#ffd84d);box-shadow:8px 8px 0 #000,0 0 40px rgba(255,216,77,.45)}
+#characterPage .bn-tarot-num{align-self:center;padding:2px 14px;background:var(--bk);color:var(--t);font:400 26px/1.1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:1px}
+#characterPage .bn-tarot.max .bn-tarot-num{color:#ffd84d}
+#characterPage .bn-tarot-photo{flex:1;min-height:0;padding:0;border:3px solid var(--bk);background:var(--bk);cursor:pointer;overflow:hidden;display:grid;place-items:center;color:var(--bp)}
+#characterPage .bn-tarot-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+#characterPage .bn-tarot-photo:hover img{transform:scale(1.05)}
+#characterPage .bn-tarot-photo span{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+#characterPage .bn-tarot-photo span b{font-size:40px;color:var(--t)}
+#characterPage .bn-tarot-photo span small{font:800 11px/1.3 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.5px}
+#characterPage .bn-tarot-name{text-align:center;color:var(--bk)}
+#characterPage .bn-tarot-name small{display:block;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;opacity:.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#characterPage .bn-tarot-name b{display:block;font:400 clamp(18px,1.7vw,24px)/1.05 var(--hud-display,"Archivo Black"),sans-serif;overflow-wrap:anywhere}
+#characterPage .bn-tarot-rank{position:absolute;right:-18px;bottom:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;width:64px;height:64px;background:var(--t);color:var(--bk);border:3px solid var(--bk);transform:rotate(10deg);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+#characterPage .bn-tarot-rank small{font:800 9px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px}
+#characterPage .bn-tarot-rank b{font:400 24px/1 var(--hud-display,"Archivo Black"),sans-serif}
+#characterPage .bn-max-seal{position:absolute;left:-14px;top:52px;padding:5px 12px 4px;background:var(--bk);color:#ffd84d;font:400 16px var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:2px;transform:rotate(-14deg);box-shadow:3px 3px 0 #ffd84d}
+
+#characterPage .bn-edit{display:flex;flex-direction:column;gap:14px;min-width:0}
+#characterPage .bn-rankbar{padding:14px 16px;background:var(--bk);border-left:5px solid var(--t)}
+#characterPage .bn-rankbar header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+#characterPage .bn-rankbar small{font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.8px;color:var(--hud-mute)}
+#characterPage .bn-rankbar header b{font:400 18px var(--hud-display,"Archivo Black"),sans-serif;color:var(--t)}
+#characterPage .bn-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+#characterPage .bn-star{width:34px;height:34px;padding:0;border:0;background:none;cursor:pointer;font-size:30px;line-height:1;color:color-mix(in srgb,var(--bp) 18%,transparent);transition:transform .25s cubic-bezier(.34,1.56,.64,1),color .15s}
+#characterPage .bn-star.lit{color:var(--t);text-shadow:0 0 10px var(--t)}
+#characterPage .bn-star:hover{transform:scale(1.3) rotate(-12deg)}
+#characterPage .bn-stars:hover .bn-star{color:color-mix(in srgb,var(--bp) 18%,transparent);text-shadow:none}
+#characterPage .bn-stars .bn-star:hover,#characterPage .bn-stars .bn-star:has(~ .bn-star:hover){color:var(--t);text-shadow:0 0 10px var(--t)}
+#characterPage .bn-star.pop{animation:bnStar .6s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i) * 40ms)}
+@keyframes bnStar{0%{transform:scale(0) rotate(-120deg)}70%{transform:scale(1.5) rotate(10deg)}100%{transform:none}}
+#characterPage .bn-step{width:30px;height:30px;padding:0;border:2px solid var(--bp);background:transparent;color:var(--bp);font:400 16px/1 var(--hud-display,"Archivo Black"),sans-serif;cursor:pointer}
+#characterPage .bn-step:hover{background:var(--bp);color:var(--bk)}
+#characterPage .bn-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#characterPage .bn-fields label,#characterPage .bn-text{display:flex;flex-direction:column;gap:5px;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:var(--hud-mute)}
+#characterPage .bn-fields input,#characterPage .bn-text textarea{width:100%;padding:10px 12px;border:0;border-bottom:3px solid var(--t);background:var(--bk);color:var(--bp);font:600 15px/1.4 var(--hud-body,Barlow),sans-serif;letter-spacing:0;outline:none;transition:border-color .15s,background-color .15s}
+#characterPage .bn-fields input:focus,#characterPage .bn-text textarea:focus{background:color-mix(in srgb,var(--t) 10%,var(--bk))}
+#characterPage .bn-text textarea{resize:vertical;min-height:110px}
+#characterPage .bn-text > span{display:flex;align-items:baseline;gap:10px}
+#characterPage .bn-text > span b{color:var(--bp);font:400 14px var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:.5px}
+#characterPage .bn-text > span small{font:600 12px var(--hud-body,Barlow),sans-serif;letter-spacing:0;color:var(--hud-mute)}
+#characterPage .bn-actions{display:flex;flex-wrap:wrap;gap:6px}
+#characterPage .bn-actions button{padding:9px 14px;border:0;cursor:pointer;background:var(--bk);color:var(--bp);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .15s,color .15s}
+#characterPage .bn-actions button:hover{background:var(--t);color:var(--bk)}
+#characterPage .bn-actions .del{margin-left:auto}
+#characterPage .bn-actions .del:hover{background:#ff4d6a;color:#fff}
+
+/* RANK UP! */
+#characterPage .bn-rankup{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:6}
+#characterPage .bn-ru-band{position:absolute;left:-10%;right:-10%;top:30%;display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;background:var(--t);color:var(--bk);transform:skewY(-6deg) translateX(-120%);box-shadow:0 8px 0 var(--bk),0 -8px 0 var(--bk)}
+#characterPage .bn-ru-band b{font:400 clamp(40px,6vw,76px)/1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:-2px;text-shadow:4px 4px 0 var(--bp)}
+#characterPage .bn-ru-band small{font:800 14px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px}
+#characterPage .bn-rankup.go .bn-ru-band{animation:bnBand 1.7s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes bnBand{0%{transform:skewY(-6deg) translateX(-120%)}22%,72%{transform:skewY(-6deg) translateX(0)}100%{transform:skewY(-6deg) translateX(120%)}}
+
+/* ---------- celular ---------- */
+@media (max-width:900px){
+  #characterPage .bn-card{grid-template-columns:1fr}
+  #characterPage .bn-tarot{position:relative;top:0;width:min(280px,78%);margin:0 auto}
+}
+@media (max-width:760px){
+  #characterPage .bn-map{height:360px}
+  #characterPage .bn-me .bn-face{width:70px;height:70px}
+  #characterPage .bn-node .bn-face{width:48px;height:48px}
+  #characterPage .bn-node.on .bn-face{width:58px;height:58px}
+  #characterPage .bn-label{max-width:96px;padding:1px 5px}
+  #characterPage .bn-label b{font-size:10.5px;max-width:90px}
+  #characterPage .bn-label small{display:none}
+  #characterPage .bn-fields{grid-template-columns:1fr}
+  #characterPage .bn-star{width:22px;height:24px;font-size:21px}
+  #characterPage .bn-stars{gap:2px;flex-wrap:nowrap}
+  #characterPage .bn-step{width:26px;height:26px;flex:none}
+  #characterPage .bn-tarot{width:min(220px,66%)!important}
+  #characterPage .bn-map{height:400px}
+  #characterPage .bn-stats > div{min-width:0;flex:1}
+  #characterPage .bn-stats .best{display:none!important}
+  #characterPage .bn-add{flex-basis:100%;height:40px}
+}
+@media (prefers-reduced-motion:reduce){#characterPage :is(.bn-node,.bn-lines line,.bn-me .bn-face,.bn-star,.bn-tarot-in,.bn-ru-band){animation:none!important}}
+body.hs-calm #characterPage :is(.bn-node,.bn-lines line,.bn-me .bn-face,.bn-star,.bn-tarot-in,.bn-ru-band){animation:none!important}
