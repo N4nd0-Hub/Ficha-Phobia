@@ -314,7 +314,7 @@
         '<div class="er-name"><small>LOADOUT DE</small><b>' + E(name) + '</b></div>' +
       '</div>' +
       '<div class="er-weapon"><small>ARMA EM MÃOS</small><b>' + E(main ? main.name : 'Desarmado') + '</b>' +
-        '<div class="er-wstats"><span><small>ACERTO</small>' + E(main && main.accuracy || '—') + '</span><span><small>DANO</small>' + E(main && main.damage || '—') + '</span><span><small>ALCANCE</small>' + E(main && main.range || '—') + '</span><span><small>PROTEÇÃO</small>' + E(prot && prot.protection || '—') + '</span></div></div>' +
+        '<div class="er-wstats"><span><small>ACERTO</small><b>' + E(main && main.accuracy || '—') + '</b></span><span><small>DANO</small><b>' + E(main && main.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(main && main.range || '—') + '</b></span><span><small>PROTEÇÃO</small><b>' + E(prot && prot.protection || '—') + '</b></span></div></div>' +
       '<div class="er-stats' + (prev ? ' is-preview' : '') + '">' + cells + '</div>' +
       (soc ? '<div class="er-soc">' + soc + '</div>' : '') +
       '<div class="er-load' + (used > max ? ' is-over' : '') + '"><div><small>CARGA</small><b>' + fmtW(used) + ' <em>/ ' + fmtW(max) + '</em></b></div><i><i style="width:' + pct.toFixed(1) + '%"></i></i></div>' +

@@ -231,3 +231,9 @@ body.hud.workspace-sheet #characterPage:not(#_z) .bp-section{width:100%;max-widt
 body.hs-calm #characterPage .er *{animation:none!important}
 #characterPage .er-slot.is-empty.is-picking{background:var(--sc);outline-color:var(--sc)}
 #characterPage .er-slot.is-empty.is-picking .er-copy b{color:var(--er-blk)}
+
+/* arma em mãos: valores longos (ex.: 1d20+MAG, MAGd10, MAG=RD) não quebram no meio */
+#characterPage .er-wstats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px}
+#characterPage .er-wstats span{flex-direction:row;align-items:baseline;justify-content:space-between;gap:8px;padding:6px 9px;font-size:15px;line-height:1.15;overflow-wrap:normal;word-break:normal;white-space:normal}
+#characterPage .er-wstats small{flex:none}
+#characterPage .er-wstats span b{min-width:0;text-align:right;font:400 15px/1.15 var(--hud-display,"Archivo Black"),sans-serif;color:var(--hud-paper,#fff0d8);overflow-wrap:break-word}
