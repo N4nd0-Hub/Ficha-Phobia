@@ -349,13 +349,66 @@
       '<div class="dr-poolrow"><button type="button" class="dr-go" data-dr-pool ' + (poolTxt ? '' : 'disabled') + '>ROLAR ' + (poolTxt || '') + '</button>' + (poolTxt ? '<button type="button" data-dr-clear>LIMPAR</button>' : '') + '</div>' +
       '<form class="dr-form"><input id="drExpr" placeholder="Fórmula: 2d6+MAG, 1d20+3…" autocomplete="off"><button type="submit">ROLAR</button></form>' +
       (LOG.length ? '<h4>ÚLTIMAS ROLAGENS <button type="button" class="dr-clearlog" data-dr-clearlog>LIMPAR HISTÓRICO</button></h4><ol class="dr-log">' + LOG.map(function (l) { return '<li><span>' + esc(l.label) + '</span><em>' + esc(l.expr) + '</em><b>' + l.total + '</b></li>'; }).join('') + '</ol>' : '');
+    placePanel();
   }
-  function togglePanel() { if (!panelEl) buildPanel(); panelEl.hidden = !panelEl.hidden; paintPanel(); }
+  function togglePanel() { if (!panelEl) buildPanel(); panelEl.hidden = !panelEl.hidden; paintPanel(); placePanel(); }
+  /* ---------- arrastar o botão (e o painel acompanha) ---------- */
+  var POSKEY = 'phobia-dice-pos';
+  function loadPos() { try { var p = JSON.parse(localStorage.getItem(POSKEY) || 'null'); if (p && isFinite(p.x) && isFinite(p.y)) return p; } catch (e) {} return null; }
+  function savePos(p) { try { localStorage.setItem(POSKEY, JSON.stringify(p)); } catch (e) {} }
+  function clampPos(x, y, el) {
+    var w = el.offsetWidth || 62, h = el.offsetHeight || 62;
+    return { x: Math.max(6, Math.min(innerWidth - w - 6, x)), y: Math.max(6, Math.min(innerHeight - h - 6, y)) };
+  }
+  function applyPos(el, p) {
+    if (!p) { el.style.left = el.style.top = ''; el.style.right = el.style.bottom = ''; return; }
+    p = clampPos(p.x, p.y, el);
+    el.style.left = p.x + 'px'; el.style.top = p.y + 'px'; el.style.right = 'auto'; el.style.bottom = 'auto';
+  }
+  function placePanel() {
+    if (!panelEl || panelEl.hidden) return;
+    var f = document.getElementById('drFab'); if (!f) return;
+    var r = f.getBoundingClientRect(), pw = panelEl.offsetWidth, ph = panelEl.offsetHeight, gap = 12;
+    if (!loadPos()) { panelEl.style.left = panelEl.style.top = ''; panelEl.style.right = panelEl.style.bottom = ''; return; }
+    /* abre para o lado com mais espaço */
+    var left = r.left + r.width / 2 > innerWidth / 2 ? r.right - pw : r.left;
+    var top = r.top > innerHeight / 2 ? r.top - ph - gap : r.bottom + gap;
+    if (top < 6 || top + ph > innerHeight - 6) { top = Math.max(6, Math.min(innerHeight - ph - 6, r.top - ph / 2)); left = r.left + r.width / 2 > innerWidth / 2 ? r.left - pw - gap : r.right + gap; }
+    left = Math.max(6, Math.min(innerWidth - pw - 6, left));
+    panelEl.style.left = left + 'px'; panelEl.style.top = top + 'px'; panelEl.style.right = 'auto'; panelEl.style.bottom = 'auto';
+  }
+  function makeDraggable(btn) {
+    var start = null, moved = false;
+    btn.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      var r = btn.getBoundingClientRect();
+      start = { px: e.clientX, py: e.clientY, x: r.left, y: r.top }; moved = false;
+      btn.setPointerCapture(e.pointerId);
+    });
+    btn.addEventListener('pointermove', function (e) {
+      if (!start) return;
+      var dx = e.clientX - start.px, dy = e.clientY - start.py;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 6) return;
+      moved = true; btn.classList.add('dragging');
+      applyPos(btn, { x: start.x + dx, y: start.y + dy }); placePanel();
+    });
+    function end(e) {
+      if (!start) return;
+      if (moved) { var r = btn.getBoundingClientRect(); savePos({ x: r.left, y: r.top }); btn.classList.remove('dragging'); btn.dataset.justDragged = '1'; setTimeout(function () { delete btn.dataset.justDragged; }, 50); }
+      start = null;
+    }
+    btn.addEventListener('pointerup', end); btn.addEventListener('pointercancel', end);
+    btn.addEventListener('dblclick', function () { try { localStorage.removeItem(POSKEY); } catch (e) {} applyPos(btn, null); placePanel(); });
+    addEventListener('resize', function () { applyPos(btn, loadPos()); placePanel(); });
+    applyPos(btn, loadPos());
+  }
   function fab() {
     if (document.getElementById('drFab')) return;
     var b = document.createElement('button'); b.type = 'button'; b.id = 'drFab'; b.className = 'dr-fab'; b.setAttribute('aria-label', 'Rola dados');
     b.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 43 14v20L24 45 5 34V14z"/><path d="M24 3v13M43 14 32 21M5 14l11 7M24 45V33M43 34 32 27M5 34l11-7M16 21h16l-8 12z" fill="none"/></svg><b>20</b>';
-    b.addEventListener('click', togglePanel);
+    b.title = 'Clique para abrir · arraste para mover · duplo clique volta ao canto';
+    b.addEventListener('click', function () { if (b.dataset.justDragged) return; togglePanel(); });
+    document.body.appendChild(b); makeDraggable(b); return;
     document.body.appendChild(b);
   }
 

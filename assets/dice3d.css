@@ -109,3 +109,5 @@ body.workspace-sheet .dr-fab,body.cm-open .dr-fab{display:block}
 }
 .dr-clearlog{margin-left:auto;padding:3px 8px;border:1px solid #ff4d6a;background:transparent;color:#ff8a9a;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;cursor:pointer}
 .dr-clearlog:hover{background:#ff4d6a;color:#fff}
+.dr-fab{touch-action:none;user-select:none;-webkit-user-select:none}
+.dr-fab.dragging{cursor:grabbing;transform:scale(1.15) rotate(-10deg);filter:drop-shadow(8px 8px 0 #000)}
