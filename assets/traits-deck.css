@@ -1,0 +1,153 @@
+/* ==========================================================
+   PERSONA // PHOBIA — traits-deck.css   (aba VANTAGENS)
+   ========================================================== */
+/* o topo antigo (título + quadradinhos de pontos + lista de escolhas) dá lugar à carteira e à mão */
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-hero,
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage #traitOwnedOverview,
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage #traitBudgetSegments{display:none!important}
+#sheetTraitsPage{--tr-k:var(--hud-black,#0d0c10);--tr-p:var(--hud-paper,#fff0d8)}
+
+/* ---------- topo ---------- */
+#characterPage .tr-top{display:grid;gap:18px;margin-bottom:22px}
+#characterPage .tr-top-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+#characterPage .tr-top-head small{display:block;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--hud-acc2,#6ce6ff)}
+#characterPage .tr-top-head b{display:block;margin-top:3px;font:400 clamp(28px,3vw,42px)/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--tr-p);letter-spacing:-.6px}
+#characterPage .tr-top-head b span{color:var(--hud-acc,#ef2b97)}
+#characterPage .tr-top-head p{max-width:440px;margin:0;font:600 14px/1.45 var(--hud-body,Barlow),sans-serif;color:var(--hud-mute)}
+#characterPage .tr-top-head p b{display:inline;font:inherit;font-weight:800;color:var(--tr-p)}
+
+/* ---------- carteira de fichas ---------- */
+#characterPage .trw{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:22px;padding:16px 20px 16px 16px;background:var(--tr-k);box-shadow:7px 7px 0 var(--hud-acc2,#6ce6ff);clip-path:polygon(0 0,100% 0,calc(100% - 16px) 100%,0 100%)}
+#characterPage .trw-big{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:126px;height:110px;background:var(--hud-acc3,#96ff45);color:var(--tr-k);transform:rotate(-3deg);box-shadow:4px 4px 0 var(--tr-p);transition:background-color .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+#characterPage:not(#_z) .trw-big small{font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.6px;color:inherit!important;opacity:1!important}
+#characterPage:not(#_z) .trw-big b{color:inherit!important}
+#characterPage .trw-big b{font:400 62px/1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:-2px}
+#characterPage .trw-big.is-zero{background:var(--tr-p)}
+#characterPage .trw-big.is-neg{background:#ff4d6a;color:#fff}
+#characterPage .trw-big.is-preview{transform:rotate(-3deg) scale(1.05)}
+#characterPage .trw-body{min-width:0;display:flex;flex-direction:column;gap:12px}
+#characterPage .trw-coins{display:flex;flex-wrap:wrap;gap:8px;perspective:600px}
+#characterPage .trw-coin{position:relative;width:42px;height:42px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.34,1.56,.64,1)}
+#characterPage .trw-coin i{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;backface-visibility:hidden;font:400 16px var(--hud-display,"Archivo Black"),sans-serif;font-style:normal}
+#characterPage .trw-coin .f{background:radial-gradient(circle at 35% 30%,#fff7c2,#ffd84d 45%,#d9a514);color:#5a3d00;box-shadow:inset 0 0 0 3px rgba(90,61,0,.35),0 0 14px rgba(255,216,77,.45),3px 3px 0 #000}
+#characterPage .trw-coin .b{transform:rotateY(180deg);background:var(--ct,#888);color:var(--tr-k);box-shadow:inset 0 0 0 3px rgba(0,0,0,.35),3px 3px 0 #000;font-size:18px}
+#characterPage .trw-coin.is-spent{transform:rotateY(180deg)}
+#characterPage .trw-coin.is-debt .f{background:#ff4d6a;color:#fff}
+#characterPage .trw-coin:not(.is-spent):hover{transform:translateY(-4px) rotate(-8deg)}
+#characterPage .trw-coin.is-preview{transform:translateY(-6px)}
+#characterPage .trw-coin.is-preview .f{box-shadow:inset 0 0 0 3px rgba(90,61,0,.35),0 0 0 3px var(--hud-acc,#ef2b97),0 0 18px var(--hud-acc,#ef2b97);animation:trwPulse .7s ease-in-out infinite alternate}
+#characterPage .trw-coin.is-short .f{background:#ff4d6a}
+@keyframes trwPulse{to{filter:brightness(1.25)}}
+#characterPage .trw-coin.just-spent{animation:trwFlip .7s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d)}
+@keyframes trwFlip{0%{transform:rotateY(0) translateY(0)}45%{transform:rotateY(100deg) translateY(-18px)}100%{transform:rotateY(180deg)}}
+#characterPage .trw-coin.just-got{animation:trwDrop .6s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d)}
+@keyframes trwDrop{0%{transform:translateY(-40px) rotate(-90deg);opacity:0}100%{transform:none;opacity:1}}
+#characterPage .trw-more{align-self:center;font:400 16px var(--hud-display,"Archivo Black"),sans-serif;color:var(--hud-mute)}
+#characterPage .trw-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;color:var(--hud-mute);text-transform:uppercase}
+#characterPage .trw-legend span{display:inline-flex;align-items:center;gap:6px}
+#characterPage .trw-legend .lg{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ffd84d;color:#5a3d00;font:400 10px var(--hud-display,"Archivo Black"),sans-serif;font-style:normal}
+#characterPage .trw-legend .lg.sp{background:var(--tr-point-1)}
+#characterPage .trw-lim{margin-left:auto;color:var(--hud-acc,#ef2b97)}
+
+/* ---------- mão de cartas ---------- */
+#characterPage .trh{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:22px}
+#characterPage .trh-side{position:relative;padding:14px 16px 18px;background:var(--hud-card,#1c1f36);border-top:4px solid var(--hud-acc3,#96ff45);min-width:0}
+#characterPage .trh-side.flaw{border-top-color:#ff4d6a}
+#characterPage .trh-side header{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+#characterPage .trh-side header small{font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--hud-mute)}
+#characterPage .trh-side header b{font:400 18px var(--hud-display,"Archivo Black"),sans-serif;color:var(--tr-p)}
+#characterPage .trh-fan{display:flex;justify-content:center;align-items:flex-end;min-height:178px;padding:16px 10px 4px}
+#characterPage .trh-card{position:relative;flex:0 1 146px;min-width:0;max-width:146px;height:172px;margin:0 -6px;padding:34px 10px 10px;border:0;cursor:pointer;text-align:left;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:4px;background:var(--tr-p);color:var(--tr-k);border-top:7px solid var(--ct);
+  box-shadow:4px 4px 0 var(--tr-k),0 10px 20px rgba(0,0,0,.35);transform:translateY(var(--y)) rotate(var(--r));transform-origin:50% 120%;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;animation:trhIn .5s cubic-bezier(.22,1,.36,1) both}
+#characterPage .trh-card.flaw{background:#1a0d12;color:var(--tr-p)}
+#characterPage .trh-card:hover,#characterPage .trh-card:focus-visible{transform:translateY(-22px) rotate(0) scale(1.06);z-index:50!important;box-shadow:6px 6px 0 var(--ct),0 18px 30px rgba(0,0,0,.45);outline:none}
+#characterPage .trh-card b{font:400 13.5px/1.12 var(--hud-display,"Archivo Black"),sans-serif;overflow-wrap:normal;word-break:normal;hyphens:auto}
+#characterPage .trh-card small{font:700 11px/1.2 var(--hud-body,Barlow),sans-serif;opacity:.7}
+#characterPage .trh-pt{position:absolute;right:8px;top:6px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ct);color:var(--tr-k);font:400 14px var(--hud-display,"Archivo Black"),sans-serif;box-shadow:2px 2px 0 var(--tr-k)}
+#characterPage .trh-ic{position:absolute;left:8px;top:4px;font-size:28px;line-height:1;color:var(--cc);text-shadow:2px 2px 0 var(--tr-k)}
+#characterPage .trh-card.adv .trh-ic{text-shadow:2px 2px 0 rgba(0,0,0,.25)}
+#characterPage .trh-empty{flex-basis:150px;max-width:150px;background:transparent!important;color:var(--hud-mute)!important;border:2px dashed currentColor!important;box-shadow:none!important;justify-content:center;align-items:center;text-align:center;padding:12px;transform:none;animation:none}
+#characterPage .trh-empty .trh-ic{position:static;font-size:30px;color:inherit;text-shadow:none}
+#characterPage .trh-empty:hover{color:var(--tr-p)!important;transform:translateY(-6px)!important;box-shadow:none!important}
+@keyframes trhIn{from{opacity:0;transform:translateY(40px) rotate(calc(var(--r) * 3))}}
+
+/* ---------- abas e filtros ---------- */
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-budget-note{display:flex!important;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:8px 14px!important;background:transparent!important;color:var(--hud-mute)!important;font:600 12.5px var(--hud-body,Barlow),sans-serif}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage #traitLimitsNote{display:none}
+#characterPage .tr-only{display:inline-flex;align-items:center;gap:8px;align-self:end;height:40px;padding:0 14px;border:0;cursor:pointer;background:var(--tr-k);color:var(--tr-p);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:background-color .15s,color .15s}
+#characterPage .tr-only i{width:26px;height:14px;border-radius:8px;background:var(--hud-card,#1c1f36);position:relative;transition:background-color .2s}
+#characterPage .tr-only i::after{content:"";position:absolute;left:2px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--hud-mute);transition:transform .25s cubic-bezier(.34,1.56,.64,1),background-color .2s}
+#characterPage .tr-only.on{background:var(--hud-acc3,#96ff45);color:var(--tr-k)}
+#characterPage .tr-only.on i{background:var(--tr-k)}
+#characterPage .tr-only.on i::after{transform:translateX(12px);background:var(--hud-acc3,#96ff45)}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-toolbar{display:flex!important;flex-wrap:wrap;align-items:end;gap:10px}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-toolbar .tr-control{flex:1 1 180px}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-toolbar .tr-control:first-child{flex:2 1 260px}
+
+/* ---------- cartas do catálogo ---------- */
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:16px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card{position:relative;display:flex!important;flex-direction:column;gap:0;padding:0!important;min-height:0!important;overflow:visible!important;cursor:pointer;
+  background:var(--hud-card,#1c1f36)!important;border:0!important;border-left:6px solid var(--tr-tone)!important;box-shadow:6px 6px 0 var(--tr-k)!important;
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,opacity .2s}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card:hover{transform:translateY(-5px) rotate(-.5deg);box-shadow:8px 10px 0 color-mix(in srgb,var(--tr-tone) 60%,var(--tr-k))!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-head{position:relative;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px 12px 10px!important;background:linear-gradient(100deg,color-mix(in srgb,var(--cc) 16%,transparent),transparent 70%)!important;border:0!important}
+#characterPage #traitGrid .trc-ic{display:grid;place-items:center;width:34px;height:34px;background:var(--tr-k);color:var(--cc);font-size:18px;transform:rotate(-6deg);box-shadow:2px 2px 0 var(--cc)}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-head small{display:block;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.4px;color:var(--cc)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-head h3{margin:2px 0 0!important;font:400 17px/1.1 var(--hud-display,"Archivo Black"),sans-serif!important;color:var(--tr-p)!important;overflow-wrap:anywhere}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-score{display:grid!important;place-items:center;width:46px;height:46px;padding:0!important;border-radius:50%;background:var(--tr-tone)!important;color:var(--tr-k)!important;border:0!important;box-shadow:3px 3px 0 var(--tr-k)!important;transform:rotate(8deg)}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-score b{font:400 20px/1 var(--hud-display,"Archivo Black"),sans-serif!important;color:inherit!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-score small{display:block;margin-top:-10px;font:800 7.5px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:.8px;color:inherit!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-description{margin:0!important;padding:4px 14px 0!important;font:500 14px/1.45 var(--hud-body,Barlow),sans-serif!important;color:var(--tr-p)!important;opacity:.88;display:-webkit-box!important;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-meta{display:flex!important;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:10px 14px 0!important;font:600 12px var(--hud-body,Barlow),sans-serif!important;color:var(--hud-mute)!important;background:none!important;border:0!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-meta b{color:var(--tr-p)}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-status{padding:3px 8px 2px!important;background:var(--tr-k)!important;color:var(--hud-acc3,#96ff45)!important;border:0!important;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.2px}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-locked .tr-status{color:#ff8a9a!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-configuration{margin:8px 14px 0!important;padding:6px 10px!important;background:var(--tr-k)!important;border-left:3px solid var(--tr-tone)!important;color:var(--tr-p)!important;font:600 12px/1.4 var(--hud-body,Barlow),sans-serif!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-actions{display:flex!important;flex-wrap:wrap;gap:5px;margin-top:auto;padding:12px 12px 12px!important;background:none!important;border:0!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-actions button{flex:1;min-height:36px;padding:0 10px!important;border:0!important;cursor:pointer;background:var(--tr-k)!important;color:var(--tr-p)!important;box-shadow:none!important;
+  font:800 11.5px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.2px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .15s,color .15s,transform .2s}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-actions button:hover:not(:disabled){transform:translateY(-2px)}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-actions .tr-acquire{background:var(--tr-tone)!important;color:var(--tr-k)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card-actions .tr-acquire:disabled{background:transparent!important;color:var(--hud-mute)!important;outline:1px dashed color-mix(in srgb,var(--hud-mute) 60%,transparent);outline-offset:-1px;cursor:not-allowed}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-restriction{flex-basis:100%;margin:2px 0 0!important;padding:0!important;font:700 12px var(--hud-body,Barlow),sans-serif!important;color:#ff8a9a!important;background:none!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-restriction::before{content:"🔒 "}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-locked{opacity:.66}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-locked:hover{opacity:1}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-ready .tr-card-head::after{content:"";position:absolute;right:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--hud-acc3,#96ff45);box-shadow:0 0 10px var(--hud-acc3,#96ff45);animation:trwPulse .9s ease-in-out infinite alternate}
+/* adquirida: carta "virada" em papel com carimbo */
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned{background:var(--tr-p)!important;box-shadow:6px 6px 0 var(--tr-tone)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned :is(.tr-card-head h3,.tr-card-description,.tr-card-meta b){color:var(--tr-k)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned .tr-card-meta{color:#5b5363!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned .tr-card-actions button:not(.tr-acquire){background:var(--tr-k)!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned .tr-card-actions .tr-acquire{background:transparent!important;color:#b0203a!important;outline:2px solid #b0203a;outline-offset:-2px}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card.is-owned .tr-card-actions .tr-acquire:hover{background:#b0203a!important;color:#fff!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card[data-kind="defeito"].is-owned{background:#2a0f17!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tr-card[data-kind="defeito"].is-owned :is(.tr-card-head h3,.tr-card-description,.tr-card-meta b){color:var(--tr-p)!important}
+#characterPage #traitGrid .trc-stamp{position:absolute;right:62px;top:-14px;background:var(--tr-p);padding:4px 10px 3px;border:3px solid currentColor;color:var(--hud-acc,#ef2b97);font:400 14px var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:1px;transform:rotate(-12deg);opacity:1;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.4)}
+#characterPage #traitGrid .tr-card[data-kind="defeito"] .trc-stamp{color:#ff4d6a;background:#2a0f17}
+#characterPage #traitGrid .tr-card.trc-just{animation:trcFlip .8s cubic-bezier(.34,1.56,.64,1)}
+#characterPage #traitGrid .tr-card.trc-just .trc-stamp{animation:trcStamp .5s cubic-bezier(.34,1.56,.64,1) .35s both}
+@keyframes trcFlip{0%{transform:perspective(800px) rotateY(0)}40%{transform:perspective(800px) rotateY(90deg) scale(.96)}100%{transform:perspective(800px) rotateY(0)}}
+@keyframes trcStamp{0%{transform:rotate(-12deg) scale(2.6);opacity:0}100%{transform:rotate(-12deg) scale(1);opacity:1}}
+
+/* ---------- celular ---------- */
+@media (max-width:760px){
+  #characterPage .trw{grid-template-columns:1fr;gap:14px;padding:14px;clip-path:none}
+  #characterPage .trw-big{width:100%;height:auto;flex-direction:row;gap:12px;padding:8px 0;transform:none}
+  #characterPage .trw-big b{font-size:44px}
+  #characterPage .trw-coin{width:34px;height:34px}
+  #characterPage .trw-lim{margin-left:0}
+  #characterPage .trh{grid-template-columns:1fr;gap:14px}
+  #characterPage .trh-card{flex-basis:112px;max-width:112px;height:150px;margin:0 -8px;padding:30px 8px 8px}
+  #characterPage .trh-card b{font-size:12.5px}
+  #characterPage .trh-fan{min-height:156px}
+  body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid{grid-template-columns:1fr!important}
+}
+@media (prefers-reduced-motion:reduce){#characterPage :is(.trw-coin,.trh-card,#traitGrid .tr-card,.trc-stamp){animation:none!important;transition:none!important}}
+body.hs-calm #characterPage :is(.trw-coin,.trh-card,#traitGrid .tr-card,.trc-stamp){animation:none!important}
+
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-results-row label:has(#traitAvailableOnly){display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:var(--tr-k);color:var(--tr-p);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-results-row label:has(#traitAvailableOnly:checked){background:var(--hud-acc3,#96ff45);color:var(--tr-k)}
+#sheetTraitsPage #traitAvailableOnly{accent-color:var(--hud-acc,#ef2b97)}
