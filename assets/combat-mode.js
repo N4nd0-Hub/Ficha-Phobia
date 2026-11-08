@@ -26,7 +26,156 @@
     vitoria: { t: 'VITÓRIA!', s: 'Combate encerrado', c: '#ffd84d', k: 'good', state: 'neutro' }
   };
   var ACTIONS = [['standardSpent', 'Padrão'], ['quickSpent', 'Rápida'], ['reactionSpent', 'Reação'], ['interruptSpent', 'Interromper']];
-  var REACT_ORDER = { Fraqueza: 0, Resiste: 1, Nulo: 2, Drena: 3, Reflete: 4 };
+  var REACT_ORDER = { Fraqueza: 0, Resiste: 1, Anula: 2, Drena: 3, Reflete: 4 };
+  function reactName(r) { try { return PERSONA_REACTION_LABEL[r] || r; } catch (e) { return r; } }
+
+  /* ---------- mecânica musical ---------- */
+  var INST = [
+    { k: 'Guitarra', fam: 'Cordas', ic: '🎸' }, { k: 'Baixo', fam: 'Cordas', ic: '' }, { k: 'Bateria', fam: 'Percussão', ic: '' },
+    { k: 'Vocal', fam: 'Vocal', ic: '' }, { k: 'Teclas', fam: 'Teclas & Eletrônicos', ic: '' },
+    { k: 'Cordas Friccionadas', fam: 'Cordas Friccionadas', ic: '' }, { k: 'Sopro', fam: 'Sopro', ic: '' }
+  ];
+  var FAM_COLOR = { 'Cordas': '#ef2b97', 'Percussão': '#ffd84d', 'Vocal': '#6ce6ff', 'Teclas & Eletrônicos': '#96ff45', 'Cordas Friccionadas': '#c8aaff', 'Sopro': '#ff9a52', 'Eletrônico': '#96ff45' };
+  var COMBOS = [
+    { n: 'Four on the Floor', seq: ['Bateria', 'Bateria', 'Bateria', 'Bateria'], fx: ['O alvo da última Execução fica automaticamente [Derrubado].', 'Contra alvos [Tirânicos ou Superiores], possui 50% de chance de [Derrubado].'] },
+    { n: 'Wall of Sound', seq: ['Guitarra', 'Guitarra', 'Guitarra', 'Guitarra'], fx: ['O alvo recebe [Atordoado].', 'Caso já esteja [Atordoado], fica automaticamente [Derrubado].'] },
+    { n: 'Sing Along!', seq: ['Vocal', 'Vocal', 'Vocal', 'Vocal'], fx: ['Todos os aliados podem remover [Medo, Desespero ou Charme].', 'Caso não possuam nenhuma dessas Condições, recebem [Vantagem] em seu próximo Teste.'] },
+    { n: 'Bass Drop', seq: ['Baixo', 'Bateria', 'Baixo', 'Bateria'], fx: ['A última Execução recebe (+2 Dados de Dano).', 'O alvo possui 50% de chance de [Derrubado]. Com uma [Condição Negativa], a chance se torna 100%.'] },
+    { n: 'We Will Rock You', seq: ['Bateria', 'Bateria', 'Vocal', 'Bateria'], fx: ['Todos os aliados recebem (+5 de Acerto Instrumental) até o final da próxima Rodada.'] },
+    { n: 'Call & Response', seq: ['Guitarra', 'Vocal', 'Guitarra', 'Vocal'], fx: ['O responsável pela última Execução recebe uma [Ação Rápida] adicional, utilizável apenas em uma [Técnica Instrumental].', 'Pode ser ativado apenas 1 vez por Rodada.'] },
+    { n: 'Power Ballad', seq: ['Vocal', 'Guitarra', 'Vocal', 'Guitarra'], fx: ['O aliado com menor [PV Atual] recupera [10% do PV Máximo].', 'A última Execução recebe (+1 de Margem Crítica).'] },
+    { n: 'Digital Love', seq: ['Teclas', 'Vocal', 'Teclas', 'Vocal'], fx: ['A próxima [Magia] utilizada pela Party recebe (+1 QD) de Dano ou Cura.'] },
+    { n: 'String Theory', seq: ['Cordas Friccionadas', 'Cordas Friccionadas', 'Cordas Friccionadas', 'Cordas Friccionadas'], fx: ['Escolha [1 Buff, Debuff ou Condição] ativo no alvo da última Execução.', 'Sua duração aumenta em (+1 Rodada).'] },
+    { n: 'Brass Riot', seq: ['Sopro', 'Sopro', 'Sopro', 'Sopro'], fx: ['O alvo recebe [-5 de Acerto].', 'Não poderá realizar [Reações] até o final de sua próxima Rodada.'] },
+    { n: 'Melancholia', seq: ['Vocal', 'Cordas Friccionadas', 'Vocal', 'Cordas Friccionadas'], fx: ['O alvo possui 50% de chance de receber [Medo].', 'Caso já esteja sob [Medo], torna-se [Desespero].'] },
+    { n: 'Overdrive', seq: ['Teclas', 'Guitarra', 'Guitarra', 'Bateria'], fx: ['A última Execução recebe (+2 Dados de Dano).', 'A próxima [Técnica Instrumental] de qualquer aliado custa 50% menos PM.'] },
+    { n: 'Teen Spirit', seq: ['Guitarra', 'Baixo', 'Bateria', 'Vocal'], fx: ['Todos que participaram do Sound Combo recebem (+2 de Margem Crítica) em sua próxima [Ofensiva Instrumental].'] },
+    { n: 'Perfect Harmony', seq: ['4 Famílias diferentes'], any: true, fx: ['Todos os integrantes da Party recuperam [10% do PV Máximo] e [10% do PM Máximo].', 'Pode ser ativado apenas 1 vez por Combate.'] }
+  ];
+  var BD_TIERS = [
+    { min: 10, n: 'BREAK THE LIMIT!', c: '#fff27a', fx: ['[40% do PV Máximo] como Dano Onipotente.', 'Fica automaticamente [Derrubado].', 'Remove todos os seus [Buffs].', 'Não poderá utilizar [Reações] durante 1 Rodada.', '[Reações Elementais] reduzidas em 1 Categoria durante 2 Rodadas.'] },
+    { min: 8, n: 'OVERDRIVE', c: '#ff4d6a', fx: ['[30% do PV Máximo] como Dano Onipotente.', 'Fica automaticamente [Derrubado].', 'Remove todos os seus [Buffs].', '[Reações Elementais] reduzidas em 1 Categoria até o final da próxima Rodada.'] },
+    { min: 6, n: 'FULL VOLUME', c: '#ef2b97', fx: ['[20% do PV Máximo] como Dano Onipotente.', 'Fica automaticamente [Derrubado].', 'Não poderá realizar [Reações] até o final da próxima Rodada.'] },
+    { min: 4, n: 'GOOD PERFORMANCE', c: '#6ce6ff', fx: ['[10% do PV Máximo] como Dano Onipotente.', 'Fica automaticamente [Derrubado].'] }
+  ];
+  function instByKey(k) { return INST.filter(function (i) { return i.k === k; })[0] || { k: k, fam: k }; }
+  function tokenMatch(token, ex) {
+    if (token === 'Bateria') return ex.k === 'Bateria' || ex.fam === 'Percussão';
+    if (token === 'Teclas') return ex.fam === 'Teclas & Eletrônicos';
+    if (token === 'Guitarra' || token === 'Baixo') return ex.k === token;
+    var i = INST.filter(function (x) { return x.k === token; })[0];
+    if (i) return ex.fam === i.fam;
+    return ex.k === token || ex.fam === token;          /* família escrita no Compasso */
+  }
+  function mus() {
+    var u = ui(); u.music = u.music || {};
+    var m = u.music; m.compasso = m.compasso || []; m.seq = m.seq || []; m.ruptures = m.ruptures || 0; m.mission = m.mission || 0; m.harmonyUsed = !!m.harmonyUsed;
+    m.bd = m.bd || { active: false, round: 0, etapas: 0 }; m.log = m.log || [];
+    return m;
+  }
+  function findCombo(seq) {
+    if (seq.length < 4) return null;
+    var last = seq.slice(-4);
+    for (var i = 0; i < COMBOS.length; i++) {
+      var c = COMBOS[i]; if (c.any) continue;
+      if (c.seq.every(function (t, j) { return tokenMatch(t, last[j]); })) return c;
+    }
+    var fams = {}; last.forEach(function (x) { fams[x.fam] = 1; });
+    if (Object.keys(fams).length === 4 && !mus().harmonyUsed) return COMBOS[COMBOS.length - 1];
+    return null;
+  }
+  function bdTier(n) { for (var i = 0; i < BD_TIERS.length; i++) if (n >= BD_TIERS[i].min) return BD_TIERS[i]; return null; }
+  function addExec(k) {
+    var m = mus(), ex = instByKey(k), msgs = [];
+    /* Compasso: se for a próxima exigência, é Etapa Perfeita */
+    var next = m.compasso.filter(function (st) { return !st.done; })[0];
+    var perfect = !!(next && tokenMatch(next.need, ex));
+    if (perfect) {
+      next.done = true;
+      if (m.bd.active) m.bd.etapas++; else m.mission++;
+      msgs.push('perfect');
+      if (m.compasso.every(function (st) { return st.done; })) { m.ruptures++; msgs.push('rupture'); m.compasso.forEach(function (st) { st.done = false; }); }
+    }
+    m.seq.push({ k: ex.k, fam: ex.fam, p: perfect });
+    var combo = findCombo(m.seq);
+    if (combo) { if (combo.any) m.harmonyUsed = true; m.seq = []; m.lastCombo = combo.n; msgs.push('combo'); }
+    else if (m.seq.length > 4) m.seq = m.seq.slice(-4);
+    save(); render();
+    if (msgs.indexOf('rupture') >= 0) splash({ t: 'RUPTURA!', s: 'Ruptura de Ressonância · nº ' + m.ruptures, c: '#ff4d6a', k: 'good' });
+    else if (combo) splash({ t: 'SOUND COMBO!', s: combo.n, c: '#ffd84d', k: 'good' });
+    else if (perfect) banner('ETAPA PERFEITA ★');
+    if (combo && msgs.indexOf('rupture') >= 0) setTimeout(function () { splash({ t: 'SOUND COMBO!', s: combo.n, c: '#ffd84d', k: 'good' }); }, 2300);
+  }
+  function finishBreakdown() {
+    var m = mus(), n = m.bd.etapas, t = bdTier(n);
+    m.bd = { active: false, round: 0, etapas: 0 }; m.lastBreakdown = { n: n, tier: t ? t.n : 'Sem efeito' };
+    save(); render();
+    splash(t ? { t: t.n, s: n + ' Etapas no BREAKDOWN!', c: t.c, k: 'good' } : { t: 'FIM DO SHOW', s: n + ' Etapas: menos de 4, sem efeito', c: '#9b93a8', k: 'bad' });
+  }
+  function chip(k, extra) { var i = instByKey(k); return '<span class="cmm-chip' + (extra || '') + '" style="--fc:' + (FAM_COLOR[i.fam] || '#fff') + '"><b>' + E(i.k) + '</b>' + (i.k !== i.fam ? '<small>' + E(i.fam) + '</small>' : '') + '</span>'; }
+  function musicView() {
+    var m = mus(), w = weapons()[0], mine = w && (w.it.instrument || w.it.family) || '';
+    var mineKey = (INST.filter(function (i) { return mine && new RegExp(i.k, 'i').test(mine); })[0] || INST.filter(function (i) { return w && i.fam === w.it.family; })[0] || {}).k;
+    var instBtns = INST.map(function (i) { return '<button type="button" class="cmm-inst' + (i.k === mineKey ? ' mine' : '') + '" data-cmm-exec="' + E(i.k) + '" style="--fc:' + FAM_COLOR[i.fam] + '"><b>' + E(i.k) + '</b><small>' + E(i.k === mineKey ? 'SEU INSTRUMENTO' : i.fam) + '</small></button>'; }).join('');
+    var nextIdx = m.compasso.findIndex(function (st) { return !st.done; });
+    var steps = m.compasso.map(function (st, i) {
+      return '<div class="cmm-step' + (st.done ? ' done' : '') + (i === nextIdx ? ' next' : '') + '" style="--fc:' + (FAM_COLOR[instByKey(st.need).fam] || '#fff') + '"><small>ETAPA ' + (i + 1) + '</small><b>' + E(st.need) + '</b>' + (st.done ? '<i>★</i>' : '') + '<button type="button" data-cmm-delstep="' + i + '" aria-label="Remover etapa">×</button></div>';
+    }).join('<span class="cmm-arrow">▸</span>');
+    var addStep = '<select data-cmm-addstep aria-label="Adicionar etapa ao Compasso"><option value="">+ Etapa…</option><optgroup label="Instrumento">' + INST.map(function (i) { return '<option>' + E(i.k) + '</option>'; }).join('') + '</optgroup><optgroup label="Família">' + ['Cordas', 'Percussão', 'Vocal', 'Teclas & Eletrônicos', 'Cordas Friccionadas', 'Sopro'].map(function (f) { return '<option value="' + E(f) + '">Família: ' + E(f) + '</option>'; }).join('') + '</optgroup></select>';
+    var seq = []; for (var i = 0; i < 4; i++) seq.push(m.seq[i] ? chip(m.seq[i].k, m.seq[i].p ? ' perfect' : '') : '<span class="cmm-chip empty">—</span>');
+    /* combos que ainda podem sair com a sequência atual */
+    var possible = COMBOS.filter(function (c) { if (c.any) return !m.harmonyUsed; return m.seq.every(function (ex, j) { var off = 0; return tokenMatch(c.seq[j + off], ex); }); }).map(function (c) { return c.n; });
+    var comboList = COMBOS.map(function (c) {
+      var on = possible.indexOf(c.n) >= 0 && m.seq.length > 0, last = m.lastCombo === c.n;
+      return '<article class="cmm-combo' + (on ? ' live' : '') + (last ? ' last' : '') + (c.any && m.harmonyUsed ? ' used' : '') + '"><header><b>' + E(c.n) + '</b>' + (last ? '<em>ÚLTIMO</em>' : on ? '<em class="g">POSSÍVEL</em>' : c.any && m.harmonyUsed ? '<em>USADO</em>' : '') + '</header>' +
+        '<div class="cmm-seq">' + (c.any ? '<span class="cmm-chip rainbow"><b>4 Famílias diferentes</b></span>' : c.seq.map(function (t) { return chip(t); }).join('<i>▸</i>')) + '</div>' +
+        '<ul>' + c.fx.map(function (f) { return '<li>' + rich(f) + '</li>'; }).join('') + '</ul></article>';
+    }).join('');
+    var bd = m.bd, pct = Math.min(100, m.mission / 15 * 100), tier = bdTier(bd.etapas);
+    var bdHTML = bd.active ?
+      '<div class="cmm-bd live"><header><b>BREAKDOWN!</b><span>RODADA ' + Math.max(1, bd.round) + ' / 3</span></header>' +
+        '<div class="cmm-bd-count"><button type="button" data-cmm-bdstep="-1">−</button><b>' + bd.etapas + '</b><button type="button" data-cmm-bdstep="1">+</button><small>ETAPAS NA PERFORMANCE</small></div>' +
+        '<div class="cmm-tiers">' + BD_TIERS.slice().reverse().map(function (t) { return '<span class="' + (tier && tier.n === t.n ? 'on' : '') + '" style="--fc:' + t.c + '"><b>' + t.n + '</b><small>' + t.min + (t.min === 10 ? '+' : '–' + (t.min + 1)) + '</small></span>'; }).join('') + '</div>' +
+        '<button type="button" class="cmm-bd-end" data-cmm-bdend>ENCERRAR BREAKDOWN! ▸</button></div>'
+      : '<div class="cmm-bd"><header><b>BREAKDOWN!</b><span>' + m.mission + ' / 15 ETAPAS PERFEITAS NA MISSÃO</span></header>' +
+        '<div class="cmm-meter"><i style="width:' + pct.toFixed(1) + '%"></i>' + Array(15).join('<s></s>') + '</div>' +
+        '<div class="cmm-bd-row"><button type="button" data-cmm-mission="-1">−1</button><button type="button" data-cmm-mission="1">+1</button>' +
+        '<button type="button" class="cmm-bd-go" data-cmm-bdstart ' + (m.mission >= 15 ? '' : 'disabled') + '>INICIAR BREAKDOWN!</button></div>' +
+        (m.lastBreakdown ? '<p class="cmm-last">Último: <b>' + E(m.lastBreakdown.tier) + '</b> com ' + m.lastBreakdown.n + ' Etapas</p>' : '') + '</div>';
+    return '<div class="cmm">' +
+      '<section class="cmm-panel exec"><h3 class="cm-h">EXECUÇÃO INSTRUMENTAL</h3><p class="cmm-help">Toque no instrumento de cada Execução <b>bem-sucedida</b> da Party. A ficha confere o Compasso e os Sound Combos sozinha.</p><div class="cmm-insts">' + instBtns + '</div></section>' +
+      '<section class="cmm-panel compasso"><h3 class="cm-h">COMPASSO COGNITIVO <span>RUPTURAS · ' + m.ruptures + '</span></h3>' +
+        '<div class="cmm-steps">' + (steps || '<p class="cm-empty">Monte a sequência da Sombra conforme for descobrindo as Etapas.</p>') + '</div>' +
+        '<div class="cmm-row">' + addStep + '<button type="button" data-cmm-manual ' + (nextIdx < 0 ? 'disabled' : '') + '>★ Marcar Etapa Perfeita</button><button type="button" data-cmm-resetc>Reiniciar</button><button type="button" data-cmm-clearc>Limpar</button><button type="button" data-cmm-rupt="-1">− Ruptura</button></div></section>' +
+      '<section class="cmm-panel combo"><h3 class="cm-h">SOUND COMBO <span>ÚLTIMAS 4 EXECUÇÕES</span></h3>' +
+        '<div class="cmm-queue">' + seq.join('<i>▸</i>') + '</div>' +
+        '<div class="cmm-row"><button type="button" data-cmm-undo ' + (m.seq.length ? '' : 'disabled') + '>↶ Desfazer última</button><button type="button" data-cmm-clearseq>Limpar sequência</button>' + (m.harmonyUsed ? '<button type="button" data-cmm-harmony>Liberar Perfect Harmony</button>' : '') + '</div></section>' +
+      '<section class="cmm-panel bdp">' + bdHTML + '</section>' +
+      '<section class="cmm-panel list"><h3 class="cm-h">LISTINHA DE COMBOS <span>' + COMBOS.length + '</span></h3><div class="cmm-combos">' + comboList + '</div></section>' +
+    '</div>';
+  }
+  function musicClick(t) {
+    var m = mus();
+    if (t.dataset.cmmExec) { addExec(t.dataset.cmmExec); return true; }
+    if (t.dataset.cmmDelstep) { m.compasso.splice(+t.dataset.cmmDelstep, 1); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-manual')) {
+      var nx = m.compasso.filter(function (st) { return !st.done; })[0]; if (!nx) return true;
+      nx.done = true; if (m.bd.active) m.bd.etapas++; else m.mission++;
+      if (m.compasso.every(function (st) { return st.done; })) { m.ruptures++; m.compasso.forEach(function (st) { st.done = false; }); save(); render(); splash({ t: 'RUPTURA!', s: 'Ruptura de Ressonância · nº ' + m.ruptures, c: '#ff4d6a', k: 'good' }); return true; }
+      save(); render(); banner('ETAPA PERFEITA ★'); return true;
+    }
+    if (t.hasAttribute('data-cmm-resetc')) { m.compasso.forEach(function (st) { st.done = false; }); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-clearc')) { m.compasso = []; save(); render(); return true; }
+    if (t.dataset.cmmRupt) { m.ruptures = Math.max(0, m.ruptures + Number(t.dataset.cmmRupt)); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-undo')) { m.seq.pop(); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-clearseq')) { m.seq = []; m.lastCombo = ''; save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-harmony')) { m.harmonyUsed = false; save(); render(); return true; }
+    if (t.dataset.cmmMission) { m.mission = Math.max(0, m.mission + Number(t.dataset.cmmMission)); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-bdstart')) { m.mission = Math.max(0, m.mission - 15); m.bd = { active: true, round: 1, etapas: 0 }; save(); render(); splash({ t: 'BREAKDOWN!', s: '3 Rodadas de performance', c: '#ff2a8a', k: 'good' }); return true; }
+    if (t.dataset.cmmBdstep) { m.bd.etapas = Math.max(0, m.bd.etapas + Number(t.dataset.cmmBdstep)); save(); render(); return true; }
+    if (t.hasAttribute('data-cmm-bdend')) { finishBreakdown(); return true; }
+    return false;
+  }
 
   function $(s, r) { return (r || document).querySelector(s); }
   function E(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
@@ -103,6 +252,10 @@
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Modo de Combate');
     document.body.appendChild(root);
     root.addEventListener('click', onClick);
+    root.addEventListener('change', function (e) {
+      var sel = e.target.closest('[data-cmm-addstep]'); if (!sel || !sel.value) return;
+      mus().compasso.push({ need: sel.value, done: false }); save(); render();
+    });
     root.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && e.target.matches('.cm-amount')) { e.preventDefault(); var b = e.target.closest('.cm-res').querySelector('[data-cm-apply="-1"]'); if (b) b.click(); }
     });
@@ -149,7 +302,10 @@
     var acts = ACTIONS.map(function (a) { var used = !!(s.actions && s.actions[a[0]]); return '<button type="button" class="cm-act' + (used ? ' used' : '') + '" data-cm-action="' + a[0] + '" aria-pressed="' + used + '"><i></i>' + a[1] + '</button>'; }).join('');
     var derived = c ? [['REAÇÃO', c.reaction], ['MOVIMENTO', c.movement + ' m'], ['CRÍTICO', c.critStart >= 20 ? '20' : c.critStart + '–20'], ['FUGA', c.escape], ['ESQUIVA EQP', (mods && mods.dodge ? (mods.dodge > 0 ? '+' : '') + mods.dodge : '—')]] : [];
     var attrs = c ? ['FOR', 'MAG', 'TEC', 'AGI', 'VIT', 'SOR'].map(function (k) { return '<span><small>' + k + '</small><b>' + c[k] + '</b></span>'; }).join('') : '';
-    var aff = (s.persona && s.persona.affinities || []).filter(function (a) { return a.reaction && a.reaction !== 'Normal'; }).sort(function (a, b) { return (REACT_ORDER[a.reaction] || 9) - (REACT_ORDER[b.reaction] || 9); });
+    var aff = (s.persona && s.persona.affinities || []).map(function (a) { return { type: a.type, reaction: reactName(a.reaction) }; }).filter(function (a) { return a.reaction && a.reaction !== 'Normal'; }).sort(function (a, b) { return (REACT_ORDER[a.reaction] == null ? 9 : REACT_ORDER[a.reaction]) - (REACT_ORDER[b.reaction] == null ? 9 : REACT_ORDER[b.reaction]); });
+    var mu = s.music || {};
+    var maff = (mu.familyAffinities || []).map(function (a) { return { type: a.type, reaction: reactName(a.reaction || 'Normal') }; });
+    var spec = mu.specificWeaknessInstrument || mu.specificWeaknessFamily;
     var col1 =
       '<div class="cm-me">' +
         '<div class="cm-photo">' + (/^data:image|^https?:/.test(photo) ? '<img src="' + E(photo) + '" alt="">' : '<span>' + E(name.slice(0, 1).toUpperCase()) + '</span>') + '</div>' +
@@ -159,7 +315,9 @@
       '<div class="cm-box"><h4>AÇÕES DA RODADA</h4><div class="cm-acts">' + acts + '</div></div>' +
       '<div class="cm-box"><h4>ATRIBUTOS</h4><div class="cm-attrs">' + attrs + '</div>' +
         '<div class="cm-derived">' + derived.map(function (d) { return '<span><small>' + d[0] + '</small><b>' + E(d[1]) + '</b></span>'; }).join('') + '</div></div>' +
-      (aff.length ? '<div class="cm-box"><h4>AFINIDADES</h4><div class="cm-aff">' + aff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '"><small>' + E(a.reaction) + '</small>' + E(a.type) + '</span>'; }).join('') + '</div></div>' : '');
+      (maff.length ? '<div class="cm-box"><h4>AFINIDADE MUSICAL</h4><div class="cm-maff">' + maff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '" style="--fc:' + (FAM_COLOR[a.type] || '#fff') + '"><b>' + E(a.type) + '</b><small>' + E(a.reaction) + '</small></span>'; }).join('') + '</div>' +
+        (spec ? '<p class="cm-spec"><b>FRAQUEZA ESPECÍFICA</b> ' + E([mu.specificWeaknessInstrument, mu.specificWeaknessFamily].filter(Boolean).join(' · ')) + '</p>' : '') + '</div>' : '') +
+      (aff.length ? '<div class="cm-box"><h4>AFINIDADES ELEMENTAIS</h4><div class="cm-aff">' + aff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '"><small>' + E(a.reaction) + '</small>' + E(a.type) + '</span>'; }).join('') + '</div></div>' : '');
     /* coluna 2: ataques */
     var ws = weapons();
     var wHTML = ws.map(function (w, i) {
@@ -206,8 +364,9 @@
         '<div class="cm-status st-' + st + '"><small>SITUAÇÃO</small><b>' + (st === 'vantagem' ? 'VANTAGEM' : st === 'cercado' ? 'CERCADO' : 'NEUTRO') + '</b>' + (st !== 'neutro' ? '<button type="button" data-cm-neutral title="Voltar ao neutro">×</button>' : '') + '</div>' +
         '<button type="button" class="cm-exit" data-cm-exit>SAIR DO COMBATE ✕</button>' +
       '</header>' +
-      '<nav class="cm-fxbar" aria-label="Animações de combate">' + splashBtns + '</nav>' +
-      '<div class="cm-grid"><div class="cm-col c1">' + col1 + '</div><div class="cm-col c2">' + col2 + '</div><div class="cm-col c3">' + col3 + '</div></div>';
+      '<nav class="cm-fxbar" aria-label="Animações de combate"><span class="cm-views"><button type="button" data-cm-view="batalha" class="' + (u.view !== 'musica' ? 'on' : '') + '">⚔ BATALHA</button><button type="button" data-cm-view="musica" class="' + (u.view === 'musica' ? 'on' : '') + '">♫ PALCO MUSICAL' + (mus().bd.active ? ' <i>BREAKDOWN!</i>' : '') + '</button></span>' + splashBtns + '</nav>' +
+      (u.view === 'musica' ? '<div class="cm-grid cm-musicgrid"><div class="cm-col">' + musicView() + '</div></div>' :
+      '<div class="cm-grid"><div class="cm-col c1">' + col1 + '</div><div class="cm-col c2">' + col2 + '</div><div class="cm-col c3">' + col3 + '</div></div>');
     if (keep) root.querySelectorAll('.cm-col').forEach(function (x, i) { x.scrollTop = keep[i] || 0; });
   }
 
@@ -237,6 +396,8 @@
 
   function onClick(e) {
     var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.cmView) { ui().view = t.dataset.cmView; save(); render(); return; }
+    if (musicClick(t)) return;
     var resEl = t.closest('[data-cm-res]'), kind = resEl && resEl.dataset.cmRes;
     if (t.dataset.cmDelta) { changeRes(kind, Number(t.dataset.cmDelta)); return; }
     if (t.dataset.cmApply) {
@@ -247,7 +408,8 @@
     if (t.hasAttribute('data-cm-full')) { var c = calc(); if (c) { S().resources[kind === 'pv' ? 'pvCurrent' : 'pmCurrent'] = kind === 'pv' ? c.pvMax : c.pmMax; after(kind, 1); } return; }
     if (t.dataset.cmAction) { S().actions = S().actions || {}; S().actions[t.dataset.cmAction] = !S().actions[t.dataset.cmAction]; save(); syncSheet(); render(); return; }
     if (t.dataset.cmRound) { var u = ui(); u.round = Math.max(1, u.round + Number(t.dataset.cmRound)); save(); render(); return; }
-    if (t.hasAttribute('data-cm-next')) { var u2 = ui(); u2.round++; ACTIONS.forEach(function (a) { S().actions[a[0]] = false; }); save(); syncSheet(); render(); banner('RODADA ' + u2.round); return; }
+    if (t.hasAttribute('data-cm-next')) { var u2 = ui(); u2.round++;
+      var mm = mus(); if (mm.bd.active) { if (mm.bd.round >= 3) { finishBreakdown(); } else mm.bd.round++; } ACTIONS.forEach(function (a) { S().actions[a[0]] = false; }); save(); syncSheet(); render(); banner('RODADA ' + u2.round); return; }
     if (t.dataset.cmToggle) { var o = ui().open; o[t.dataset.cmToggle] = !o[t.dataset.cmToggle]; save(); render(); return; }
     if (t.dataset.cmCast) {
       var cost = Number(t.dataset.cmCast), rr = res();
