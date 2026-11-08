@@ -384,3 +384,10 @@ body.hud.workspace-sheet #characterPage:has(#sheet-panel-core.active)::before{to
 body.hud.workspace-sheet #characterPage:not(#_z) #deckWorkspace{padding:16px 20px 18px!important}
 body.hud.workspace-sheet #characterPage:not(#_z) #deckWorkspace #sheetMagicDeck{padding:10px 6px 14px!important}
 body.hud.workspace-sheet #characterPage:not(#_z) .magic-lab{padding-left:10px}
+
+/* texto escuro sobre fundos de destaque (claros em vários temas) */
+body.hud #characterPage:not(#_z) :is(.sf-tiers-now span,.er-count,.eq-heading-index,.er-stamp,.sf-tab.on b,.sf-tab.on span,.sf-chip,.er-pk-letter,.trw-big:not(.is-neg) *),
+body.hud :is(.cm-next,.cm-round span b,.cm-round span small,.cm-views button.on,.cmm-step.done b,.cmm-step.done small,.cmm-tiers span.on b,.cmm-tiers span.on small,.cm-quick .pos.wide,.cmm-combo header em,.isk-tabs button.on,.isk-use,.isk-pick,.isk-cost){color:#0d0c10!important;-webkit-text-fill-color:#0d0c10}
+/* "Escolher Vantagem" vazio: texto claro sobre o fundo escuro */
+body.hud #characterPage:not(#_z) .trh-empty :is(b,small,.trh-ic){color:var(--hud-mute,#9b93a8)!important;-webkit-text-fill-color:currentColor}
+body.hud #characterPage:not(#_z) .trh-empty:hover :is(b,small,.trh-ic){color:var(--hud-paper,#fff0d8)!important}
