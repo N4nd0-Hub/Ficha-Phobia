@@ -235,7 +235,7 @@
       '<span class="er-letter">' + s.serial[0] + '</span>' +
       (it ? photo(it, 'er-pic') : '<span class="er-pic er-pic-empty"><i>' + s.glyph + '</i></span>') +
       '<span class="er-copy"><small>' + E(s.title) + '</small><b>' + E(it ? it.name : '+ Equipar') + '</b>' +
-      (it ? '<span class="er-chips">' + chips(it) + '</span>' : '<span class="er-hint">' + (s.type === 'instrument' ? 'Sua arma no palco' : s.type === 'protection' ? 'Roupa de batalha' : 'Bônus de atributos') + '</span>') + '</span>' +
+      (it ? '<span class="er-chips">' + chips(it) + '</span>' : '<span class="er-hint">' + (s.type === 'instrument' ? (s.key === 'primary' ? 'Seu Ataque Básico' : 'Instrumento de troca') : s.type === 'protection' ? 'Roupa de batalha' : 'Bônus de atributos') + '</span>') + '</span>' +
       '<span class="er-flash" aria-hidden="true"></span>' +
     '</button>';
   }
@@ -313,7 +313,7 @@
         '<div class="er-photo">' + (ph ? '<img src="' + E(ph) + '" alt="">' : '<span>' + E(String(name).trim().slice(0, 1).toUpperCase() || '?') + '</span>') + '</div>' +
         '<div class="er-name"><small>LOADOUT DE</small><b>' + E(name) + '</b></div>' +
       '</div>' +
-      '<div class="er-weapon"><small>ARMA EM MÃOS</small><b>' + E(main ? main.name : 'Desarmado') + '</b>' +
+      '<div class="er-weapon"><small>ATAQUE BÁSICO · INSTRUMENTO</small><b>' + E(main ? main.name : 'Sem instrumento') + '</b>' +
         '<div class="er-wstats"><span><small>ACERTO</small><b>' + E(main && main.accuracy || '—') + '</b></span><span><small>DANO</small><b>' + E(main && main.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(main && main.range || '—') + '</b></span><span><small>PROTEÇÃO</small><b>' + E(prot && prot.protection || '—') + '</b></span></div></div>' +
       '<div class="er-stats' + (prev ? ' is-preview' : '') + '">' + cells + '</div>' +
       (soc ? '<div class="er-soc">' + soc + '</div>' : '') +

@@ -204,7 +204,7 @@
       var q = ensureEquipmentState();
       ['primary', 'secondary'].forEach(function (k, i) {
         var it = q.items.filter(function (x) { return x.id === q.slots[k] && x.type === 'instrument'; })[0];
-        if (it) out.push({ slot: i ? 'SECUNDÁRIO' : 'PRINCIPAL', it: it });
+        if (it) out.push({ slot: i ? 'INSTRUMENTO RESERVA' : 'INSTRUMENTO PRINCIPAL', it: it });
       });
     } catch (e) {}
     return out;
@@ -328,14 +328,12 @@
         var body = sk ? PhobiaInstrumentSkills.card(sk, { compact: true }) : '<p>' + rich(a) + '</p>';
         return skillRow('w' + i + 'a' + k, 'HABILIDADE ' + (k + 1) + (sk ? ' · ' + sk.cat.name.toUpperCase() : ''), nm, body, sk ? sk.cat.color : null, sk && sk.cost ? '<em class="cm-cost">' + E(sk.cost) + '</em>' : '');
       }).join('');
-      return '<div class="cm-weapon' + (i ? ' sec' : '') + '"><header><small>' + w.slot + (it.family ? ' · ' + E(it.family).toUpperCase() : '') + '</small><b>' + E(it.name) + '</b></header>' +
+      return '<div class="cm-weapon' + (i ? ' sec' : '') + '"><header><small>' + (i ? 'TROCA · ' : '') + w.slot + (it.family ? ' · ' + E(it.family).toUpperCase() : '') + (it.instrument ? ' · ' + E(it.instrument).toUpperCase() : '') + '</small><b>' + E(it.name) + '</b>' + (i ? '' : '<em class="cm-basic-tag">ATAQUE BÁSICO</em>') + '</header>' +
         '<div class="cm-wstats"><span><small>ACERTO</small><b>' + E(it.accuracy || '—') + '</b></span><span><small>DANO</small><b>' + E(it.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(it.range || '—') + '</b></span><span><small>HAB</small><b>' + E(it.hab || '—') + '</b></span></div>' +
         (it.properties ? '<p class="cm-props">' + rich(it.properties) + '</p>' : '') +
         (abHTML ? '<div class="cm-sks">' + abHTML + '</div>' : '') + '</div>';
     }).join('');
-    var ba = s.basicAttack || {};
-    var basic = '<div class="cm-weapon basic"><header><small>SEMPRE DISPONÍVEL</small><b>' + E(ba.name || 'Ataque Básico') + '</b></header><div class="cm-wstats"><span><small>ACERTO</small><b>' + E(ba.accuracy || 'HAB') + '</b></span><span><small>DANO</small><b>' + E(ba.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(ba.range || '—') + '</b></span><span><small>HAB</small><b>' + E(ba.hab || '—') + '</b></span></div></div>';
-    var col2 = '<h3 class="cm-h">ATAQUES</h3>' + (wHTML || '<p class="cm-empty">Nenhum instrumento equipado. Equipe um na aba Equipamentos.</p>') + basic;
+    var col2 = '<h3 class="cm-h">ATAQUE BÁSICO <span>SEU INSTRUMENTO</span></h3>' + (wHTML || '<p class="cm-empty">Nenhum instrumento equipado. Seu Ataque Básico é feito com o Instrumento: equipe um na aba Equipamentos.</p>');
     /* coluna 3: magias e habilidades */
     var sp = spells();
     var spHTML = sp.map(function (m, i) {

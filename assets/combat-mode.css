@@ -326,3 +326,4 @@ body.cm-open{overflow:hidden}
   .cmm-queue .cmm-chip{min-width:0;flex:1}
   .cm-maff{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+.cm-basic-tag{display:inline-block;margin:-4px 0 10px;padding:3px 9px 2px;background:var(--a);color:#0d0c10!important;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;font-style:normal;transform:skewX(-8deg)}
