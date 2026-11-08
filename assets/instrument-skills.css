@@ -1,0 +1,80 @@
+/* ==========================================================
+   PERSONA // PHOBIA — Habilidades Básicas de Instrumento
+   ========================================================== */
+:root{--isk-k:var(--hud-black,#0d0c10);--isk-p:var(--hud-paper,#fff0d8);--isk-card:var(--hud-card,#1c1f36)}
+
+/* cartão de habilidade */
+.isk-card{position:relative;display:flex;flex-direction:column;gap:8px;padding:12px 14px 12px;background:var(--isk-k);color:var(--isk-p);border-left:5px solid var(--ic);box-shadow:4px 4px 0 color-mix(in srgb,var(--ic) 55%,transparent);text-align:left}
+.isk-card header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.isk-card header small{display:block;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:var(--ic);text-transform:uppercase}
+.isk-card header b{display:block;margin-top:2px;font:400 19px/1.1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--isk-p);letter-spacing:-.2px}
+.isk-cost{flex:none;padding:4px 9px 3px;background:#a77bff;color:#0d0c10;font:400 13px/1 var(--hud-display,"Archivo Black"),sans-serif;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.isk-body{display:flex;flex-direction:column;gap:5px}
+.isk-body p{margin:0;font:500 14px/1.5 var(--hud-body,Barlow),sans-serif;color:var(--isk-p)}
+.isk-body p b{font-weight:800;color:#fff}
+.isk-fx{display:flex;align-items:flex-start;gap:8px;padding:5px 9px;background:color-mix(in srgb,var(--fxc,var(--ic)) 12%,transparent);border-left:3px solid var(--fxc,var(--ic))}
+.isk-fx i{flex:none;width:8px;height:8px;margin-top:7px;background:var(--fxc,var(--ic));transform:rotate(45deg)}
+.isk-fx.isk-dmg{--fxc:#ff4d6a}.isk-fx.isk-acc{--fxc:#6ce6ff}.isk-fx.isk-pm{--fxc:#b48cff}.isk-fx.isk-hp{--fxc:#ff7eb6}
+.isk-fx.isk-mov{--fxc:#5fe0c4}.isk-fx.isk-def{--fxc:#96ff45}.isk-fx.isk-deb{--fxc:#ff9a52}.isk-fx.isk-mus{--fxc:#ffd84d}
+.isk-fx.isk-star{--fxc:#fff27a}.isk-fx.isk-time{--fxc:#dfe3ee}.isk-fx.isk-block{--fxc:#ff4d6a}
+.isk-v{display:inline-block;padding:0 6px;margin:0 1px;font-weight:800;color:#0d0c10;background:var(--vc,#6ce6ff);border-radius:2px;line-height:1.45;white-space:nowrap}
+.isk-v.isk-dmg{--vc:#ff6b84}.isk-v.isk-acc{--vc:#6ce6ff}.isk-v.isk-pm{--vc:#c3a6ff}.isk-v.isk-hp{--vc:#ff9ccc}.isk-v.isk-mov{--vc:#7ff0d6}
+.isk-v.isk-def{--vc:#b4ff7a}.isk-v.isk-deb{--vc:#ffb07a}.isk-v.isk-mus{--vc:#ffe17a}.isk-v.isk-star{--vc:#fff27a}.isk-v.isk-time{--vc:#e8ebf3}.isk-v.isk-block{--vc:#ff8a9a}
+.isk-t{font-weight:800;color:#fff;border-bottom:2px solid color-mix(in srgb,var(--ic) 70%,transparent)}
+.isk-f{display:inline-block;padding:0 6px;font:800 11px/1.6 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--ic);border:1px solid var(--ic)}
+.isk-or{display:flex;align-items:center;gap:8px;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--hud-mute,#9b93a8)}
+.isk-or::before,.isk-or::after{content:"";flex:1;height:1px;background:currentColor;opacity:.4}
+.isk-note{padding:5px 9px;font-style:italic!important;font-size:13px!important;color:var(--hud-mute,#b8b0c4)!important;border:1px dashed color-mix(in srgb,var(--isk-p) 25%,transparent)}
+.isk-extra{margin:0;padding:6px 9px;font:600 13px/1.4 var(--hud-body,Barlow),sans-serif;background:var(--isk-card);color:var(--isk-p);white-space:pre-wrap}
+.isk-card.compact{padding:10px 12px;gap:6px}
+.isk-card.compact header b{font-size:16px}
+.isk-card.compact .isk-body p{font-size:13px}
+.isk-list{display:grid;gap:10px}
+
+/* botões no editor e na aba */
+.isk-pick{align-self:flex-start;margin-top:6px;padding:7px 12px;border:0;cursor:pointer;background:#ffd84d;color:#0d0c10;font:800 11.5px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.isk-pick:hover{transform:translateY(-2px)}
+.isk-preview{grid-column:1/-1;margin:-2px 0 6px}
+body.hud.workspace-sheet #characterPage:not(#_z) .eq-add-buttons .isk-browse{background:#ffd84d!important;color:#0d0c10!important}
+
+/* janela do catálogo */
+.isk-dialog{width:min(1100px,96vw);max-height:92vh;padding:0;border:0;background:transparent;color:var(--isk-p);overflow:visible}
+.isk-dialog::backdrop{background:rgba(5,4,10,.78);backdrop-filter:blur(2px)}
+.isk-dialog[open]{animation:iskIn .32s cubic-bezier(.22,1,.36,1)}
+@keyframes iskIn{from{opacity:0;transform:translateY(24px) skewX(-3deg)}}
+.isk-wrap{display:flex;flex-direction:column;max-height:92vh;background:var(--isk-card);border-top:6px solid #ffd84d;box-shadow:10px 10px 0 #ffd84d,0 30px 80px rgba(0,0,0,.6)}
+.isk-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 22px 12px;background:linear-gradient(165deg,rgba(255,216,77,.16) 0 50%,transparent 50%)}
+.isk-top small{display:block;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:#ffd84d}
+.isk-top b{display:block;margin-top:3px;font:400 clamp(22px,2.6vw,34px)/1 var(--hud-display,"Archivo Black"),sans-serif;color:var(--isk-p);letter-spacing:-.5px}
+.isk-top b span{color:#ffd84d}
+.isk-x{flex:none;width:38px;height:38px;border:2px solid var(--isk-p);background:transparent;color:var(--isk-p);font:400 20px/1 var(--hud-display,"Archivo Black"),sans-serif;cursor:pointer}
+.isk-x:hover{background:var(--isk-p);color:var(--isk-k)}
+.isk-scroll{overflow:auto;padding:0 22px 22px;overscroll-behavior:contain}
+.isk-rules{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;margin-bottom:14px;padding:14px 16px;background:var(--isk-k);border-left:5px solid #ffd84d}
+.isk-rules p{margin:0;font:500 14.5px/1.55 var(--hud-body,Barlow),sans-serif}
+.isk-rules p b{color:#fff}
+.isk-sup small{display:block;margin-bottom:6px;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;color:#ffd84d}
+.isk-sup ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.isk-sup li{position:relative;padding-left:16px;font:600 13.5px/1.4 var(--hud-body,Barlow),sans-serif}
+.isk-sup li::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;background:#ffd84d;transform:rotate(45deg)}
+.isk-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 0;background:var(--isk-card)}
+.isk-bar input{flex:1;min-width:0;padding:11px 14px;border:0;border-bottom:3px solid #ffd84d;background:var(--isk-k);color:var(--isk-p);font:600 15px var(--hud-body,Barlow),sans-serif;outline:none}
+.isk-count{flex:none;font:800 11px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;color:var(--hud-mute,#9b93a8);text-transform:uppercase}
+.isk-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+.isk-tabs button{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:0;cursor:pointer;background:var(--isk-k);color:var(--isk-p);border-bottom:3px solid var(--ic);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.2px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:background-color .15s,color .15s,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.isk-tabs button i{font-style:normal;opacity:.6}
+.isk-tabs button:hover{transform:translateY(-2px)}
+.isk-tabs button.on{background:var(--ic);color:#0d0c10}
+.isk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;align-items:start}
+.isk-grid .isk-card{animation:iskCard .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes iskCard{from{opacity:0;transform:translateY(12px)}}
+.isk-use{align-self:flex-start;margin-top:4px;padding:8px 14px;border:0;cursor:pointer;background:var(--ic);color:#0d0c10;font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.isk-use:hover{transform:translateY(-2px)}
+.isk-empty{margin:20px 0;font:600 15px var(--hud-body,Barlow),sans-serif;color:var(--hud-mute,#9b93a8)}
+@media (max-width:760px){
+  .isk-rules{grid-template-columns:1fr}
+  .isk-grid{grid-template-columns:1fr}
+  .isk-top,.isk-scroll{padding-left:14px;padding-right:14px}
+  .isk-wrap{box-shadow:6px 6px 0 #ffd84d}
+}
+@media (prefers-reduced-motion:reduce){.isk-dialog[open],.isk-grid .isk-card{animation:none}}
