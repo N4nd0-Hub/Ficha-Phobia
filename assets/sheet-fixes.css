@@ -391,3 +391,7 @@ body.hud :is(.cm-next,.cm-round span b,.cm-round span small,.cm-views button.on,
 /* "Escolher Vantagem" vazio: texto claro sobre o fundo escuro */
 body.hud #characterPage:not(#_z) .trh-empty :is(b,small,.trh-ic){color:var(--hud-mute,#9b93a8)!important;-webkit-text-fill-color:currentColor}
 body.hud #characterPage:not(#_z) .trh-empty:hover :is(b,small,.trh-ic){color:var(--hud-paper,#fff0d8)!important}
+
+/* fórmulas com atributo resolvidas (1d20+MAG → 1d20+8) */
+.fx-calc{color:inherit;border-bottom:2px dotted color-mix(in srgb,var(--hud-acc2,#6ce6ff) 80%,transparent);cursor:help;white-space:nowrap}
+.fx-hint{display:block;margin-top:4px;font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;color:var(--hud-acc3,#96ff45)}
