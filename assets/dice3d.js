@@ -307,6 +307,7 @@
       if (b.dataset.drAdd) { var s = +b.dataset.drAdd; pool[s] = (pool[s] || 0) + 1; paintPanel(); return; }
       if (b.dataset.drSub) { var s2 = +b.dataset.drSub; pool[s2] = Math.max(0, (pool[s2] || 0) - 1); paintPanel(); return; }
       if (b.hasAttribute('data-dr-clear')) { pool = {}; paintPanel(); return; }
+      if (b.hasAttribute('data-dr-clearlog')) { LOG = []; paintPanel(); return; }
       if (b.dataset.drMode) { mode = b.dataset.drMode; paintPanel(); return; }
       if (b.hasAttribute('data-dr-pool')) {
         var ex = Object.keys(pool).filter(function (k) { return pool[k]; }).map(function (k) { return pool[k] + 'd' + k; }).join('+');
@@ -347,7 +348,7 @@
       '<h4>DADOS LIVRES' + (poolTxt ? ' <small>' + poolTxt + '</small>' : '') + '</h4><div class="dr-dice">' + diceBtns + '</div>' +
       '<div class="dr-poolrow"><button type="button" class="dr-go" data-dr-pool ' + (poolTxt ? '' : 'disabled') + '>ROLAR ' + (poolTxt || '') + '</button>' + (poolTxt ? '<button type="button" data-dr-clear>LIMPAR</button>' : '') + '</div>' +
       '<form class="dr-form"><input id="drExpr" placeholder="Fórmula: 2d6+MAG, 1d20+3…" autocomplete="off"><button type="submit">ROLAR</button></form>' +
-      (LOG.length ? '<h4>ÚLTIMAS ROLAGENS</h4><ol class="dr-log">' + LOG.map(function (l) { return '<li><span>' + esc(l.label) + '</span><em>' + esc(l.expr) + '</em><b>' + l.total + '</b></li>'; }).join('') + '</ol>' : '');
+      (LOG.length ? '<h4>ÚLTIMAS ROLAGENS <button type="button" class="dr-clearlog" data-dr-clearlog>LIMPAR HISTÓRICO</button></h4><ol class="dr-log">' + LOG.map(function (l) { return '<li><span>' + esc(l.label) + '</span><em>' + esc(l.expr) + '</em><b>' + l.total + '</b></li>'; }).join('') + '</ol>' : '');
   }
   function togglePanel() { if (!panelEl) buildPanel(); panelEl.hidden = !panelEl.hidden; paintPanel(); }
   function fab() {
