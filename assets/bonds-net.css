@@ -138,3 +138,6 @@ body.hud.workspace-sheet #characterPage:not(#_z) #sheetBondsPage .bond-layout{di
 }
 @media (prefers-reduced-motion:reduce){#characterPage :is(.bn-node,.bn-lines line,.bn-me .bn-face,.bn-star,.bn-tarot-in,.bn-ru-band){animation:none!important}}
 body.hs-calm #characterPage :is(.bn-node,.bn-lines line,.bn-me .bn-face,.bn-star,.bn-tarot-in,.bn-ru-band){animation:none!important}
+
+/* texto escuro garantido sobre fundos claros/coloridos (alguns temas pintam <b> de branco) */
+body.hud #characterPage:not(#_z) :is(.bn-me b,.bn-node.on .bn-label b,.bn-node.on .bn-label small,.bn-tarot-name b,.bn-tarot-name small,.bn-tarot-rank b,.bn-tarot-rank small,.bn-rank,.bn-add,.bn-ru-band b,.bn-ru-band small){color:#0d0c10!important;-webkit-text-fill-color:#0d0c10}

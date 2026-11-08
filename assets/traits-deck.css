@@ -151,3 +151,6 @@ body.hs-calm #characterPage :is(.trw-coin,.trh-card,#traitGrid .tr-card,.trc-sta
 body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-results-row label:has(#traitAvailableOnly){display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:var(--tr-k);color:var(--tr-p);font:800 12px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
 body.hud.workspace-sheet #characterPage:not(#_z) #sheetTraitsPage .tr-results-row label:has(#traitAvailableOnly:checked){background:var(--hud-acc3,#96ff45);color:var(--tr-k)}
 #sheetTraitsPage #traitAvailableOnly{accent-color:var(--hud-acc,#ef2b97)}
+
+/* texto escuro garantido sobre fundos claros/coloridos (alguns temas pintam <b> de branco) */
+body.hud #characterPage:not(#_z) :is(.trw-big:not(.is-neg) b,.trw-big:not(.is-neg) small,.trh-card.adv b,.trh-card.adv small,.trh-pt,#traitGrid .tr-score b,#traitGrid .tr-score small,#traitGrid .tr-card.is-owned:not([data-kind="defeito"]) :is(h3,.tr-card-description,.tr-card-meta b)){color:#0d0c10!important;-webkit-text-fill-color:#0d0c10}
