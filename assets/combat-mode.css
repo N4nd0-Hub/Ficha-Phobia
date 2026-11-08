@@ -338,3 +338,5 @@ body.cm-open{overflow:hidden}
 .cm-act.crit i{background:#ff4d6a;box-shadow:0 0 8px #ff4d6a}
 .cm-act.crit.used{animation:none}
 .cm-cast.free{background:#ffd84d;color:#0d0c10!important;-webkit-text-fill-color:#0d0c10;animation:cmLow .8s ease-in-out infinite alternate}
+.cm-cost.up{background:#7a1cff;color:#fff!important;-webkit-text-fill-color:#fff}
+.cm-cost s{opacity:.6;margin-right:2px}

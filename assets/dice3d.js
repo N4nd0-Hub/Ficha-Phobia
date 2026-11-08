@@ -231,7 +231,7 @@
 
   function roll(expr, label, opts) {
     opts = opts || {};
-    if ((!opts.mode || opts.mode === 'normal') && /ACERTO/i.test(label || '') && window.PhobiaCombat && PhobiaCombat.attackMode && PhobiaCombat.attackMode() === 'vant') opts.mode = 'vant';
+    if ((!opts.mode || opts.mode === 'normal') && /ACERTO/i.test(label || '') && window.PhobiaCombat && PhobiaCombat.attackMode && PhobiaCombat.attackMode() !== 'normal') opts.mode = PhobiaCombat.attackMode();
     var terms = parseExpr(expr); if (!terms) return;
     ensureStage(); size();
     var rolls = [], bonus = 0, mode = opts.mode || 'normal';

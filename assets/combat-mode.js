@@ -17,14 +17,14 @@
 
   var SPLASH = {
     vantagem: { t: 'VANTAGEM!', s: 'A primeira Magia do combate é de graça', c: '#ef2b97', k: 'good', state: 'vantagem' },
-    cercado: { t: 'CERCADO!', s: 'Sombras têm Vantagem em testes de Ataque', c: '#7a1cff', k: 'bad', state: 'cercado' },
+    cercado: { t: 'CERCADO!', s: 'Desvantagem nos seus Ataques · Magias e efeitos custam +50%', c: '#7a1cff', k: 'bad', state: 'cercado' },
     emboscada: { t: 'EMBOSCADA!', s: 'Vantagem em testes de Ataque', c: '#ffd84d', k: 'good', state: 'emboscada' },
     critico: { t: 'CRÍTICO!', s: '+1 Ataque adicional nesta Rodada', c: '#ff4d6a', k: 'good', hidden: true },
     fraqueza: { t: 'FRAQUEZA!', s: 'Acertou o ponto fraco', c: '#6ce6ff', k: 'good' },
     allout: { t: 'ALL-OUT ATTACK!', s: 'Todos juntos, agora!', c: '#ff2a2a', k: 'good' },
     vitoria: { t: 'VITÓRIA!', s: 'Combate encerrado', c: '#ffd84d', k: 'good' }
   };
-  var STATUS_TXT = { vantagem: ['VANTAGEM', ''], cercado: ['CERCADO', 'Sombras com Vantagem no Ataque'], emboscada: ['EMBOSCADA', 'Vantagem nos seus Ataques'] };
+  var STATUS_TXT = { vantagem: ['VANTAGEM', ''], cercado: ['CERCADO', 'Desvantagem nos seus Ataques · custos +50%'], emboscada: ['EMBOSCADA', 'Vantagem nos seus Ataques'] };
   var ACTIONS = [['standardSpent', 'Padrão'], ['quickSpent', 'Rápida'], ['reactionSpent', 'Reação'], ['interruptSpent', 'Interromper']];
   var REACT_ORDER = { Fraqueza: 0, Resiste: 1, Anula: 2, Drena: 3, Reflete: 4 };
   function reactName(r) { try { return PERSONA_REACTION_LABEL[r] || r; } catch (e) { return r; } }
@@ -327,7 +327,7 @@
         var sk = window.PhobiaInstrumentSkills && PhobiaInstrumentSkills.find(a);
         var nm = sk ? sk.name : String(a).split('\n')[0].slice(0, 60);
         var body = sk ? PhobiaInstrumentSkills.card(sk, { compact: true }) : '<p>' + rich(a) + '</p>';
-        return skillRow('w' + i + 'a' + k, 'HABILIDADE ' + (k + 1) + (sk ? ' · ' + sk.cat.name.toUpperCase() : ''), nm, body, sk ? sk.cat.color : null, sk && sk.cost ? '<em class="cm-cost">' + E(sk.cost) + '</em>' : '');
+        return skillRow('w' + i + 'a' + k, 'HABILIDADE ' + (k + 1) + (sk ? ' · ' + sk.cat.name.toUpperCase() : ''), nm, body, sk ? sk.cat.color : null, sk && sk.cost ? costTag(sk.cost) : '');
       }).join('');
       return '<div class="cm-weapon' + (i ? ' sec' : '') + '"><header><small>' + (i ? 'TROCA · ' : '') + w.slot + (it.family ? ' · ' + E(it.family).toUpperCase() : '') + (it.instrument ? ' · ' + E(it.instrument).toUpperCase() : '') + '</small><b>' + E(it.name) + '</b>' + (i ? '' : '<em class="cm-basic-tag">ATAQUE BÁSICO</em>') + '</header>' +
         '<div class="cm-wstats"><span><small>ACERTO</small><b>' + E(it.accuracy || '—') + '</b></span><span><small>DANO</small><b>' + E(it.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(it.range || '—') + '</b></span><span><small>HAB</small><b>' + E(it.hab || '—') + '</b></span></div>' +
@@ -338,14 +338,16 @@
     /* coluna 3: magias e habilidades */
     var sp = spells();
     var spHTML = sp.map(function (m, i) {
-      var pm = String(m.cost).match(/(\d+)\s*PM/i);
+      var pm = String(m.cost).match(/(\d+)\s*PM/i), cerc = u.status === 'cercado';
+      var pmc = pm ? (cerc ? Math.ceil(Number(pm[1]) * 1.5) : Number(pm[1])) : 0;
       var pvp = String(m.cost).match(/(\d+(?:[.,]\d+)?)\s*%\s*(?:do\s+)?PV/i), pvf = !pvp && String(m.cost).match(/(\d+)\s*PV/i);
       var pv = pvp ? Math.max(1, Math.ceil(r.pvMax * Number(pvp[1].replace(',', '.')) / 100)) : pvf ? Number(pvf[1]) : 0;
-      var extra = '<em class="cm-cost' + (pv ? ' hp' : '') + '">' + E(m.cost || '—') + (pvp ? ' · ' + pv + ' PV' : '') + '</em>';
+      var pvBase = pv; if (cerc && pv) pv = Math.ceil(pv * 1.5);
+      var extra = '<em class="cm-cost' + (pv ? ' hp' : '') + (cerc && (pm || pv) ? ' up' : '') + '">' + (cerc && pm ? '<s>' + pm[1] + '</s> ' + pmc + ' PM' : cerc && pv ? '<s>' + pvBase + '</s> ' + pv + ' PV' : E(m.cost || '—') + (pvp ? ' · ' + pv + ' PV' : '')) + '</em>';
       var body = (m.target ? '<p class="cm-meta">ALVO · ' + E(m.target) + ' · TIER ' + E(m.tier || '') + '</p>' : '') + '<p>' + rich(m.effect) + '</p>' + (m.desc ? '<p class="cm-desc">' + rich(m.desc) + '</p>' : '') +
         (u.freeSpell && (pm || pv) ? '<button type="button" class="cm-cast free" data-cm-free data-cm-spell="' + E(m.name) + '">' + (pv ? 'USAR' : 'CONJURAR') + ' · GRÁTIS <small>(VANTAGEM)</small></button>' :
-         pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pm[1] + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pm[1] + ' PM</button>' :
-         pv ? '<button type="button" class="cm-cast hp" data-cm-castpv="' + pv + '" data-cm-spell="' + E(m.name) + '">USAR · −' + pv + ' PV' + (pvp ? ' <small>(' + E(pvp[1]) + '% de ' + r.pvMax + ')</small>' : '') + '</button>' : '');
+         pm ? '<button type="button" class="cm-cast" data-cm-cast="' + pmc + '" data-cm-spell="' + E(m.name) + '">CONJURAR · −' + pmc + ' PM' + (cerc ? ' <small>(CERCADO +50%)</small>' : '') + '</button>' :
+         pv ? '<button type="button" class="cm-cast hp" data-cm-castpv="' + pv + '" data-cm-spell="' + E(m.name) + '">USAR · −' + pv + ' PV' + (cerc ? ' <small>(CERCADO +50%)</small>' : pvp ? ' <small>(' + E(pvp[1]) + '% de ' + r.pvMax + ')</small>' : '') + '</button>' : '');
       return skillRow('m' + i + m.name, (m.cat || 'MAGIA').toUpperCase() + ' · TIER ' + (m.tier || ''), m.name, body, m.color, extra);
     }).join('');
     var pers = personalSkills().map(function (h, i) { return skillRow('p' + i, h.src, h.name, '<p>' + rich(h.text) + '</p>', '#ffd84d'); }).join('');
@@ -480,7 +482,12 @@
     if (first) { u.critRound = u.round; u.critUsed = false; save(); render(); }
     splash({ t: 'CRÍTICO!', s: first ? '+1 Ataque adicional nesta Rodada' : 'Ataque extra já ganho nesta Rodada', c: '#ff4d6a', k: 'good' });
   }
-  function attackMode() { var st = root && !root.hidden ? ui().status : ''; return st === 'emboscada' ? 'vant' : 'normal'; }
+  function attackMode() { var st = root && !root.hidden ? ui().status : ''; return st === 'emboscada' ? 'vant' : st === 'cercado' ? 'desv' : 'normal'; }
+  function costTag(cost) {
+    var m = String(cost).match(/(\d+)\s*(PM|PV)/i);
+    if (ui().status !== 'cercado' || !m) return '<em class="cm-cost">' + E(cost) + '</em>';
+    return '<em class="cm-cost up"><s>' + m[1] + '</s> ' + Math.ceil(Number(m[1]) * 1.5) + ' ' + m[2].toUpperCase() + '</em>';
+  }
 
   /* ---------- animações de tela ---------- */
   function splash(o) {
