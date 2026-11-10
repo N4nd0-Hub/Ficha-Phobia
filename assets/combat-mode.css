@@ -364,3 +364,96 @@ body.hs-calm #characterPage .cm-enter em{animation:none}
   #characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:26px;height:26px}
   #characterPage:not(#_z) .sheet-page-tabs .cm-enter b{font-size:13px}
 }
+
+/* ---------- visualização simplificada (opcional) ---------- */
+.cm-fx-actions{display:contents}
+.cm-layout-btn{
+  display:inline-flex;flex:none;align-items:center;justify-content:center;gap:7px;min-height:32px;padding:6px 12px;
+  border:1px solid var(--a2);background:var(--k);color:var(--p);cursor:pointer;
+  font:800 13px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;text-transform:uppercase;
+}
+.cm-layout-btn svg{width:16px;height:16px;flex:none;color:var(--a2)}
+.cm-layout-btn:hover,.cm[data-simplified="true"] .cm-layout-btn{background:var(--a2);color:#0d0c10}
+.cm-layout-btn:hover svg,.cm[data-simplified="true"] .cm-layout-btn svg{color:inherit}
+.cm :is(.cm-layout-btn,.cm-fold > summary):focus-visible{outline:2px solid var(--p);outline-offset:2px}
+
+.cm[data-simplified="true"],.cm[data-simplified="true"] *{animation:none!important;transition:none!important}
+.cm[data-simplified="true"] .cm-bg i:first-child{opacity:.25}
+.cm[data-simplified="true"] .cm-bg i:last-child{opacity:.55}
+.cm[data-simplified="true"] .cm-col{gap:10px}
+.cm[data-simplified="true"] .cm-me{align-items:center;gap:12px}
+.cm[data-simplified="true"] .cm-photo{width:56px;height:62px;box-shadow:3px 3px 0 var(--a)}
+.cm[data-simplified="true"] .cm-photo span{font-size:25px}
+.cm[data-simplified="true"] .cm-me-name b{font-size:clamp(18px,2vw,25px)}
+.cm[data-simplified="true"] .cm-res{padding:9px 12px 6px}
+.cm[data-simplified="true"] .cm-bar{height:12px;margin:4px 0 8px}
+.cm[data-simplified="true"] .cm-wstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cm[data-simplified="true"] .cm-act i{box-shadow:none}
+
+.cm-fold{min-width:0;background:var(--k);border-left:3px solid color-mix(in srgb,var(--a2) 55%,var(--card))}
+.cm-fold[open]{border-left-color:var(--a2)}
+.cm-fold > summary{
+  display:flex;align-items:center;gap:8px;min-height:38px;padding:7px 10px;cursor:pointer;list-style:none;
+  font:400 14px/1.25 var(--hud-display,"Archivo Black"),sans-serif;color:var(--p);overflow-wrap:anywhere;
+}
+.cm-fold > summary::-webkit-details-marker{display:none}
+.cm-fold > summary b{font-weight:inherit;flex:0 1 auto;min-width:0}
+.cm-fold > summary small{margin-left:auto;color:var(--a2);text-align:right;font:700 12px/1.2 var(--hud-body,Barlow),sans-serif;min-width:0}
+.cm-fold > summary::after{content:"";width:7px;height:7px;flex:none;margin:0 3px 4px auto;border-right:2px solid var(--a2);border-bottom:2px solid var(--a2);transform:rotate(45deg)}
+.cm-fold > summary:has(small)::after{margin-left:4px}
+.cm-fold[open] > summary::after{margin-bottom:0;transform:rotate(225deg)}
+.cm-fold > summary:hover{background:color-mix(in srgb,var(--a2) 13%,var(--k))}
+.cm-fold-body{padding:0 10px 10px;min-width:0}
+.cm-fold:not([open]) > .cm-fold-body{display:none}
+.cm-fold .cm-box{padding:8px 0 2px}
+.cm-fold .cm-weapon{box-shadow:none}
+.cm-fold.cm-res-tools,.cm-fold.cm-weapon-props,.cmm-panel .cm-fold{margin-top:5px;border-left:0;border-top:1px solid color-mix(in srgb,var(--p) 18%,transparent);background:transparent}
+.cm-fold.cm-res-tools > summary,.cm-fold.cm-weapon-props > summary,.cmm-panel .cm-fold > summary{
+  min-height:28px;padding:5px 0;color:var(--p);font:800 12px/1.25 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;text-transform:uppercase;
+}
+.cm-fold.cm-res-tools > .cm-fold-body,.cm-fold.cm-weapon-props > .cm-fold-body,.cmm-panel .cm-fold > .cm-fold-body{padding:0 0 6px}
+.cm-fold.cm-weapon-props .cm-props{margin:2px 0 0}
+
+.cm-fx-fold > summary{min-height:32px;padding:6px 11px;font:800 13px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;text-transform:uppercase}
+.cm-fx-fold[open]{flex-basis:100%}
+.cm-fx-controls{display:flex;flex-wrap:wrap;gap:6px}
+.cm-fold.cmm-panel{display:block;padding:0}
+.cm-fold.cmm-panel > .cm-fold-body{display:grid;gap:8px;padding:0 12px 10px}
+.cm-fold.cmm-panel:not([open]) > .cm-fold-body{display:none}
+.cm-fold.cmm-panel > summary{padding-inline:12px}
+.cm[data-simplified="true"] .cmm{gap:10px}
+.cm[data-simplified="true"] .cmm-inst{padding:8px 10px}
+.cm[data-simplified="true"] .cmm-chip{padding:5px 8px}
+.cm[data-simplified="true"] .cmm-step{min-width:92px}
+.cm[data-simplified="true"] .cmm-bdp{padding:12px}
+.cm[data-simplified="true"] .cmm-bd.live .cm-fold{margin-top:0}
+
+.cm-notice{
+  position:absolute;z-index:20;bottom:16px;left:18px;display:grid;gap:3px;max-width:min(460px,calc(100% - 36px));
+  pointer-events:none;overflow-wrap:anywhere;background:var(--k);color:var(--p);
+}
+.cm-notice:not(:empty){padding:9px 14px;border-left:4px solid var(--a2);box-shadow:4px 4px 0 #000}
+.cm-notice.bad:not(:empty){border-left-color:#ff4d6a}
+.cm-notice b{font:400 14px/1.2 var(--hud-display,"Archivo Black"),sans-serif}
+.cm-notice span{font:600 13px/1.35 var(--hud-body,Barlow),sans-serif}
+
+@media(max-width:760px){
+  .cm-fxbar{flex-wrap:wrap;overflow:visible}
+  .cm-fxbar .cm-views{max-width:100%;margin-right:0}
+  .cm-fxbar .cm-views button{padding-inline:10px}
+  .cm-fx-actions{display:flex;flex:1 0 100%;min-width:0;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:3px}
+  .cm[data-simplified="true"] .cm-top{padding-block:8px;gap:8px}
+  .cm[data-simplified="true"] .cm-title{flex:1 1 150px;min-width:0}
+  .cm[data-simplified="true"] .cm-title b{font-size:clamp(17px,5vw,24px)}
+  .cm[data-simplified="true"] .cm-exit{flex:none;padding:6px 8px}
+  .cm[data-simplified="true"] .cm-status{flex:1 1 100%;flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:3px 8px;padding:5px 28px 5px 8px}
+  .cm[data-simplified="true"] .cm-status b{font-size:13px}
+  .cm[data-simplified="true"] .cm-status em{max-width:none}
+  .cm[data-simplified="true"] .cm-round .cm-next{height:34px}
+  .cm[data-simplified="true"] .cm-round span b{font-size:21px}
+  .cm[data-simplified="true"] .cm-layout-btn{padding-inline:8px;gap:5px}
+  .cm[data-simplified="true"] .cm-grid{padding-bottom:72px}
+  .cm[data-simplified="true"] .cmm-queue{gap:4px}
+  .cm[data-simplified="true"] .cmm-queue .cmm-chip{flex:none;max-width:100%}
+  .cm[data-simplified="true"] .cmm-queue .cmm-chip b{font-size:12px}
+}

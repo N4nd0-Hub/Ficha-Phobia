@@ -113,7 +113,7 @@
     splash(t ? { t: t.n, s: n + ' Etapas no BREAKDOWN!', c: t.c, k: 'good' } : { t: 'FIM DO SHOW', s: n + ' Etapas: menos de 4, sem efeito', c: '#9b93a8', k: 'bad' });
   }
   function chip(k, extra) { var i = instByKey(k); return '<span class="cmm-chip' + (extra || '') + '" style="--fc:' + (FAM_COLOR[i.fam] || '#fff') + '"><b>' + E(i.k) + '</b>' + (i.k !== i.fam ? '<small>' + E(i.fam) + '</small>' : '') + '</span>'; }
-  function musicView() {
+  function musicView(simple) {
     var m = mus(), w = weapons()[0], mine = w && (w.it.instrument || w.it.family) || '';
     var mineKey = (INST.filter(function (i) { return mine && new RegExp(i.k, 'i').test(mine); })[0] || INST.filter(function (i) { return w && i.fam === w.it.family; })[0] || {}).k;
     var instBtns = INST.map(function (i) { return '<button type="button" class="cmm-inst' + (i.k === mineKey ? ' mine' : '') + '" data-cmm-exec="' + E(i.k) + '" style="--fc:' + FAM_COLOR[i.fam] + '"><b>' + E(i.k) + '</b><small>' + E(i.k === mineKey ? 'SEU INSTRUMENTO' : i.fam) + '</small></button>'; }).join('');
@@ -132,26 +132,46 @@
         '<ul>' + c.fx.map(function (f) { return '<li>' + rich(f) + '</li>'; }).join('') + '</ul></article>';
     }).join('');
     var bd = m.bd, pct = Math.min(100, m.mission / 15 * 100), tier = bdTier(bd.etapas);
+    var tiers = bd.active ? '<div class="cmm-tiers">' + BD_TIERS.slice().reverse().map(function (t) {
+      return '<span class="' + (tier && tier.n === t.n ? 'on' : '') + '" style="--fc:' + t.c + '"><b>' + t.n + '</b><small>' + t.min + (t.min === 10 ? '+' : '–' + (t.min + 1)) + '</small></span>';
+    }).join('') + '</div>' : '';
     var bdHTML = bd.active ?
       '<div class="cmm-bd live"><header><b>BREAKDOWN!</b><span>RODADA ' + Math.max(1, bd.round) + ' / 3</span></header>' +
         '<div class="cmm-bd-count"><button type="button" data-cmm-bdstep="-1">−</button><b>' + bd.etapas + '</b><button type="button" data-cmm-bdstep="1">+</button><small>ETAPAS NA PERFORMANCE</small></div>' +
-        '<div class="cmm-tiers">' + BD_TIERS.slice().reverse().map(function (t) { return '<span class="' + (tier && tier.n === t.n ? 'on' : '') + '" style="--fc:' + t.c + '"><b>' + t.n + '</b><small>' + t.min + (t.min === 10 ? '+' : '–' + (t.min + 1)) + '</small></span>'; }).join('') + '</div>' +
+        (simple ? fold('breakdown-tiers', 'Faixas do BREAKDOWN!', tiers, tier ? tier.n : 'A partir de 4 etapas') : tiers) +
         '<button type="button" class="cmm-bd-end" data-cmm-bdend>ENCERRAR BREAKDOWN! ▸</button></div>'
       : '<div class="cmm-bd"><header><b>BREAKDOWN!</b><span>' + m.mission + ' / 15 ETAPAS PERFEITAS NA MISSÃO</span></header>' +
         '<div class="cmm-meter"><i style="width:' + pct.toFixed(1) + '%"></i>' + Array(15).join('<s></s>') + '</div>' +
         '<div class="cmm-bd-row"><button type="button" data-cmm-mission="-1">−1</button><button type="button" data-cmm-mission="1">+1</button>' +
         '<button type="button" class="cmm-bd-go" data-cmm-bdstart ' + (m.mission >= 15 ? '' : 'disabled') + '>INICIAR BREAKDOWN!</button></div>' +
         (m.lastBreakdown ? '<p class="cmm-last">Último: <b>' + E(m.lastBreakdown.tier) + '</b> com ' + m.lastBreakdown.n + ' Etapas</p>' : '') + '</div>';
+    var compasso = '<div class="cmm-steps">' + (steps || '<p class="cm-empty">Monte a sequência da Sombra conforme for descobrindo as Etapas.</p>') + '</div>';
+    var stepControls = addStep + '<button type="button" data-cmm-manual ' + (nextIdx < 0 ? 'disabled' : '') + '>★ Marcar Etapa Perfeita</button>';
+    var stepTools = '<button type="button" data-cmm-resetc>Reiniciar</button><button type="button" data-cmm-clearc>Limpar</button><button type="button" data-cmm-rupt="-1">− Ruptura</button>';
+    var queue = '<div class="cmm-queue">' + seq.join('<i>▸</i>') + '</div>';
+    var undo = '<button type="button" data-cmm-undo ' + (m.seq.length ? '' : 'disabled') + '>↶ Desfazer última</button>';
+    var sequenceTools = '<button type="button" data-cmm-clearseq>Limpar sequência</button>' + (m.harmonyUsed ? '<button type="button" data-cmm-harmony>Liberar Perfect Harmony</button>' : '');
+    var catalog = '<div class="cmm-combos">' + comboList + '</div>';
+    if (simple) {
+      return '<div class="cmm">' +
+        fold('execution', 'Execução instrumental', '<p class="cmm-help">Registre o instrumento de cada execução bem-sucedida.</p><div class="cmm-insts">' + instBtns + '</div>', '', true, 'cmm-panel exec') +
+        fold('compasso', 'Compasso Cognitivo', compasso + '<div class="cmm-row">' + stepControls + '</div>' +
+          fold('compasso-tools', 'Ajustes do Compasso', '<div class="cmm-row">' + stepTools + '</div>'),
+          'Rupturas: ' + m.ruptures + (nextIdx >= 0 ? ' · Próxima: ' + m.compasso[nextIdx].need : ''), true, 'cmm-panel compasso') +
+        fold('sequence', 'Sound Combo', queue + (m.lastCombo ? '<p class="cmm-last">Último: <b>' + E(m.lastCombo) + '</b></p>' : '') +
+          '<div class="cmm-row">' + undo + '</div>' + fold('sequence-tools', 'Ajustes da sequência', '<div class="cmm-row">' + sequenceTools + '</div>'),
+          m.seq.length + ' / 4 execuções', true, 'cmm-panel combo') +
+        '<section class="cmm-panel bdp">' + bdHTML + '</section>' +
+        fold('combo-list', 'Catálogo de Sound Combos', catalog, COMBOS.length + ' combos', false, 'cmm-panel list') + '</div>';
+    }
     return '<div class="cmm">' +
       '<section class="cmm-panel exec"><h3 class="cm-h">EXECUÇÃO INSTRUMENTAL</h3><p class="cmm-help">Toque no instrumento de cada Execução <b>bem-sucedida</b> da Party. A ficha confere o Compasso e os Sound Combos sozinha.</p><div class="cmm-insts">' + instBtns + '</div></section>' +
       '<section class="cmm-panel compasso"><h3 class="cm-h">COMPASSO COGNITIVO <span>RUPTURAS · ' + m.ruptures + '</span></h3>' +
-        '<div class="cmm-steps">' + (steps || '<p class="cm-empty">Monte a sequência da Sombra conforme for descobrindo as Etapas.</p>') + '</div>' +
-        '<div class="cmm-row">' + addStep + '<button type="button" data-cmm-manual ' + (nextIdx < 0 ? 'disabled' : '') + '>★ Marcar Etapa Perfeita</button><button type="button" data-cmm-resetc>Reiniciar</button><button type="button" data-cmm-clearc>Limpar</button><button type="button" data-cmm-rupt="-1">− Ruptura</button></div></section>' +
+        compasso + '<div class="cmm-row">' + stepControls + stepTools + '</div></section>' +
       '<section class="cmm-panel combo"><h3 class="cm-h">SOUND COMBO <span>ÚLTIMAS 4 EXECUÇÕES</span></h3>' +
-        '<div class="cmm-queue">' + seq.join('<i>▸</i>') + '</div>' +
-        '<div class="cmm-row"><button type="button" data-cmm-undo ' + (m.seq.length ? '' : 'disabled') + '>↶ Desfazer última</button><button type="button" data-cmm-clearseq>Limpar sequência</button>' + (m.harmonyUsed ? '<button type="button" data-cmm-harmony>Liberar Perfect Harmony</button>' : '') + '</div></section>' +
+        queue + '<div class="cmm-row">' + undo + sequenceTools + '</div></section>' +
       '<section class="cmm-panel bdp">' + bdHTML + '</section>' +
-      '<section class="cmm-panel list"><h3 class="cm-h">LISTINHA DE COMBOS <span>' + COMBOS.length + '</span></h3><div class="cmm-combos">' + comboList + '</div></section>' +
+      '<section class="cmm-panel list"><h3 class="cm-h">LISTINHA DE COMBOS <span>' + COMBOS.length + '</span></h3>' + catalog + '</section>' +
     '</div>';
   }
   function musicClick(t) {
@@ -179,7 +199,8 @@
 
   function $(s, r) { return (r || document).querySelector(s); }
   function E(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
-  function reduced() { return document.body.classList.contains('hs-calm') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function simplified() { return root && !root.hidden && root.dataset.simplified === 'true'; }
+  function reduced() { return simplified() || document.body.classList.contains('hs-calm') || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function S() { return state.charSheet; }
   function ui() { var s = S(); s.ui = s.ui || {}; s.ui.combat = s.ui.combat || { round: 1, status: 'neutro', open: {} }; s.ui.combat.open = s.ui.combat.open || {}; return s.ui.combat; }
   function calc() { try { return calculateSheet(); } catch (e) { return null; } }
@@ -190,6 +211,18 @@
     return s.replace(/\n/g, '<br>');
   }
   function save() { try { saveState(true); } catch (e) {} }
+
+  /* O modo completo mantém os painéis originais. As preferências das
+     seções recolhíveis são usadas só na visualização simplificada. */
+  function panelOpen(u, key, initial) {
+    return u.simplePanels && typeof u.simplePanels[key] === 'boolean' ? u.simplePanels[key] : initial;
+  }
+  function fold(key, title, body, hint, initial, cls) {
+    var on = panelOpen(ui(), key, !!initial);
+    return '<details class="cm-fold' + (cls ? ' ' + cls : '') + '" data-cm-panel="' + key + '" data-cm-initial="' + !!initial + '"' + (on ? ' open' : '') + '>' +
+      '<summary><b>' + E(title) + '</b>' + (hint ? '<small>' + E(hint) + '</small>' : '') + '</summary>' +
+      '<div class="cm-fold-body">' + body + '</div></details>';
+  }
 
   /* ---------- dados ---------- */
   function res() {
@@ -256,6 +289,14 @@
       var sel = e.target.closest('[data-cmm-addstep]'); if (!sel || !sel.value) return;
       mus().compasso.push({ need: sel.value, done: false }); save(); render();
     });
+    root.addEventListener('toggle', function (e) {
+      var panel = e.target, key = panel.dataset.cmPanel;
+      if (!key || !simplified() || !root.contains(panel)) return;
+      var u = ui();
+      if (panel.open === panelOpen(u, key, panel.dataset.cmInitial === 'true')) return;
+      u.simplePanels = u.simplePanels || {};
+      u.simplePanels[key] = panel.open; save();
+    }, true);
     root.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && e.target.matches('.cm-amount')) { e.preventDefault(); var b = e.target.closest('.cm-res').querySelector('[data-cm-apply="-1"]'); if (b) b.click(); }
     });
@@ -271,20 +312,21 @@
     nav.appendChild(b);
   }
 
-  function bar(kind, cur, max, temp) {
+  function bar(kind, cur, max, temp, simple) {
     var pct = max ? Math.max(0, Math.min(100, cur / max * 100)) : 0, tp = max ? Math.min(100, temp / max * 100) : 0;
     var low = kind === 'pv' && pct <= 25;
+    var presets = ['-10', '-5', '-1', '+1', '+5', '+10'].map(function (v) {
+      return '<button type="button" class="' + (v[0] === '-' ? 'neg' : 'pos') + '" data-cm-delta="' + v + '">' + v + '</button>';
+    }).join('');
+    var amount = '<input class="cm-amount" type="number" min="0" inputmode="numeric" placeholder="Valor" aria-label="Valor de ' + (kind === 'pv' ? 'dano ou cura' : 'gasto ou recuperação') + '">' +
+      '<button type="button" class="neg wide" data-cm-apply="-1">' + (kind === 'pv' ? 'DANO' : 'GASTAR') + '</button>' +
+      '<button type="button" class="pos wide" data-cm-apply="1">' + (kind === 'pv' ? 'CURA' : 'RECUPERAR') + '</button>';
+    var adjust = '<div class="cm-temp"><span>TEMPORÁRIO</span><button type="button" data-cm-temp="-1">−</button><b>' + temp + '</b><button type="button" data-cm-temp="1">+</button><button type="button" class="full" data-cm-full>' + (kind === 'pv' ? 'VIDA CHEIA' : 'PM CHEIO') + '</button></div>';
     return '<div class="cm-res cm-' + kind + (low ? ' is-low' : '') + '" data-cm-res="' + kind + '">' +
       '<header><b>' + (kind === 'pv' ? 'PV' : 'PM') + '</b><span class="cm-val"><em>' + cur + '</em> / ' + max + (temp ? ' <i>+' + temp + ' TEMP</i>' : '') + '</span></header>' +
       '<div class="cm-bar"><i style="width:' + pct.toFixed(1) + '%"></i>' + (tp ? '<u style="width:' + tp.toFixed(1) + '%"></u>' : '') + '<s></s></div>' +
-      '<div class="cm-quick">' +
-        ['-10', '-5', '-1'].map(function (v) { return '<button type="button" class="neg" data-cm-delta="' + v + '">' + v + '</button>'; }).join('') +
-        ['+1', '+5', '+10'].map(function (v) { return '<button type="button" class="pos" data-cm-delta="' + v + '">' + v + '</button>'; }).join('') +
-        '<input class="cm-amount" type="number" min="0" inputmode="numeric" placeholder="Valor" aria-label="Valor de ' + (kind === 'pv' ? 'dano ou cura' : 'gasto ou recuperação') + '">' +
-        '<button type="button" class="neg wide" data-cm-apply="-1">' + (kind === 'pv' ? 'DANO' : 'GASTAR') + '</button>' +
-        '<button type="button" class="pos wide" data-cm-apply="1">' + (kind === 'pv' ? 'CURA' : 'RECUPERAR') + '</button>' +
-      '</div>' +
-      '<div class="cm-temp"><span>TEMPORÁRIO</span><button type="button" data-cm-temp="-1">−</button><b>' + temp + '</b><button type="button" data-cm-temp="1">+</button><button type="button" class="full" data-cm-full>' + (kind === 'pv' ? 'VIDA CHEIA' : 'PM CHEIO') + '</button></div>' +
+      '<div class="cm-quick">' + (simple ? '' : presets) + amount + '</div>' +
+      (simple ? fold(kind + '-tools', 'Ajustes de ' + kind.toUpperCase(), '<div class="cm-quick">' + presets + '</div>' + adjust, '', false, 'cm-res-tools') : adjust) +
     '</div>';
   }
   function skillRow(id, src, name, body, color, extra) {
@@ -296,6 +338,7 @@
   function render() {
     if (!root || root.hidden) return;
     var s = S(), c = calc(), r = res(), u = ui();
+    var simple = u.simplified === true, music = u.view === 'musica';
     var name = (s.profile && (s.profile.codename || s.profile.name)) || 'Seu personagem';
     var photo = String(s.photoData || '');
     var mods = null; try { mods = getEquippedModifiers(); } catch (e) {}
@@ -309,18 +352,20 @@
     var mu = s.music || {};
     var maff = (mu.familyAffinities || []).map(function (a) { return { type: a.type, reaction: reactName(a.reaction || 'Normal') }; });
     var spec = mu.specificWeaknessInstrument || mu.specificWeaknessFamily;
+    var attributes = '<div class="cm-attrs">' + attrs + '</div>' +
+      '<div class="cm-derived">' + derived.map(function (d) { return '<span><small>' + d[0] + '</small><b>' + E(d[1]) + '</b></span>'; }).join('') + '</div>';
+    var affinities = (maff.length ? '<div class="cm-box"><h4>AFINIDADE MUSICAL</h4><div class="cm-maff">' + maff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '" style="--fc:' + (FAM_COLOR[a.type] || '#fff') + '"><b>' + E(a.type) + '</b><small>' + E(a.reaction) + '</small></span>'; }).join('') + '</div>' +
+      (spec ? '<p class="cm-spec"><b>FRAQUEZA ESPECÍFICA</b> ' + E([mu.specificWeaknessInstrument, mu.specificWeaknessFamily].filter(Boolean).join(' · ')) + '</p>' : '') + '</div>' : '') +
+      (aff.length ? '<div class="cm-box"><h4>AFINIDADES ELEMENTAIS</h4><div class="cm-aff">' + aff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '"><small>' + E(a.reaction) + '</small>' + E(a.type) + '</span>'; }).join('') + '</div></div>' : '');
     var col1 =
       '<div class="cm-me">' +
         '<div class="cm-photo">' + (/^data:image|^https?:/.test(photo) ? '<img src="' + E(photo) + '" alt="">' : '<span>' + E(name.slice(0, 1).toUpperCase()) + '</span>') + '</div>' +
         '<div class="cm-me-name"><small>' + (st === 'cercado' ? 'CERCADO // EM PERIGO' : st === 'vantagem' ? 'COM VANTAGEM' : st === 'emboscada' ? 'EMBOSCADA // ATAQUE COM VANTAGEM' : 'EM COMBATE') + '</small><b>' + E(name) + '</b></div>' +
       '</div>' +
-      bar('pv', r.pv, r.pvMax, r.pvTemp) + bar('pm', r.pm, r.pmMax, r.pmTemp) +
+      bar('pv', r.pv, r.pvMax, r.pvTemp, simple) + bar('pm', r.pm, r.pmMax, r.pmTemp, simple) +
       '<div class="cm-box"><h4>AÇÕES DA RODADA</h4><div class="cm-acts">' + acts + '</div></div>' +
-      '<div class="cm-box"><h4>ATRIBUTOS</h4><div class="cm-attrs">' + attrs + '</div>' +
-        '<div class="cm-derived">' + derived.map(function (d) { return '<span><small>' + d[0] + '</small><b>' + E(d[1]) + '</b></span>'; }).join('') + '</div></div>' +
-      (maff.length ? '<div class="cm-box"><h4>AFINIDADE MUSICAL</h4><div class="cm-maff">' + maff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '" style="--fc:' + (FAM_COLOR[a.type] || '#fff') + '"><b>' + E(a.type) + '</b><small>' + E(a.reaction) + '</small></span>'; }).join('') + '</div>' +
-        (spec ? '<p class="cm-spec"><b>FRAQUEZA ESPECÍFICA</b> ' + E([mu.specificWeaknessInstrument, mu.specificWeaknessFamily].filter(Boolean).join(' · ')) + '</p>' : '') + '</div>' : '') +
-      (aff.length ? '<div class="cm-box"><h4>AFINIDADES ELEMENTAIS</h4><div class="cm-aff">' + aff.map(function (a) { return '<span class="r-' + E(String(a.reaction).toLowerCase()) + '"><small>' + E(a.reaction) + '</small>' + E(a.type) + '</span>'; }).join('') + '</div></div>' : '');
+      (simple ? fold('attributes', 'Atributos e testes', attributes, 'Reação, movimento e crítico') + (affinities ? fold('affinities', 'Afinidades', affinities) : '') :
+        '<div class="cm-box"><h4>ATRIBUTOS</h4>' + attributes + '</div>' + affinities);
     /* coluna 2: ataques */
     var ws = weapons();
     var wHTML = ws.map(function (w, i) {
@@ -331,10 +376,12 @@
         var body = sk ? PhobiaInstrumentSkills.card(sk, { compact: true }) : '<p>' + rich(a) + '</p>';
         return skillRow('w' + i + 'a' + k, 'HABILIDADE ' + (k + 1) + (sk ? ' · ' + sk.cat.name.toUpperCase() : ''), nm, body, sk ? sk.cat.color : null, sk && sk.cost ? costTag(sk.cost) : '');
       }).join('');
-      return '<div class="cm-weapon' + (i ? ' sec' : '') + '"><header><small>' + (i ? 'TROCA · ' : '') + w.slot + (it.family ? ' · ' + E(it.family).toUpperCase() : '') + (it.instrument ? ' · ' + E(it.instrument).toUpperCase() : '') + '</small><b>' + E(it.name) + '</b>' + (i ? '' : '<em class="cm-basic-tag">ATAQUE BÁSICO</em>') + '</header>' +
+      var props = it.properties ? '<p class="cm-props">' + rich(it.properties) + '</p>' : '';
+      var card = '<div class="cm-weapon' + (i ? ' sec' : '') + '"><header><small>' + (i ? 'TROCA · ' : '') + w.slot + (it.family ? ' · ' + E(it.family).toUpperCase() : '') + (it.instrument ? ' · ' + E(it.instrument).toUpperCase() : '') + '</small><b>' + E(it.name) + '</b>' + (i ? '' : '<em class="cm-basic-tag">ATAQUE BÁSICO</em>') + '</header>' +
         '<div class="cm-wstats"><span><small>ACERTO</small><b>' + E(it.accuracy || '—') + '</b></span><span><small>DANO</small><b>' + E(it.damage || '—') + '</b></span><span><small>ALCANCE</small><b>' + E(it.range || '—') + '</b></span><span><small>HAB</small><b>' + E(it.hab || '—') + '</b></span></div>' +
-        (it.properties ? '<p class="cm-props">' + rich(it.properties) + '</p>' : '') +
+        (simple && props ? fold('weapon-properties-' + i, 'Propriedades do instrumento', props, '', false, 'cm-weapon-props') : props) +
         (abHTML ? '<div class="cm-sks">' + abHTML + '</div>' : '') + '</div>';
+      return simple && i ? fold('reserve', 'Instrumento reserva', card, it.name) : card;
     }).join('');
     var col2 = '<h3 class="cm-h">ATAQUE BÁSICO <span>SEU INSTRUMENTO</span></h3>' + (wHTML || '<p class="cm-empty">Nenhum instrumento equipado. Seu Ataque Básico é feito com o Instrumento: equipe um na aba Equipamentos.</p>');
     /* coluna 3: magias e habilidades */
@@ -355,13 +402,31 @@
     var pers = personalSkills().map(function (h, i) { return skillRow('p' + i, h.src, h.name, '<p>' + rich(h.text) + '</p>', '#ffd84d'); }).join('');
     var ar = arcanaSkills();
     var arHTML = ar.list.map(function (h, i) { return skillRow('a' + i + h.name, h.src, h.name, '<p>' + rich(h.text) + '</p>', '#c8aaff'); }).join('');
-    var col3 =
-      '<h3 class="cm-h">MAGIAS <span>' + sp.length + '</span></h3><div class="cm-sks">' + (spHTML || '<p class="cm-empty">Deck de magias vazio.</p>') + '</div>' +
-      '<h3 class="cm-h">HABILIDADES</h3><div class="cm-sks">' + (pers || '<p class="cm-empty">Sem Habilidade de Combate ou Natural registrada.</p>') + '</div>' +
-      '<h3 class="cm-h">ARCANA' + (ar.arcana ? ' <span>' + E(ar.arcana.romano + ' · ' + (ar.arcana.nomeFicha || ar.arcana.nome)) + '</span>' : '') + '</h3><div class="cm-sks">' + (arHTML || '<p class="cm-empty">Nenhuma Arcana escolhida.</p>') + '</div>';
+    var arcanaName = ar.arcana ? ar.arcana.romano + ' · ' + (ar.arcana.nomeFicha || ar.arcana.nome) : '';
+    var spellList = '<div class="cm-sks">' + (spHTML || '<p class="cm-empty">Deck de magias vazio.</p>') + '</div>';
+    var skillList = '<div class="cm-sks">' + (pers || '<p class="cm-empty">Sem Habilidade de Combate ou Natural registrada.</p>') + '</div>';
+    var arcanaList = '<div class="cm-sks">' + (arHTML || '<p class="cm-empty">Nenhuma Arcana escolhida.</p>') + '</div>';
+    var col3 = simple ?
+      fold('spells', 'Magias', spellList, sp.length ? String(sp.length) : 'Deck vazio', sp.length > 0) +
+      fold('skills', 'Habilidades', skillList, '', !!pers) +
+      fold('arcana', 'Arcana', arcanaList, arcanaName) :
+      '<h3 class="cm-h">MAGIAS <span>' + sp.length + '</span></h3>' + spellList +
+      '<h3 class="cm-h">HABILIDADES</h3>' + skillList +
+      '<h3 class="cm-h">ARCANA' + (arcanaName ? ' <span>' + E(arcanaName) + '</span>' : '') + '</h3>' + arcanaList;
     var splashBtns = Object.keys(SPLASH).filter(function (k) { return !SPLASH[k].hidden; }).map(function (k) { var o = SPLASH[k]; return '<button type="button" class="cm-fx ' + o.k + '" data-cm-splash="' + k + '" style="--fc:' + o.c + '">' + o.t + '</button>'; }).join('');
-    var scroll = root.querySelector('.cm-grid'); var keep = scroll ? [].map.call(root.querySelectorAll('.cm-col'), function (x) { return x.scrollTop; }) : null;
+    var view = music ? 'musica' : 'batalha';
+    var scroll = $('.cm-grid', root);
+    var keep = scroll && root.dataset.view === view && root.dataset.simplified === String(simple);
+    var gridScroll = keep ? scroll.scrollTop : 0;
+    var colScroll = keep ? Array.from(root.querySelectorAll('.cm-col'), function (x) { return x.scrollTop; }) : [];
+    var active = document.activeElement;
+    var focusKey = (simple || simplified()) && root.contains(active) ? active.getAttributeNames().find(function (attr) { return /^data-cmm?-/.test(attr); }) : '';
+    var focusRes = focusKey && active.closest('[data-cm-res]');
+    var focusValue = focusKey ? active.getAttribute(focusKey) : '';
+    var notice = simple && $('.cm-notice', root);
     root.dataset.status = st;
+    root.dataset.view = view;
+    root.dataset.simplified = String(simple);
     root.innerHTML =
       '<div class="cm-bg" aria-hidden="true"><i></i><i></i></div>' +
       '<header class="cm-top">' +
@@ -371,10 +436,27 @@
         '<div class="cm-status st-' + st + '"><small>SITUAÇÃO</small><b>' + (STATUS_TXT[st] ? STATUS_TXT[st][0] : 'NEUTRO') + '</b>' + (STATUS_TXT[st] ? '<em>' + (st === 'vantagem' ? (u.freeSpell ? 'Próxima Magia grátis' : 'Magia grátis já usada') : STATUS_TXT[st][1]) + '</em>' : '') + (st !== 'neutro' ? '<button type="button" data-cm-neutral title="Voltar ao neutro">×</button>' : '') + '</div>' +
         '<button type="button" class="cm-exit" data-cm-exit>SAIR DO COMBATE ✕</button>' +
       '</header>' +
-      '<nav class="cm-fxbar" aria-label="Animações de combate"><span class="cm-views"><button type="button" data-cm-view="batalha" class="' + (u.view !== 'musica' ? 'on' : '') + '">⚔ BATALHA</button><button type="button" data-cm-view="musica" class="' + (u.view === 'musica' ? 'on' : '') + '">♫ PALCO MUSICAL' + (mus().bd.active ? ' <i>BREAKDOWN!</i>' : '') + '</button></span>' + splashBtns + '</nav>' +
-      (u.view === 'musica' ? '<div class="cm-grid cm-musicgrid"><div class="cm-col">' + musicView() + '</div></div>' :
+      '<nav class="cm-fxbar" aria-label="Visualização e efeitos de combate"><span class="cm-views"><button type="button" data-cm-view="batalha" aria-pressed="' + !music + '" class="' + (!music ? 'on' : '') + '">⚔ BATALHA</button><button type="button" data-cm-view="musica" aria-pressed="' + music + '" class="' + (music ? 'on' : '') + '">♫ PALCO MUSICAL' + (mus().bd.active ? ' <i>BREAKDOWN!</i>' : '') + '</button></span>' +
+        '<button type="button" class="cm-layout-btn" data-cm-layout><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 5h14M3 10h10M3 15h6"/></svg>' + (simple ? 'Modo completo' : 'Simplificar') + '</button>' +
+        (simple ? fold('effects', 'Efeitos de combate', '<div class="cm-fx-controls">' + splashBtns + '</div>', '', false, 'cm-fx-fold') : '<div class="cm-fx-actions">' + splashBtns + '</div>') + '</nav>' +
+      (music ? '<div class="cm-grid cm-musicgrid"><div class="cm-col">' + musicView(simple) + '</div></div>' :
       '<div class="cm-grid"><div class="cm-col c1">' + col1 + '</div><div class="cm-col c2">' + col2 + '</div><div class="cm-col c3">' + col3 + '</div></div>');
-    if (keep) root.querySelectorAll('.cm-col').forEach(function (x, i) { x.scrollTop = keep[i] || 0; });
+    if (keep) {
+      $('.cm-grid', root).scrollTop = gridScroll;
+      root.querySelectorAll('.cm-col').forEach(function (x, i) { x.scrollTop = colScroll[i] || 0; });
+    }
+    if (simple) {
+      if (!notice) {
+        notice = document.createElement('div'); notice.className = 'cm-notice';
+        notice.setAttribute('role', 'status'); notice.setAttribute('aria-atomic', 'true');
+      }
+      root.appendChild(notice);
+    }
+    if (focusKey) {
+      var area = focusRes ? $('[data-cm-res="' + focusRes.dataset.cmRes + '"]', root) : root;
+      var focused = area && Array.from(area.querySelectorAll('[' + focusKey + ']')).find(function (el) { return el.getAttribute(focusKey) === focusValue; });
+      if (focused) focused.focus({ preventScroll: true });
+    }
   }
 
   /* ---------- ações ---------- */
@@ -403,6 +485,7 @@
 
   function onClick(e) {
     var t = e.target.closest('button'); if (!t) return;
+    if (t.hasAttribute('data-cm-layout')) { ui().simplified = ui().simplified !== true; save(); render(); return; }
     if (t.dataset.cmView) { ui().view = t.dataset.cmView; save(); render(); return; }
     if (musicClick(t)) return;
     var resEl = t.closest('[data-cm-res]'), kind = resEl && resEl.dataset.cmRes;
@@ -492,8 +575,17 @@
   }
 
   /* ---------- animações de tela ---------- */
+  var noticeTimer;
+  function combatNotice(title, detail, bad) {
+    var el = $('.cm-notice', root); if (!el) return;
+    clearTimeout(noticeTimer);
+    el.classList.toggle('bad', !!bad);
+    el.innerHTML = '<b>' + E(title) + '</b>' + (detail ? '<span>' + E(detail) + '</span>' : '');
+    noticeTimer = setTimeout(function () { el.textContent = ''; }, detail ? 6200 : 3600);
+  }
   function splash(o) {
     var old = document.querySelector('.cm-splash'); if (old) old.remove();
+    if (simplified()) { combatNotice(o.t, o.s, o.k === 'bad'); return; }
     var s = S(), photo = String(s.photoData || ''), name = (s.profile && (s.profile.codename || s.profile.name)) || '';
     var el = document.createElement('div'); el.className = 'cm-splash ' + o.k + (reduced() ? ' calm' : ''); el.style.setProperty('--fc', o.c); el.setAttribute('role', 'status');
     var cut = o.k === 'good' && /^data:image|^https?:/.test(photo) ? '<div class="cm-cut"><img src="' + E(photo) + '" alt=""></div>' : '';
@@ -507,6 +599,8 @@
     setTimeout(function () { if (el.parentNode) el.remove(); }, reduced() ? 1200 : 2150);
   }
   function banner(text, bad) {
+    if (!root || root.hidden) return;
+    if (simplified()) { combatNotice(text, '', bad); return; }
     var b = document.createElement('div'); b.className = 'cm-banner' + (bad ? ' bad' : ''); b.textContent = text;
     root.appendChild(b); setTimeout(function () { b.remove(); }, 1300);
   }
