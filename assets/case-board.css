@@ -217,3 +217,33 @@ body.cb-open #sfxDock{display:none}
 .t-card .cb-txt,.t-clip .cb-txt,.t-note .cb-txt{min-height:1.4em}
 .cb-it.editing [data-f]{cursor:text}
 .cb-it.editing [data-f]:focus{background:rgba(255,255,255,.55);box-shadow:0 0 0 2px rgba(10,36,106,.35)}
+/* ---------- loja do Tanaka no navegador ---------- */
+.d-shop{border-radius:3px 3px 5px 5px;background:linear-gradient(#e2263b,#a5111f);clip-path:polygon(8% 28%,92% 28%,100% 100%,0 100%)}
+.d-shop::before{content:"";position:absolute;left:28%;top:2%;width:44%;height:38%;border:2px solid #f2c14e;border-bottom:0;border-radius:50% 50% 0 0;clip-path:none}
+.d-shop::after{content:"¥";position:absolute;inset:30% 0 0;display:grid;place-items:center;font:900 clamp(8px,3cqw,15px) Georgia,serif;color:#fff3c4}
+.cb-icon:has(.d-shop) i{overflow:visible}
+.d-ie{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px;border-radius:50%;background:radial-gradient(circle at 50% 55%,#fff 0 28%,transparent 30%),linear-gradient(#5fb2ff,#1f6fe0);box-shadow:inset 0 0 0 2px #f2c14e}
+.cb-desk.xl{width:min(1240px,calc(100vw - 44px))}
+.cb-desk.xl .cb-screen{aspect-ratio:auto;height:min(76vh,calc(100vh - 210px))}
+.cb-win-t .cb-wmax{background:linear-gradient(#4b8cf7,#1f5ee0);margin-left:auto;margin-right:3px}
+.cb-win-t{gap:0}
+.cb-web{left:2%;top:2%;width:96%;height:calc(96% - clamp(14px,5.6cqw,28px));z-index:32}
+.cb-desk:not(.xl) .cb-web{left:3%;top:3%;width:94%}
+.cb-web-bar{display:flex;align-items:center;gap:4px;padding:4px 6px;background:var(--x-face,#ece9d8);border-bottom:1px solid #c8c4b0;font:12px Tahoma,sans-serif}
+.cb-web-bar button{height:24px;padding:0 8px;border:1px solid transparent;border-radius:3px;background:transparent;color:#111;font:12px Tahoma,sans-serif;white-space:nowrap}
+.cb-web-bar button:hover{border-color:#c3d3f0;background:linear-gradient(#fff,#e8eef9)}
+.cb-web-bar label{display:flex;align-items:center;gap:6px;flex:1;min-width:0;color:#555}
+.cb-web-bar input{flex:1;min-width:0;height:22px;padding:0 6px;border:1px solid #7f9db9;background:#fff;color:#111;font:12px Tahoma,sans-serif}
+.cb-web-view{position:relative;flex:1;min-height:0;background:#fff}
+.cb-web-view iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.cb-dialup{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#ece9d8;color:#111;font:13px Tahoma,sans-serif}
+.cb-dialup[hidden]{display:none}
+.cb-dialup i{width:64px;height:40px;background:linear-gradient(#cfd8e6,#cfd8e6) 0 0/26px 22px no-repeat,linear-gradient(#cfd8e6,#cfd8e6) 100% 100%/26px 22px no-repeat;position:relative}
+.cb-dialup i::after{content:"";position:absolute;left:28px;top:17px;width:8px;height:6px;background:#2fa344;animation:cbBlink .4s steps(1) infinite}
+@keyframes cbBlink{50%{opacity:0}}
+.cb-dialup small{color:#555}
+.cb-dialup span{width:220px;height:14px;border:1px solid #7f9db9;background:#fff;padding:1px}
+.cb-dialup em{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,#2fa344 0 8px,transparent 8px 10px);animation:cbLoad 1.1s steps(11) forwards}
+@keyframes cbLoad{to{width:100%}}
+.cb-web-st{display:flex;justify-content:space-between;padding:2px 8px;border-top:1px solid #c8c4b0;background:#ece9d8;font:11px Tahoma,sans-serif;color:#333}
+@media(max-width:900px){.cb-desk.xl{width:calc(100vw - 20px)}.cb-desk.xl .cb-screen{height:calc(100vh - 200px)}.cb-web-bar label span{display:none}}

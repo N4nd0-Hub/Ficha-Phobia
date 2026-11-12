@@ -12,6 +12,7 @@
   if (window.PhobiaCaseBoard) return;
 
   var W = 3000, H = 1900;
+  var SHOP = 'https://n4nd0-hub.github.io/Tanaka-Undergrounds/';
   var NOTE_COLORS = { yellow: '#ffe873', pink: '#ff9ec7', blue: '#9fdcff', green: '#b6f29a', orange: '#ffbf7a' };
   var STR_COLORS = { red: '#d4142a', blue: '#1f6fe0', yellow: '#f2b705', black: '#1a1a1a', white: '#f4f1e8' };
   var TYPES = {
@@ -452,11 +453,17 @@
           '<button type="button" class="cb-icon" data-desk="cmd"><i class="d-cmd"></i><span>Prompt de comando</span></button>' +
           '<button type="button" class="cb-icon" data-desk="pc"><i class="d-pc"></i><span>Meu computador</span></button>' +
           '<button type="button" class="cb-icon cb-net" data-desk="net" hidden><i class="d-net"></i><span>NET//TRACE</span></button>' +
+          '<button type="button" class="cb-icon" data-desk="shop"><i class="d-shop"></i><span>Tanaka\'s Undergrounds</span></button>' +
           '<button type="button" class="cb-icon" data-desk="trash"><i class="d-trash"></i><span>Lixeira</span></button>' +
         '</div>' +
         '<div class="cb-win cb-cmd" hidden><div class="cb-win-t"><span>C:\\WINDOWS\\system32\\cmd.exe</span><button type="button" data-desk-close="cmd">×</button></div>' +
           '<div class="cb-term" tabindex="0"><pre></pre><label><span>C:\\PHOBIA&gt;</span><input type="text" spellcheck="false" autocomplete="off" aria-label="Comando"></label></div></div>' +
         '<div class="cb-win cb-pcw" hidden><div class="cb-win-t"><span>Meu computador</span><button type="button" data-desk-close="pc">×</button></div><div class="cb-pc-body"></div></div>' +
+        '<div class="cb-win cb-web" hidden><div class="cb-win-t"><span><i class="d-ie"></i>Tanaka\'s Undergrounds — Internet Explorer</span><button type="button" data-desk="xl" class="cb-wmax" aria-label="Maximizar" title="Maximizar">□</button><button type="button" data-desk-close="web">×</button></div>' +
+          '<div class="cb-web-bar"><button type="button" data-web="back" title="Voltar">◀ Voltar</button><button type="button" data-web="fwd" title="Avançar">▶</button><button type="button" data-web="reload" title="Atualizar">⟳</button><button type="button" data-web="home" title="Página inicial">⌂</button>' +
+          '<label><span>Endereço</span><input type="text" readonly value="' + SHOP + '"></label><button type="button" data-web="tab" title="Abrir numa aba nova">Abrir ↗</button></div>' +
+          '<div class="cb-web-view"><iframe title="Tanaka\'s Undergrounds" referrerpolicy="no-referrer-when-downgrade" allow="autoplay; clipboard-write"></iframe><div class="cb-dialup"><i></i><b>Conectando a tanaka.undergrounds...</b><small>Discando 56K · verificando nome de usuário e senha</small><span><em></em></span></div></div>' +
+          '<div class="cb-web-st"><span class="cb-web-msg">Pronto</span><span>Internet</span></div></div>' +
         '<div class="cb-task"><button type="button" class="cb-start" data-desk="start">INICIAR</button><span class="cb-task-apps"></span><time></time></div>' +
       '</div></div></div>' +
       '<div class="cb-neck"></div><div class="cb-base"><i></i><button type="button" class="cb-power" data-desk="size" aria-label="Aproximar o computador" title="Aproximar / afastar"></button></div>' +
@@ -464,6 +471,7 @@
   }
   function deskSize(big) {
     desk.classList.toggle('big', big);
+    if (!big) desk.classList.remove('xl');
     if (!big) { closeNotepad(); }
     sfx(big ? 'open' : 'back');
   }
@@ -476,6 +484,7 @@
     if (np && np.classList.contains('open') && np.parentElement && np.parentElement.classList.contains('cb-screen')) apps.push('Bloco de notas');
     if (!$('.cb-cmd', desk).hidden) apps.push('cmd.exe');
     if (!$('.cb-pcw', desk).hidden) apps.push('Meu computador');
+    if (!$('.cb-web', desk).hidden) apps.push('Tanaka\'s Undergrounds');
     $('.cb-task-apps', desk).innerHTML = apps.map(function (a) { return '<span>' + E(a) + '</span>'; }).join('');
   }
   function openNotepad() {
@@ -525,6 +534,31 @@
     $('.cb-pc-body', w).innerHTML = '<p><b>Usuário:</b> ' + E((cs.profile && cs.profile.name) || 'Convidado') + '</p><p><b>Sistema:</b> Phobia OS 2000</p><p><b>Processador:</b> Pentium III 733 MHz</p><p><b>Memória:</b> 128 MB</p><p><b>Rede:</b> ' + (netOn() ? 'NET//TRACE conectado' : 'discada · desconectada') + '</p>';
     w.hidden = false; paintDesk();
   }
+  /* ---------- navegador com a loja do Tanaka ---------- */
+  function openShop() {
+    var w = $('.cb-web', desk), fr = $('iframe', w), dl = $('.cb-dialup', w);
+    w.hidden = false; desk.classList.add('xl');
+    if (!fr.getAttribute('src')) {
+      dl.hidden = false; $('.cb-web-msg', w).textContent = 'Conectando...';
+      sfx('dice');
+      setTimeout(function () {
+        fr.onload = function () { dl.hidden = true; $('.cb-web-msg', w).textContent = 'Concluído'; };
+        fr.src = SHOP;
+        setTimeout(function () { dl.hidden = true; }, 6000);
+      }, 1100);
+    }
+    paintDesk();
+  }
+  function webCmd(c) {
+    var w = $('.cb-web', desk), fr = $('iframe', w);
+    if (c === 'tab') { window.open(SHOP, '_blank', 'noopener'); return; }
+    try {
+      if (c === 'back') fr.contentWindow.history.back();
+      else if (c === 'fwd') fr.contentWindow.history.forward();
+      else if (c === 'reload') fr.contentWindow.location.reload();
+      else if (c === 'home') fr.src = SHOP;
+    } catch (e) { if (c === 'reload' || c === 'home') fr.src = SHOP; }
+  }
   function openNet() {
     close();
     try { if (document.body.classList.contains('workspace-sheet')) switchWorkspace('navigation'); } catch (e) {}
@@ -536,12 +570,15 @@
       if (!desk.classList.contains('big')) { if (!t || t.dataset.desk !== 'size') { deskSize(true); return; } }
       if (!t) return;
       var k = t.dataset.desk;
-      if (t.dataset.deskClose) { $('.cb-' + (t.dataset.deskClose === 'pc' ? 'pcw' : t.dataset.deskClose), desk).hidden = true; paintDesk(); return; }
+      if (t.dataset.deskClose) { $('.cb-' + (t.dataset.deskClose === 'pc' ? 'pcw' : t.dataset.deskClose), desk).hidden = true; if (t.dataset.deskClose === 'web') { desk.classList.remove('xl'); var fr = $('.cb-web iframe', desk); fr.removeAttribute('src'); try { fr.contentWindow.location.replace('about:blank'); } catch (x) {} } paintDesk(); return; }
       if (k === 'size') return deskSize(!desk.classList.contains('big'));
       if (k === 'notepad') return openNotepad();
       if (k === 'cmd') return openCmd();
       if (k === 'pc') return openPc();
       if (k === 'net') return openNet();
+      if (k === 'shop') return openShop();
+      if (k === 'xl') { desk.classList.toggle('xl'); return; }
+      if (t.dataset.web) return webCmd(t.dataset.web);
       if (k === 'trash') { toast('A Lixeira está vazia.'); return; }
       if (k === 'start') { openCmd(); return; }
     });
@@ -572,6 +609,7 @@
   function close() {
     if (!root || root.hidden) return;
     var np = document.getElementById('notepad'); if (np) { np.classList.remove('open', 'cb-in'); }
+    var wf = desk && $('.cb-web', desk); if (wf && !wf.hidden) { wf.hidden = true; var fr2 = $('iframe', wf); fr2.removeAttribute('src'); try { fr2.contentWindow.location.replace('about:blank'); } catch (x) {} }
     desk.classList.remove('big');
     root.hidden = true; document.body.classList.remove('cb-open'); setLinkMode(false); sel = null; selLink = null;
     save(); try { lastFocus && lastFocus.focus && lastFocus.focus(); } catch (e) {}
