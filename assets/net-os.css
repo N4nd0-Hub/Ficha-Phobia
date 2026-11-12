@@ -214,3 +214,9 @@
   .nos-balloon{left:10px;right:10px;width:auto}
 }
 @media(prefers-reduced-motion:reduce){#hackPage.nos *{animation:none!important}}
+/* rota de pacotes: os 4 nós cabem em qualquer largura de janela */
+#hackPage.nos .route-nodes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+#hackPage.nos .route-nodes button{min-width:0;padding:0 4px}
+#hackPage.nos .puzzle-answer-row button{min-width:0}
+#hackPage.nos .nos-win,#hackPage.nos .nos-body,#hackPage.nos .puzzle-card{min-width:0;max-width:100%}
+#hackPage.nos .route-clue strong{max-width:100%;overflow-wrap:anywhere}
