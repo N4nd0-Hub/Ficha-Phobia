@@ -1,0 +1,21 @@
+/* PERSONA // PHOBIA — ui-sfx.css : botão de som */
+#sfxDock{position:fixed;z-index:2150;top:12px;right:12px;--sx-a:var(--theme-accent,#ef2b97);--sx-b:var(--theme-accent-2,#6ce6ff);--sx-ink:#0d0c10;--sx-paper:#fff3d9}
+#sfxDock .sfx-btn{display:grid;place-items:center;width:38px;height:38px;padding:0;border:2.5px solid var(--sx-paper);border-radius:50%;background:var(--sx-ink);color:var(--sx-paper);cursor:pointer;box-shadow:3px 3px 0 var(--sx-a);transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,background .15s}
+#sfxDock .sfx-btn svg{width:19px;height:19px}
+#sfxDock .sfx-btn:hover,#sfxDock .sfx-btn:focus-visible,#sfxDock .sfx-btn[aria-expanded="true"]{transform:rotate(-8deg) scale(1.08);background:var(--sx-a);color:var(--sx-ink);box-shadow:3px 3px 0 var(--sx-ink);outline:none}
+#sfxDock .sfx-btn.muted{color:color-mix(in srgb,var(--sx-paper) 55%,transparent)}
+#sfxDock .sfx-pop{position:absolute;top:46px;right:-6px;width:196px;padding:12px 12px 12px 14px;background:var(--sx-ink);color:var(--sx-paper);border:2px solid var(--sx-paper);box-shadow:6px 6px 0 var(--sx-a);transform:rotate(-1.5deg);transform-origin:top right;animation:sfxIn .22s cubic-bezier(.34,1.56,.64,1)}
+#sfxDock .sfx-pop[hidden]{display:none}
+@keyframes sfxIn{from{opacity:0;transform:rotate(-6deg) scale(.85)}}
+#sfxDock .sfx-pop b{display:block;margin:0 0 8px;font:400 18px/1 var(--hud-display,"Archivo Black"),"Arial Black",sans-serif;letter-spacing:-.3px;color:var(--sx-paper)}
+#sfxDock .sfx-toggle,#sfxDock .sfx-test{display:block;width:100%;margin:0 0 9px;padding:6px 8px;border:2px solid var(--sx-paper);background:transparent;color:var(--sx-paper);font:800 12px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;cursor:pointer;clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%)}
+#sfxDock .sfx-toggle.on{background:var(--sx-a);border-color:var(--sx-a);color:var(--sx-ink)}
+#sfxDock .sfx-test{margin:9px 0 0}
+#sfxDock .sfx-test:hover,#sfxDock .sfx-toggle:hover{background:var(--sx-paper);color:var(--sx-ink)}
+#sfxDock .sfx-vol{display:block}
+#sfxDock .sfx-vol span{display:block;margin:0 0 5px;font:800 10px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.6px;opacity:.75}
+#sfxDock .sfx-vol input{-webkit-appearance:none;appearance:none;width:100%;height:8px;margin:0;background:linear-gradient(90deg,var(--sx-a) var(--p,50%),color-mix(in srgb,var(--sx-paper) 22%,transparent) var(--p,50%));clip-path:polygon(0 0,100% 0,100% 100%,0 100%);cursor:pointer}
+#sfxDock .sfx-vol input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:18px;background:var(--sx-paper);border:2px solid var(--sx-ink);transform:skewX(-12deg)}
+#sfxDock .sfx-vol input::-moz-range-thumb{width:12px;height:16px;background:var(--sx-paper);border:2px solid var(--sx-ink);border-radius:0}
+@media(max-width:900px){#sfxDock .sfx-btn{width:32px;height:32px}#sfxDock .sfx-btn svg{width:16px;height:16px}#sfxDock .sfx-pop{top:40px}}
+@media print{#sfxDock{display:none}}
