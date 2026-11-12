@@ -209,3 +209,11 @@ body.cb-open #sfxDock{display:none}
   .cb-hint{top:110px;max-width:90vw}
 }
 .cb-icon[hidden]{display:none!important}
+/* NET//TRACE só pelo computador do Quadro */
+#netTraceTab,.global-tab[data-page="hackPage"],[data-hud-page="hackPage"]{display:none!important}
+/* papéis crescem com o texto */
+.cb-it{transition:width .18s ease,filter .2s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.t-clip.long .cb-txt{column-count:2;column-gap:16px;column-rule:1px solid rgba(0,0,0,.25)}
+.t-card .cb-txt,.t-clip .cb-txt,.t-note .cb-txt{min-height:1.4em}
+.cb-it.editing [data-f]{cursor:text}
+.cb-it.editing [data-f]:focus{background:rgba(255,255,255,.55);box-shadow:0 0 0 2px rgba(10,36,106,.35)}
