@@ -42,13 +42,13 @@
 
   /* texto das regras: [termo] em destaque, (valor) em itálico, listas e notas */
   function inl(t) {
-    return E(t).replace(/\[([^\]\n]{1,80})\]/g, '<b class="ad-k">$1</b>').replace(/\(([^()\n]{1,40})\)/g, '<i class="ad-v">$1</i>');
+    return E(t).replace(/\[([^\[\]\n]{1,80})\]/g, '<b class="ad-k">$1</b>').replace(/\(([^()\n]{1,40})\)/g, '<i class="ad-v">$1</i>');
   }
   function rule(text) {
     return String(text || '').split(/\n\s*\n/).map(function (blk) {
       blk = blk.trim(); if (!blk) return '';
       var lines = blk.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
-      if (/^\[[\s\S]+\]$/.test(blk) && blk.indexOf(']') === blk.length - 1) return '<aside class="ad-note">' + inl(blk.slice(1, -1)).replace(/\n/g, '<br>') + '</aside>';
+      if (/^\[[\s\S]+\]$/.test(blk)) return '<aside class="ad-note">' + inl(blk.slice(1, -1)).replace(/\n/g, '<br>') + '</aside>';
       var out = '', list = [];
       lines.forEach(function (l) {
         if (/^[-•]\s/.test(l)) { list.push('<li>' + inl(l.replace(/^[-•]\s/, '')) + '</li>'); return; }

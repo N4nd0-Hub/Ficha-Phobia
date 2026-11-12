@@ -241,3 +241,7 @@ body.ad-on #characterPage:not(#_z) #sheet-panel-awakening > #awRefinedArchive{di
 #characterPage:not(#_z) #adDeck .ad-path-t small{margin-bottom:3px}
 #characterPage:not(#_z) #adDeck .ad-stamp,#characterPage:not(#_z) #adDeck .ad-buy:not(:disabled),#characterPage:not(#_z) #adDeck .ad-sec-head > em,#characterPage:not(#_z) #adDeck .ad-tarot em,#characterPage:not(#_z) #adDeck .ad-big{color:var(--ad-k)!important}
 #characterPage:not(#_z) #adDeck .ad-big.over{color:#fff!important}
+/* ícones sobre fundo colorido: traço sempre escuro (alguns temas forçam a cor do texto) */
+#characterPage:not(#_z):not(#_y) #adDeck :is(.ad-aw-ic,.ad-path.owned .ad-path-ic,.ad-amp.owned .ad-amp-top em,.ad-dis-id > span) svg{stroke:var(--ad-k)!important;color:var(--ad-k)!important}
+#characterPage:not(#_z):not(#_y) #adDeck :is(.ad-path:not(.owned) .ad-path-ic) svg{stroke:var(--pc)!important}
+#characterPage:not(#_z):not(#_y) #adDeck .ad-aw-ic{box-shadow:3px 3px 0 var(--ad-k),3px 3px 0 2px color-mix(in srgb,var(--ad-p) 60%,transparent)}
