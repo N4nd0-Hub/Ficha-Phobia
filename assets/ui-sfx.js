@@ -297,6 +297,11 @@
       dock.style.top = Math.round(q.top + q.height / 2 - 19) + 'px';
       dock.style.left = Math.round(q.left - 48) + 'px'; dock.style.right = 'auto'; return;
     }
+    var nt = document.getElementById('navigationTabs'), n = nt && nt.offsetParent ? nt.getBoundingClientRect() : null;
+    if (n && n.width) { /* ficha: à esquerda das abas MAPA/GUIA/... */
+      dock.style.top = Math.round(n.top + n.height / 2 - 19) + 'px';
+      dock.style.left = Math.round(n.left - 50) + 'px'; dock.style.right = 'auto'; return;
+    }
     var ref = document.getElementById('siteThemeButton');
     var r = ref && ref.offsetParent ? ref.getBoundingClientRect() : null;
     if (r && r.width) {
