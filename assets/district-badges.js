@@ -1,5 +1,8 @@
 /* ==========================================================
-   PERSONA // PHOBIA — district-badges.js  (v2)
+   PERSONA // PHOBIA — district-badges.js  (v3)
+   v3: o padrão volta a ser a ILUSTRAÇÃO pintada de cada distrito,
+   recolorida em tempo real para a cor do tema / Cognição.
+   O selo em vetor continua disponível como estilo editável.
    Selos dos distritos desenhados em vetor, no estilo P5:
    moldura serrilhada com raios e retícula, marco do bairro com
    volume (frente/lateral/janelas/letreiros), nome em letras
@@ -362,11 +365,129 @@
   /* ==========================================================
      ESTILOS EDITÁVEIS  (state.badgeStyles[id])
      ========================================================== */
-  var DEF = { name: '', jp: '', frame: 'burst', letters: 'ransom', rays: true, tone: true, colors: 'theme', a: '#ef2b97', b: '#6ce6ff', tilt: 0, img: '' };
+  var DEF = { mode: 'art', name: '', jp: '', frame: 'burst', letters: 'ransom', rays: true, tone: true, colors: 'theme', a: '#ef2b97', b: '#6ce6ff', tilt: 0, img: '' };
+  var VECTOR_KEYS = ['name', 'jp', 'frame', 'letters', 'rays', 'tone', 'img'];
+  function artSrc(id) { try { return DISTRICT_BADGE_IMAGES[id] || ''; } catch (e) { return ''; } }
+
+  /* ==========================================================
+     ILUSTRAÇÃO — a arte pintada de cada distrito, recolorida
+     para a cor do tema (ou verde-neon na Cognição).
+     ========================================================== */
+  var artImgs = {}, artCache = {}, probe = null;
+  function cssColor(v) {
+    if (!probe) { probe = document.createElement('canvas'); probe.width = probe.height = 1; }
+    var c = probe.getContext('2d', { willReadFrequently: true });
+    c.clearRect(0, 0, 1, 1); c.fillStyle = '#000'; c.fillStyle = v; c.fillRect(0, 0, 1, 1);
+    var d = c.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2]];
+  }
+  function themeVar(name, fb) {
+    var v = ''; try { v = getComputedStyle(document.body).getPropertyValue(name).trim(); } catch (e) {}
+    if (!v) return cssColor(fb);
+    var el = document.createElement('i'); el.style.cssText = 'position:absolute;width:0;height:0;color:' + v;
+    document.body.appendChild(el); var c = getComputedStyle(el).color; el.remove();
+    return cssColor(c || fb);
+  }
+  function isCog() { return document.body.classList.contains('cognition'); }
+  function artPalette(st) {
+    var cog = isCog();
+    if (cog) return { cog: true, a: themeVar('--theme-accent-3', '#96ff45'), b: themeVar('--theme-accent-2', '#6ce6ff') };
+    if (st.colors === 'custom') return { cog: false, a: cssColor(st.a), b: cssColor(st.b) };
+    return { cog: false, a: themeVar('--theme-accent', '#ef2b97'), b: themeVar('--theme-accent-2', '#6ce6ff') };
+  }
+  function palKey(p) { return (p.cog ? 'c' : 'r') + p.a.join(',') + (p.cog ? '|' + p.b.join(',') : ''); }
+  function loadArt(id, cb) {
+    var e = artImgs[id];
+    if (e) { if (e.ok) cb(e.img); else e.wait.push(cb); return; }
+    e = artImgs[id] = { ok: false, wait: [cb], img: new Image() };
+    e.img.decoding = 'async';
+    e.img.onload = function () { e.ok = true; e.wait.splice(0).forEach(function (f) { try { f(e.img); } catch (x) {} }); };
+    e.img.src = artSrc(id);
+  }
+  var PAD = 10;
+  function paintArt(img, pal) {
+    var w = img.naturalWidth, h = img.naturalHeight;
+    var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    var cx = cv.getContext('2d', { willReadFrequently: true }); cx.drawImage(img, 0, 0);
+    var A = pal.a, near = !pal.cog && Math.abs(A[0] - 239) + Math.abs(A[1] - 43) + Math.abs(A[2] - 151) < 36;
+    if (!near) {
+      var im = cx.getImageData(0, 0, w, h), d = im.data, B = pal.b;
+      for (var i = 0; i < d.length; i += 4) {
+        if (!d[i + 3]) continue;
+        var r = d[i] / 255, g = d[i + 1] / 255, b = d[i + 2] / 255;
+        var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, df = mx - mn, wgt = 0;
+        if (df > .05) {
+          var sat = df / (1 - Math.abs(2 * l - 1) + 1e-6), hue;
+          if (mx === r) hue = ((g - b) / df + 6) % 6; else if (mx === g) hue = (b - r) / df + 2; else hue = (r - g) / df + 4;
+          hue *= 60;
+          var dist = Math.abs(hue - 322); if (dist > 180) dist = 360 - dist;
+          var hw = dist <= 48 ? 1 : dist >= 74 ? 0 : (74 - dist) / 26;
+          wgt = hw * Math.min(1, Math.max(0, (sat - .1) * 2.4));
+        }
+        var nr, ng, nb;
+        if (pal.cog) {
+          /* Cognição: papel escurece, tinta vira neon */
+          var k = l * l * .9, e = Math.min(1, Math.max(0, l - .5) * 2);
+          var gr = 10 + k * 60, gg = 12 + k * 70, gb = 18 + k * 80;
+          gr += (B[0] - gr) * e * .8; gg += (B[1] - gg) * e * .8; gb += (B[2] - gb) * e * .8;
+          var t = Math.min(1, l * 1.7);
+          nr = gr + (A[0] * t - gr) * wgt; ng = gg + (A[1] * t - gg) * wgt; nb = gb + (A[2] * t - gb) * wgt;
+          if (wgt > .5 && l > .6) { var u = (l - .6) / .4; nr += (255 - nr) * u * .7; ng += (255 - ng) * u * .7; nb += (255 - nb) * u * .7; }
+        } else {
+          if (!wgt) continue;
+          var cr, cg, cb;
+          if (l <= .5) { var t0 = l / .5; cr = A[0] * t0; cg = A[1] * t0; cb = A[2] * t0; }
+          else { var t1 = (l - .5) / .5; cr = A[0] + (255 - A[0]) * t1; cg = A[1] + (255 - A[1]) * t1; cb = A[2] + (255 - A[2]) * t1; }
+          nr = d[i] + (cr - d[i]) * wgt; ng = d[i + 1] + (cg - d[i + 1]) * wgt; nb = d[i + 2] + (cb - d[i + 2]) * wgt;
+        }
+        d[i] = nr; d[i + 1] = ng; d[i + 2] = nb;
+      }
+      cx.putImageData(im, 0, 0);
+    }
+    /* sombra dura de adesivo, já pintada junto (sem filtro na tela) */
+    var sh = document.createElement('canvas'); sh.width = w; sh.height = h;
+    var sx = sh.getContext('2d'); sx.drawImage(img, 0, 0); sx.globalCompositeOperation = 'source-in';
+    sx.fillStyle = pal.cog ? 'rgba(' + pal.b.join(',') + ',.45)' : 'rgba(8,7,12,.5)'; sx.fillRect(0, 0, w, h);
+    var out = document.createElement('canvas'); out.width = w + PAD; out.height = h + PAD;
+    var ox = out.getContext('2d'); ox.drawImage(sh, pal.cog ? 5 : 7, pal.cog ? 5 : 8); ox.drawImage(cv, 0, 0);
+    var url = ''; try { url = out.toDataURL('image/webp', .92); } catch (x) {}
+    if (url.indexOf('data:image/webp') !== 0) url = out.toDataURL('image/png');
+    return { url: url, w: out.width, h: out.height };
+  }
+  function artFor(id, st, cb) {
+    var pal = artPalette(st), key = id + '|' + palKey(pal);
+    if (artCache[key]) return cb(artCache[key], key);
+    loadArt(id, function (img) { if (!artCache[key]) { try { artCache[key] = paintArt(img, pal); } catch (e) { return; } } cb(artCache[key], key); });
+  }
+  function fillArt(svg, id, st) {
+    var tilt = +st.tilt || 0;
+    artFor(id, st, function (a, key) {
+      if (svg.getAttribute('data-art-key') === key) return;
+      svg.setAttribute('data-art-key', key);
+      svg.setAttribute('viewBox', '0 0 ' + a.w + ' ' + a.h);
+      var cx = a.w / 2, cy = a.h / 2;
+      svg.innerHTML = '<g class="bd-float"><g transform="rotate(' + tilt + ' ' + cx + ' ' + cy + ')">' +
+        '<image href="' + a.url + '" x="0" y="0" width="' + a.w + '" height="' + a.h + '" class="bd-photo bd-paint"/>' +
+        '<g class="bd-cog-eye" transform="translate(' + (a.w - 64) + ' 46) scale(1.6)"><path d="M-18 0q18-15 36 0-18 15-36 0z" class="bd-eye"/><circle r="6" class="bd-pupil"/></g>' +
+        '</g></g>';
+    });
+  }
+  /* tema ou Cognição mudou: repinta as ilustrações */
+  var repaintT = 0;
+  function repaintArt() {
+    clearTimeout(repaintT);
+    repaintT = setTimeout(function () {
+      var list = document.querySelectorAll('svg.bd-badge.bd-art-mode');
+      for (var i = 0; i < list.length; i++) { var id = list[i].getAttribute('data-badge'); if (id) fillArt(list[i], id, styleOf(id)); }
+    }, 90);
+  }
+
   function styleOf(id) {
     var st = {};
     try { st = (state.badgeStyles && state.badgeStyles[id]) || {}; } catch (e) {}
     var o = {}; for (var k in DEF) o[k] = st[k] == null ? DEF[k] : st[k];
+    /* selos já personalizados antes da ilustração continuam em vetor */
+    if (st.mode == null) { for (var q in st) if (VECTOR_KEYS.indexOf(q) >= 0) { o.mode = 'vector'; break; } }
+    if (o.mode === 'art' && !artSrc(id)) o.mode = 'vector';
     if (!o.name) o.name = NAMES[id] ? NAMES[id][0] : String(id).toUpperCase();
     if (!o.jp && st.jp == null) o.jp = NAMES[id] ? NAMES[id][1] : '';
     return o;
@@ -422,6 +543,12 @@
     svg.setAttribute('class', ((cls || '') + ' bd-badge bd-' + id).trim());
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('data-badge', id);
+    if (st.mode === 'art') {
+      svg.setAttribute('class', svg.getAttribute('class') + ' bd-art-mode');
+      svg.setAttribute('viewBox', '0 0 522 394');
+      fillArt(svg, id, st);
+      return svg;
+    }
     if (st.colors === 'custom') { svg.setAttribute('data-custom', '1'); svg.setAttribute('style', '--bd-ca:' + st.a + ';--bd-cb:' + st.b); }
     svg.innerHTML = markup(id, st);
     return svg;
@@ -471,6 +598,8 @@
       '<p class="hs-hint">Edite o selo de cada distrito do mapa. As mudanças aparecem no mapa na hora.</p>' +
       '<div class="be-picker">' + IDS.map(function (id) { return '<button type="button" data-be-id="' + id + '">' + NAMES[id][0] + '</button>'; }).join('') + '</div>' +
       '<div class="be-preview" id="bePreview"></div>' +
+      '<div class="be-field wide be-mode"><span>Estilo do selo</span><div class="hs-row"><button type="button" data-be-mode="art">ILUSTRAÇÃO</button><button type="button" data-be-mode="vector">VETOR EDITÁVEL</button></div>' +
+        '<small class="be-note" id="beModeNote"></small></div>' +
       '<div class="be-form">' +
         '<label class="be-field"><span>Nome</span><input type="text" maxlength="14" data-be="name" autocomplete="off" spellcheck="false"></label>' +
         '<label class="be-field"><span>Japonês</span><input type="text" maxlength="6" data-be="jp" autocomplete="off" spellcheck="false"></label>' +
@@ -484,7 +613,7 @@
         '<div class="be-field wide"><span>Imagem própria</span><div class="hs-row"><label class="be-upload">ESCOLHER IMAGEM<input type="file" accept="image/*" id="beFile"></label><button type="button" data-be-clearimg>TIRAR IMAGEM</button></div>' +
           '<small class="be-note">A imagem entra no lugar do desenho, mantendo a moldura e o nome.</small></div>' +
       '</div>' +
-      '<div class="be-actions"><button type="button" class="hs-ghost" data-be-all>Usar esta moldura, letras e fundo em todos</button><button type="button" class="hs-ghost danger" data-be-reset>Restaurar este selo</button></div>';
+      '<div class="be-actions"><button type="button" class="hs-ghost" data-be-all>Usar este estilo em todos</button><button type="button" class="hs-ghost danger" data-be-reset>Restaurar este selo</button></div>';
     body.appendChild(pane);
     ed.root = pane;
     pane.addEventListener('click', onClick);
@@ -497,6 +626,7 @@
   function onClick(e) {
     var b = e.target.closest('button'); if (!b) return; var d = b.dataset;
     if (d.beId) { ed.id = d.beId; paint(); return; }
+    if (d.beMode) return update({ mode: d.beMode });
     if (d.beFrame) return update({ frame: d.beFrame });
     if (d.beLetters) return update({ letters: d.beLetters });
     if (d.beToggle) { var o = {}; o[d.beToggle] = !cur()[d.beToggle]; return update(o); }
@@ -504,7 +634,7 @@
     if (b.hasAttribute('data-be-clearimg')) return update({ img: '' });
     if (b.hasAttribute('data-be-reset')) { if (state.badgeStyles) delete state.badgeStyles[ed.id]; try { saveState(true); } catch (x) {} refresh(ed.id); paint(); return; }
     if (b.hasAttribute('data-be-all')) {
-      var c = cur(); IDS.forEach(function (id) { saveStyle(id, { frame: c.frame, letters: c.letters, rays: c.rays, tone: c.tone }); });
+      var c = cur(); IDS.forEach(function (id) { saveStyle(id, { mode: c.mode, frame: c.frame, letters: c.letters, rays: c.rays, tone: c.tone }); });
       refresh(); paint();
     }
   }
@@ -541,6 +671,10 @@
   function paintButtons() {
     if (!ed.root) return; var c = cur(), r = ed.root;
     r.querySelectorAll('[data-be-id]').forEach(function (b) { b.classList.toggle('on', b.dataset.beId === ed.id); });
+    r.querySelectorAll('[data-be-mode]').forEach(function (b) { b.classList.toggle('on', b.dataset.beMode === c.mode); });
+    r.classList.toggle('be-art', c.mode === 'art');
+    var note = document.getElementById('beModeNote');
+    if (note) note.textContent = c.mode === 'art' ? 'Arte pintada do distrito, na cor do tema. Dá para trocar as cores e a inclinação.' : 'Desenho em vetor: nome, moldura, letras e imagem podem ser editados.';
     r.querySelectorAll('[data-be-frame]').forEach(function (b) { b.classList.toggle('on', b.dataset.beFrame === c.frame); });
     r.querySelectorAll('[data-be-letters]').forEach(function (b) { b.classList.toggle('on', b.dataset.beLetters === c.letters); });
     r.querySelectorAll('[data-be-toggle]').forEach(function (b) { b.classList.toggle('on', !!c[b.dataset.beToggle]); });
@@ -574,6 +708,10 @@
         if (pending) return; pending = true;
         requestAnimationFrame(function () { pending = false; if (host.querySelector('image:not(.bd-photo)')) swap(); });
       }).observe(host, { childList: true, subtree: true });
+    }
+    if ('MutationObserver' in window) {
+      var mo = new MutationObserver(repaintArt), opt = { attributes: true, attributeFilter: ['class', 'style', 'data-theme', 'data-site-theme'] };
+      mo.observe(document.body, opt); mo.observe(document.documentElement, opt);
     }
     buildEditor(); setTimeout(buildEditor, 800); setTimeout(buildEditor, 2500);
     var oa = window.openSheetAppearance;

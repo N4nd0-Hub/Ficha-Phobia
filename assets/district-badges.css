@@ -164,3 +164,11 @@ body.cognition .district-art-button.selected .bd-badge .bd-plate{fill:var(--bd-a
   .district-art-button .bd-float{transition:none}
 }
 body.hs-calm .bd-badge *{animation:none!important}
+
+/* ---------- v3: ilustração pintada ---------- */
+.bd-badge.bd-art-mode .bd-paint{image-rendering:auto}
+body.cognition .bd-badge .bd-paint{filter:none;opacity:1}
+body.cognition .bd-badge.bd-art-mode .bd-float>g{animation:bdFlicker 5s steps(1) infinite}
+.be-art .be-field:has([data-be="name"],[data-be="jp"],[data-be-frame],[data-be-letters],[data-be-toggle],#beFile){opacity:.32;pointer-events:none}
+.be-mode{margin:0 0 12px}
+.be-mode .be-note{display:block;margin-top:6px}
