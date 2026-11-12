@@ -1,0 +1,143 @@
+/* ==========================================================
+   PERSONA // PHOBIA — traits-cards.css   (cartas de Vantagem/Defeito)
+   ========================================================== */
+#characterPage:not(#_z) #traitGrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(262px,1fr))!important;gap:22px 18px!important;padding:8px 6px 14px!important}
+
+#characterPage:not(#_z) #traitGrid .tcx{
+  --k:var(--hud-black,#0d0c10);--p:var(--hud-paper,#fff0d8);
+  position:relative;display:flex;flex-direction:column;min-width:0;margin:0;padding:0;
+  background:color-mix(in srgb,var(--hud-card,#1d1f2e) 88%,var(--cc));color:var(--p);
+  border:2px solid color-mix(in srgb,var(--p) 14%,transparent);
+  clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%);
+  box-shadow:none;cursor:pointer;
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1),border-color .2s,filter .2s}
+#characterPage:not(#_z) #traitGrid .tcx::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--cc);opacity:.0;transition:opacity .2s}
+#characterPage:not(#_z) #traitGrid .tcx:hover{transform:translateY(-6px) rotate(-.6deg);border-color:var(--cc);filter:drop-shadow(6px 8px 0 var(--k))}
+#characterPage:not(#_z) #traitGrid .tcx:hover::after{opacity:1}
+
+/* --- topo ilustrado --- */
+#characterPage:not(#_z) #traitGrid .tcx-art{position:relative;height:96px;overflow:hidden;
+  background:
+    radial-gradient(circle at 1.5px 1.5px,color-mix(in srgb,var(--k) 55%,transparent) 1.3px,transparent 1.6px) 0 0/7px 7px,
+    linear-gradient(135deg,var(--cc) 0%,color-mix(in srgb,var(--cc) 55%,var(--k)) 100%);
+  clip-path:polygon(0 0,100% 0,100% 74%,0 100%)}
+#characterPage:not(#_z) #traitGrid .tcx-art::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 200deg at 18% 120%,rgba(255,255,255,.14) 0 6deg,transparent 6deg 16deg);mix-blend-mode:overlay}
+#characterPage:not(#_z) #traitGrid .tcx-art::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.4) 46%,transparent 58%);transform:translateX(-130%);transition:transform .7s}
+#characterPage:not(#_z) #traitGrid .tcx:hover .tcx-art::after{transform:translateX(130%)}
+#characterPage:not(#_z) #traitGrid .tcx-wm{position:absolute;left:38%;top:-18px;width:140px;height:140px;color:var(--k);opacity:.2;transform:rotate(-14deg)}
+#characterPage:not(#_z) #traitGrid .tcx-wm svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6}
+#characterPage:not(#_z) #traitGrid .tcx-wm i{display:block;font:400 92px/1 var(--hud-display,"Archivo Black"),sans-serif;font-style:normal;letter-spacing:-4px;color:var(--k)}
+#characterPage:not(#_z) #traitGrid .tcx-ic{position:absolute;left:14px;top:14px;display:grid;place-items:center;width:44px;height:44px;background:var(--k);color:var(--cc);transform:rotate(-7deg);box-shadow:3px 3px 0 var(--p);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+#characterPage:not(#_z) #traitGrid .tcx:hover .tcx-ic{transform:rotate(4deg) scale(1.08)}
+#characterPage:not(#_z) #traitGrid .tcx-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#characterPage:not(#_z) #traitGrid .tcx-cat{display:block;margin:0 0 -6px;font:800 10.5px/1.25 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.5px;text-transform:uppercase;color:var(--cc)!important;opacity:1!important}
+
+/* preço */
+#characterPage:not(#_z) #traitGrid .tcx-gem{position:absolute;right:12px;top:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;width:54px;height:54px;line-height:1}
+#characterPage:not(#_z) #traitGrid .tcx-gem b{font:400 22px/1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:-1px}
+#characterPage:not(#_z) #traitGrid .tcx-gem small{margin-top:1px;font:800 8.5px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.2px;opacity:1!important}
+#characterPage:not(#_z) #traitGrid .tcx-gem.coin{border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c7 0 12%,#ffd84a 30%,#e8a90f 80%);color:#3a2600!important;border:3px solid var(--k);box-shadow:0 0 0 2px #ffd84a,3px 4px 0 2px var(--k)}
+#characterPage:not(#_z) #traitGrid .tcx-gem.coin :is(b,small){color:#3a2600!important}
+#characterPage:not(#_z) #traitGrid .tcx-gem.seal{background:#ff4d5e;color:#fff;border:3px solid var(--k);clip-path:polygon(50% 0,61% 12%,77% 7%,80% 23%,95% 28%,89% 43%,100% 55%,88% 66%,92% 82%,76% 84%,68% 98%,54% 90%,40% 100%,30% 87%,14% 91%,12% 75%,0 68%,9% 54%,1% 40%,14% 31%,13% 15%,29% 13%,37% 0)}
+#characterPage:not(#_z) #traitGrid .tcx-gem.seal :is(b,small){color:#fff!important}
+#characterPage:not(#_z) #traitGrid .tcx-gem.moon{border-radius:50%;background:radial-gradient(circle at 70% 30%,#2a1f4a 0 34%,#c8b3ff 36%);color:var(--k);border:3px solid var(--k);box-shadow:3px 4px 0 var(--k)}
+#characterPage:not(#_z) #traitGrid .tcx-gem.moon :is(b,small){color:var(--k)!important}
+
+/* --- corpo --- */
+#characterPage:not(#_z) #traitGrid .tcx-body{display:flex;flex-direction:column;gap:10px;padding:2px 16px 0;flex:1}
+#characterPage:not(#_z) #traitGrid .tcx-name{margin:0;font:400 19px/1.1 var(--hud-display,"Archivo Black"),sans-serif!important;letter-spacing:-.3px;color:var(--p)!important;overflow-wrap:anywhere}
+#characterPage:not(#_z) #traitGrid .tcx-desc{margin:0;font:500 14px/1.48 var(--hud-body,Barlow),sans-serif!important;color:color-mix(in srgb,var(--p) 86%,transparent)!important;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+#characterPage:not(#_z) #traitGrid .tcx-meta{display:grid;gap:5px;margin:auto 0 0;padding:10px 0 0;list-style:none;border-top:1px dashed color-mix(in srgb,var(--p) 22%,transparent)}
+#characterPage:not(#_z) #traitGrid .tcx-meta li{display:flex;align-items:flex-start;gap:7px;margin:0;font:600 12.5px/1.35 var(--hud-body,Barlow),sans-serif;color:color-mix(in srgb,var(--p) 75%,transparent)}
+#characterPage:not(#_z) #traitGrid .tcx-meta li b{color:var(--p);font-weight:800;margin-right:3px}
+#characterPage:not(#_z) #traitGrid .tcx-meta svg{flex:none;width:14px;height:14px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;color:var(--cc)}
+#characterPage:not(#_z) #traitGrid .tcx-meta .req.ok svg{color:var(--hud-acc3,#96ff45)}
+#characterPage:not(#_z) #traitGrid .tcx-meta .req.warn svg{color:#ffda4d}
+#characterPage:not(#_z) #traitGrid .tcx-meta .req.bad svg{color:#ff6b7c}
+#characterPage:not(#_z) #traitGrid .tcx-conf{padding:7px 10px;background:var(--k);border-left:3px solid var(--cc);font:600 12px/1.45 var(--hud-body,Barlow),sans-serif;color:var(--p)}
+
+/* --- ações --- */
+#characterPage:not(#_z) #traitGrid .tcx-act{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:14px 16px 16px}
+#characterPage:not(#_z) #traitGrid .tcx-act button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 12px;border:0;border-radius:0;cursor:pointer;font:800 12px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1.4px;text-transform:uppercase;transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .15s,color .15s}
+#characterPage:not(#_z) #traitGrid .tcx-see{background:var(--k)!important;color:var(--p)!important;border:2px solid color-mix(in srgb,var(--p) 25%,transparent)!important}
+#characterPage:not(#_z) #traitGrid .tcx-see svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2}
+#characterPage:not(#_z) #traitGrid .tcx-see:hover{border-color:var(--p)!important}
+#characterPage:not(#_z) #traitGrid .tcx-buy{background:var(--cc)!important;color:var(--k)!important;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 100%,0 100%)}
+#characterPage:not(#_z) #traitGrid .tcx-buy span{color:inherit!important}
+#characterPage:not(#_z) #traitGrid .tcx-buy em{display:grid;place-items:center;min-width:30px;height:24px;padding:0 6px;background:var(--k);color:var(--cc)!important;font:400 13px/1 var(--hud-display,"Archivo Black"),sans-serif;font-style:normal;letter-spacing:0}
+#characterPage:not(#_z) #traitGrid .tcx-buy:hover:not(:disabled){transform:translateX(3px) rotate(-1.5deg)}
+#characterPage:not(#_z) #traitGrid .tcx-buy:disabled{background:color-mix(in srgb,var(--p) 12%,transparent)!important;color:color-mix(in srgb,var(--p) 50%,transparent)!important;cursor:not-allowed}
+#characterPage:not(#_z) #traitGrid .tcx-buy:disabled em{background:transparent;color:inherit!important;outline:1px solid currentColor}
+#characterPage:not(#_z) #traitGrid .tcx-buy.rm{background:transparent!important;color:#ff7d89!important;outline:2px solid #ff7d89;outline-offset:-2px;clip-path:none}
+#characterPage:not(#_z) #traitGrid .tcx-buy.rm:hover{background:#ff4d5e!important;color:#fff!important;outline-color:#ff4d5e}
+#characterPage:not(#_z) #traitGrid .tcx-why{display:flex;align-items:flex-start;gap:6px;margin:-6px 16px 14px!important;padding:0!important;font:700 12px/1.35 var(--hud-body,Barlow),sans-serif!important;color:#ff8a96!important;border:0!important;background:none!important}
+#characterPage:not(#_z) #traitGrid .tcx-why svg{flex:none;width:13px;height:13px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2.4}
+
+/* --- estados --- */
+#characterPage:not(#_z) #traitGrid .tcx.is-ready .tcx-ic::after{content:"";position:absolute;right:-5px;top:-5px;width:11px;height:11px;border-radius:50%;background:var(--hud-acc3,#96ff45);box-shadow:0 0 0 2px var(--k);animation:tcxBlink 1.8s ease-in-out infinite}
+@keyframes tcxBlink{50%{transform:scale(.7);opacity:.6}}
+#characterPage:not(#_z) #traitGrid .tcx.is-locked .tcx-art{filter:grayscale(.85) brightness(.7)}
+#characterPage:not(#_z) #traitGrid .tcx.is-locked .tcx-name,#characterPage:not(#_z) #traitGrid .tcx.is-locked .tcx-desc{opacity:.7}
+#characterPage:not(#_z) #traitGrid .tcx.is-locked:hover .tcx-art{filter:grayscale(.3) brightness(.9)}
+#characterPage:not(#_z) #traitGrid .tcx.is-owned{border-color:var(--cc);filter:drop-shadow(6px 6px 0 var(--cc))}
+#characterPage:not(#_z) #traitGrid .tcx.is-owned:hover{filter:drop-shadow(8px 9px 0 var(--cc))}
+#characterPage:not(#_z) #traitGrid .tcx-stamp{position:absolute;left:50%;top:44%;padding:5px 14px;background:var(--k);color:var(--cc);border:3px solid var(--cc);font:400 17px/1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:1px;transform:translate(-50%,-50%) rotate(-9deg);box-shadow:3px 3px 0 var(--p)}
+
+/* Defeitos: faixa de perigo */
+#characterPage:not(#_z) #traitGrid .tcx.k-defeito{background:color-mix(in srgb,var(--hud-card,#1d1f2e) 80%,#ff2a45)}
+#characterPage:not(#_z) #traitGrid .tcx.k-defeito .tcx-art{background:
+    repeating-linear-gradient(-45deg,rgba(0,0,0,.28) 0 10px,transparent 10px 22px),
+    linear-gradient(135deg,var(--cc) 0%,color-mix(in srgb,var(--cc) 45%,#2a0610) 100%)}
+#characterPage:not(#_z) #traitGrid .tcx.k-defeito .tcx-buy:not(.rm):not(:disabled){background:#ff4d5e!important;color:#fff!important}
+#characterPage:not(#_z) #traitGrid .tcx.k-defeito .tcx-buy:not(.rm):not(:disabled) em{color:#ff4d5e!important}
+/* Dissonantes: lua e numeral */
+#characterPage:not(#_z) #traitGrid .tcx.k-dissonante{background:color-mix(in srgb,var(--hud-card,#1d1f2e) 78%,#6b4cff)}
+#characterPage:not(#_z) #traitGrid .tcx.k-dissonante .tcx-art{background:
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.35) 0 2px,transparent 3px) 0 0/26px 22px,
+    linear-gradient(135deg,#c8b3ff 0%,#4a2f9e 100%)}
+#characterPage:not(#_z) #traitGrid .tcx.k-dissonante .tcx-wm{right:70px;top:-6px;opacity:.28}
+
+/* animação ao comprar */
+#characterPage:not(#_z) #traitGrid .tcx.tcx-just{animation:tcxGet .9s cubic-bezier(.34,1.56,.64,1)}
+#characterPage:not(#_z) #traitGrid .tcx.tcx-just .tcx-stamp{animation:tcxStamp .6s cubic-bezier(.34,1.56,.64,1) .15s both}
+@keyframes tcxGet{0%{transform:rotateY(80deg) scale(.9)}55%{transform:rotateY(-8deg) scale(1.04)}100%{transform:none}}
+@keyframes tcxStamp{0%{opacity:0;transform:translate(-50%,-50%) rotate(-9deg) scale(2.4)}100%{opacity:1;transform:translate(-50%,-50%) rotate(-9deg) scale(1)}}
+
+/* ---------- MÃO (topo) ---------- */
+#characterPage:not(#_z) .trh-card.tch{
+  --k:var(--hud-black,#0d0c10);--p:var(--hud-paper,#fff0d8);
+  flex:0 1 136px;max-width:136px;height:190px;padding:0 10px 10px;justify-content:flex-end;gap:3px;overflow:hidden;
+  background:color-mix(in srgb,var(--hud-card,#1d1f2e) 85%,var(--cc))!important;color:var(--p)!important;border:2px solid var(--cc)!important;border-top:2px solid var(--cc)!important;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+#characterPage:not(#_z) .trh-card.tch.flaw{background:color-mix(in srgb,var(--hud-card,#1d1f2e) 75%,#ff2a45)!important}
+#characterPage:not(#_z) .tch-art{position:absolute;left:0;right:0;top:0;height:96px;display:grid;place-items:center;
+  background:radial-gradient(circle at 1.5px 1.5px,color-mix(in srgb,var(--k) 50%,transparent) 1.2px,transparent 1.5px) 0 0/6px 6px,linear-gradient(135deg,var(--cc),color-mix(in srgb,var(--cc) 50%,var(--k)));
+  clip-path:polygon(0 0,100% 0,100% 80%,0 100%)}
+#characterPage:not(#_z) .trh-card.tch.flaw .tch-art{background:repeating-linear-gradient(-45deg,rgba(0,0,0,.28) 0 8px,transparent 8px 18px),linear-gradient(135deg,var(--cc),color-mix(in srgb,var(--cc) 45%,#2a0610))}
+#characterPage:not(#_z) .tch-ic{width:48px;height:48px;fill:none;stroke:var(--k);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-8deg);filter:drop-shadow(2px 2px 0 color-mix(in srgb,var(--p) 50%,transparent))}
+#characterPage:not(#_z) .tch-roman{position:absolute;font:400 54px/1 var(--hud-display,"Archivo Black"),sans-serif;font-style:normal;color:var(--k);opacity:.25}
+#characterPage:not(#_z) .tch-pt{position:absolute;right:8px;top:70px;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c7 0 12%,#ffd84a 30%,#e8a90f 80%);border:3px solid var(--k);color:#3a2600!important;font:400 14px/1 var(--hud-display,"Archivo Black"),sans-serif}
+#characterPage:not(#_z) .trh-card.tch.flaw .tch-pt{background:#ff4d5e;color:#fff!important}
+#characterPage:not(#_z) .trh-card.tch b{position:relative;color:var(--p)!important;font-size:13.5px}
+#characterPage:not(#_z) .trh-card.tch small{position:relative;color:color-mix(in srgb,var(--p) 70%,transparent)!important;opacity:1}
+#characterPage:not(#_z) .trh-card.tch:hover,#characterPage:not(#_z) .trh-card.tch:focus-visible{box-shadow:none;filter:drop-shadow(6px 6px 0 var(--cc)) drop-shadow(0 16px 20px rgba(0,0,0,.4))}
+@media(max-width:900px){
+  #characterPage:not(#_z) .trh-card.tch{flex-basis:108px;max-width:108px;height:158px}
+  #characterPage:not(#_z) .tch-art{height:78px}
+  #characterPage:not(#_z) .tch-ic{width:38px;height:38px}
+  #characterPage:not(#_z) .tch-pt{top:56px;width:28px;height:28px;font-size:12px}
+  #characterPage:not(#_z) #traitGrid{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){#characterPage #traitGrid .tcx,#characterPage #traitGrid .tcx *{animation:none!important;transition:none!important}}
+#characterPage:not(#_z) #traitGrid .tcx-art,#characterPage:not(#_z) #traitGrid .tcx-act,#characterPage:not(#_z) #traitGrid .tcx-why{flex:none}
+body.hud.workspace-sheet #characterPage:not(#_z) #traitGrid .tcx-why::before{content:none}
+#characterPage:not(#_z) #traitGrid .tcx-stamp{left:auto;right:12px;top:72px;z-index:2;transform:rotate(-6deg);font-size:14px;padding:5px 11px}
+#characterPage:not(#_z) #traitGrid .tcx.tcx-just .tcx-stamp{animation-name:tcxStamp2}
+@keyframes tcxStamp2{0%{opacity:0;transform:rotate(-6deg) scale(2.4)}100%{opacity:1;transform:rotate(-6deg) scale(1)}}
+#characterPage:not(#_z) #traitGrid .tcx-gem.moon{background:#c8b3ff;box-shadow:3px 4px 0 var(--k)}
+#characterPage:not(#_z) #traitGrid .tcx-gem.moon::before{content:"";position:absolute;right:-6px;top:-6px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 70% 30%,transparent 0 45%,#fff6c7 47%);border:0}
+body.hud #characterPage:not(#_z):not(#_y) #trHand .trh-card.tch:not(.trh-empty) b{color:var(--p)!important}
+body.hud #characterPage:not(#_z):not(#_y) #trHand .trh-card.tch:not(.trh-empty) small{color:color-mix(in srgb,var(--p) 70%,transparent)!important}
+body.hud #characterPage:not(#_z):not(#_y) #trHand .trh-card.tch .tch-pt{color:#3a2600!important}
+body.hud #characterPage:not(#_z):not(#_y) #trHand .trh-card.tch.flaw .tch-pt{color:#fff!important}
+#characterPage #trHand .trh-card.tch :is(b,small,.tch-pt),#characterPage #traitGrid .tcx *{-webkit-text-fill-color:currentColor!important}

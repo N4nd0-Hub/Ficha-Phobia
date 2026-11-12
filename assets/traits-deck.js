@@ -56,6 +56,7 @@
       var n = list.length, mid = (n - 1) / 2;
       var cards = list.map(function (it, k) {
         var rot = n > 1 ? (k - mid) * Math.min(7, 26 / n) : 0, lift = Math.abs(k - mid) * Math.min(6, 18 / n);
+        if (window.PhobiaTraitCards) return PhobiaTraitCards.hand(it, kind, rot.toFixed(1), lift.toFixed(1));
         return '<button type="button" class="trh-card ' + kind + '" data-trait-action="details" data-trait-id="' + E(it.id) + '" style="--r:' + rot.toFixed(1) + 'deg;--y:' + lift.toFixed(1) + 'px;--ct:' + (kind === 'flaw' ? (it.kind === 'dissonante' ? '#c8b3ff' : '#ff4d6a') : tone(it.points)) + ';--cc:' + (CAT[it.category_id] || '#fff') + ';z-index:' + (10 + k) + '">' +
           '<span class="trh-pt">' + (kind === 'flaw' ? '+' : '') + (it.kind === 'dissonante' ? 5 : it.points) + '</span>' +
           '<span class="trh-ic">' + (CAT_ICON[it.category_id] || '✦') + '</span>' +
@@ -72,6 +73,9 @@
 
   /* ---------- cartas do catálogo ---------- */
   function decorate(justId) {
+    if (justId && !reduced()) document.querySelectorAll('#traitGrid .tcx').forEach(function (c) {
+      if (c.dataset.traitId === justId) { c.classList.add('tcx-just'); setTimeout(function () { c.classList.remove('tcx-just'); }, 1200); }
+    });
     document.querySelectorAll('#traitGrid .tr-card').forEach(function (card) {
       var it = null; try { it = traitById(card.dataset.traitId); } catch (e) {}
       if (!it) return;
@@ -130,7 +134,7 @@
   });
   /* clicar no corpo da carta abre o efeito completo */
   document.addEventListener('click', function (e) {
-    var card = e.target.closest && e.target.closest('#traitGrid .tr-card');
+    var card = e.target.closest && e.target.closest('#traitGrid .tr-card, #traitGrid .tcx');
     if (!card || e.target.closest('button,a,input,select,label')) return;
     try { openTraitDialog(card.dataset.traitId); } catch (x) {}
   });
