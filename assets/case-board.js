@@ -13,6 +13,8 @@
 
   var W = 3000, H = 1900;
   var SHOP = 'https://n4nd0-hub.github.io/Tanaka-Undergrounds/';
+  /* sempre a versão mais nova da loja (evita a cópia antiga guardada pelo navegador) */
+  function shopUrl() { return SHOP + '?pc=' + Date.now().toString(36); }
   var NOTE_COLORS = { yellow: '#ffe873', pink: '#ff9ec7', blue: '#9fdcff', green: '#b6f29a', orange: '#ffbf7a' };
   var STR_COLORS = { red: '#d4142a', blue: '#1f6fe0', yellow: '#f2b705', black: '#1a1a1a', white: '#f4f1e8' };
   var TYPES = {
@@ -543,7 +545,7 @@
       sfx('dice');
       setTimeout(function () {
         fr.onload = function () { dl.hidden = true; $('.cb-web-msg', w).textContent = 'Concluído'; };
-        fr.src = SHOP;
+        fr.src = shopUrl();
         setTimeout(function () { dl.hidden = true; }, 6000);
       }, 1100);
     }
@@ -556,8 +558,8 @@
       if (c === 'back') fr.contentWindow.history.back();
       else if (c === 'fwd') fr.contentWindow.history.forward();
       else if (c === 'reload') fr.contentWindow.location.reload();
-      else if (c === 'home') fr.src = SHOP;
-    } catch (e) { if (c === 'reload' || c === 'home') fr.src = SHOP; }
+      else if (c === 'home') fr.src = shopUrl();
+    } catch (e) { if (c === 'reload' || c === 'home') fr.src = shopUrl(); }
   }
   function openNet() {
     close();
