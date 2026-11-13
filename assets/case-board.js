@@ -11,7 +11,7 @@
   'use strict';
   if (window.PhobiaCaseBoard) return;
 
-  var W = 3000, H = 1900;
+  var W = 5200, H = 3400;
   var SHOP = 'https://n4nd0-hub.github.io/Tanaka-Undergrounds/';
   /* sempre a versão mais nova da loja (evita a cópia antiga guardada pelo navegador) */
   function shopUrl() { return SHOP + '?pc=' + Date.now().toString(36); }
@@ -28,10 +28,23 @@
   function sfx(k) { try { window.PhobiaSfx && PhobiaSfx.play(k, 0); } catch (e) {} }
 
   /* ---------- dados ---------- */
-  function B() {
+  /* vários quadros: charSheet.caseBoards = { cur, list:[quadro...] } */
+  function boards() {
     var cs = state.charSheet; if (!cs) return null;
-    var b = cs.caseBoard;
-    if (!b || typeof b !== 'object') b = cs.caseBoard = {};
+    var bs = cs.caseBoards;
+    if (!bs || typeof bs !== 'object' || !Array.isArray(bs.list)) {
+      bs = cs.caseBoards = { cur: '', list: [] };
+      if (cs.caseBoard && typeof cs.caseBoard === 'object') { cs.caseBoard.id = cs.caseBoard.id || 'b1'; bs.list.push(cs.caseBoard); }
+    }
+    if (cs.caseBoard) delete cs.caseBoard;
+    if (!bs.list.length) bs.list.push({ id: 'b1' });
+    bs.list.forEach(function (b, i) { if (!b.id) b.id = 'b' + (i + 1) + Math.random().toString(36).slice(2, 5); });
+    if (!bs.list.some(function (b) { return b.id === bs.cur; })) bs.cur = bs.list[0].id;
+    return bs;
+  }
+  function B() {
+    var bs = boards(); if (!bs) return null;
+    var b = bs.list.filter(function (x) { return x.id === bs.cur; })[0];
     if (!Array.isArray(b.items)) b.items = [];
     if (!Array.isArray(b.links)) b.links = [];
     if (typeof b.title !== 'string') b.title = 'CASO EM ABERTO';
@@ -67,7 +80,9 @@
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Quadro de investigação');
     root.innerHTML =
       '<header class="cb-top">' +
-        '<div class="cb-title"><small>NOTAS // QUADRO DE INVESTIGAÇÃO</small><input class="cb-case" data-cb="title" maxlength="48" aria-label="Nome do caso"></div>' +
+        '<div class="cb-title"><small>NOTAS // QUADRO DE INVESTIGAÇÃO</small><div class="cb-title-row"><input class="cb-case" data-cb="title" maxlength="48" aria-label="Nome do caso">' +
+          '<div class="cb-boards"><button type="button" class="cb-boards-btn" data-cb-boards aria-expanded="false" title="Trocar de quadro"><b data-cb-bn>1/1</b>▾</button><div class="cb-boards-pop" hidden></div></div>' +
+          '<button type="button" class="cb-newb" data-cb-newboard title="Criar um quadro novo">＋ QUADRO</button></div></div>' +
         '<div class="cb-tools" role="toolbar" aria-label="Adicionar ao quadro">' +
           '<button type="button" data-cb-add="photo" title="Foto (ou arraste uma imagem para o quadro)"><i class="i-photo"></i><span>Foto</span></button>' +
           '<button type="button" data-cb-add="note"><i class="i-note"></i><span>Nota</span></button>' +
@@ -97,6 +112,7 @@
     wrap = $('.cb-wrap', root); surf = $('.cb-surf', root); inner = $('.cb-inner', root); svg = $('.cb-svg', root);
     menu = $('.cb-menu', root); smenu = $('.cb-smenu', root); file = $('.cb-file', root); desk = $('.cb-desk', root);
     ghost = $('.cb-ghost', root);
+    inner.style.width = W + 'px'; inner.style.height = H + 'px';
     bind();
   }
 
@@ -115,7 +131,7 @@
     } else if (it.t === 'stamp') {
       body = '<div class="cb-stamp-t" data-f="text" data-ph="CARIMBO">' + E(it.text || '') + '</div>';
     }
-    return '<div class="cb-it t-' + it.t + (String(it.text || '').length > 380 ? ' long' : '') + (sel === it.id ? ' sel' : '') + (linkFrom === it.id ? ' from' : '') + '" data-id="' + it.id + '" style="left:' + it.x + 'px;top:' + it.y + 'px;' + (it.t === 'stamp' ? '' : 'width:' + widthFor(it) + 'px;') + 'z-index:' + (it.z || 1) + ';--r:' + (it.r || 0) + 'deg' + (it.t === 'note' ? ';--nc:' + (NOTE_COLORS[it.color] || NOTE_COLORS.yellow) : '') + '">' + body + '</div>';
+    return '<div class="cb-it t-' + it.t + (String(it.text || '').length > 380 ? ' long' : '') + (sel === it.id ? ' sel' : '') + (linkFrom === it.id ? ' from' : '') + '" data-id="' + it.id + '" style="left:' + it.x + 'px;top:' + it.y + 'px;' + (it.t === 'stamp' ? (it.w ? '--ss:' + (it.w / 170).toFixed(2) + ';' : '') : 'width:' + widthFor(it) + 'px;') + 'z-index:' + (it.z || 1) + ';--r:' + (it.r || 0) + 'deg' + (it.t === 'note' ? ';--nc:' + (NOTE_COLORS[it.color] || NOTE_COLORS.yellow) : '') + '">' + body + '<span class="cb-rs" title="Arraste para mudar o tamanho" aria-hidden="true"></span></div>';
   }
   function render() {
     var b = B(); if (!b || !root) return;
@@ -123,6 +139,7 @@
     Array.prototype.slice.call(inner.querySelectorAll('.cb-it')).forEach(function (n) { n.remove(); });
     svg.insertAdjacentHTML('beforebegin', html);
     $('.cb-case', root).value = b.title;
+    var bs = boards(), bi = bs.list.indexOf(b); $('[data-cb-bn]', root).textContent = (bi + 1) + '/' + bs.list.length;
     measure(); drawLinks(); paintTools(); placeMenu();
   }
   var size = {};
@@ -151,7 +168,7 @@
   /* ---------- zoom / visão ---------- */
   function Z() { return B().view.z; }
   function applyZoom(z, cx, cy) {
-    var b = B(), old = b.view.z; z = Math.max(0.35, Math.min(1.6, Math.round(z * 100) / 100));
+    var b = B(), old = b.view.z; z = Math.max(0.2, Math.min(1.6, Math.round(z * 100) / 100));
     var r = wrap.getBoundingClientRect();
     if (cx == null) { cx = r.width / 2; cy = r.height / 2; }
     var bx = (wrap.scrollLeft + cx) / old, by = (wrap.scrollTop + cy) / old;
@@ -189,6 +206,7 @@
         (it.t === 'photo' ? '<button type="button" data-cb-act="photo">🖼 Foto</button>' : '') +
         '<button type="button" data-cb-act="edit" title="Escrever">✎</button>' +
         '<button type="button" data-cb-act="rot" title="Girar">↻</button>' +
+        (it.w ? '<button type="button" data-cb-act="size0" title="Voltar ao tamanho automático">⤡ auto</button>' : '') +
         '<button type="button" data-cb-act="dup" title="Duplicar">⧉</button>' +
         '<button type="button" data-cb-act="del" class="del" title="Remover">🗑</button>';
       menu.hidden = false;
@@ -224,6 +242,7 @@
   /* tamanho do papel acompanha o texto */
   var MAXW = { note: 330, card: 460, clip: 520, stamp: 0, photo: 0 };
   function widthFor(it) {
+    if (it.w) return Math.max(110, Math.min(1100, it.w));
     var base = TYPES[it.t] ? TYPES[it.t].w : 200; if (!MAXW[it.t]) return base;
     var len = String(it.text || '').length + String(it.title || '').length * 1.5;
     var lines = String(it.text || '').split('\n').reduce(function (m, l) { return Math.max(m, l.length); }, 0);
@@ -268,7 +287,7 @@
         c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
         var d = c.toDataURL('image/webp', q); if (d.indexOf('data:image/webp') !== 0) d = c.toDataURL('image/jpeg', q); return d;
       }
-      var d = out(420, .78); if (d.length > 30000) d = out(340, .66); if (d.length > 30000) d = out(280, .58);
+      var d = out(720, .8); if (d.length > 70000) d = out(560, .7); if (d.length > 70000) d = out(420, .62); if (d.length > 70000) d = out(320, .55);
       URL.revokeObjectURL(url); cb(d);
     };
     img.onerror = function () { URL.revokeObjectURL(url); toast('Não deu para ler essa imagem.'); };
@@ -279,6 +298,45 @@
       var b = B(), it = add(b, { t: 'photo', x: x - 95, y: y - 110, img: d, text: '' });
       render(); select(it.id); save(); sfx('confirm');
     });
+  }
+
+  /* ---------- vários quadros ---------- */
+  function openBoards(btn) {
+    var bs = boards(), pop = $('.cb-boards-pop', root);
+    pop.innerHTML = '<small>SEUS QUADROS · ' + bs.list.length + '</small>' + bs.list.map(function (b, i) {
+      return '<button type="button" data-cb-go="' + E(b.id) + '" class="' + (b.id === bs.cur ? 'on' : '') + '"><em>' + (i + 1) + '</em><b>' + E(b.title || 'Sem nome') + '</b><span>' + ((b.items || []).length) + ' pistas · ' + ((b.links || []).length) + ' fios</span></button>';
+    }).join('') +
+      '<hr><button type="button" data-cb-bact="new">＋ Novo quadro em branco</button><button type="button" data-cb-bact="dup">⧉ Duplicar este quadro</button>' +
+      (bs.list.length > 1 ? '<button type="button" data-cb-bact="del" class="del">🗑 Apagar este quadro</button>' : '') +
+      '<p>Cada quadro guarda fotos e textos na ficha; muitos quadros com muitas fotos deixam o salvamento mais pesado.</p>';
+    pop.hidden = false; btn.setAttribute('aria-expanded', 'true');
+  }
+  function closeBoards() { var p = $('.cb-boards-pop', root); if (p) p.hidden = true; var bb = $('[data-cb-boards]', root); if (bb) bb.setAttribute('aria-expanded', 'false'); }
+  function switchBoard(id) {
+    var bs = boards(); if (!bs.list.some(function (b) { return b.id === id; })) return;
+    stopEdit(); setLinkMode(false); sel = null; selLink = null; size = {};
+    bs.cur = id; closeBoards(); render(); applyZoom(Z()); requestAnimationFrame(function () { measure(); drawLinks(); center(); });
+    save(); sfx('tab');
+  }
+  function newBoard(copy) {
+    var bs = boards(), n = bs.list.length + 1, b;
+    if (copy) { b = JSON.parse(JSON.stringify(B())); b.title = (b.title || 'CASO') .slice(0, 40) + ' (cópia)'; }
+    else b = { title: 'TEORIA ' + n, items: [], links: [], next: 1, seeded: true, view: { z: 0.8, x: 0, y: 0 } };
+    b.id = 'b' + Date.now().toString(36);
+    bs.list.push(b); switchBoard(b.id);
+    if (!copy) setTimeout(function () { var c = $('.cb-case', root); c.focus(); c.select(); }, 60);
+    toast(copy ? 'Quadro duplicado.' : 'Quadro novo criado.');
+  }
+  var delArm = 0;
+  function boardAct(k, t) {
+    if (k === 'new') return newBoard(false);
+    if (k === 'dup') return newBoard(true);
+    if (k === 'del') {
+      var bs = boards(); if (bs.list.length < 2) return;
+      if (Date.now() - delArm > 3000) { delArm = Date.now(); t.textContent = '⚠ Clique de novo para apagar'; return; }
+      delArm = 0; var cur = bs.cur, i = bs.list.findIndex(function (b) { return b.id === cur; });
+      bs.list.splice(i, 1); switchBoard(bs.list[Math.max(0, i - 1)].id); toast('Quadro apagado.'); sfx('back');
+    }
   }
 
   /* ---------- "Do jogo" ---------- */
@@ -315,6 +373,10 @@
         var it2 = add(b, { t: 'photo', x: c[0] - 95 + rnd(-60, 60), y: c[1] - 110 + rnd(-40, 40), img: o.img, text: o.n });
         render(); select(it2.id); save(); sfx('confirm'); return;
       }
+      if (d.cbNewboard != null) { newBoard(); return; }
+      if (d.cbBoards != null) { var bp = $('.cb-boards-pop', root); if (!bp.hidden) { bp.hidden = true; t.setAttribute('aria-expanded', 'false'); } else openBoards(t); return; }
+      if (d.cbGo) { switchBoard(d.cbGo); return; }
+      if (d.cbBact) { boardAct(d.cbBact, t); return; }
       if (d.cbLinkmode != null) { setLinkMode(!root.classList.contains('linking')); return; }
       if (d.cbYarn) { linkColor = d.cbYarn; paintTools(); return; }
       if (d.cbZoom) { if (d.cbZoom === '0') center(); else applyZoom(Z() + (+d.cbZoom) * 0.1); b.view.z = Z(); save(); return; }
@@ -329,6 +391,7 @@
         if (d.cbAct === 'link') { linkFrom = it3.id; node.classList.add('from'); setLinkMode(true); return; }
         if (d.cbAct === 'photo') { photoTarget = it3.id; file.click(); return; }
         if (d.cbAct === 'edit') { editItem(node); return; }
+        if (d.cbAct === 'size0') { delete it3.w; render(); select(it3.id); save(); return; }
         if (d.cbAct === 'rot') { it3.r = ((it3.r || 0) + 4 > 12 ? -12 : (it3.r || 0) + 4); node.style.setProperty('--r', it3.r + 'deg'); save(); return; }
         if (d.cbAct === 'dup') { var cp = JSON.parse(JSON.stringify(it3)); cp.x += 30; cp.y += 30; delete cp.id; var nn = add(b, cp); render(); select(nn.id); save(); return; }
         if (d.cbAct === 'del') { b.items = b.items.filter(function (x) { return x.id !== it3.id; }); b.links = b.links.filter(function (l) { return l.a !== it3.id && l.b !== it3.id; }); sel = null; render(); save(); sfx('back'); return; }
@@ -344,7 +407,7 @@
     /* arrastar itens / panorâmica / ligar */
     wrap.addEventListener('pointerdown', function (e) {
       if (e.button !== 0) return;
-      var pop = $('.cb-from-pop', root); if (!pop.hidden) { pop.hidden = true; }
+      var pop = $('.cb-from-pop', root); if (!pop.hidden) { pop.hidden = true; } closeBoards();
       var hit = e.target.closest('.cb-link'), n = e.target.closest('.cb-it');
       if (n && n.classList.contains('editing')) return;
       stopEdit();
@@ -361,6 +424,11 @@
       }
       if (e.target.closest('button')) return;
       if (hit) { selectLink(hit.dataset.link); e.preventDefault(); return; }
+      if (n && e.target.closest('.cb-rs')) {
+        var ri = item(n.dataset.id), rp = toBoard(e);
+        drag = { rs: true, id: ri.id, n: n, x0: rp[0], w0: ri.t === 'stamp' ? (ri.w || 170) : n.offsetWidth, moved: true };
+        n.classList.add('resizing'); menu.hidden = true; n.setPointerCapture(e.pointerId); e.preventDefault(); return;
+      }
       if (n) {
         var it = item(n.dataset.id), p = toBoard(e), b2 = B();
         it.z = b2.items.reduce(function (m, i) { return Math.max(m, i.z || 0); }, 0) + 1; n.style.zIndex = it.z;
@@ -374,6 +442,12 @@
       if (e.pointerType === 'mouse') { pan = { x: e.clientX, y: e.clientY, sl: wrap.scrollLeft, st: wrap.scrollTop }; wrap.classList.add('panning'); wrap.setPointerCapture(e.pointerId); }
     });
     wrap.addEventListener('pointermove', function (e) {
+      if (drag && drag.rs) {
+        var ri2 = item(drag.id), q = toBoard(e);
+        ri2.w = Math.round(Math.max(110, Math.min(1100, drag.w0 + (q[0] - drag.x0) * 2)));
+        if (ri2.t === 'stamp') drag.n.style.setProperty('--ss', (ri2.w / 170).toFixed(2)); else drag.n.style.width = ri2.w + 'px';
+        measure(); redraw(); return;
+      }
       if (drag) {
         if (!drag.moved && Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) < 4) return;
         if (!drag.moved) { drag.moved = true; drag.n.classList.add('lift'); menu.hidden = true; }
@@ -385,6 +459,7 @@
       if (linkFrom && root.classList.contains('linking')) { var a = pin(item(linkFrom)); ghost.setAttribute('d', sag(a, toBoard(e))); ghost.setAttribute('stroke', STR_COLORS[linkColor]); }
     });
     function end() {
+      if (drag && drag.rs) { var dr = drag; drag = null; dr.n.classList.remove('resizing'); measure(); redraw(); save(); placeMenu(); return; }
       if (drag) { var d = drag; drag = null; d.n.classList.remove('lift'); if (d.moved) { save(); sfx('tick'); } placeMenu(); if (!d.moved && d.edit) editItem(d.n, d.edit); }
       if (pan) { pan = null; wrap.classList.remove('panning'); }
     }
