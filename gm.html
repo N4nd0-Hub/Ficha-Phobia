@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Portal do Narrador · Persona Phobia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--k:#0d0c10;--p:#fff0d8;--c1:#17151c;--c2:#211d27;--c3:#2b2633;--mute:#a7a3b8;--a:#ef2b97;--b:#46d9ff;--g:#96ff45;--bad:#ff4d5e}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(ellipse at 20% -20%,#3a1030,transparent 50%),var(--k);color:var(--p);font:500 14px/1.45 Barlow,system-ui,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+small,.cap{font:800 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 14px;border:2px solid rgba(255,240,216,.25);background:var(--c2);color:var(--p);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:1.3px;text-transform:uppercase;transition:transform .15s,background .15s,border-color .15s}
+.btn:hover{border-color:var(--a);transform:translateY(-1px)}
+.btn.pri{background:var(--a);border-color:var(--a);color:var(--k)}
+.btn.ok{background:var(--g);border-color:var(--g);color:var(--k)}
+.btn.bad{color:#ff8a96;border-color:rgba(255,77,94,.5)}
+.btn.sm{height:26px;padding:0 9px;font-size:11px}
+input,select,textarea{width:100%;padding:8px 10px;border:2px solid rgba(255,240,216,.2);border-radius:0;background:var(--c1);color:var(--p)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--a)}
+option{background:var(--k)}
+label{display:grid;gap:4px}
+
+/* login */
+#login{display:grid;place-items:center;min-height:100%;padding:20px}
+#login[hidden]{display:none}
+#login form{display:grid;gap:12px;width:min(360px,100%);padding:26px;background:var(--c1);border-top:5px solid var(--a);box-shadow:8px 8px 0 var(--b)}
+#login h1{margin:0;font:400 28px/1 "Archivo Black",sans-serif;letter-spacing:-.5px}
+#login h1 span{color:var(--a)}
+#login p{margin:0;color:var(--mute);font-size:13px}
+.err{padding:8px 10px;background:rgba(255,77,94,.15);border-left:3px solid var(--bad);color:#ffb3bb;font-size:13px}
+.err[hidden]{display:none}
+
+/* app */
+#app{display:grid;grid-template-rows:auto minmax(0,1fr);height:100%}
+#app[hidden]{display:none}
+.top{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--k);border-bottom:4px solid var(--a)}
+.top h1{margin:0;font:400 22px/1 "Archivo Black",sans-serif;letter-spacing:-.4px}
+.top h1 span{color:var(--a)}
+.top .live{display:flex;align-items:center;gap:6px;margin-left:auto;color:var(--mute);font:700 12px Barlow,sans-serif}
+.top .live i{width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.cols{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;min-height:0}
+.col{display:flex;flex-direction:column;min-height:0;border-right:2px solid var(--c3)}
+.col:last-child{border-right:0}
+.colh{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:2px solid var(--c3);background:var(--c1)}
+.colh b{font:400 16px/1 "Archivo Black",sans-serif}
+.scroll{flex:1;min-height:0;overflow:auto}
+
+/* threads */
+.filters{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--c3)}
+.filters button{flex:1;height:26px;border:0;background:var(--c2);color:var(--mute);font:800 11px "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase}
+.filters button.on{background:var(--p);color:var(--k)}
+.th{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;padding:10px 12px;border:0;border-bottom:1px solid var(--c3);background:transparent;color:var(--p);text-align:left}
+.th:hover{background:var(--c2)}
+.th.on{background:var(--c3);box-shadow:inset 4px 0 0 var(--a)}
+.th b{display:block;overflow:hidden;font:700 14px/1.2 Barlow,sans-serif;white-space:nowrap;text-overflow:ellipsis}
+.th span{display:block;overflow:hidden;color:var(--mute);font-size:12px;white-space:nowrap;text-overflow:ellipsis}
+.th .kind{font:800 9.5px "Barlow Condensed",sans-serif;letter-spacing:1.2px;padding:2px 6px;background:var(--c2)}
+.th .kind.npc{color:var(--b)}.th .kind.dm{color:var(--g)}.th .kind.group{color:#ffda4d}
+.th em{min-width:20px;padding:2px 6px;border-radius:10px;background:var(--a);color:var(--k);font:800 11px Barlow,sans-serif;font-style:normal;text-align:center}
+.av{display:grid;place-items:center;flex:none;width:36px;height:36px;overflow:hidden;background:var(--c,#555);border:2px solid var(--p);transform:rotate(-4deg)}
+.av img{width:100%;height:100%;object-fit:cover}
+.av b{color:#fff;font:400 16px "Archivo Black",sans-serif;text-shadow:1px 1px 0 rgba(0,0,0,.5)}
+.av.sm{width:26px;height:26px;transform:none;border-width:1px}
+.av.sm b{font-size:12px}
+.empty{padding:20px;color:var(--mute);text-align:center}
+
+/* conversa */
+.conv-h{display:flex;align-items:center;gap:12px}
+.conv-h div{min-width:0}
+.conv-h small{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-transform:none;letter-spacing:.3px}
+#msgs{display:flex;flex-direction:column;gap:6px;padding:16px 20px}
+.m{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;max-width:760px}
+.m .bub{position:relative;padding:8px 12px 10px;background:var(--c1);border-left:4px solid var(--c,#888)}
+.m .bub header{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.m .bub header b{color:var(--c,#ccc);font:800 13px Barlow,sans-serif;filter:brightness(1.25)}
+.m .bub header time{color:var(--mute);font-size:11px}
+.m .bub header .tag{font:800 9.5px "Barlow Condensed",sans-serif;letter-spacing:1px;padding:1px 5px;background:var(--c3);color:var(--mute)}
+.m p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.m .del{position:absolute;right:6px;top:6px;display:none;padding:0 5px;border:0;background:none;color:#ff8a96;font-size:13px}
+.m:hover .del{display:block}
+.m.gm .bub{background:color-mix(in srgb,var(--c,#888) 14%,var(--c1))}
+.m.sys .bub{border-left-style:dashed;font-style:italic}
+.day{align-self:center;margin:10px 0 4px;padding:2px 10px;background:var(--c2);color:var(--mute);font:700 11px Barlow,sans-serif}
+.compose{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:8px;align-items:end;padding:10px 14px;border-top:2px solid var(--c3);background:var(--c1)}
+.compose textarea{min-height:44px;max-height:160px;resize:vertical}
+.compose .as{display:grid;gap:3px}
+
+/* painel */
+.tabs{display:flex;border-bottom:2px solid var(--c3)}
+.tabs button{flex:1;height:40px;border:0;background:var(--c1);color:var(--mute);font:800 12px "Barlow Condensed",sans-serif;letter-spacing:1.3px;text-transform:uppercase}
+.tabs button.on{background:var(--k);color:var(--p);box-shadow:inset 0 -3px 0 var(--a)}
+.pane{display:none;padding:14px;gap:14px;flex-direction:column}
+.pane.on{display:flex}
+.card{display:grid;gap:10px;padding:12px;background:var(--c1);border-left:4px solid var(--c,var(--a))}
+.card h4{margin:0;font:400 15px "Archivo Black",sans-serif}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row > *{flex:1}
+.item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--c1);border-left:4px solid var(--c,#888)}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font:700 14px Barlow,sans-serif}
+.item .t span{color:var(--mute);font-size:12px}
+.item.off{opacity:.5}
+.dot{display:inline-block;width:8px;height:8px;margin-right:4px;border-radius:50%;background:#666;vertical-align:1px}
+.dot.on{background:var(--g);box-shadow:0 0 6px var(--g)}
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:4px}
+.checks label{display:flex;align-items:center;gap:6px;padding:4px 6px;background:var(--c2);font-size:13px;cursor:pointer}
+.checks input{width:auto}
+.color{width:46px;height:36px;padding:2px}
+.photo{display:flex;align-items:center;gap:10px}
+.hint{color:var(--mute);font-size:12px}
+.toast{position:fixed;left:50%;bottom:20px;z-index:99;padding:10px 16px;background:var(--p);color:var(--k);font:700 13px Barlow,sans-serif;transform:translateX(-50%);box-shadow:5px 5px 0 var(--a)}
+.toast[hidden]{display:none}
+.mob-tabs{display:none}
+
+@media(max-width:1100px){.cols{grid-template-columns:260px minmax(0,1fr)}.col.panel{display:none}.cols.show-panel .col.panel{display:flex;position:fixed;inset:60px 0 0 auto;width:min(380px,100%);z-index:20;background:var(--k);box-shadow:-10px 0 30px rgba(0,0,0,.6)}#panelBtn{display:inline-flex}}
+@media(min-width:1101px){#panelBtn{display:none}}
+@media(max-width:720px){
+  .cols{grid-template-columns:1fr}
+  .cols:not(.show-conv) .col.conv{display:none}
+  .cols.show-conv .col.list{display:none}
+  .compose{grid-template-columns:1fr}
+  #backBtn{display:inline-flex}
+  .top h1{font-size:17px}
+}
+@media(min-width:721px){#backBtn{display:none}}
+</style>
+</head>
+<body>
+<section id="login">
+  <form>
+    <small>PERSONA // PHOBIA</small>
+    <h1>PORTAL DO <span>NARRADOR</span></h1>
+    <p>Entre com a mesma conta de Narrador da loja do Tanaka.</p>
+    <label><small>E-mail</small><input type="email" id="lgEmail" autocomplete="username" required></label>
+    <label><small>Senha</small><input type="password" id="lgPass" autocomplete="current-password" required></label>
+    <button class="btn pri" type="submit">ENTRAR</button>
+    <p class="err" id="lgErr" hidden></p>
+  </form>
+</section>
+
+<section id="app" hidden>
+  <header class="top">
+    <h1>PORTAL DO <span>NARRADOR</span></h1>
+    <span class="live"><i></i>ao vivo</span>
+    <button class="btn sm" id="panelBtn" type="button">☰ Painel</button>
+    <button class="btn sm" id="outBtn" type="button">Sair</button>
+  </header>
+  <div class="cols" id="cols">
+    <section class="col list">
+      <div class="colh"><b>CONVERSAS</b><small id="thCount"></small></div>
+      <div class="filters" id="filters">
+        <button class="on" data-f="all">Todas</button><button data-f="npc">NPC</button><button data-f="dm">Jogadores</button><button data-f="group">Grupos</button>
+      </div>
+      <div class="scroll" id="threads"></div>
+    </section>
+    <section class="col conv">
+      <div class="colh conv-h" id="convHead"><button class="btn sm" id="backBtn" type="button">◀</button><div><b>Escolha uma conversa</b><small>Todas as conversas da mesa aparecem à esquerda, ao vivo.</small></div></div>
+      <div class="scroll" id="msgScroll"><div id="msgs"></div></div>
+      <form class="compose" id="compose" hidden>
+        <label class="as"><small>Enviar como</small><select id="asSel"></select></label>
+        <textarea id="body" maxlength="2000" placeholder="Mensagem… (Ctrl+Enter envia)"></textarea>
+        <button class="btn pri" type="submit">ENVIAR</button>
+      </form>
+    </section>
+    <aside class="col panel">
+      <div class="tabs" id="tabs"><button class="on" data-t="players">Jogadores</button><button data-t="npcs">NPCs</button><button data-t="new">Nova conversa</button></div>
+      <div class="scroll">
+        <div class="pane on" id="p-players"></div>
+        <div class="pane" id="p-npcs"></div>
+        <div class="pane" id="p-new"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+'use strict';
+const URL='https://mmkpszyxoenchajdhrof.supabase.co', KEY='sb_publishable_RBsJ992hiwq4tAyau_hPog_kKkzCbdX';
+const sb=supabase.createClient(URL,KEY);
+const $=s=>document.querySelector(s);
+const E=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+const okImg=s=>/^data:image\/(png|jpeg|webp|gif);base64,/.test(String(s||''));
+let T=0;function toast(t){const n=$('#toast');n.textContent=t;n.hidden=false;clearTimeout(T);T=setTimeout(()=>n.hidden=true,3200)}
+const S={players:{},npcs:{},access:[],threads:[],cur:null,msgs:[],last:0,filter:'all',avatarsAt:0};
+
+/* ---------- login ---------- */
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$('#login').hidden=false;$('#app').hidden=true;return}
+  const {data:isAdm,error}=await sb.rpc('tanaka_is_admin');
+  if(error||!isAdm){$('#lgErr').hidden=false;$('#lgErr').textContent='Esta conta não é de Narrador.';await sb.auth.signOut();$('#login').hidden=false;return}
+  $('#login').hidden=true;$('#app').hidden=false;
+  await refresh(true);renderPanel();setInterval(()=>refresh(false),3000);
+}
+$('#login form').addEventListener('submit',async e=>{
+  e.preventDefault();const er=$('#lgErr');er.hidden=true;
+  const {error}=await sb.auth.signInWithPassword({email:$('#lgEmail').value.trim(),password:$('#lgPass').value});
+  if(error){er.hidden=false;er.textContent='E-mail ou senha incorretos.';return}
+  boot();
+});
+$('#outBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};
+
+/* ---------- dados ---------- */
+let busy=false;
+async function refresh(full){
+  if(busy)return;busy=true;
+  try{
+    const withAv=full||Date.now()-S.avatarsAt>60000;
+    const [pl,np,ac,th]=await Promise.all([
+      sb.from('phobia_players').select(withAv?'id,name,color,active,last_seen,avatar,locked_until':'id,name,color,active,last_seen,locked_until').order('name'),
+      sb.from('phobia_npcs').select(withAv?'id,name,color,bio,avatar':'id,name,color,bio').order('name'),
+      sb.from('phobia_npc_access').select('npc_id,player_id'),
+      sb.from('phobia_threads').select('id,kind,title,npc_id,members,last_msg_id,gm_read_id,updated_at').order('updated_at',{ascending:false})
+    ]);
+    for(const r of [pl,np,ac,th])if(r.error)throw r.error;
+    const P={};pl.data.forEach(p=>{const o=S.players[p.id];P[p.id]=Object.assign({},o,p);if(!withAv&&o)P[p.id].avatar=o.avatar});S.players=P;
+    const N={};np.data.forEach(n=>{const o=S.npcs[n.id];N[n.id]=Object.assign({},o,n);if(!withAv&&o)N[n.id].avatar=o.avatar});S.npcs=N;
+    if(withAv)S.avatarsAt=Date.now();
+    const changedAccess=JSON.stringify(ac.data)!==JSON.stringify(S.access);S.access=ac.data;
+    S.threads=th.data;renderThreads();
+    if(S.cur)await loadMsgs(false);
+    if(full||changedAccess)renderPanel();else paintPlayersLive();
+  }catch(x){console.error(x);if(String(x.message||'').match(/JWT|auth/i)){location.reload()}}
+  finally{busy=false}
+}
+const online=p=>p&&p.last_seen&&Date.now()-new Date(p.last_seen).getTime()<45000;
+function av(src,name,color,cls){return `<span class="av ${cls||''}" style="--c:${E(color||'#555')}">${okImg(src)?`<img src="${src}" alt="">`:`<b>${E((name||'?').charAt(0).toUpperCase())}</b>`}</span>`}
+function thInfo(t){
+  if(t.kind==='npc'){const n=S.npcs[t.npc_id]||{},p=S.players[t.members[0]]||{};return{name:(n.name||'NPC')+' ⇄ '+(p.name||'?'),av:av(n.avatar,n.name,n.color),color:n.color}}
+  if(t.kind==='dm'){const a=S.players[t.members[0]]||{},b=S.players[t.members[1]]||{};return{name:(a.name||'?')+' ⇄ '+(b.name||'?'),av:av(a.avatar,a.name,a.color),color:a.color}}
+  return{name:t.title||'Grupo',av:`<span class="av" style="--c:#ffda4d"><b style="color:#000;text-shadow:none">☰</b></span>`,color:'#ffda4d',sub:t.members.map(m=>(S.players[m]||{}).name||'?').join(', ')}
+}
+function renderThreads(){
+  const list=S.threads.filter(t=>S.filter==='all'||t.kind===S.filter);
+  $('#thCount').textContent=S.threads.length+' no total';
+  $('#threads').innerHTML=list.length?list.map(t=>{const i=thInfo(t),un=t.last_msg_id>t.gm_read_id;
+    return `<button class="th${S.cur===t.id?' on':''}" data-th="${t.id}">${i.av}<div><b>${E(i.name)}</b><span><i class="kind ${t.kind}">${{npc:'NPC',dm:'PRIVADA',group:'GRUPO'}[t.kind]}</i> ${new Date(t.updated_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>${un?'<em>novo</em>':''}</button>`}).join(''):'<p class="empty">Nenhuma conversa ainda. Crie jogadores e NPCs no painel.</p>';
+}
+$('#filters').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.filter=b.dataset.f;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));renderThreads()};
+$('#threads').onclick=e=>{const b=e.target.closest('[data-th]');if(b)openThread(b.dataset.th)};
+$('#backBtn').onclick=()=>{$('#cols').classList.remove('show-conv')};
+$('#panelBtn').onclick=()=>$('#cols').classList.toggle('show-panel');
+
+async function openThread(id){
+  S.cur=id;S.msgs=[];S.last=0;renderThreads();$('#cols').classList.add('show-conv');
+  const t=S.threads.find(x=>x.id===id);if(!t)return;const i=thInfo(t);
+  $('#convHead').innerHTML=`<button class="btn sm" id="backBtn" type="button">◀</button>${i.av}<div><b>${E(i.name)}</b><small>${t.kind==='npc'?'Você responde como o NPC':t.kind==='dm'?'Conversa privada entre jogadores (só leitura, ou intervenha como NPC/Sistema)':'Grupo: '+E(i.sub)}</small></div>`;
+  $('#backBtn').onclick=()=>$('#cols').classList.remove('show-conv');
+  const opts=['<option value="sys">⚙ Sistema / anônimo</option>'].concat(Object.values(S.npcs).map(n=>`<option value="n:${n.id}"${t.npc_id===n.id?' selected':''}>${E(n.name)}</option>`));
+  $('#asSel').innerHTML=opts.join('');$('#compose').hidden=false;
+  await loadMsgs(true);
+}
+async function loadMsgs(first){
+  const id=S.cur;if(!id)return;
+  let q=sb.from('phobia_messages').select('id,thread_id,sender_player,sender_npc,sender_gm,body,created_at').eq('thread_id',id);
+  q=first?q.order('id',{ascending:false}).limit(150):q.gt('id',S.last).order('id',{ascending:true}).limit(200);
+  const {data,error}=await q;if(error||S.cur!==id)return;
+  const arr=first?data.reverse():data;if(!first&&!arr.length)return;
+  const sc=$('#msgScroll'),atB=sc.scrollHeight-sc.scrollTop-sc.clientHeight<60;
+  if(first)S.msgs=arr;else S.msgs=S.msgs.concat(arr);
+  if(S.msgs.length)S.last=S.msgs[S.msgs.length-1].id;
+  renderMsgs();if(first||atB)sc.scrollTop=sc.scrollHeight;
+  const t=S.threads.find(x=>x.id===id);
+  if(t&&S.last>t.gm_read_id){t.gm_read_id=S.last;sb.from('phobia_threads').update({gm_read_id:S.last}).eq('id',id).then(()=>{});renderThreads()}
+}
+function renderMsgs(){
+  let h='',day='';
+  S.msgs.forEach(m=>{
+    const d=new Date(m.created_at),dd=d.toLocaleDateString('pt-BR');if(dd!==day){h+=`<div class="day">${dd}</div>`;day=dd}
+    let name,col,src,tag='',cls='';
+    if(m.sender_player){const p=S.players[m.sender_player]||{};name=p.name||'Jogador';col=p.color;src=p.avatar;tag='JOGADOR'}
+    else if(m.sender_npc){const n=S.npcs[m.sender_npc]||{};name=n.name||'NPC';col=n.color;src=n.avatar;tag='NPC · você';cls='gm'}
+    else{name='Sistema';col='#888';tag='você';cls='gm sys'}
+    h+=`<div class="m ${cls}" style="--c:${E(col||'#888')}">${av(src,name,col,'sm')}<div class="bub"><header><b>${E(name)}</b><span class="tag">${tag}</span><time>${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</time></header><p>${E(m.body)}</p><button class="del" data-del="${m.id}" title="Apagar mensagem">✕</button></div></div>`;
+  });
+  $('#msgs').innerHTML=h||'<p class="empty">Sem mensagens ainda.</p>';
+}
+$('#msgs').onclick=async e=>{const b=e.target.closest('[data-del]');if(!b)return;if(!confirmTwice(b))return;
+  const {error}=await sb.from('phobia_messages').delete().eq('id',+b.dataset.del);if(error)return toast('Não deu para apagar.');
+  S.msgs=S.msgs.filter(m=>m.id!==+b.dataset.del);renderMsgs();toast('Mensagem apagada.')};
+function confirmTwice(b){if(b.dataset.arm&&Date.now()-b.dataset.arm<3000)return true;b.dataset.arm=Date.now();const o=b.textContent;b.textContent='Confirmar?';setTimeout(()=>{b.textContent=o;delete b.dataset.arm},3000);return false}
+$('#compose').addEventListener('submit',async e=>{e.preventDefault();await sendMsg()});
+$('#body').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();sendMsg()}});
+async function sendMsg(){
+  const body=$('#body').value.trim();if(!body||!S.cur)return;const as=$('#asSel').value;
+  const row={thread_id:S.cur,body};if(as==='sys')row.sender_gm=true;else row.sender_npc=as.slice(2);
+  const {error}=await sb.from('phobia_messages').insert(row);if(error){toast('Erro ao enviar: '+error.message);return}
+  $('#body').value='';await loadMsgs(false);
+}
+
+/* ---------- painel ---------- */
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.t))};
+function renderPanel(){
+  const ps=Object.values(S.players),ns=Object.values(S.npcs);
+  $('#p-players').innerHTML=`<form class="card" id="newPlayer"><h4>NOVO JOGADOR</h4>
+    <div class="row"><label><small>Nome</small><input name="name" maxlength="32" required placeholder="Ex.: Hana"></label><label style="flex:0 0 46px"><small>Cor</small><input class="color" type="color" name="color" value="#ef2b97"></label></div>
+    <label><small>PIN (4 a 8 números)</small><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" required placeholder="1234"></label>
+    <button class="btn pri">CRIAR</button><span class="hint">Passe o nome e o PIN ao jogador. Ele entra pelo Phobia Messenger no PC das Notas.</span></form>`+
+    (ps.length?ps.map(p=>`<div class="item${p.active?'':' off'}" style="--c:${E(p.color)}" data-pid="${p.id}">${av(p.avatar,p.name,p.color,'sm')}<div class="t"><b>${E(p.name)}</b><span><i class="dot${online(p)?' on':''}"></i>${online(p)?'online':p.last_seen?'visto '+new Date(p.last_seen).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'nunca entrou'}${p.locked_until&&new Date(p.locked_until)>new Date()?' · 🔒 bloqueado':''}</span></div>
+      <button class="btn sm" data-act="pin">Novo PIN</button><button class="btn sm" data-act="active">${p.active?'Desativar':'Ativar'}</button></div>`).join(''):'<p class="empty">Nenhum jogador ainda.</p>');
+  $('#p-npcs').innerHTML=`<form class="card" id="npcForm"><h4 id="npcTitle">NOVO NPC</h4><input type="hidden" name="id">
+    <div class="row"><label><small>Nome</small><input name="name" maxlength="40" required placeholder="Ex.: Número desconhecido"></label><label style="flex:0 0 46px"><small>Cor</small><input class="color" type="color" name="color" value="#46d9ff"></label></div>
+    <label><small>Descrição curta (aparece para o jogador)</small><textarea name="bio" maxlength="600" rows="2"></textarea></label>
+    <div class="photo"><span id="npcPrev">${av('', '?', '#46d9ff')}</span><label class="btn sm" style="flex:0 0 auto">FOTO<input type="file" accept="image/*" name="photo" hidden></label><button type="button" class="btn sm" data-act="nophoto">Sem foto</button></div>
+    <div><small>Quem tem este contato</small><div class="checks">${ps.map(p=>`<label><input type="checkbox" name="acc" value="${p.id}">${E(p.name)}</label>`).join('')||'<span class="hint">Crie jogadores primeiro.</span>'}</div></div>
+    <div class="row"><button class="btn pri">SALVAR NPC</button><button type="button" class="btn" data-act="npcnew" style="flex:0 0 auto">LIMPAR</button></div></form>`+
+    (ns.length?ns.map(n=>{const who=S.access.filter(a=>a.npc_id===n.id).map(a=>(S.players[a.player_id]||{}).name).filter(Boolean);
+      return `<div class="item" style="--c:${E(n.color)}" data-nid="${n.id}">${av(n.avatar,n.name,n.color,'sm')}<div class="t"><b>${E(n.name)}</b><span>${who.length?'com '+E(who.join(', ')):'ninguém tem ainda'}</span></div><button class="btn sm" data-act="edit">Editar</button><button class="btn sm bad" data-act="delnpc">Apagar</button></div>`}).join(''):'<p class="empty">Nenhum NPC ainda.</p>');
+  $('#p-new').innerHTML=`<form class="card" id="npcChat" style="--c:var(--b)"><h4>NPC CHAMA UM JOGADOR</h4><span class="hint">Abre (ou reabre) a conversa do NPC com o jogador e manda a primeira mensagem. Funciona mesmo se o jogador ainda não tiver o contato.</span>
+    <label><small>NPC</small><select name="npc">${ns.map(n=>`<option value="${n.id}">${E(n.name)}</option>`).join('')}</select></label>
+    <label><small>Jogador</small><select name="player">${ps.filter(p=>p.active).map(p=>`<option value="${p.id}">${E(p.name)}</option>`).join('')}</select></label>
+    <label><small>Primeira mensagem</small><textarea name="body" rows="3" maxlength="2000" required></textarea></label><button class="btn pri">ENVIAR</button></form>
+    <form class="card" id="groupForm" style="--c:#ffda4d"><h4>NOVO GRUPO</h4>
+    <label><small>Nome do grupo</small><input name="title" maxlength="60" required placeholder="Ex.: Investigadores do metrô"></label>
+    <div class="checks">${ps.filter(p=>p.active).map(p=>`<label><input type="checkbox" name="mem" value="${p.id}" checked>${E(p.name)}</label>`).join('')}</div>
+    <button class="btn pri">CRIAR GRUPO</button></form>`;
+  bindPanel();
+}
+function paintPlayersLive(){document.querySelectorAll('#p-players [data-pid]').forEach(el=>{const p=S.players[el.dataset.pid];if(!p)return;const d=el.querySelector('.dot');if(d)d.classList.toggle('on',!!online(p))})}
+let npcPhoto=undefined;
+function bindPanel(){
+  $('#newPlayer').onsubmit=async e=>{e.preventDefault();const f=e.target;
+    const {error}=await sb.rpc('phobia_gm_save_player',{p_id:null,p_name:f.name.value,p_pin:f.pin.value,p_color:f.color.value,p_active:true});
+    if(error)return toast(error.message.includes('duplicate')?'Já existe um jogador com esse nome.':error.message.includes('PIN')?'PIN precisa ter de 4 a 8 números.':'Erro: '+error.message);
+    toast('Jogador criado: '+f.name.value);await refresh(true)};
+  $('#p-players').onclick=async e=>{const b=e.target.closest('[data-act]');if(!b)return;const id=b.closest('[data-pid]').dataset.pid,p=S.players[id];
+    if(b.dataset.act==='pin'){const pin=prompt('Novo PIN para '+p.name+' (4 a 8 números). A sessão atual dele será encerrada.');if(!pin)return;
+      const {error}=await sb.rpc('phobia_gm_save_player',{p_id:id,p_name:null,p_pin:pin,p_color:null,p_active:null});toast(error?'PIN inválido.':'PIN trocado.')}
+    if(b.dataset.act==='active'){await sb.rpc('phobia_gm_save_player',{p_id:id,p_name:null,p_pin:null,p_color:null,p_active:!p.active});await refresh(true)}};
+  const nf=$('#npcForm');npcPhoto=undefined;
+  nf.photo.onchange=async()=>{const f=nf.photo.files[0];if(!f)return;npcPhoto=await shrink(f,160);$('#npcPrev').innerHTML=av(npcPhoto,'',nf.color.value)};
+  nf.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='nophoto'){npcPhoto=null;$('#npcPrev').innerHTML=av('',nf.name.value||'?',nf.color.value)}if(b.dataset.act==='npcnew')renderPanel()};
+  nf.onsubmit=async e=>{e.preventDefault();const id=nf.id.value||null;
+    const row={name:nf.name.value.trim(),color:nf.color.value,bio:nf.bio.value.trim()||null};if(npcPhoto!==undefined)row.avatar=npcPhoto;
+    let r=id?await sb.from('phobia_npcs').update(row).eq('id',id).select('id').single():await sb.from('phobia_npcs').insert(row).select('id').single();
+    if(r.error)return toast('Erro: '+r.error.message);const nid=r.data.id;
+    const want=[...nf.querySelectorAll('[name=acc]:checked')].map(i=>i.value);
+    await sb.from('phobia_npc_access').delete().eq('npc_id',nid);
+    if(want.length)await sb.from('phobia_npc_access').insert(want.map(p=>({npc_id:nid,player_id:p})));
+    toast('NPC salvo.');await refresh(true)};
+  $('#p-npcs').addEventListener('click',async e=>{const b=e.target.closest('[data-act]');if(!b||!b.closest('[data-nid]'))return;const id=b.closest('[data-nid]').dataset.nid,n=S.npcs[id];
+    if(b.dataset.act==='edit'){nf.id.value=id;nf.name.value=n.name;nf.color.value=n.color;nf.bio.value=n.bio||'';npcPhoto=undefined;$('#npcPrev').innerHTML=av(n.avatar,n.name,n.color);$('#npcTitle').textContent='EDITAR NPC';
+      nf.querySelectorAll('[name=acc]').forEach(i=>i.checked=S.access.some(a=>a.npc_id===id&&a.player_id===i.value));nf.scrollIntoView({behavior:'smooth'})}
+    if(b.dataset.act==='delnpc'){if(!confirmTwice(b))return;const {error}=await sb.from('phobia_npcs').delete().eq('id',id);toast(error?'Erro ao apagar.':'NPC apagado (e as conversas dele).');await refresh(true)}});
+  $('#npcChat').onsubmit=async e=>{e.preventDefault();const f=e.target,npc=f.npc.value,pl=f.player.value;if(!npc||!pl)return toast('Crie um NPC e um jogador primeiro.');
+    let t=S.threads.find(x=>x.kind==='npc'&&x.npc_id===npc&&x.members.length===1&&x.members[0]===pl);
+    if(!t){const r=await sb.from('phobia_threads').insert({kind:'npc',npc_id:npc,members:[pl]}).select('id').single();if(r.error)return toast('Erro: '+r.error.message);t={id:r.data.id}}
+    const {error}=await sb.from('phobia_messages').insert({thread_id:t.id,sender_npc:npc,body:f.body.value.trim()});if(error)return toast('Erro: '+error.message);
+    f.body.value='';toast('Mensagem enviada.');await refresh(false);openThread(t.id)};
+  $('#groupForm').onsubmit=async e=>{e.preventDefault();const f=e.target,mem=[...f.querySelectorAll('[name=mem]:checked')].map(i=>i.value);if(mem.length<2)return toast('Escolha pelo menos 2 jogadores.');
+    const r=await sb.from('phobia_threads').insert({kind:'group',title:f.title.value.trim(),members:mem}).select('id').single();if(r.error)return toast('Erro: '+r.error.message);
+    toast('Grupo criado.');await refresh(false);openThread(r.data.id)};
+}
+function shrink(file,max){return new Promise((res,rej)=>{const u=URL_.createObjectURL(file),img=new Image();img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL_.revokeObjectURL(u);let d=c.toDataURL('image/webp',.82);if(d.indexOf('data:image/webp')!==0)d=c.toDataURL('image/jpeg',.82);res(d)};img.onerror=rej;img.src=u})}
+const URL_=window.URL;
+boot();
+})();
+</script>
+</body>
+</html>
