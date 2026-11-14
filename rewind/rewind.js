@@ -392,7 +392,7 @@
     var f = pr.fields || {}, me = P(S.me);
     function inp(k, label, ph) { return '<label class="field"><span>' + label + '</span><input name="' + k + '" maxlength="300" value="' + E(f[k] || '') + '" placeholder="' + E(ph || '') + '"></label>'; }
     var mid = '<div class="box"><h3>editar perfil</h3><form class="form" data-edit>' +
-      (S.as ? '<p class="small mute">Foto, cor e mensagem pessoal do NPC ficam no Portal do Narrador.</p>' : '<div class="field"><span>foto</span><div style="display:flex;gap:10px;align-items:center">' + av(S.me, 'lg') + '<label class="btn sm">trocar foto<input type="file" accept="image/*" hidden data-avatar></label><span class="small mute">Também muda no Messenger. Se depois você trocar a foto da ficha, ela passa a valer aqui também.</span></div></div>') +
+      (S.as ? '<p class="small mute">Foto, cor e mensagem pessoal do NPC ficam no Portal do Narrador.</p>' : '<div class="field"><span>foto</span><div style="display:flex;gap:10px;align-items:center">' + av(S.me, 'lg') + '<label class="btn sm">trocar foto<input type="file" accept="image/*" hidden data-avatar></label><span class="small mute">Também muda no Messenger. Se depois você trocar a foto da ficha, ela passa a valer aqui também.</span></div></div>' + '<label class="field"><span>recado pessoal (aparece ao lado do nome)</span><input name="status_msg" maxlength="80" value="' + E(me.status_msg || '') + '" placeholder="Ex.: hoje estou de folga!"><small class="mute">Também aparece no Messenger.</small></label>') +
       '<div class="two">' + inp('relacionamento', 'relacionamento', 'solteiro(a), enrolado(a)…') + inp('aniversario', 'aniversário', '17 de abril') + inp('cidade', 'cidade', 'Tóquio') + inp('escola', 'escola', '') + inp('idiomas', 'idiomas', 'japonês, inglês') + inp('humor', 'humor', 'extrovertido, sarcástico…') + inp('estilo', 'estilo', '') + inp('interesses', 'interesses', '') + '</div>' +
       inp('musica', 'música', '') + inp('filmes', 'filmes', '') + inp('livros', 'livros', '') + inp('frase', 'frase favorita', '') +
       '<label class="field"><span>quem sou eu</span><textarea name="about" maxlength="3000" rows="6">' + E(pr.about || '') + '</textarea></label>' +
@@ -405,7 +405,9 @@
       e.preventDefault();
       var fields = {}; FIELDS.forEach(function (x) { if (form[x[0]]) fields[x[0]] = form[x[0]].value.trim(); });
       var th = (form.querySelector('[name=theme]:checked') || {}).value || 'classic';
-      try { await rpc('rw_profile_save', { p_about: form.about.value, p_fields: fields, p_theme: th }); await loadPeople(true); toast('Perfil salvo!'); location.hash = '#/perfil/' + S.me; } catch (x) { toast(msgOf(x)); }
+      try { await rpc('rw_profile_save', { p_about: form.about.value, p_fields: fields, p_theme: th });
+        if (!S.as && form.status_msg && form.status_msg.value.trim() !== (me.status_msg || '')) { var rs = await sb.rpc('phobia_set_profile', { p_token: S.sess.token, p_status: null, p_status_msg: form.status_msg.value.trim(), p_profile: null, p_bg: null, p_fg: null, p_font: null }); if (rs.error) throw new Error(msgOf(rs.error)); }
+        await loadPeople(true); toast('Perfil salvo!'); location.hash = '#/perfil/' + S.me; } catch (x) { toast(msgOf(x)); }
     };
     var ai = form.querySelector('[data-avatar]');
     if (ai) ai.onchange = async function () {
