@@ -457,3 +457,37 @@ body.hs-calm #characterPage .cm-enter em{animation:none}
   .cm[data-simplified="true"] .cmm-queue .cmm-chip{flex:none;max-width:100%}
   .cm[data-simplified="true"] .cmm-queue .cmm-chip b{font-size:12px}
 }
+
+/* ---------- botão ENTRAR EM COMBATE v2: cartaz inclinado, sem cortes ---------- */
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter{
+  --cma:var(--hud-acc,#ef2b97);--cmk:var(--hud-black,#0d0c10);--cmp:var(--hud-paper,#fff0d8);
+  isolation:isolate;overflow:visible;clip-path:none;border:0;background:none;color:var(--cmp);
+  width:calc(100% - 30px);max-width:214px;margin:22px 0 8px 12px;padding:12px 18px 12px 12px;gap:12px;box-shadow:none}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter::after{content:"";position:absolute;inset:0;z-index:-1;background:
+  repeating-linear-gradient(-55deg,transparent 0 9px,color-mix(in srgb,var(--cma) 16%,transparent) 9px 11px),var(--cmk);
+  border:2px solid var(--cmp);transform:skewX(-9deg);box-shadow:5px 5px 0 var(--hud-acc2,#6ce6ff);transition:background-color .18s,box-shadow .2s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter::before{top:-14px;left:4px;right:4px}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:42px;height:42px;background:var(--cma);color:var(--cmk);transform:rotate(-8deg);
+  clip-path:polygon(50% 0,61% 22%,85% 15%,78% 39%,100% 50%,78% 61%,85% 85%,61% 78%,50% 100%,39% 78%,15% 85%,22% 61%,0 50%,22% 39%,15% 15%,39% 22%)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:20px;height:20px}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter small{color:var(--cma)!important;-webkit-text-fill-color:var(--cma);opacity:1;font-size:10.5px;letter-spacing:2px}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter b{font-size:21px;font-style:italic;letter-spacing:-.8px;color:var(--cmp)!important;-webkit-text-fill-color:var(--cmp);text-shadow:2px 2px 0 var(--cma)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter em{color:var(--cma);font-size:13px;opacity:1}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter span{position:relative}
+/* brilho que passa de tempos em tempos */
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter span::after{content:"";position:absolute;top:-14px;bottom:-14px;left:-80px;width:26px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:cmeShine 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes cmeShine{0%,70%{left:-80px}100%{left:150%}}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible){background:none;border:0;box-shadow:none;transform:rotate(-2deg) translateX(4px);outline:none}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible)::after{background:var(--cma);box-shadow:7px 7px 0 var(--cmp)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible) :is(b,small,em){color:var(--cmk)!important;-webkit-text-fill-color:var(--cmk);text-shadow:none}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible) i{background:var(--cmk);color:var(--cma);transform:rotate(25deg) scale(1.1)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:active{transform:rotate(-2deg) translate(6px,3px)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:active::after{box-shadow:2px 2px 0 var(--cmp)}
+body.hs-calm #characterPage .cm-enter span::after{animation:none;display:none}
+@media (prefers-reduced-motion:reduce){#characterPage .cm-enter span::after{animation:none;display:none}}
+@media (max-width:900px){
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter{width:auto;max-width:none;margin:6px 6px 6px auto;padding:6px 14px 6px 8px;gap:8px}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:30px;height:30px}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter b{font-size:15px}
+  #characterPage:not(#_z) .sheet-page-tabs .cm-enter span::after{display:none}
+}
