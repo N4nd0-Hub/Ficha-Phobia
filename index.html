@@ -13117,7 +13117,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/theme-fx.css?v=4">
 <link rel="stylesheet" href="assets/deck-p5.css?v=4">
 <link rel="stylesheet" href="assets/fichas.css?v=4">
-<link rel="stylesheet" href="assets/persona-page.css?v=5">
+<link rel="stylesheet" href="assets/persona-page.css?v=6">
 <link rel="stylesheet" href="assets/dossie.css?v=4">
 <script src="assets/phobia-deck.js?v=3"></script>
 <script src="assets/map-roads.js?v=1"></script>
@@ -18835,6 +18835,10 @@ const GRIMOIRE_ICONS={
   'Defesa':'▣','Miscelânea':'★'
 };
 const grimoireUi={query:'',category:'all',tier:'all',availableOnly:true,limit:12};
+/* tipos mágicos da Persona: Miscelânea e Defesa são livres; o resto só nos 4 tipos escolhidos */
+const MAGIC_FREE_TYPES=['Miscelânea','Defesa'],MAGIC_TYPE_LIMIT=4;
+function chosenMagicTypes(){let a;try{a=state.charSheet.personaMagicTypes}catch(e){}return Array.isArray(a)?a.filter((c,i)=>a.indexOf(c)===i&&!MAGIC_FREE_TYPES.includes(c)&&PERSONA_SPELL_CATEGORIES.some(x=>x.name===c)).slice(0,MAGIC_TYPE_LIMIT):[]}
+function magicTypeAllowed(c){const ch=chosenMagicTypes();return !ch.length||MAGIC_FREE_TYPES.includes(c)||ch.includes(c)}
 
 function availableMagicTierNumber(){
   const p=Number(state.charSheet?.pnv||1);
@@ -19021,7 +19025,7 @@ function renderGrimoireCategorySelect(){
   if(!sel)return;
   const current=grimoireUi.category||'all';
   sel.innerHTML='<option value="all">TODOS OS TIPOS</option>'+
-    PERSONA_SPELL_CATEGORIES.map(c=>`<option value="${esc(c.name)}" ${c.name===current?'selected':''}>${esc(grimoireCategoryLabel(c.name))} (${c.count})</option>`).join('');
+    PERSONA_SPELL_CATEGORIES.filter(c=>magicTypeAllowed(c.name)).map(c=>`<option value="${esc(c.name)}" ${c.name===current?'selected':''}>${esc(grimoireCategoryLabel(c.name))} (${c.count})</option>`).join('');
 }
 /* PERSONA // PHOBIA v5.2.5 — MAGIC MIXTAPE WORKSHOP
    Uses the existing grimoire catalog, calculation engine and saved magicSlots. */
@@ -19206,16 +19210,19 @@ function renderMagicDeck(){
 }
 function deckLabQuickFilters(){
   const box=document.getElementById('deckTypeChips');if(!box)return;
-  const categories=['all','Físico','Fogo','Gelo','Vento','Raio','Nuclear','PSY','Luz e Bênção','Trevas e Maldição','Cura e Recuperação','Intel','Passivas Mágicas'];
+  const ch=chosenMagicTypes();
+  const categories=ch.length?['all',...ch,...MAGIC_FREE_TYPES]:['all','Físico','Fogo','Gelo','Vento','Raio','Nuclear','PSY','Luz e Bênção','Trevas e Maldição','Cura e Recuperação','Intel','Passivas Mágicas'];
   box.innerHTML=categories.map(c=>`<button type="button" data-deck-category="${esc(c)}" class="${grimoireUi.category===c?'active':''}" aria-pressed="${grimoireUi.category===c}" style="--chip:${GRIMOIRE_CATEGORY_COLORS[c]||'var(--theme-accent)'}"><i></i>${c==='all'?'✦ TODOS':esc(grimoireCategoryLabel(c))}</button>`).join('');
 }
 function renderGrimoire(){
   const box=document.getElementById('grimoireResults');if(!box)return;
+  if(grimoireUi.category!=='all'&&!magicTypeAllowed(grimoireUi.category))grimoireUi.category='all';
   renderGrimoireCategorySelect();deckLabQuickFilters();
   const q=normalizeSearchText(grimoireUi.query);
   const available=availableMagicTierNumber();
   let rows=PERSONA_SPELL_LIBRARY.filter(s=>{
     if(grimoireUi.category!=='all'&&grimoireUi.category!==s.category)return false;
+    if(!magicTypeAllowed(s.category))return false;
     if(grimoireUi.tier!=='all'&&Number(grimoireUi.tier)!==Number(s.tier))return false;
     if(grimoireUi.availableOnly&&Number(s.tier)>available)return false;
     return !q||normalizeSearchText([s.name,s.category,s.target,s.cost,s.effect,s.description].join(' ')).includes(q);
@@ -19223,7 +19230,7 @@ function renderGrimoire(){
   rows.sort((a,b)=>(Number(a.tier)-Number(b.tier))||a.category.localeCompare(b.category,'pt-BR')||a.name.localeCompare(b.name,'pt-BR'));
   const total=rows.length,shown=rows.slice(0,grimoireUi.limit),counter=document.getElementById('grimoireResultCount');
   if(counter)counter.textContent=`${total} MAGIA${total===1?'':'S'} ENCONTRADA${total===1?'':'S'}`;
-  const note=document.getElementById('grimoireSourceNote');if(note)note.textContent=`${grimoireUi.availableOnly?'DISPONÍVEIS PARA PNv.':'CATÁLOGO COMPLETO'} // TIER ${romanTier(available)} LIBERADO`;
+  const note=document.getElementById('grimoireSourceNote');if(note)note.textContent=`${grimoireUi.availableOnly?'DISPONÍVEIS PARA PNv.':'CATÁLOGO COMPLETO'} // TIER ${romanTier(available)} LIBERADO${chosenMagicTypes().length?' // '+chosenMagicTypes().map(grimoireCategoryLabel).join(' · ').toUpperCase()+' + MISC. & DEFESA':' // ESCOLHA SEUS 4 TIPOS NA PÁGINA PERSONA'}`;
   box.innerHTML=shown.length?shown.map(s=>{
     const locked=Number(s.tier)>available,equipped=spellInDeck(s.id),selected=deckLabUi.source==='library'&&deckLabUi.spellId===s.id;
     return `<article class="deck-library-spell ${locked?'locked':''} ${equipped?'equipped':''} ${selected?'selected':''}" style="--spell-color:${deckLabColor(s)}" draggable="${!locked&&!equipped}" data-deck-library-id="${esc(s.id)}">
@@ -19237,6 +19244,7 @@ function addSpellFromGrimoire(id){
   const s=spellById(id);if(!s)return;
   if(Number(s.tier)>availableMagicTierNumber()){toast('TIER AINDA NÃO DISPONÍVEL');return}
   if(spellInDeck(id)){toast('MAGIA JÁ ESTÁ NO DECK');return}
+  if(!magicTypeAllowed(s.category)){toast('TIPO FORA DOS 4 DA SUA PERSONA');return}
   const slots=getFilledMagicSlots();slots.push({name:s.name,tier:Number(s.tier)||1,type:s.category,cost:s.cost,target:s.target,effect:s.effect,description:s.description,libraryId:s.id});
   state.charSheet.magicSlots=[...slots,emptyMagicSlot()];
   deckLabUi.source='deck';deckLabUi.index=slots.length-1;deckLabUi.spellId=null;
@@ -22072,6 +22080,7 @@ initializePhobiaLargeSave();
 <script src="assets/fichas.js?v=4"></script>
 <script src="assets/deck-file.js?v=2"></script>
 <script src="assets/persona-page.js?v=1"></script>
+<script src="assets/persona-types.js?v=1"></script>
 <script src="assets/dossie.js?v=1"></script>
 </body>
 </html>

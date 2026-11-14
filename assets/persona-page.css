@@ -110,3 +110,32 @@ body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetIn
   body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-name{grid-column:2;justify-self:start;text-align:left!important}
   body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-badge{grid-column:2;justify-self:start}
 }
+
+/* ===== tipos mágicos da Persona ===== */
+body.hud.workspace-sheet #characterPage .pt-box{margin:4px 0 22px;padding:16px 18px 18px;background:linear-gradient(135deg,#17182a,#0f1020);box-shadow:inset 0 -3px 0 var(--hud-acc,#ef2b97);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+#characterPage .pt-box header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+#characterPage .pt-box header strong{display:flex;align-items:center;gap:8px;color:var(--pp-p);font:400 clamp(16px,1.4vw,21px)/1 var(--hud-display,"Archivo Black"),sans-serif;font-style:italic;letter-spacing:-.3px}
+#characterPage .pt-box header strong span{display:grid;place-items:center;width:26px;height:26px;background:var(--hud-acc,#ef2b97);color:var(--pp-k);font-style:normal;font-size:14px;transform:rotate(-8deg)}
+#characterPage .pt-box header>span{font:600 12.5px var(--hud-body,Barlow),sans-serif;color:var(--hud-mute,#a9a3b8)}
+#characterPage .pt-box header>span b{color:var(--hud-acc,#ef2b97)}
+#characterPage .pt-slots{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}
+#characterPage .pt-slot{display:inline-flex;align-items:center;gap:6px;min-width:44px;height:34px;padding:0 12px;justify-content:center;border:2px dashed #ffffff33;color:#ffffff55;font:800 13px var(--hud-body,Barlow),sans-serif;transform:skewX(-8deg)}
+#characterPage .pt-slot.on{border:0;background:var(--tc);color:#0d0c10;text-transform:uppercase}
+#characterPage .pt-slot.free{border:2px solid var(--tc);color:var(--pp-p);text-transform:uppercase;font-size:12px}
+#characterPage .pt-slot i svg{width:18px;height:18px;display:block}
+#characterPage .pt-plus{color:var(--hud-mute,#a9a3b8);font-weight:900}
+#characterPage .pt-count{margin-left:auto;font:400 20px var(--hud-display,"Archivo Black"),sans-serif;color:var(--hud-acc,#ef2b97)}
+#characterPage .pt-box h4{margin:12px 0 8px;font:800 11px var(--hud-body,Barlow),sans-serif;letter-spacing:2px;color:var(--hud-mute,#a9a3b8)}
+#characterPage .pt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+#characterPage .pt-chip{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;align-items:center;padding:8px 10px;text-align:left;cursor:pointer;color:var(--pp-p);background:linear-gradient(135deg,color-mix(in srgb,var(--tc) 12%,#17182a),#121322 80%);border:0;box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--tc) 45%,transparent);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:transform .2s cubic-bezier(.34,1.56,.64,1),filter .15s,opacity .15s}
+#characterPage .pt-chip:hover{transform:translateY(-2px);filter:brightness(1.15)}
+#characterPage .pt-chip i{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;background:#0d0c10;color:var(--tc);transform:rotate(-6deg)}
+#characterPage .pt-chip i svg{width:22px;height:22px}
+#characterPage .pt-glyph{font-size:18px;font-style:normal;line-height:1}
+#characterPage .pt-chip b{font:800 13.5px var(--hud-body,Barlow),sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#characterPage .pt-chip small{font:600 11px var(--hud-body,Barlow),sans-serif;color:var(--hud-mute,#a9a3b8)}
+#characterPage .pt-chip.on{background:var(--tc);color:#0d0c10;box-shadow:4px 4px 0 #0d0c10}
+#characterPage .pt-chip.on small{color:#0d0c10b0}
+#characterPage .pt-chip em{position:absolute;top:4px;right:10px;font:900 14px sans-serif;font-style:normal}
+#characterPage .pt-chip[data-full]{opacity:.38}
+#characterPage .pt-warn{margin:12px 0 0;padding:8px 12px;background:#ffd23f1a;border-left:3px solid #ffd23f;font:600 12.5px var(--hud-body,Barlow),sans-serif;color:var(--pp-p)}
