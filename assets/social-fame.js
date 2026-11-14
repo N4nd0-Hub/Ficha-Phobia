@@ -168,6 +168,8 @@
   /* ---------- habilidades dos Tiers (lista de faixas) ---------- */
   var lastTiersKey = '';
   function paintTiers(animate) {
+    /* playtest: a lista de chaves por Tier saiu da ficha */
+    var gone = $('#sfTiers'); if (gone) gone.remove(); return;
     var box = $('#sfTiers'); if (!box) return;
     var col = colors(), act = '';
     try { act = ensureCharacterUI().socialSkillMonitor; } catch (e) {}
