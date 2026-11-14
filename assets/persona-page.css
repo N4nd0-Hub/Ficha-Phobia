@@ -1,0 +1,82 @@
+/* ==========================================================
+   PERSONA // PHOBIA — persona-page.css  (página PERSONA)
+   ========================================================== */
+#characterPage{--pp-k:var(--hud-black,#0d0c10);--pp-p:var(--hud-paper,#fff0d8)}
+
+/* títulos das seções */
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection .persona-v2-pane-caption{display:flex!important;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:6px 0 10px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection .persona-v2-pane-caption strong{display:flex;align-items:center;gap:8px;color:var(--pp-p)!important;font:400 clamp(16px,1.4vw,21px)/1 var(--hud-display,"Archivo Black"),sans-serif!important;letter-spacing:-.3px!important;font-style:italic}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection .persona-v2-pane-caption strong span{display:grid;place-items:center;width:26px;height:26px;background:var(--hud-acc,#ef2b97);color:var(--pp-k);font-style:normal;font-size:14px;transform:rotate(-8deg)}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection .persona-v2-pane-caption > span{font:600 12.5px var(--hud-body,Barlow),sans-serif!important;color:var(--hud-mute)!important;letter-spacing:0!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection{gap:22px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .persona-secondary{grid-template-columns:minmax(0,1fr)!important;gap:22px!important}
+
+/* grades */
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:10px!important}
+
+/* cartão */
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card{
+  --tint:color-mix(in srgb,var(--ec) 14%,#17182a);
+  display:grid!important;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:10px;row-gap:3px;
+  min-height:68px!important;padding:10px 12px 10px 10px!important;text-align:left!important;
+  background:linear-gradient(135deg,var(--tint),#121322 75%)!important;color:var(--pp-p)!important;
+  clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)!important;
+  box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--ec) 55%,transparent)!important;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1),filter .15s}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:hover{transform:translateY(-3px);filter:brightness(1.12)}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:focus-within{box-shadow:inset 0 0 0 2px var(--pp-p),inset 0 -3px 0 var(--ec)!important}
+.pp-ico{grid-row:1/3;display:grid;place-items:center;width:44px;height:44px;background:var(--pp-k,#0d0c10);color:var(--ec);transform:rotate(-6deg);box-shadow:3px 3px 0 color-mix(in srgb,var(--ec) 60%,transparent);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.pp-ico svg{width:28px;height:28px;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ec) 45%,transparent))}
+.pp-card:hover .pp-ico{transform:rotate(4deg) scale(1.08)}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .affinity-hud-name{grid-column:2;font:400 14px/1.05 var(--hud-display,"Archivo Black"),sans-serif!important;text-transform:uppercase;letter-spacing:-.2px;color:var(--pp-p)!important;overflow-wrap:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .affinity-hud-badge{grid-column:2;display:inline-flex!important;align-items:center;gap:5px;justify-self:start;padding:2px 7px 2px 4px!important;background:color-mix(in srgb,var(--pp-p) 10%,transparent)!important;color:color-mix(in srgb,var(--pp-p) 75%,transparent)!important;font:800 10.5px/1.2 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1px}
+.pp-card .affinity-hud-badge i{display:grid;width:13px;height:13px}
+.pp-card .affinity-hud-badge svg{width:13px;height:13px}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .pp-tag{position:absolute;top:5px;right:12px;font:800 9px var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.4px;opacity:.55}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetInstrumentAffinityGrid .pp-card .affinity-hud-name{font-size:12px!important;white-space:normal;line-height:1.05}
+
+/* reações */
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card.pp-r-weak{background:linear-gradient(135deg,#ff3b4e,#b5122a)!important;box-shadow:inset 0 -3px 0 #0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card.pp-r-resist{background:linear-gradient(135deg,#2fb8ff,#1667c9)!important;box-shadow:inset 0 -3px 0 #0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:is(.pp-r-null,.pp-r-reflect,.pp-r-drain){background:linear-gradient(135deg,#ffd84d,#e8a21a)!important;box-shadow:inset 0 -3px 0 #0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:not(.pp-r-normal) .affinity-hud-name{color:#0d0c10!important;-webkit-text-fill-color:#0d0c10}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:not(.pp-r-normal) .affinity-hud-badge{background:#0d0c10!important;color:#fff0d8!important;-webkit-text-fill-color:#fff0d8}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:not(.pp-r-normal) .pp-tag{color:#0d0c10!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card.pp-r-weak .affinity-hud-badge i{color:#ff3b4e}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card.pp-r-resist .affinity-hud-badge i{color:#2fb8ff}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card:is(.pp-r-null,.pp-r-reflect,.pp-r-drain) .affinity-hud-badge i{color:#ffd84d}
+.pp-card.pp-r-weak .pp-ico{animation:ppShake 2.4s ease-in-out infinite}
+@keyframes ppShake{0%,88%,100%{transform:rotate(-6deg)}92%{transform:rotate(-14deg) scale(1.06)}96%{transform:rotate(3deg)}}
+
+/* resumo em linhas */
+.pp-sum{display:grid;gap:6px;margin:0 0 12px}
+.pp-sum-row{display:grid;grid-template-columns:118px minmax(0,1fr);align-items:center;gap:10px}
+.pp-sum-row > b{display:flex;align-items:center;gap:6px;padding:5px 9px;background:#0d0c10;color:#fff0d8;font:400 12px/1 var(--hud-display,"Archivo Black"),sans-serif;letter-spacing:.3px;transform:skewX(-8deg)}
+.pp-sum-row > b i{display:grid;width:15px;height:15px}
+.pp-sum-row > b svg{width:15px;height:15px}
+.pp-sum-row.pp-r-weak > b i{color:#ff3b4e}.pp-sum-row.pp-r-resist > b i{color:#2fb8ff}.pp-sum-row.pp-r-null > b i{color:#ffd84d}
+.pp-sum-row > div{display:flex;flex-wrap:wrap;gap:5px}
+.pp-sum-row em{font:600 12.5px var(--hud-body,Barlow),sans-serif;font-style:normal;color:var(--hud-mute,#9b98a8)}
+.pp-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 4px;background:color-mix(in srgb,var(--ec) 18%,#121322);border-left:3px solid var(--ec);color:#fff0d8;font:700 12.5px var(--hud-body,Barlow),sans-serif}
+.pp-chip i{display:grid;width:17px;height:17px;color:var(--ec)}
+.pp-chip svg{width:17px;height:17px}
+.pp-chip small{font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:1px;color:#ffd84d}
+
+/* fraqueza de instrumento */
+body.hud.workspace-sheet #characterPage:not(#_z) .instrument-special-box{margin-top:10px;padding:10px 14px!important;background:#0d0c10!important;border-left:4px solid #ff3b4e!important}
+body.hud.workspace-sheet #characterPage:not(#_z) .instrument-special-title{font:400 13px var(--hud-display,"Archivo Black"),sans-serif!important;color:#fff0d8!important;cursor:pointer}
+
+@media (max-width:1280px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media (max-width:760px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .pp-sum-row{grid-template-columns:1fr}
+  .pp-sum-row > b{justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){.pp-card.pp-r-weak .pp-ico{animation:none}}
+body.hs-calm .pp-card.pp-r-weak .pp-ico{animation:none}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .affinity-hud-name{justify-self:start;text-align:left!important;width:100%}
+body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .pp-tag{display:none!important}
