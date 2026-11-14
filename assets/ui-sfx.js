@@ -280,12 +280,31 @@
     });
     document.addEventListener('pointerdown', function (e) { if (!pop.hidden && !dock.contains(e.target)) { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); } }, true);
     place(); addEventListener('resize', place);
+    try {
+      var mo = 0;
+      new MutationObserver(function () { if (!mo) mo = requestAnimationFrame(function () { mo = 0; place(); }); })
+        .observe(document.body, { attributes: true, subtree: true, childList: true, attributeFilter: ['class', 'hidden', 'open'] });
+    } catch (e) {}
     var pr = 0; addEventListener('scroll', function () { if (!pr) pr = requestAnimationFrame(function () { pr = 0; place(); }); }, { passive: true, capture: true });
     setInterval(place, 1500);
   }
   /* fica logo abaixo do botão redondo de tema */
   function place() {
     if (!dock) return;
+    /* some quando qualquer janela/painel por cima estiver aberto */
+    var cover = [].some.call(document.querySelectorAll('.global-theme-backdrop.open,.sheet-ui-backdrop.open,.fx-root:not([hidden]),dialog[open],.dk-panel,.hud-pop:not([hidden]),.cb-root:not([hidden])'), function (el) { return el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden'; }) || document.body.classList.contains('cb-open') || document.body.classList.contains('fx-lock');
+    var sp = dock.querySelector('.sfx-pop');
+    if (cover && !(sp && !sp.hidden)) { dock.style.visibility = 'hidden'; return; }
+    dock.style.visibility = '';
+    if (document.body.classList.contains('cm-open')) { /* modo de combate: ao lado do SAIR DO COMBATE */
+      var ex = document.querySelector('.cm-exit'), x = ex && ex.offsetParent ? ex.getBoundingClientRect() : null;
+      if (innerWidth <= 700) { dock.style.top = '10px'; dock.style.left = Math.round(innerWidth - 50) + 'px'; dock.style.right = 'auto'; return; }
+      if (x && x.width) {
+        if (innerWidth - x.right > 56) { dock.style.top = Math.round(x.top + x.height / 2 - 19) + 'px'; dock.style.left = Math.round(x.right + 10) + 'px'; }
+        else { dock.style.top = Math.round(x.bottom + 8) + 'px'; dock.style.left = Math.round(x.right - 38) + 'px'; }
+        dock.style.right = 'auto'; return;
+      }
+    }
     var mb = document.querySelector('.hud-menu-btn'), m = mb && mb.offsetParent ? mb.getBoundingClientRect() : null;
     if (m && m.width && innerWidth <= 900) { /* celular: à esquerda do MENU */
       dock.style.top = Math.round(Math.max(6, m.top + m.height / 2 - 16)) + 'px';
