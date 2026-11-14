@@ -246,7 +246,7 @@
     try {
       return getFilledMagicSlots().map(function (m) {
         var s = deckLabSpell(m) || m;
-        return { name: s.name || m.name, tier: s.tier || m.tier, cost: s.cost || m.cost || '', cat: s.category || m.type || '', target: s.target || m.target || '', effect: (function (e, t) { try { return typeof spellDiceText === 'function' ? spellDiceText(e, t) : e; } catch (x) { return e; } })(m.effect || s.effect || '', s.tier || m.tier), desc: s.description || m.description || '', color: (function () { try { return deckLabColor(s); } catch (e) { return '#6ce6ff'; } })() };
+        return { name: s.name || m.name, tier: s.tier || m.tier, cost: s.cost || m.cost || '', cat: s.category || m.type || '', target: s.target || m.target || '', effect: (function (e, t) { try { return typeof spellDiceText === 'function' ? spellDiceText(e, t, s.category || m.type) : e; } catch (x) { return e; } })(m.effect || s.effect || '', s.tier || m.tier), desc: s.description || m.description || '', color: (function () { try { return deckLabColor(s); } catch (e) { return '#6ce6ff'; } })() };
       });
     } catch (e) { return []; }
   }

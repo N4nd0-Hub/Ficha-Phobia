@@ -17810,9 +17810,14 @@ function resourceCurve(){let a=null;try{a=currentArcanaData()}catch(e){}return R
 const SPELL_DICE_CAP={1:4,2:6,3:8,4:10,5:12};
 function spellDiceCap(tier){return SPELL_DICE_CAP[Math.max(1,Math.min(5,Number(tier)||1))]}
 function spellDiceCount(attrValue,tier){return Math.max(0,Math.min(Number(attrValue)||0,spellDiceCap(tier)))}
-function spellDiceText(effect,tier){
+function spellDamageAttr(category){return category==='Físico'?'FOR':'MAG'}
+function spellDiceText(effect,tier,category){
   let c;try{c=calculateSheet()}catch(e){return effect}
-  return String(effect||'').replace(/\b(FOR|MAG|TEC|AGI|VIT|SOR)d(\d+)\b/g,(_,k,d)=>spellDiceCount(c[k],tier)+'d'+d);
+  const fa=spellDamageAttr(category),fv=Number(c[fa])||0;
+  let txt=String(effect||'').replace(/\b(FOR|MAG|TEC|AGI|VIT|SOR)d(\d+)\b/g,(_,k,d)=>spellDiceCount(c[k],tier)+'d'+d);
+  /* dano: soma o atributo (MAG nas magias, FOR nas físicas) como bônus fixo */
+  txt=txt.replace(/(Acerto:\s*\d+d\d+)(\s*\+\s*(\d+))?/i,(_,a,b,n)=>a+'+'+((Number(n)||0)+fv)).replace(/(\d+\s+Golpes[^.]*?\d+d\d+(?:\s*\+\s*\d+)?)/i,m=>m+` (+${fv} ${fa} uma vez)`);
+  return txt;
 }
 
 
@@ -18976,6 +18981,7 @@ function renderMagicCalc(slot){
   const color=GRIMOIRE_CATEGORY_COLORS[category]||'var(--theme-accent)';
   const c=calculateSheet();
   const sTier=Number(spell?.tier||slot.tier)||1,capNote=` Teto Tier ${romanTier(sTier)}: ${spellDiceCap(sTier)} dados.`;
+  const dmgAttr=spellDamageAttr(category),dmgFlat=Number(c[dmgAttr])||0,flatNote=` +${dmgFlat} de ${dmgAttr} no dano.`;
 
   if(/\[Passiva\]/i.test(effect)){
     return makeCalcHtml('special','PASSIVA','Efeito contínuo','Sem rolagem direta de dano ou cura.',spell.description||'',color);
@@ -18994,7 +19000,8 @@ function renderMagicCalc(slot){
       formulas.push(`${attrVal}d${die}${bonus?`+${bonus}`:''}`);
     }
     if(formulas.length){
-      return makeCalcHtml('damage','DANO ESTIMADO',formulas.join(' + '),`${totalMin}–${totalMax} • média ${totalAvg.toFixed(1)}`,`Baseado em ${category||'tipo da Magia'}.`+capNote,color);
+      totalMin+=dmgFlat;totalMax+=dmgFlat;totalAvg+=dmgFlat;formulas.push(`${dmgFlat} ${dmgAttr}`);
+      return makeCalcHtml('damage','DANO ESTIMADO',formulas.join(' + '),`${totalMin}–${totalMax} • média ${totalAvg.toFixed(1)}`,`Baseado em ${category||'tipo da Magia'}.`+capNote+flatNote,color);
     }
   }
 
@@ -19002,16 +19009,16 @@ function renderMagicCalc(slot){
   if(m){
     const hits=Number(m[1]),attr=m[2].toUpperCase(),die=Number(m[3]),bonus=Number(m[4]||0),attrVal=spellDiceCount(c[attr],sTier);
     const r=calcDiceRange(attrVal,die,bonus,hits,categoryBoostMultiplier(category,'damage'));
-    const formula=`${hits}× ${attrVal}d${die}${bonus?`+${bonus}`:''}`;
-    return makeCalcHtml('damage','DANO ESTIMADO',formula,`${r.min}–${r.max} • média ${r.avg}`,`Múltiplos golpes.`+capNote,color);
+    const formula=`${hits}× ${attrVal}d${die}${bonus?`+${bonus}`:''} + ${dmgFlat}`;
+    return makeCalcHtml('damage','DANO ESTIMADO',formula,`${r.min+dmgFlat}–${r.max+dmgFlat} • média ${(Number(r.avg)+dmgFlat).toFixed(1)}`,`Múltiplos golpes; ${dmgAttr} soma uma vez.`+capNote+flatNote,color);
   }
 
   m=effect.match(/Acerto:\s*(FOR|MAG|TEC|AGI|VIT|SOR)d(\d+)(?:\s*\+\s*(\d+))?/i);
   if(m){
     const attr=m[1].toUpperCase(),die=Number(m[2]),bonus=Number(m[3]||0),attrVal=spellDiceCount(c[attr],sTier);
-    const r=calcDiceRange(attrVal,die,bonus,1,categoryBoostMultiplier(category,'damage'));
-    const formula=`${attrVal}d${die}${bonus?`+${bonus}`:''}`;
-    return makeCalcHtml('damage','DANO ESTIMADO',formula,`${r.min}–${r.max} • média ${r.avg}`,`Escala com ${attr}.`+capNote,color);
+    const r=calcDiceRange(attrVal,die,bonus+dmgFlat,1,categoryBoostMultiplier(category,'damage'));
+    const formula=`${attrVal}d${die}+${bonus+dmgFlat}`;
+    return makeCalcHtml('damage','DANO ESTIMADO',formula,`${r.min}–${r.max} • média ${r.avg}`,`Escala com ${attr}.`+capNote+flatNote,color);
   }
 
   m=effect.match(/(?:Recupere|recupera)\s+(FOR|MAG|TEC|AGI|VIT|SOR)d(\d+)(?:\s*\+\s*([^.;]+?))?\s*PV/i);
@@ -22103,7 +22110,7 @@ initializePhobiaLargeSave();
 <script src="assets/bonds-net.js?v=5"></script>
 <script src="assets/instrument-skills-data.js?v=1"></script>
 <script src="assets/instrument-skills.js?v=2"></script>
-<script src="assets/combat-mode.js?v=13"></script>
+<script src="assets/combat-mode.js?v=14"></script>
 <script src="assets/attr-formulas.js?v=1"></script>
 <script src="assets/dice3d.js?v=9"></script>
 <script src="assets/fichas.js?v=4"></script>
