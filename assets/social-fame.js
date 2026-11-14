@@ -161,7 +161,6 @@
         '<div class="sf-rule on"><span class="sf-rule-tag">ROLAGENS</span><span class="sf-rule-text">O Tier continua dando o bônus no teste e valendo como pré-requisito de Vantagens e habilidades de Arcana.</span></div>' +
         '<div class="sf-rule on"><span class="sf-rule-tag">CHAVES</span><span class="sf-rule-text">Cada Tier abre abordagens, cenas, pistas e oportunidades no Mundo Real. Com risco, o teste resolve.</span></div>' +
         '<div class="sf-rule on"><span class="sf-rule-tag">VÍNCULOS</span><span class="sf-rule-text">Contatos, lugares para ensaiar e habilidades próprias vêm dos Vínculos. Vantagens compradas seguem como outra via.</span></div>' +
-        '<div class="sf-rule"><span class="sf-rule-tag">FORA</span><span class="sf-rule-text">Poderes automáticos por subir de Tier, incluindo bônus de atributos, PV e PM.</span></div>' +
       '</div>';
   }
 
