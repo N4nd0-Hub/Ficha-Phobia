@@ -60,14 +60,17 @@
       im.src = src;
     });
   }
+  function liveTheme() { try { return window.PhobiaSheetStyle && window.PhobiaSheetStyle.current(); } catch (e) { return null; } }
   function infoOf(st) {
-    var sh = (st && st.charSheet) || {}, p = sh.profile || {};
+    var sh = (st && st.charSheet) || {}, p = sh.profile || {}, t = liveTheme();
+    var nm = String(p.name || '').trim(), cd = String(p.codename || '').trim();
     return {
-      name: p.codename || p.name || 'Ficha sem nome',
-      real: p.codename && p.name ? p.name : '',
+      name: nm || cd || '',
+      real: nm && cd && cd !== nm ? cd : '',
       theme: (st && st.siteTheme) || 'cream',
-      level: sh.cnv || 1,
-      arcana: (sh.persona && (sh.persona.name || '')) || ''
+      themeName: t ? t.name : '',
+      acc: t ? t.acc : '',
+      level: sh.cnv || 1
     };
   }
   function refreshCurrent(meta) {
@@ -76,7 +79,10 @@
     if (!cur) return Promise.resolve(meta);
     var i = infoOf(st);
     cur.auto = i; cur.theme = i.theme; cur.updated = Date.now();
-    return thumb((st.charSheet || {}).photoData).then(function (t) { if (t) cur.photo = t; writeMeta(meta); return meta; });
+    var src = (st.charSheet || {}).photoData;
+    if (!src) delete cur.photo;
+    writeMeta(meta);
+    return thumb(src).then(function (t) { if (t) { cur.photo = t; writeMeta(meta); } return meta; });
   }
   function ensureMeta() {
     var m = readMeta();
@@ -154,7 +160,7 @@
     if (n == null) return;
     f.name = n.trim().slice(0, 40); writeMeta(meta); render();
   }
-  function label(f) { return (f && (f.name || (f.auto && f.auto.name))) || 'Ficha sem nome'; }
+  function label(f) { return (f && f.auto && f.auto.name) || 'Sem nome no Dossiê'; }
 
   /* ---------- tela ---------- */
   var root = null;
@@ -165,17 +171,18 @@
   }
   function fmt(t) { if (!t) return '—'; var d = new Date(t); return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
   function card(f, cur, i) {
-    var a = f.auto || {}, th = f.theme || a.theme || 'cream', acc = ACC[th] || '#ef2b97';
+    if (f.id === cur && S()) { f = Object.assign({}, f, { auto: infoOf(S()) }); var lp = (S().charSheet || {}).photoData; f.photo = lp && /^data:image\//.test(lp) ? lp : ''; }
+    var a = f.auto || {}, th = f.theme || a.theme || 'cream', acc = a.acc || ACC[th] || '#ef2b97';
+    var tname = a.themeName || THEME_NAME[th] || th;
     return '<article class="fx-card' + (f.id === cur ? ' cur' : '') + '" style="--fa:' + acc + ';--d:' + (i * 60) + 'ms" data-fx-open="' + E(f.id) + '" tabindex="0" role="button" aria-label="Abrir ficha ' + E(label(f)) + '">' +
       '<div class="fx-photo">' + (f.photo ? '<img src="' + f.photo + '" alt="">' : '<span>' + E(label(f).charAt(0).toUpperCase()) + '</span>') + '</div>' +
       '<div class="fx-info"><small>' + (f.id === cur ? 'EM USO AGORA' : 'FICHA ' + String(i + 1).padStart(2, '0')) + '</small>' +
       '<b>' + E(label(f)) + '</b>' +
       (a.real && a.real !== label(f) ? '<em>' + E(a.real) + '</em>' : '') +
-      '<span class="fx-tags"><i style="background:' + acc + '"></i>' + E(THEME_NAME[th] || th) + (a.level ? ' · Nv. ' + E(a.level) : '') + '</span>' +
+      '<span class="fx-tags"><i style="background:' + acc + '"></i>' + E(tname) + (a.level ? ' · Nv. ' + E(a.level) : '') + '</span>' +
       '<u>' + (f.id === cur ? 'Aberta' : 'Salva em ' + fmt(f.updated || f.created)) + '</u></div>' +
       '<div class="fx-acts">' +
         '<button type="button" data-fx-dup="' + E(f.id) + '" title="Duplicar">⧉</button>' +
-        '<button type="button" data-fx-ren="' + E(f.id) + '" title="Renomear">✎</button>' +
         (f.id === cur ? '' : '<button type="button" class="x" data-fx-del="' + E(f.id) + '" title="Excluir">✕</button>') +
       '</div></article>';
   }
@@ -194,21 +201,25 @@
     root.innerHTML = '<div class="fx-bg"></div><section class="fx-panel">' +
       '<header class="fx-head"><div><small>SELECT // PERSONAGENS <span class="fx-count"></span></small><h2>QUEM VAI <span>JOGAR?</span></h2></div>' +
       '<button type="button" class="fx-close" data-fx-close aria-label="Fechar">✕</button></header>' +
-      '<p class="fx-hint">Cada ficha tem o próprio personagem, fotos, tema, mapa, agenda e notas. Tudo fica salvo neste navegador. Para levar para outro aparelho, use o Exportar da ficha.</p>' +
+      '<p class="fx-hint">Cada ficha tem o próprio personagem, fotos, tema, mapa, agenda e notas. <b>O nome e a foto de cada cartão vêm do Dossiê</b> da ficha: mude lá e o cartão acompanha. Tudo fica salvo neste navegador; para levar a outro aparelho, use o Exportar da ficha.</p>' +
       '<div class="fx-grid"></div>' +
-      '<div class="fx-new-form" hidden><label>Nome da nova ficha<input maxlength="40" placeholder="Ex.: Ren Amamiya"></label>' +
-      '<div class="fx-themes">' + Object.keys(ACC).map(function (k, i) { return '<button type="button" data-fx-theme="' + k + '" style="--fa:' + ACC[k] + '"' + (i === 0 ? ' aria-pressed="true"' : '') + '><i></i>' + THEME_NAME[k] + '</button>'; }).join('') + '</div>' +
+      '<div class="fx-new-form" hidden><label>Nome do personagem (vai para o Dossiê)<input maxlength="60" placeholder="Ex.: Ren Amamiya"></label><small class="fx-tlabel">TEMA DA FICHA</small>' +
+      '<div class="fx-themes"></div>' +
       '<div class="fx-new-acts"><button type="button" data-fx-cancel>Cancelar</button><button type="button" class="go" data-fx-create>CRIAR E ABRIR ▶</button></div></div>' +
       '<div class="fx-busy" aria-live="polite"></div></section>';
     document.body.appendChild(root);
-    var newTheme = 'cream';
+    var newTheme = 'phobia';
     root.addEventListener('click', function (e) {
       var t = e.target.closest('button,[data-fx-open]'); if (!t) { if (e.target.classList.contains('fx-bg')) close(); return; }
       if (t.hasAttribute('data-fx-close')) return close();
       if (t.dataset.fxDup) { e.stopPropagation(); return duplicate(t.dataset.fxDup); }
       if (t.dataset.fxRen) { e.stopPropagation(); return rename(t.dataset.fxRen); }
       if (t.dataset.fxDel) { e.stopPropagation(); return remove(t.dataset.fxDel); }
-      if (t.hasAttribute('data-fx-new')) { root.querySelector('.fx-new-form').hidden = false; root.querySelector('.fx-new-form input').focus(); return; }
+      if (t.hasAttribute('data-fx-new')) {
+        var pr = (window.PhobiaSheetStyle && window.PhobiaSheetStyle.presets) || [];
+        root.querySelector('.fx-themes').innerHTML = pr.map(function (q) { return '<button type="button" data-fx-theme="' + E(q.id) + '" style="--fa:' + q.c.acc + '"' + (q.id === newTheme ? ' aria-pressed="true"' : '') + '><i></i>' + E(q.name) + '</button>'; }).join('');
+        root.querySelector('.fx-new-form').hidden = false; root.querySelector('.fx-new-form input').focus(); return;
+      }
       if (t.hasAttribute('data-fx-cancel')) { root.querySelector('.fx-new-form').hidden = true; return; }
       if (t.dataset.fxTheme) { newTheme = t.dataset.fxTheme; root.querySelectorAll('[data-fx-theme]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === t)); }); return; }
       if (t.hasAttribute('data-fx-create')) {
@@ -259,13 +270,19 @@
     var opened = null; try { opened = sessionStorage.getItem('phobia-fichas-opened'); sessionStorage.removeItem('phobia-fichas-opened'); } catch (e) {}
     var st = S();
     if (pend && st) {
-      try { if (pend.theme) applySiteTheme(pend.theme, true); } catch (e) {}
+      try { if (pend.theme && window.PhobiaSheetStyle) window.PhobiaSheetStyle.apply(pend.theme); } catch (e) {}
       try { if (pend.name) { st.charSheet.profile = st.charSheet.profile || {}; st.charSheet.profile.name = pend.name; } } catch (e) {}
       try { saveState(true); } catch (e) {}
       try { renderCharacterSheet && renderCharacterSheet(); } catch (e) {}
     }
     refreshCurrent(meta);
     if (opened) { var f = meta.list.find(function (x) { return x.id === meta.cur; }); say((opened === 'new' ? 'Ficha nova: ' : 'Ficha aberta: ') + label(f)); }
+    var tmr = 0;
+    document.addEventListener('input', function (e) {
+      if (!e.target.matches || !e.target.matches('[data-sheet="profile.name"],[data-sheet="profile.codename"]')) return;
+      clearTimeout(tmr); tmr = setTimeout(function () { var m = readMeta(); if (m) refreshCurrent(m).then(function () { if (root && !root.hidden) render(); }); }, 600);
+    }, true);
+    try { var op = window.saveState; } catch (e) {}
     /* mantém a miniatura em dia */
     setInterval(function () { var m = readMeta(); if (m) refreshCurrent(m); }, 60000);
   }

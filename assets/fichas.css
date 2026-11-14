@@ -83,3 +83,6 @@ body.hud .hud-menu-extra .fx-menu-btn span{position:relative;width:22px;height:2
 body.hud .hud-menu-extra .fx-menu-btn span i{position:absolute;inset:2px 5px;border:2px solid #0d0c10;background:var(--hud-paper,#fff0d8)}
 body.hud .hud-menu-extra .fx-menu-btn span i:first-child{transform:rotate(-14deg) translateX(-3px);background:var(--hud-acc,#ef2b97)}
 @media (max-width:640px){.fx-new{grid-template-columns:1fr;padding-top:16px}}
+.fx-tlabel{display:block;margin-top:14px;font:800 12px "Barlow Condensed",Arial,sans-serif;letter-spacing:2px;color:var(--hud-mute,#b9b3c9)}
+.fx-hint b{color:var(--hud-paper,#fff0d8)}
+.fx-info b{font-size:clamp(15px,1.5vw,19px);overflow-wrap:normal;word-break:normal;hyphens:auto}

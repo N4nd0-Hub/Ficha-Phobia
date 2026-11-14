@@ -437,5 +437,11 @@
       w.__hs = true; window.getSocialRadarPalette = w;
     }
   }
+  /* usado pela tela de Fichas */
+  window.PhobiaSheetStyle = {
+    presets: PRESETS,
+    current: function () { var h = cfg(); if (!h) return null; var p = preset(h.preset); return { id: p.id, name: h.custom ? 'Personalizado' : p.name, acc: (h.colors && h.colors.acc) || p.c.acc, acc2: (h.colors && h.colors.acc2) || p.c.acc2 }; },
+    apply: function (id) { set(function (h) { h.preset = preset(id).id; h.colors = {}; h.custom = false; syncSite(h.preset); }); }
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
