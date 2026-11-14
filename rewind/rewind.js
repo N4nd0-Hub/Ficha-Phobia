@@ -259,7 +259,7 @@
     var photos = pr.photos.length ? '<div class="box"><h3>fotos <small>(' + pr.counts.photos + ')</small><a class="small" href="#/fotos/' + id + '">ver álbum</a></h3><div class="album">' + pr.photos.map(function (ph) { return '<div class="photo"><button class="th" type="button" data-zoom-src="' + E(ph.url) + '" data-cap="' + E(ph.caption || '') + '"><img src="' + E(ph.url) + '" alt="" loading="lazy"></button></div>'; }).join('') + '</div></div>' : '';
     var mid = '<div class="box"><div class="in"><div class="prof-head"><div><h1 class="big-title">' + E(p.name) + (p.kind === 'npc' ? ' <span class="npc-tag">NPC</span>' : '') + '</h1>' +
       (p.status_msg ? '<div class="status-line">“' + E(p.status_msg) + '”</div>' : '') + '</div>' + act + '</div>' +
-      '<div class="ratings"><div class="rt"><b>fãs</b><span>⭐ ' + pr.counts.fans + '</span>' + (self ? '' : '<button type="button" class="fan-btn' + (my.fan ? ' on' : '') + '" data-fan>' + (my.fan ? '★ sou fã' : '☆ virar fã') + '</button>') + '</div>' +
+      '<div class="ratings"><div class="rt"><b>fãs</b><span data-fans>⭐ ' + pr.counts.fans + (S.as ? ' <button type="button" class="gm-edit" data-fans-edit title="Narrador: mudar a quantidade de fãs">✎</button>' : '') + '</span>' + (self ? '' : '<button type="button" class="fan-btn' + (my.fan ? ' on' : '') + '" data-fan>' + (my.fan ? '★ sou fã' : '☆ virar fã') + '</button>') + '</div>' +
         ratingRow('trusty', 'confiável', '🙂', pr.rating.trusty, my.trusty, self) + ratingRow('cool', 'legal', '🧊', pr.rating.cool, my.cool, self) + ratingRow('sexy', 'sexy', '❤️', pr.rating.sexy, my.sexy, self) + '</div>' +
       (rows ? '<table class="info">' + rows + '</table>' : '') +
       (pr.about ? '<div class="about"><b>quem sou eu:</b>\n' + rich(pr.about).html + '</div>' : (self ? '<p class="mute">Seu perfil está vazio. <a href="#/editar">Editar perfil</a></p>' : '')) +
@@ -273,6 +273,20 @@
         try { await rpc('rw_rate', { p_to: id, p_fan: cur.fan, p_trusty: cur.trusty, p_cool: cur.cool, p_sexy: cur.sexy }); route(); } catch (x) { toast(msgOf(x)); }
       };
     });
+    var fe = app.querySelector('[data-fans-edit]');
+    if (fe) fe.onclick = function () {
+      var box = app.querySelector('[data-fans]');
+      box.innerHTML = '<form class="fans-form"><input type="number" min="0" max="10000000" step="1" value="' + pr.counts.fans + '" aria-label="Quantidade de fãs"><button class="btn sm pri" type="submit">ok</button><button class="btn sm" type="button" data-c>×</button></form>';
+      var f = box.querySelector('form'), inp = f.querySelector('input'); inp.focus(); inp.select();
+      f.querySelector('[data-c]').onclick = function () { route(); };
+      f.onsubmit = async function (e) {
+        e.preventDefault(); var n = Math.floor(Number(inp.value));
+        if (!(n >= 0)) return toast('Digite um número de 0 para cima.');
+        var r = await sb.rpc('rw_gm_set_fans', { p_id: id, p_total: n });
+        if (r.error) return toast('Não deu para mudar os fãs.');
+        toast('Agora são ' + r.data + ' fã(s).'); route();
+      };
+    };
     var fb = app.querySelector('[data-fan]');
     if (fb) fb.onclick = async function () { var cur = Object.assign({ fan: false, trusty: 0, cool: 0, sexy: 0 }, pr.my_rating || {}); cur.fan = !cur.fan; try { await rpc('rw_rate', { p_to: id, p_fan: cur.fan, p_trusty: cur.trusty, p_cool: cur.cool, p_sexy: cur.sexy }); route(); } catch (x) { toast(msgOf(x)); } };
   }
