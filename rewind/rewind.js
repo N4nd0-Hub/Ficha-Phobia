@@ -569,7 +569,21 @@
         S.gmUser = user;
         var npcs = await sb.from('phobia_npcs').select('id,name').order('name');
         S.npcs = npcs.data || [];
-        if (!S.npcs.length) { app.innerHTML = '<div class="wrap"><div class="box" style="margin:30px 0"><div class="in">Você entrou como Narrador, mas ainda não há NPCs. Crie um NPC no <a href="../gm.html">Portal do Narrador</a> e volte aqui para agir como ele. <button class="lnk" data-x>sair</button></div></div></div>'; app.querySelector('[data-x]').onclick = logout; return; }
+        if (!S.npcs.length) {
+          app.innerHTML = '<div class="wrap"><div class="box" style="margin:30px auto;max-width:560px"><h3>modo Narrador</h3><div class="in">' +
+            '<p>Você entrou como <b>Narrador</b>. Aqui você age como um NPC, mas ainda não existe nenhum. Crie o primeiro agora (depois dá para pôr foto e detalhes no <a href="../gm.html" target="_top">Portal do Narrador</a>):</p>' +
+            '<form data-npc0 style="display:flex;gap:8px;margin:12px 0"><input name="n" required maxlength="40" placeholder="Nome do NPC (ex.: Sr. Tanaka)" style="flex:1"><button class="btn pri" type="submit">criar NPC</button></form>' +
+            '<p class="small mute">Os jogadores não veem esta tela: eles entram com nome + PIN normalmente. <button class="lnk" data-x>sair do modo Narrador</button></p></div></div></div>';
+          app.querySelector('[data-x]').onclick = logout;
+          app.querySelector('[data-npc0]').onsubmit = async function (e) {
+            e.preventDefault(); var nm = e.target.n.value.trim(); if (!nm) return;
+            var r = await sb.from('phobia_npcs').insert({ name: nm, color: '#c2185b', status: 'online' }).select('id').single();
+            if (r.error) return toast('Não deu para criar o NPC.');
+            S.as = r.data.id; try { localStorage.setItem(AS_KEY, S.as); } catch (x) {}
+            start();
+          };
+          return;
+        }
         if (!S.as || !S.npcs.some(function (n) { return n.id === S.as; })) { S.as = S.npcs[0].id; try { localStorage.setItem(AS_KEY, S.as); } catch (e) {} }
       }
     }
