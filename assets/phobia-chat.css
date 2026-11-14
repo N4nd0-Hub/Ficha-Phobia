@@ -199,3 +199,9 @@
 .pm-c.off .pm-av{filter:grayscale(1);opacity:.6}
 .pm-c{gap:8px;padding:3px 5px;min-height:38px}
 .pm-c-t i{font-style:normal;color:#445}
+.pm-theme{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.pm-theme span{margin-right:4px;color:#333}
+.pm-theme button{width:34px;height:26px;padding:0;border:1px solid #7f9db9;border-radius:3px;background:var(--tb);color:var(--tf);font:700 12px Tahoma,sans-serif;cursor:pointer}
+.pm-theme button:hover{box-shadow:0 0 0 2px #f8b636}
+.pm-prof-tip{flex:1;align-self:center;color:#556;font:11px Tahoma,sans-serif}
+.pm-prof-form input[type=color]{width:64px;height:30px;cursor:pointer}

@@ -137,6 +137,8 @@
   var STATUS = { online: ['Online', '#3ec42e'], away: ['Ausente', '#f0a020'], busy: ['Ocupado', '#e2263b'], invisible: ['Aparecer offline', '#9aa'], offline: ['Offline', '#9aa'] };
   function stOf(x, isNpc) { if (isNpc) return x.status || 'online'; return x.online ? (x.status || 'online') : 'offline'; }
   function buddy(st) { return '<i class="pm-buddy st-' + st + '" aria-hidden="true">' + (st === 'away' || st === 'busy' ? '<b></b>' : '') + '</i>'; }
+  var THEMES = [['#ff1e1e', '#111111', 'pixel', 'Vermelho'], ['#0a0a0a', '#39ff14', 'mono', 'Terminal'], ['#ffd1e8', '#7a1450', 'hand', 'Rosa'], ['#0b1d4a', '#ffe14d', 'pixel', 'Noite'],
+    ['#e9e4d6', '#111111', 'normal', 'Papel'], ['#2a0a3d', '#d8a8ff', 'normal', 'Roxo'], ['#bff3ff', '#003a6b', 'normal', 'Céu'], ['#ffe14d', '#111111', 'pixel', 'Amarelo'], ['#ffffff', '#111111', 'hand', 'Caderno']];
   var FONTS = { pixel: 'Silkscreen,"Press Start 2P",monospace', normal: 'Tahoma,Verdana,sans-serif', mono: '"Lucida Console",Consolas,monospace', hand: 'Caveat,"Comic Sans MS",cursive' };
   function linkify(t) { return E(t).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'); }
   function listHTML() {
@@ -183,6 +185,7 @@
         '<form class="pm-prof-form">' +
         '<label>Mensagem pessoal<input name="msg" maxlength="80" value="' + E(x.status_msg || '') + '" placeholder="Ex.: feliz que é sexta"></label>' +
         '<label>Perfil pessoal (humor, música, frases…)<textarea name="text" rows="6" maxlength="1200" placeholder="current mood: …">' + E(x.profile || '') + '</textarea></label>' +
+        '<div class="pm-theme"><span>Temas prontos</span>' + THEMES.map(function (t, i) { return '<button type="button" data-pm-theme="' + i + '" title="' + t[3] + '" style="--tb:' + t[0] + ';--tf:' + t[1] + '">Aa</button>'; }).join('') + '</div>' +
         '<div class="pm-prof-row"><label>Fundo<input type="color" name="bg" value="' + E(bg) + '"></label><label>Texto<input type="color" name="fg" value="' + E(fg) + '"></label>' +
         '<label>Letra<select name="font">' + [['pixel', 'Pixel'], ['normal', 'Normal'], ['mono', 'Máquina'], ['hand', 'À mão']].map(function (f) { return '<option value="' + f[0] + '"' + (f[0] === font ? ' selected' : '') + '>' + f[1] + '</option>'; }).join('') + '</select></label></div>' +
         '<small>Prévia</small><div class="pm-pbox prev" style="--pbg:' + E(bg) + ';--pfg:' + E(fg) + ';--pff:' + E(FONTS[font]) + '">' + (x.profile ? linkify(x.profile) : '<i>(vazio)</i>') + '</div>' +
@@ -191,7 +194,7 @@
     return '<div class="pm-prof" data-pm-bg><div class="pm-prof-card"><div class="cb-win-t"><span>Perfil de ' + E(x.name) + '</span><button type="button" data-pm="profclose">×</button></div>' +
       '<div class="pm-prof-top">' + avatar(P.av, x.name, x.color, 'xxl') + '<div><b>' + E(x.name) + '</b><span>' + buddy(P.st) + ' ' + STATUS[P.st][0] + (P.npc ? ' · contato' : '') + '</span>' + (x.status_msg ? '<em>“' + E(x.status_msg) + '”</em>' : '') + '</div></div>' +
       '<h6>Perfil pessoal</h6><div class="pm-pbox" style="--pbg:' + E(bg) + ';--pfg:' + E(fg) + ';--pff:' + E(FONTS[font]) + '">' + (P.text ? linkify(P.text) : '<i>' + (P.me ? 'Você ainda não escreveu nada no seu perfil.' : 'Nada por aqui ainda.') + '</i>') + '</div>' +
-      '<div class="pm-prof-act">' + (P.me ? '<button type="button" class="pm-btn go" data-pm="profedit">Editar perfil</button>' : '<button type="button" class="pm-btn go" data-pm-open="' + E(S.prof) + '">Enviar mensagem</button>') + '</div></div></div>';
+      '<div class="pm-prof-act">' + (P.me ? '<span class="pm-prof-tip">Mude a cor, o texto e a letra desta caixa em “Editar perfil”.</span><button type="button" class="pm-btn go" data-pm="profedit">🎨 Editar perfil</button>' : '<button type="button" class="pm-btn go" data-pm-open="' + E(S.prof) + '">Enviar mensagem</button>') + '</div></div></div>';
   }
   function curInfo() {
     if (!S.cur) return null;
@@ -264,6 +267,10 @@
   function bindProfForm() {
     var f = $('.pm-prof-form', win); if (!f) return;
     f.font.addEventListener('change', function () { onInput({ target: f.font }); });
+    f.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-pm-theme]'); if (!b) return;
+      var t = THEMES[+b.dataset.pmTheme]; f.bg.value = t[0]; f.fg.value = t[1]; f.font.value = t[2]; onInput({ target: f.bg });
+    });
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var o = { p_status_msg: f.msg.value, p_profile: f.text.value, p_bg: f.bg.value, p_fg: f.fg.value, p_font: f.font.value };
