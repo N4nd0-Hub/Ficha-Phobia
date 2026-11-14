@@ -132,9 +132,17 @@
   /* ======================================================
      AGENDA
      ====================================================== */
-  var cal = { root: null, sel: '' };
+  var cal = { root: null, sel: '', mtype: 'personal' };
+  var MT = {
+    personal: { label: 'Nota', c: '#ffcf59', ic: '✎' },
+    deadline: { label: 'Prazo', c: '#ff2d4b', ic: '⏳' },
+    meet: { label: 'Encontro', c: '#ff7ab8', ic: '♥' },
+    remind: { label: 'Lembrete', c: '#9df26b', ic: '!' }
+  };
+  function mtype(m) { return m && MT[m.type] ? m.type : 'personal'; }
   function key(y, m, d) { return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
   function parse(k) { var p = String(k).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function diff(a, b) { return Math.round((parse(b) - parse(a)) / 864e5); }
   function sakura(dt) { var m = dt.getMonth(), d = dt.getDate(); return (m === 2 && d >= 25) || (m === 3 && d <= 7); }
   function dayInfo(k) {
     var h = null, ev = [];
@@ -146,6 +154,27 @@
     var y = 2000, m = 3;
     try { y = calYear; m = calMonth; } catch (e) {}
     return { y: y, m: m };
+  }
+  /* prazos a partir do dia da história, do mais próximo ao mais distante */
+  function deadlines(from) {
+    var marks = S().customCalendarMarks || {}, out = [];
+    Object.keys(marks).forEach(function (k) {
+      var m = marks[k];
+      if (mtype(m) !== 'deadline') return;
+      var d = diff(from, k);
+      if (d >= 0) out.push({ key: k, name: m.name, note: m.note || '', days: d, start: m.start || '' });
+    });
+    return out.sort(function (a, b) { return a.days - b.days; });
+  }
+  function dlWords(d) {
+    if (d === 0) return { n: 'HOJE', l: 'ÚLTIMO DIA!' };
+    if (d === 1) return { n: '1', l: 'DIA<br>RESTANTE' };
+    return { n: String(d), l: 'DIAS<br>RESTANTES' };
+  }
+  function dlProgress(dl, story) {
+    var total = dl.start ? diff(dl.start, dl.key) : 0;
+    if (total <= 0) return dl.days === 0 ? 100 : Math.max(8, 100 - dl.days * 6);
+    return Math.max(4, Math.min(100, Math.round((1 - dl.days / total) * 100)));
   }
 
   function buildCal() {
@@ -159,11 +188,17 @@
         '<div class="ha-tags"><span class="ha-week"></span><span class="ha-period"></span></div>' +
         '<div class="ha-periods" role="group" aria-label="Período do dia"><button type="button" data-ha-time="morning">MANHÃ</button><button type="button" data-ha-time="afternoon">TARDE</button><button type="button" data-ha-time="night">NOITE</button></div>' +
         '<div class="ha-days"><button type="button" data-ha-day="-1">◀ Dia anterior</button><button type="button" data-ha-day="1">Próximo dia ▶</button></div>' +
+        '<div class="ha-dl" hidden></div>' +
       '</section>' +
       '<section class="ha-grid-wrap" aria-label="Calendário do mês"><div class="ha-week-head">' + WEEK.map(function (w, i) { return '<span' + (i === 0 ? ' class="sun"' : i === 6 ? ' class="sat"' : '') + '>' + w + '</span>'; }).join('') + '</div><div class="ha-grid"></div>' +
-        '<div class="ha-legend"><span><i style="background:#ef2b97"></i>Feriado</span><span><i style="background:#6ce6ff"></i>Evento</span><span><i style="background:#f6c1d9"></i>Sakura</span><span><i class="today"></i>Hoje na história</span><span><i style="background:#ffcf59"></i>Sua marcação</span></div></section>' +
+        '<div class="ha-legend"><span><i style="background:#ef2b97"></i>Feriado</span><span><i style="background:#6ce6ff"></i>Evento</span><span><i style="background:#f6c1d9"></i>Sakura</span>' +
+        Object.keys(MT).map(function (k) { return '<span><i class="mk" style="background:' + MT[k].c + '">' + MT[k].ic + '</i>' + MT[k].label + '</span>'; }).join('') +
+        '<span><i class="today"></i>Hoje na história</span><span><i class="past"></i>Já passou</span></div></section>' +
       '<aside class="ha-right" aria-label="Detalhes do dia"><div class="ha-card ha-info"></div><div class="ha-card ha-soon"></div>' +
-        '<label class="ha-note-label">MINHA MARCAÇÃO <span></span><textarea class="ha-note" placeholder="Anotar algo para este dia…"></textarea></label></aside>';
+        '<div class="ha-note-label"><span class="ha-note-k">MINHA MARCAÇÃO <span></span></span>' +
+        '<div class="ha-mtypes" role="group" aria-label="Tipo da marcação">' + Object.keys(MT).map(function (k) { return '<button type="button" data-ha-mtype="' + k + '" style="--mc:' + MT[k].c + '"><i>' + MT[k].ic + '</i>' + MT[k].label + '</button>'; }).join('') + '</div>' +
+        '<textarea class="ha-note" placeholder="Primeira linha = título (ex.: Palácio do Diretor). As outras linhas são detalhes."></textarea>' +
+        '<p class="ha-mhint"></p></div></aside>';
     page.appendChild(cal.root);
 
     cal.root.addEventListener('click', function (e) {
@@ -178,14 +213,9 @@
         call('renderCalendar'); renderCal(true); return;
       }
       if ((t = e.target.closest('[data-ha-pin]'))) { call('togglePinnedDate', cal.sel); renderCal(); return; }
-      if ((t = e.target.closest('[data-ha-key]'))) {
-        cal.sel = t.dataset.haKey;
-        var d = parse(cal.sel);
-        call('showCalendarDetail', d.getFullYear(), d.getMonth(), d.getDate());
-        renderCal();
-        var cell = cal.root.querySelector('[data-ha-key="' + cal.sel + '"]');
-        anim(cell, [{ transform: 'scale(1)' }, { transform: 'scale(1.1) rotate(-2deg)' }, { transform: 'scale(1)' }], { duration: 360, easing: EASE });
-      }
+      if ((t = e.target.closest('[data-ha-mtype]'))) { setMarkType(t.dataset.haMtype); return; }
+      if ((t = e.target.closest('[data-ha-go]'))) { goTo(t.dataset.haGo); return; }
+      if ((t = e.target.closest('[data-ha-key]'))) { goTo(t.dataset.haKey, true); }
     });
 
     var timer = 0;
@@ -194,6 +224,30 @@
       clearTimeout(timer);
       timer = setTimeout(function () { saveNote(area.value); }, 400);
     });
+  }
+
+  function goTo(k, pulse) {
+    cal.sel = k;
+    var d = parse(k), v = getView();
+    if (d.getFullYear() !== v.y || d.getMonth() !== v.m) { try { calYear = d.getFullYear(); calMonth = d.getMonth(); } catch (x) {} call('renderCalendar'); }
+    call('showCalendarDetail', d.getFullYear(), d.getMonth(), d.getDate());
+    renderCal();
+    if (pulse) {
+      var cell = cal.root.querySelector('[data-ha-key="' + k + '"]');
+      anim(cell, [{ transform: 'scale(1)' }, { transform: 'scale(1.1) rotate(-2deg)' }, { transform: 'scale(1)' }], { duration: 360, easing: EASE });
+    }
+  }
+
+  function setMarkType(type) {
+    var st = S(), k = cal.sel || st.campaignDate, m = (st.customCalendarMarks || {})[k];
+    cal.mtype = type;
+    if (m) {
+      m.type = type;
+      if (type === 'deadline' && !m.start) m.start = st.campaignDate || k;
+      call('saveState', true);
+    }
+    renderCal();
+    if (!m) { var a = $('.ha-note', cal.root); if (a) a.focus(); }
   }
 
   function saveNote(text) {
@@ -205,43 +259,86 @@
     else {
       var lines = t.split('\n');
       var prev = st.customCalendarMarks[k] || {};
-      st.customCalendarMarks[k] = { name: lines[0].slice(0, 48), type: prev.type || 'personal', note: lines.slice(1).join('\n').trim() };
+      var type = prev.name ? mtype(prev) : (MT[cal.mtype] ? cal.mtype : 'personal');
+      var m = { name: lines[0].slice(0, 48), type: type, note: lines.slice(1).join('\n').trim() };
+      if (type === 'deadline') m.start = prev.start || st.campaignDate || k;
+      st.customCalendarMarks[k] = m;
     }
     call('saveState', true);
-    renderCalGrid();
-    $('.ha-note-label span', cal.root).textContent = t ? '· SALVO' : '';
+    renderCalGrid(); renderSide(); renderDeck();
+    $('.ha-note-k span', cal.root).textContent = t ? '· SALVO' : '';
   }
 
   function upcoming(fromKey, n) {
     var out = [], d = parse(fromKey);
-    for (var i = 1; i <= 120 && out.length < n; i++) {
+    for (var i = 0; i <= 120 && out.length < n; i++) {
       var dt = new Date(d.getFullYear(), d.getMonth(), d.getDate() + i), k = key(dt.getFullYear(), dt.getMonth(), dt.getDate()), info = dayInfo(k);
-      if (info.holiday) out.push({ dt: dt, name: info.holiday.name + (info.holiday.jp ? ' · ' + info.holiday.jp : ''), c: '#ef2b97' });
-      info.events.forEach(function (ev) { if (out.length < n) out.push({ dt: dt, name: ev.name, c: '#6ce6ff' }); });
-      if (info.mark && out.length < n) out.push({ dt: dt, name: info.mark.name, c: '#ffcf59' });
+      if (i > 0 && info.holiday) out.push({ k: k, dt: dt, i: i, name: info.holiday.name + (info.holiday.jp ? ' · ' + info.holiday.jp : ''), c: '#ef2b97' });
+      if (i > 0) info.events.forEach(function (ev) { if (out.length < n) out.push({ k: k, dt: dt, i: i, name: ev.name, c: '#6ce6ff' }); });
+      if (info.mark && out.length < n && (i > 0 || mtype(info.mark) === 'deadline')) { var t = MT[mtype(info.mark)]; out.push({ k: k, dt: dt, i: i, name: info.mark.name, c: t.c, ic: t.ic }); }
     }
     return out;
   }
 
   function renderCalGrid() {
     var st = S(), v = getView(), story = st.campaignDate || '2000-04-17';
+    var next = deadlines(story)[0] || null;
     var first = new Date(v.y, v.m, 1), days = new Date(v.y, v.m + 1, 0).getDate(), off = first.getDay();
     var html = '';
     for (var i = 0; i < off; i++) html += '<span class="ha-cell empty"></span>';
     for (var d = 1; d <= days; d++) {
       var k = key(v.y, v.m, d), dt = new Date(v.y, v.m, d), info = dayInfo(k), dow = dt.getDay();
-      var cls = 'ha-cell', tag = '';
+      var cls = 'ha-cell', tag = '', chip = '', badge = '', rel = diff(story, k);
       if (info.holiday) { cls += ' hol'; tag = info.holiday.name; }
       else if (info.events.length) { cls += ' ev'; tag = info.events[0].name; }
       else if (sakura(dt)) { cls += ' sak'; tag = 'SAKURA'; }
-      if (info.mark) { cls += ' mark'; if (!tag) tag = info.mark.name; }
+      if (info.mark) {
+        var mt = mtype(info.mark), T = MT[mt];
+        cls += ' mark mk-' + mt;
+        chip = '<em class="ha-chip" style="--mc:' + T.c + '"><i>' + T.ic + '</i>' + E(info.mark.name) + '</em>';
+        if (mt === 'deadline') badge = rel > 0 ? '<span class="ha-badge">D-' + rel + '</span>' : rel === 0 ? '<span class="ha-badge now">HOJE!</span>' : '<span class="ha-badge over">FIM</span>';
+      }
+      if (rel < 0) cls += ' past';
+      if (next && rel > 0 && rel < next.days) cls += ' dl-run';
       if (dow === 0) cls += ' sun'; if (dow === 6) cls += ' sat';
-      if (k === story) cls += ' today';
+      if (k === story) { cls += ' today'; badge = badge || '<span class="ha-badge today">HOJE</span>'; }
       if (k === cal.sel) cls += ' sel';
       if (k === st.pinnedDate) cls += ' pin';
-      html += '<button type="button" class="' + cls + '" data-ha-key="' + k + '" aria-label="' + d + ' de ' + MONTHS[v.m].toLowerCase() + (tag ? ', ' + E(tag) : '') + '"><b>' + d + '</b><small>' + E(tag) + '</small></button>';
+      var label = d + ' de ' + MONTHS[v.m].toLowerCase() + (tag ? ', ' + tag : '') + (info.mark ? ', ' + MT[mtype(info.mark)].label + ': ' + info.mark.name : '');
+      html += '<button type="button" class="' + cls + '" data-ha-key="' + k + '" aria-label="' + E(label) + '"><b>' + d + '</b>' + badge + '<span class="ha-tagline">' + (tag ? '<small>' + E(tag) + '</small>' : '') + chip + '</span></button>';
     }
     $('.ha-grid', cal.root).innerHTML = html;
+  }
+
+  function renderSide() {
+    var st = S(), story = st.campaignDate || '2000-04-17', sel = cal.sel || story, info = dayInfo(sel);
+    /* contagem regressiva do prazo mais próximo */
+    var dls = deadlines(story), box = $('.ha-dl', cal.root);
+    if (!dls.length) { box.hidden = true; box.innerHTML = ''; }
+    else {
+      var dl = dls[0], w = dlWords(dl.days), dd = parse(dl.key), pct = dlProgress(dl, story);
+      box.hidden = false;
+      box.classList.toggle('urgent', dl.days <= 2);
+      box.innerHTML = '<button type="button" class="ha-dl-card" data-ha-go="' + dl.key + '">' +
+        '<span class="ha-dl-k"><i>⏳</i>PRAZO</span>' +
+        '<b class="ha-dl-name">' + E(dl.name) + '</b>' +
+        '<span class="ha-dl-count"><strong>' + w.n + '</strong><em>' + w.l + '</em></span>' +
+        '<i class="ha-dl-bar"><i style="width:' + pct + '%"></i></i>' +
+        '<small>até ' + dd.getDate() + '/' + (dd.getMonth() + 1) + ' · ' + WEEK[dd.getDay()] + (dl.note ? ' — ' + E(dl.note.split('\n')[0].slice(0, 60)) : '') + '</small></button>' +
+        (dls.length > 1 ? '<div class="ha-dl-more">' + dls.slice(1, 4).map(function (x) { return '<button type="button" data-ha-go="' + x.key + '"><b>' + (x.days === 0 ? 'HOJE' : 'D-' + x.days) + '</b><span>' + E(x.name) + '</span></button>'; }).join('') + '</div>' : '');
+    }
+
+    var soon = upcoming(story, 4);
+    $('.ha-soon', cal.root).innerHTML = '<span class="ha-k">EM BREVE</span>' + (soon.length ? soon.map(function (s) {
+      return '<button type="button" class="ha-soon-row" data-ha-go="' + s.k + '"><b style="color:' + s.c + '">' + s.dt.getDate() + '/' + (s.dt.getMonth() + 1) + '</b><span>' + (s.ic ? '<i style="color:' + s.c + '">' + s.ic + '</i> ' : '') + E(s.name) + '</span><em>' + (s.i === 0 ? 'hoje' : s.i === 1 ? 'amanhã' : 'em ' + s.i + 'd') + '</em></button>';
+    }).join('') : '<p>Nada marcado nas próximas semanas.</p>');
+
+    var cur = info.mark ? mtype(info.mark) : cal.mtype;
+    cal.root.querySelectorAll('[data-ha-mtype]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.haMtype === cur)); });
+    var rel = diff(story, sel);
+    $('.ha-mhint', cal.root).textContent = cur === 'deadline'
+      ? (rel < 0 ? 'Este prazo já passou na história.' : 'Prazo: aparece com contagem regressiva no topo da agenda e na barra de baixo.')
+      : cur === 'meet' ? 'Encontro: um compromisso com alguém neste dia.' : cur === 'remind' ? 'Lembrete: algo para não esquecer.' : 'Nota: qualquer anotação para este dia.';
   }
 
   function renderCal(animate) {
@@ -263,24 +360,48 @@
     var dayLabel = String(sdt.getDate()).padStart(2, '0') + ' ' + MONTHS[sdt.getMonth()].slice(0, 3) + ' ' + sdt.getFullYear();
     if (info.holiday) infoHtml = '<span class="ha-k">FERIADO · ' + dayLabel + '</span><b>' + E(info.holiday.name) + '</b><p>' + E(info.holiday.desc || '') + '</p>';
     else if (info.events.length) infoHtml = '<span class="ha-k">' + (info.events[0].kind === 'history' ? 'NA HISTÓRIA' : 'EVENTO') + ' · ' + dayLabel + '</span><b>' + E(info.events[0].name) + '</b><p>' + E(info.events[0].desc || '') + '</p>';
-    else if (seasonal.length) infoHtml = '<span class="ha-k">ESTAÇÃO</span><b>' + E(seasonal[0].title) + '</b><p>' + E(seasonal[0].desc) + '</p>';
+    else if (seasonal.length) infoHtml = '<span class="ha-k">ESTAÇÃO · ' + dayLabel + '</span><b>' + E(seasonal[0].title) + '</b><p>' + E(seasonal[0].desc) + '</p>';
     else infoHtml = '<span class="ha-k">' + dayLabel + '</span><b>Dia comum</b><p>Nenhum feriado ou evento registrado para esta data.</p>';
+    if (info.mark) { var T = MT[mtype(info.mark)]; infoHtml += '<div class="ha-info-mark" style="--mc:' + T.c + '"><i>' + T.ic + '</i><span><small>' + T.label.toUpperCase() + '</small>' + E(info.mark.name) + '</span></div>'; }
     infoHtml += '<button type="button" class="ha-pin" data-ha-pin aria-pressed="' + (st.pinnedDate === sel) + '">' + (st.pinnedDate === sel ? 'Data fixada' : 'Fixar este dia') + '</button>';
     $('.ha-info', cal.root).innerHTML = infoHtml;
-
-    var soon = upcoming(story, 3);
-    $('.ha-soon', cal.root).innerHTML = '<span class="ha-k">EM BREVE</span>' + (soon.length ? soon.map(function (s) {
-      return '<div class="ha-soon-row"><b style="color:' + s.c + '">' + s.dt.getDate() + '/' + (s.dt.getMonth() + 1) + '</b><span>' + E(s.name) + '</span></div>';
-    }).join('') : '<p>Nada marcado nas próximas semanas.</p>');
 
     var area = $('.ha-note', cal.root);
     if (document.activeElement !== area) {
       var m = info.mark;
       area.value = m ? m.name + (m.note ? '\n' + m.note : '') : '';
     }
-    $('.ha-note-label span', cal.root).textContent = sel === story ? '· HOJE' : '· ' + dayLabel;
+    $('.ha-note-k span', cal.root).textContent = sel === story ? '· HOJE' : '· ' + dayLabel;
+    renderSide(); renderDeck();
 
     if (animate) enter(cal.root.querySelectorAll('.ha-cell:not(.empty)'));
+  }
+
+  /* ======================================================
+     BARRA DE BAIXO — data em estilo cartaz + prazo
+     ====================================================== */
+  var MON3 = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+  function renderDeck() {
+    var st = S(), story = st.campaignDate || '2000-04-17', sd = parse(story);
+    var date = document.getElementById('footerDate');
+    if (date) date.innerHTML = '<i class="dk-dn">' + sd.getDate() + '</i><i class="dk-dm">' + MON3[sd.getMonth()] + '<br>' + sd.getFullYear() + '</i>';
+    var per = document.getElementById('footerPeriod'), t = st.time || 'afternoon';
+    if (per) per.innerHTML = (t === 'morning' ? SUN : t === 'night' ? MOON : DUSK) + { morning: 'MANHÃ', afternoon: 'TARDE', night: 'NOITE' }[t];
+    var day = document.querySelector('#phobiaDeckBar .deck-day');
+    if (!day) return;
+    var chip = day.querySelector('.deck-dl');
+    if (!chip) {
+      chip = el('button', 'deck-dl');
+      chip.type = 'button';
+      chip.addEventListener('click', function () { call('switchPage', 'calendarPage'); var k = chip.dataset.k; if (k) setTimeout(function () { goTo(k, true); }, 60); });
+      day.appendChild(chip);
+    }
+    var dl = deadlines(story)[0];
+    if (!dl) { chip.hidden = true; chip.dataset.k = ''; return; }
+    chip.hidden = false; chip.dataset.k = dl.key;
+    chip.classList.toggle('urgent', dl.days <= 2);
+    chip.title = 'Prazo: ' + dl.name + ' — abrir na agenda';
+    chip.innerHTML = '<i>⏳</i><b>' + (dl.days === 0 ? 'HOJE' : dl.days) + '</b><span><small>' + (dl.days === 0 ? 'ÚLTIMO DIA' : dl.days === 1 ? 'DIA RESTANTE' : 'DIAS RESTANTES') + '</small>' + E(dl.name) + '</span>';
   }
 
   /* ======================================================
@@ -493,13 +614,14 @@
 
   function init() {
     document.body.classList.add('hud-pages');
-    renderGuide(false); renderCal(false); renderHero(false);
+    renderGuide(false); renderCal(false); renderHero(false); renderDeck();
     layoutPersona(); noAutofill();
     setTimeout(noAutofill, 1500);
     wrap('renderSummaries', function () { renderGuide(false); });
     wrap('renderCalendar', function () { if (cal.root) renderCal(false); });
     wrap('setCampaignDate', function () { cal.sel = S().campaignDate; renderCal(false); });
     wrap('setTime', function () { renderCal(false); });
+    wrap('updateCompactTaskbar', function () { renderDeck(); });
     wrap('renderCharacterSheet', function () { renderHero(false); layoutPersona(); ABIL.forEach(renderAbility); });
     wrap('hydrateCharacterSheet', function () { ABIL.forEach(renderAbility); noAutofill(); });
     wrap('renderDistricts', function () { if (guide.root) renderGuide(false); });
