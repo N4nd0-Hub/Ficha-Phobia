@@ -141,3 +141,38 @@ body.hs-calm #characterPage :is(.bn-node,.bn-lines line,.bn-me .bn-face,.bn-star
 
 /* texto escuro garantido sobre fundos claros/coloridos (alguns temas pintam <b> de branco) */
 body.hud #characterPage:not(#_z) :is(.bn-me b,.bn-node.on .bn-label b,.bn-node.on .bn-label small,.bn-tarot-name b,.bn-tarot-name small,.bn-tarot-rank b,.bn-tarot-rank small,.bn-rank,.bn-add,.bn-ru-band b,.bn-ru-band small){color:#0d0c10!important;-webkit-text-fill-color:#0d0c10}
+
+/* ---------- rede v2: área segura, nada cortado ---------- */
+#characterPage .bn-map{height:clamp(420px,44vw,560px);border:4px solid var(--bk);background:
+  radial-gradient(circle,color-mix(in srgb,var(--bp) 7%,transparent) 1px,transparent 1.6px) 0 0/11px 11px,
+  radial-gradient(ellipse at 50% 50%,color-mix(in srgb,var(--hud-acc,#ef2b97) 22%,transparent),transparent 60%),
+  linear-gradient(160deg,color-mix(in srgb,var(--hud-acc2,#6ce6ff) 8%,var(--bk)),var(--bk) 55%)}
+#characterPage .bn-stage{position:absolute;inset:92px 120px 104px;z-index:2}
+#characterPage .bn-burst{position:absolute;left:50%;top:50%;width:150vmax;height:150vmax;transform:translate(-50%,-50%);pointer-events:none;opacity:.16;
+  background:repeating-conic-gradient(from 0deg,var(--hud-acc,#ef2b97) 0 5deg,transparent 5deg 15deg);
+  -webkit-mask:radial-gradient(circle,#000 0,transparent 32%);mask:radial-gradient(circle,#000 0,transparent 32%);animation:bnSpin 60s linear infinite}
+@keyframes bnSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#characterPage .bn-ring{position:absolute;left:50%;top:50%;width:min(62%,560px);aspect-ratio:1.6;transform:translate(-50%,-50%) rotate(-6deg);border:2px dashed color-mix(in srgb,var(--bp) 22%,transparent);border-radius:50%;pointer-events:none}
+#characterPage .bn-corner{position:absolute;z-index:1;font:400 clamp(18px,2.2vw,30px)/.9 var(--hud-display,"Archivo Black"),sans-serif;font-style:italic;letter-spacing:-1px;color:color-mix(in srgb,var(--bp) 12%,transparent);pointer-events:none}
+#characterPage .bn-corner.tl{left:18px;top:16px}
+#characterPage .bn-corner.br{right:18px;bottom:14px;text-align:right}
+#characterPage .bn-node .bn-face{width:72px;height:72px}
+#characterPage .bn-node.on .bn-face{width:86px;height:86px}
+#characterPage .bn-label{max-width:170px;padding:3px 10px;transform:rotate(-3deg);box-shadow:3px 3px 0 var(--t)}
+#characterPage .bn-label b{font-size:13px;max-width:160px}
+#characterPage .bn-label small{max-width:160px}
+#characterPage .bn-rank{top:-4px;right:-14px;min-width:30px;height:30px}
+#characterPage .bn-me .bn-face{width:110px;height:110px}
+#characterPage .bn-me b{font-size:15px;padding:4px 12px 3px;box-shadow:3px 3px 0 var(--hud-acc,#ef2b97)}
+@media (max-width:760px){
+  #characterPage .bn-map{height:440px}
+  #characterPage .bn-stage{inset:70px 54px 84px}
+  #characterPage .bn-node .bn-face{width:52px;height:52px}
+  #characterPage .bn-node.on .bn-face{width:62px;height:62px}
+  #characterPage .bn-me .bn-face{width:76px;height:76px}
+  #characterPage .bn-label{max-width:104px;padding:2px 6px}
+  #characterPage .bn-label b{font-size:11px;max-width:96px}
+  #characterPage .bn-corner{display:none}
+}
+@media (prefers-reduced-motion:reduce){#characterPage .bn-burst{animation:none}}
+body.hs-calm #characterPage .bn-burst{animation:none}

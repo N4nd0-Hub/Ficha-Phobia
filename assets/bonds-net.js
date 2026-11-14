@@ -28,12 +28,12 @@
     var sheet = (typeof state !== 'undefined' && state.charSheet) || {};
     var me = (sheet.profile && (sheet.profile.codename || sheet.profile.name)) || 'Você';
     var n = items.length, nodes = '', lines = '';
-    var ring2 = n > 8;
+    var ring2 = n > 12;
     items.forEach(function (b, i) {
       var inner = ring2 && i % 2 === 1;
-      var a = (i / n) * Math.PI * 2 - Math.PI / 2;
+      var a = n <= 2 ? (i / n) * Math.PI * 2 : ((i + 0.5) / n) * Math.PI * 2 - Math.PI / 2;
       var small = window.innerWidth < 760;
-      var rx = inner ? 24 : (small ? 36 : 40), ry = inner ? 26 : (small ? 33 : 38);
+      var rx = inner ? 27 : (small ? 44 : 46), ry = inner ? 25 : (small ? 42 : 44);
       var x = 50 + Math.cos(a) * rx, y = 50 + Math.sin(a) * ry, L = lv(b), t = TONES[i % TONES.length];
       lines += '<line x1="50" y1="50" x2="' + x.toFixed(2) + '" y2="' + y.toFixed(2) + '" style="--t:' + t + ';--w:' + (0.25 + L * 0.09).toFixed(2) + ';--o:' + (0.25 + L * 0.075).toFixed(2) + '" class="' + (b.id === current ? 'on' : '') + (L >= 10 ? ' max' : '') + '"/>';
       nodes += '<button type="button" class="bn-node' + (b.id === current ? ' on' : '') + (L >= 10 ? ' max' : '') + '" data-bond-select="' + E(b.id) + '" style="left:' + x.toFixed(2) + '%;top:' + y.toFixed(2) + '%;--t:' + t + ';--d:' + (i * 50) + 'ms" aria-pressed="' + (b.id === current) + '" aria-label="' + E((b.name || 'Novo vínculo') + ', Rank ' + L) + '">' +
@@ -42,7 +42,8 @@
         '<span class="bn-label"><b>' + E(b.name || 'Novo vínculo') + '</b><small>' + E(roman(b)) + ' · ' + E(arcName(b)) + '</small></span></button>';
     });
     var center = '<div class="bn-me"><span class="bn-face">' + (okImg(sheet.photoData) || /^data:image/.test(String(sheet.photoData || '')) ? '<img src="' + E(sheet.photoData) + '" alt="">' : '<i>★</i>') + '</span><b>' + E(me) + '</b></div>';
-    return '<div class="bn-map"><svg class="bn-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + lines + '</svg>' + center + nodes +
+    return '<div class="bn-map"><div class="bn-burst" aria-hidden="true"></div><div class="bn-ring" aria-hidden="true"></div><span class="bn-corner tl" aria-hidden="true">SOCIAL<br>LINK</span><span class="bn-corner br" aria-hidden="true">' + n + (n === 1 ? ' VÍNCULO' : ' VÍNCULOS') + '</span>' +
+      '<div class="bn-stage"><svg class="bn-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + lines + '</svg>' + center + nodes + '</div>' +
       (n ? '' : '<p class="bn-empty">Ninguém por perto ainda. Crie o primeiro vínculo e ele aparece aqui, ligado a você.</p>') + '</div>';
   }
 

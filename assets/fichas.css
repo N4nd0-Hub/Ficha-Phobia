@@ -1,0 +1,85 @@
+/* PERSONA // PHOBIA — fichas.css  (tela "Quem vai jogar?") */
+.fx-btn{position:relative;width:46px;height:40px;margin-left:8px;padding:0;border:0;background:none;cursor:pointer;flex:none}
+.fx-btn i{position:absolute;left:8px;top:6px;width:24px;height:30px;border:2px solid var(--hud-black,#0d0c10);background:var(--hud-paper,#fff0d8);border-radius:3px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.fx-btn i:nth-child(1){transform:rotate(-14deg) translateX(-3px);background:var(--hud-acc2,#6ce6ff)}
+.fx-btn i:nth-child(2){transform:rotate(-4deg);background:var(--hud-acc,#ef2b97)}
+.fx-btn i:nth-child(3){transform:rotate(8deg) translateX(5px)}
+.fx-btn:hover i:nth-child(1){transform:rotate(-24deg) translateX(-8px)}
+.fx-btn:hover i:nth-child(3){transform:rotate(18deg) translateX(10px)}
+.fx-btn span{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%) rotate(-4deg);padding:1px 4px;background:var(--hud-black,#0d0c10);color:var(--hud-paper,#fff0d8);font:800 8.5px/1.2 "Barlow Condensed",Arial,sans-serif;letter-spacing:1px;white-space:nowrap}
+body:not(.hud) .fx-btn{position:fixed;right:14px;bottom:86px;z-index:900}
+body.fx-lock{overflow:hidden}
+.fx-root{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;opacity:0;transition:opacity .22s}
+.fx-root.in{opacity:1}
+.fx-root[hidden]{display:none}
+.fx-bg{position:absolute;inset:0;background:
+  radial-gradient(circle,rgba(255,255,255,.08) 1px,transparent 1.6px) 0 0/10px 10px,
+  linear-gradient(115deg,transparent 0 38%,color-mix(in srgb,var(--hud-acc,#ef2b97) 70%,transparent) 38% 55%,transparent 55%),
+  rgba(8,7,12,.94)}
+.fx-panel{position:relative;width:min(1180px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:26px 28px 30px;background:var(--hud-bg,#141526);color:var(--hud-paper,#fff0d8);border:4px solid var(--hud-black,#0d0c10);box-shadow:12px 12px 0 var(--hud-acc,#ef2b97);transform:translateY(16px) rotate(-.6deg);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.fx-root.in .fx-panel{transform:none}
+.fx-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.fx-head small{font:800 12px "Barlow Condensed",Arial,sans-serif;letter-spacing:3px;color:var(--hud-acc2,#6ce6ff)}
+.fx-count{margin-left:8px;padding:2px 8px;background:var(--hud-acc2,#6ce6ff);color:#0d0c10}
+.fx-head h2{margin:6px 0 0;font:400 clamp(34px,5vw,64px)/.95 "Archivo Black","Arial Black",sans-serif;font-style:italic;letter-spacing:-2px;text-shadow:5px 5px 0 var(--hud-black,#0d0c10)}
+.fx-head h2 span{color:var(--hud-acc,#ef2b97)}
+.fx-close{width:44px;height:44px;border:3px solid var(--hud-paper,#fff0d8);background:var(--hud-black,#0d0c10);color:var(--hud-paper,#fff0d8);font:400 18px "Archivo Black",sans-serif;cursor:pointer;transform:rotate(6deg);transition:transform .2s}
+.fx-close:hover{transform:rotate(-6deg) scale(1.08);background:var(--hud-acc,#ef2b97)}
+.fx-hint{margin:12px 0 22px;max-width:760px;font:600 14px/1.45 Barlow,Arial,sans-serif;color:var(--hud-mute,#b9b3c9)}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.fx-card,.fx-new{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;min-height:132px;padding:16px;border:3px solid var(--hud-black,#0d0c10);background:var(--hud-card,#1d1f36);color:inherit;text-align:left;cursor:pointer;box-shadow:6px 6px 0 var(--fa,#ef2b97);transform:rotate(-1deg);animation:fxIn .45s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d);transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
+.fx-card:nth-child(even){transform:rotate(1deg)}
+.fx-card:hover,.fx-card:focus-visible{transform:rotate(0) translateY(-5px);box-shadow:10px 10px 0 var(--fa,#ef2b97);outline:none}
+.fx-card.cur{background:linear-gradient(135deg,color-mix(in srgb,var(--fa) 30%,var(--hud-card,#1d1f36)),var(--hud-card,#1d1f36) 70%)}
+.fx-card.cur::before{content:"ATUAL";position:absolute;top:-12px;left:14px;padding:3px 10px;background:var(--fa);color:#0d0c10;font:400 12px "Archivo Black",sans-serif;letter-spacing:1px;transform:rotate(-4deg)}
+@keyframes fxIn{from{opacity:0;transform:translateY(24px) scale(.9)}}
+.fx-photo{width:96px;height:96px;border:3px solid var(--hud-paper,#fff0d8);background:var(--fa);overflow:hidden;display:grid;place-items:center;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}
+.fx-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.fx-photo span{font:400 44px "Archivo Black",sans-serif;color:#0d0c10}
+.fx-info{display:grid;gap:3px;min-width:0}
+.fx-info small{font:800 10.5px "Barlow Condensed",Arial,sans-serif;letter-spacing:2px;color:var(--fa)}
+.fx-info b{font:400 20px/1.05 "Archivo Black",sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.fx-info em{font:600 13px Barlow,Arial,sans-serif;font-style:normal;color:var(--hud-mute,#b9b3c9)}
+.fx-tags{display:flex;align-items:center;gap:6px;font:700 12px Barlow,Arial,sans-serif}
+.fx-tags i{width:12px;height:12px;border:2px solid var(--hud-paper,#fff0d8);transform:rotate(45deg)}
+.fx-info u{text-decoration:none;font:600 11.5px Barlow,Arial,sans-serif;color:var(--hud-mute,#b9b3c9)}
+.fx-acts{position:absolute;top:8px;right:8px;display:flex;gap:4px;opacity:.55;transition:opacity .15s}
+.fx-card:hover .fx-acts,.fx-card:focus-within .fx-acts{opacity:1}
+.fx-acts button{width:28px;height:28px;border:2px solid var(--hud-paper,#fff0d8);background:var(--hud-black,#0d0c10);color:var(--hud-paper,#fff0d8);cursor:pointer;font:700 13px Arial,sans-serif}
+.fx-acts button:hover{background:var(--fa);color:#0d0c10}
+.fx-acts .x:hover{background:#ff3b4e;color:#fff}
+.fx-new{grid-template-columns:1fr;justify-items:center;text-align:center;border-style:dashed;border-color:var(--hud-paper,#fff0d8);background:transparent;box-shadow:none;--fa:var(--hud-acc2,#6ce6ff);font:inherit}
+.fx-new:hover{background:color-mix(in srgb,var(--hud-acc2,#6ce6ff) 14%,transparent);transform:rotate(0) translateY(-4px)}
+.fx-new b{font:400 40px/1 "Archivo Black",sans-serif;color:var(--hud-acc2,#6ce6ff)}
+.fx-new span{font:400 18px "Archivo Black",sans-serif}
+.fx-new small{font:600 12.5px Barlow,Arial,sans-serif;color:var(--hud-mute,#b9b3c9)}
+.fx-new-form{margin-top:22px;padding:18px;background:var(--hud-black,#0d0c10);border-left:6px solid var(--hud-acc2,#6ce6ff)}
+.fx-new-form label{display:grid;gap:6px;font:800 12px "Barlow Condensed",Arial,sans-serif;letter-spacing:2px;color:var(--hud-mute,#b9b3c9)}
+.fx-new-form input{padding:11px 12px;border:0;border-bottom:3px solid var(--hud-acc2,#6ce6ff);background:var(--hud-card,#1d1f36);color:var(--hud-paper,#fff0d8);font:700 17px Barlow,Arial,sans-serif;letter-spacing:0;outline:none}
+.fx-themes{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.fx-themes button{display:flex;align-items:center;gap:7px;padding:7px 12px;border:2px solid var(--hud-paper,#fff0d8);background:transparent;color:var(--hud-paper,#fff0d8);font:800 12px "Barlow Condensed",Arial,sans-serif;letter-spacing:1px;cursor:pointer;text-transform:uppercase}
+.fx-themes button i{width:12px;height:12px;background:var(--fa);transform:rotate(45deg)}
+.fx-themes button[aria-pressed="true"]{background:var(--fa);color:#0d0c10;border-color:var(--fa);transform:skewX(-8deg)}
+.fx-themes button[aria-pressed="true"] i{background:#0d0c10}
+.fx-new-acts{display:flex;justify-content:flex-end;gap:8px}
+.fx-new-acts button{padding:11px 18px;border:2px solid var(--hud-paper,#fff0d8);background:transparent;color:var(--hud-paper,#fff0d8);font:800 13px "Barlow Condensed",Arial,sans-serif;letter-spacing:1.4px;cursor:pointer}
+.fx-new-acts .go{background:var(--hud-acc,#ef2b97);border-color:var(--hud-acc,#ef2b97);color:#0d0c10;transform:skewX(-8deg);box-shadow:4px 4px 0 var(--hud-paper,#fff0d8)}
+.fx-busy{display:none}
+.fx-root.busy .fx-busy{display:grid;place-items:center;position:absolute;inset:0;background:rgba(8,7,12,.85);font:400 clamp(22px,3vw,34px) "Archivo Black",sans-serif;font-style:italic;color:var(--hud-paper,#fff0d8);letter-spacing:-1px}
+@media (max-width:640px){
+  .fx-panel{padding:18px 14px 20px;box-shadow:6px 6px 0 var(--hud-acc,#ef2b97)}
+  .fx-grid{grid-template-columns:1fr;gap:16px}
+  .fx-card,.fx-new{grid-template-columns:72px minmax(0,1fr);min-height:104px}
+  .fx-photo{width:72px;height:72px}
+  .fx-acts{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){.fx-card,.fx-new{animation:none}}
+.fx-card{padding-top:44px}
+.fx-acts{top:10px;right:10px}
+.fx-menu-btn{display:none}
+body.hud .hud-menu-extra .fx-menu-btn{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 10px;padding:12px 14px;border:0;background:var(--hud-acc2,#6ce6ff);color:#0d0c10;font:400 16px "Archivo Black",sans-serif;letter-spacing:.5px;cursor:pointer;transform:skewX(-6deg);box-shadow:4px 4px 0 var(--hud-paper,#fff0d8)}
+body.hud .hud-menu-extra .fx-menu-btn small{margin-left:auto;font:700 12px Barlow,Arial,sans-serif;letter-spacing:0}
+body.hud .hud-menu-extra .fx-menu-btn span{position:relative;width:22px;height:22px}
+body.hud .hud-menu-extra .fx-menu-btn span i{position:absolute;inset:2px 5px;border:2px solid #0d0c10;background:var(--hud-paper,#fff0d8)}
+body.hud .hud-menu-extra .fx-menu-btn span i:first-child{transform:rotate(-14deg) translateX(-3px);background:var(--hud-acc,#ef2b97)}
+@media (max-width:640px){.fx-new{grid-template-columns:1fr;padding-top:16px}}
