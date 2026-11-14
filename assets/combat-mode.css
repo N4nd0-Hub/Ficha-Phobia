@@ -491,3 +491,10 @@ body.hs-calm #characterPage .cm-enter span::after{animation:none;display:none}
   #characterPage:not(#_z) .sheet-page-tabs .cm-enter b{font-size:15px}
   #characterPage:not(#_z) .sheet-page-tabs .cm-enter span::after{display:none}
 }
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:24px;height:24px;transform:rotate(8deg);filter:drop-shadow(1px 1px 0 rgba(0,0,0,.25))}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter:is(:hover,:focus-visible) i svg{transform:rotate(-25deg) translateY(1px)}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:46px;height:46px}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:19px;height:34px}
+@media (max-width:900px){#characterPage:not(#_z) .sheet-page-tabs .cm-enter i{width:32px;height:32px}#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:13px;height:24px}}
+#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:16px;height:29px;margin-top:2px}
+@media (max-width:900px){#characterPage:not(#_z) .sheet-page-tabs .cm-enter i svg{width:11px;height:20px}}

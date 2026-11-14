@@ -306,7 +306,7 @@
     var nav = document.querySelector('#characterPage .sheet-page-tabs'); if (!nav || document.getElementById('cmEnter')) return;
     var b = document.createElement('button'); b.type = 'button'; b.id = 'cmEnter'; b.className = 'cm-enter';
     b.title = 'Abrir o Modo de Combate';
-    b.innerHTML = '<i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10M4 4h4M4 4v4M13 16l3 3M16 13l3 3M14.5 17.5l3-3M20 4L10 14M20 4h-4M20 4v4M11 16l-3 3M8 13l-3 3M9.5 17.5l-3-3"/></svg></i>' +
+    b.innerHTML = '<i aria-hidden="true"><svg viewBox="0 0 20 36" fill="currentColor"><circle cx="10" cy="2.4" r="2.2"/><rect x="8.7" y="4" width="2.6" height="6" rx=".8"/><path d="M1 9.6c2.6.9 5.6 1.3 9 1.3s6.4-.4 9-1.3l-.9 2.6c-2.6.6-5.3.9-8.1.9s-5.5-.3-8.1-.9z"/><path d="M7.6 13.6h4.8v15.6L10 35.6l-2.4-6.4z"/><path d="M9.5 14.4h1v14.4h-1z" fill="#000" fill-opacity=".3"/></svg></i>' +
       '<span><small>Entrar em</small><b>COMBATE</b></span><em aria-hidden="true">▶</em>';
     b.addEventListener('click', open);
     nav.appendChild(b);
