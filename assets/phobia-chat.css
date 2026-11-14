@@ -41,7 +41,6 @@
 .pm-me > span:not(.pm-av){flex:1;min-width:0;display:grid}
 .pm-me b{overflow:hidden;font:700 13px Tahoma,sans-serif;white-space:nowrap;text-overflow:ellipsis}
 .pm-me small{display:flex;align-items:center;gap:4px;font:11px Tahoma,sans-serif;color:#dbe7ff}
-.pm-me button{padding:2px 6px;border:1px solid #fff;border-radius:3px;background:rgba(255,255,255,.15);color:#fff;font:11px Tahoma,sans-serif;cursor:pointer}
 .pm-scroll{flex:1;min-height:0;overflow:auto;padding:4px}
 .pm-list h5{margin:8px 4px 3px;color:#0a246a;font:700 11px Tahoma,sans-serif}
 .pm-c{position:relative;display:flex;align-items:center;gap:7px;width:100%;padding:4px 6px;border:1px solid transparent;border-radius:2px;background:none;color:#111;text-align:left;cursor:pointer}
@@ -95,3 +94,98 @@
   .pm-main:not(.has-cur) .pm-conv{display:none}
   .pm-back{display:grid;place-items:center}
 }
+
+/* ---------- estilo MSN: cabeçalho, status, lista ---------- */
+.pm-av.xl{width:58px;height:58px;border-width:3px;border-radius:6px}
+.pm-av.xxl{width:96px;height:96px;border-width:3px;border-radius:8px}
+.pm-av.xl b{font-size:24px}.pm-av.xxl b{font-size:40px}
+.pm-list{flex-direction:row}
+.pm-strip{display:flex;flex-direction:column;gap:6px;width:30px;flex:none;padding:62px 3px 6px;background:linear-gradient(90deg,#c9d8f0,#e6eefb);border-right:1px solid #9fb0c8}
+.pm-strip i{display:block;width:24px;height:30px;border:1px solid #9fb0c8;border-left:0;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#fff,#dfe7f4)}
+.pm-strip i::after{content:"";display:block;width:14px;height:14px;margin:7px auto;border-radius:50%}
+.pm-strip .s1::after{background:radial-gradient(circle at 40% 35%,#ffe48a,#e0a812);border-radius:50% 50% 30% 30%}
+.pm-strip .s2::after{background:linear-gradient(135deg,#2a5fd0 0 45%,#e2263b 45%);border-radius:2px}
+.pm-strip .s3::after{background:radial-gradient(circle at 40% 35%,#ff9ac6,#e01f78);clip-path:polygon(50% 100%,0 35%,15% 5%,50% 25%,85% 5%,100% 35%)}
+.pm-strip .s4::after{background:linear-gradient(#ffd34d,#ff9f00);border-radius:2px 2px 4px 4px}
+.pm-strip .s5::after{background:repeating-linear-gradient(90deg,#2fa344 0 3px,transparent 3px 5px);height:12px;border-radius:0}
+.pm-listmain{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.pm-me{position:relative;display:flex;align-items:flex-start;gap:10px;padding:8px 8px 8px 6px;background:linear-gradient(180deg,#fff 0%,#e6eefb 100%);color:#111;border-bottom:1px solid #9fb0c8}
+.pm-me-av{padding:0;border:0;background:none;cursor:pointer}
+.pm-me-av:hover .pm-av{box-shadow:0 0 0 2px #f8b636}
+.pm-me-t{flex:1;min-width:0;display:grid;gap:2px}
+.pm-me-k{color:#7f8fa8;font:11px Tahoma,sans-serif}
+.pm-me-name{display:flex;align-items:baseline;gap:4px;min-width:0}
+.pm-me-name b{overflow:hidden;color:#0a246a;font:700 15px Tahoma,sans-serif;white-space:nowrap;text-overflow:ellipsis}
+.pm-st-btn{flex:none;padding:0 3px;border:1px solid transparent;border-radius:2px;background:none;color:#334;font:11px Tahoma,sans-serif;cursor:pointer}
+.pm-st-btn:hover{border-color:#7f9db9;background:#fff}
+.pm-psm{width:100%;height:20px;padding:0 4px;border:1px solid transparent;background:transparent;color:#334;font:italic 12px Tahoma,sans-serif}
+.pm-psm:hover{border-color:#c3d3f0;background:#fff}
+.pm-psm:focus{outline:none;border-color:#7f9db9;background:#fff;font-style:normal}
+.pm-psm::placeholder{color:#8a96aa}
+.pm-me-mail{display:flex;align-items:center;gap:8px;font:11px Tahoma,sans-serif}
+.pm-mail{color:#334}
+.pm-me-mail button{padding:0;border:0;background:none;color:#0033cc;font:11px Tahoma,sans-serif;text-decoration:underline;cursor:pointer}
+.pm-stmenu{position:absolute;left:70px;top:44px;z-index:5;display:grid;min-width:170px;padding:2px;border:1px solid #808080;background:#fff;box-shadow:3px 3px 6px rgba(0,0,0,.3)}
+.pm-stmenu[hidden]{display:none}
+.pm-stmenu button{display:flex;align-items:center;gap:6px;padding:4px 8px;border:0;background:none;color:#111;font:12px Tahoma,sans-serif;text-align:left;cursor:pointer}
+.pm-stmenu button:hover{background:#316ac5;color:#fff}
+.pm-stmenu button.on{font-weight:700}
+
+/* bonequinho do MSN */
+.pm-buddy{position:relative;display:inline-block;flex:none;width:16px;height:18px}
+.pm-buddy::before{content:"";position:absolute;left:4px;top:0;width:8px;height:8px;border-radius:50%;background:var(--bc);box-shadow:inset -2px -2px 0 rgba(0,0,0,.18)}
+.pm-buddy::after{content:"";position:absolute;left:1px;top:8px;width:14px;height:10px;border-radius:7px 7px 2px 2px;background:var(--bc);box-shadow:inset -3px -2px 0 rgba(0,0,0,.18)}
+.pm-buddy.st-online{--bc:#3ec42e}
+.pm-buddy.st-away{--bc:#3ec42e}
+.pm-buddy.st-busy{--bc:#3ec42e}
+.pm-buddy.st-offline{--bc:#a8b0bc}
+.pm-buddy.grp{--bc:#2a8fe0}
+.pm-buddy.st-away{--sb:#f0a020}
+.pm-buddy.st-busy{--sb:#e2263b}
+
+.pm-list h5{margin:8px 4px 2px;color:#0a246a;font:700 12px Tahoma,sans-serif}
+.pm-crow{position:relative;display:flex;align-items:center}
+.pm-c{gap:5px;padding:2px 4px}
+.pm-c-t{display:block!important;overflow:hidden;color:#111;font:12px Tahoma,sans-serif;white-space:nowrap;text-overflow:ellipsis}
+.pm-c-t b{display:inline!important;font-weight:400!important}
+.pm-c.unread .pm-c-t b{font-weight:700!important}
+.pm-c-t i{color:#556}
+.pm-c-t small{display:inline!important;color:#667}
+.pm-c.off .pm-c-t,.pm-c.off .pm-c-t i{color:#8a92a0}
+.pm-c.on .pm-c-t,.pm-c.on .pm-c-t i,.pm-c.on .pm-c-t small{color:#fff}
+.pm-npc{color:#e0a812;font-size:10px}
+.pm-info{position:absolute;right:4px;display:none;padding:0 5px;height:17px;border:1px solid #7f9db9;border-radius:2px;background:#fff;color:#0033cc;font:10px Tahoma,sans-serif;cursor:pointer}
+.pm-crow:hover .pm-info,.pm-info:focus-visible{display:block}
+.pm-crow:hover .pm-n{display:none}
+.pm-head-who{display:flex;align-items:center;gap:8px;min-width:0;padding:0;border:0;background:none;text-align:left;cursor:pointer}
+.pm-head-who > span{min-width:0;display:grid}
+.pm-head-who:hover b{text-decoration:underline}
+
+/* perfil */
+.pm-body{position:relative}
+.pm-prof{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:12px;background:rgba(20,35,70,.35)}
+.pm-prof-card{display:flex;flex-direction:column;width:min(460px,100%);max-height:100%;overflow:auto;background:#ece9d8;border:2px solid #0831d9;border-radius:6px 6px 0 0;box-shadow:5px 7px 16px rgba(0,0,0,.45)}
+.pm-prof-card .cb-win-t{flex:none}
+.pm-prof-top{display:flex;gap:12px;align-items:center;padding:12px}
+.pm-prof-top div{display:grid;gap:3px;min-width:0}
+.pm-prof-top b{color:#0a246a;font:700 18px Tahoma,sans-serif}
+.pm-prof-top span{display:flex;align-items:center;gap:5px;font:12px Tahoma,sans-serif;color:#333}
+.pm-prof-top em{color:#556;font:italic 12px Tahoma,sans-serif}
+.pm-prof h6{margin:0 12px 4px;padding:3px 6px;border-bottom:1px solid #c8c4b0;color:#0a246a;font:700 13px Tahoma,sans-serif}
+.pm-pbox{margin:0 12px;min-height:90px;max-height:260px;overflow:auto;padding:12px;border:2px inset #d4d0c8;background:var(--pbg,#e9e4d6);color:var(--pfg,#111);font:14px/1.6 var(--pff,Tahoma),sans-serif;letter-spacing:.5px;overflow-wrap:anywhere}
+.pm-pbox a{color:#46a0ff;text-decoration:underline}
+.pm-pbox i{opacity:.6}
+.pm-prof-act{display:flex;justify-content:flex-end;gap:6px;padding:12px}
+.pm-prof-form{display:grid;gap:8px;padding:12px;font:12px Tahoma,sans-serif;color:#222}
+.pm-prof-form label{display:grid;gap:3px}
+.pm-prof-form input:not([type=color]),.pm-prof-form textarea,.pm-prof-form select{padding:3px 6px;border:1px solid #7f9db9;background:#fff;color:#000;font:13px Tahoma,sans-serif}
+.pm-prof-form textarea{resize:vertical}
+.pm-prof-form input[type=color]{width:52px;height:26px;padding:1px;border:1px solid #7f9db9}
+.pm-prof-row{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+.pm-prof-form .pm-pbox{margin:0;min-height:70px}
+.pm-prof-form .pm-prof-act{padding:4px 0 0}
+.pm-buddy b{position:absolute;right:-3px;bottom:-1px;z-index:1;width:9px;height:9px;border:1.5px solid #fff;border-radius:50%;background:var(--sb)}
+#cbRoot .pm-me .pm-st-btn{height:auto;padding:0 3px;border:1px solid transparent;border-radius:2px;background:none;color:#334;font:11px Tahoma,sans-serif}
+#cbRoot .pm-me .pm-st-btn:hover{border-color:#7f9db9;background:#fff}
+#cbRoot .pm-me .pm-me-mail button{height:auto;border:0;background:none;color:#0033cc}
+.pm-me-k{color:#5f6f88}

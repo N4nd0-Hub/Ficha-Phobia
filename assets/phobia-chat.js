@@ -61,6 +61,8 @@
     win.addEventListener('click', onClick);
     win.addEventListener('keydown', onKey);
     win.addEventListener('input', onInput);
+    win.addEventListener('focusout', function (e) { if (e.target.classList && e.target.classList.contains('pm-psm')) savePsm(e.target); });
+    win.addEventListener('mousedown', function (e) { var m = $('.pm-stmenu', win); if (m && !m.hidden && !e.target.closest('.pm-stmenu,[data-pm="stmenu"]')) m.hidden = true; if (e.target.matches && e.target.matches('.pm-prof')) { S.prof = null; S.profEdit = false; render(); } });
     paintBadge();
     return true;
   }
@@ -88,7 +90,10 @@
     if (!S.me) { body.innerHTML = '<div class="pm-wait"><i class="pm-ic big"></i><p>Conectando ao servidor…</p></div>'; return; }
     var keepScroll = $('.pm-msgs', body), atBottom = keepScroll && keepScroll.scrollHeight - keepScroll.scrollTop - keepScroll.clientHeight < 40;
     var draft = $('.pm-input', body), dv = draft ? draft.value : '', focused = draft && document.activeElement === draft;
-    body.innerHTML = '<div class="pm-main' + (S.cur ? ' has-cur' : '') + '">' + listHTML() + convHTML() + '</div>';
+    var psm = $('.pm-psm', body), psmF = psm && document.activeElement === psm, psmV = psm && psm.value;
+    var pf = $('.pm-prof-form', body); if (pf && S.profEdit) return; /* não recria enquanto edita o perfil */
+    body.innerHTML = '<div class="pm-main' + (S.cur ? ' has-cur' : '') + '">' + listHTML() + convHTML() + '</div>' + profileHTML();
+    if (psmF) { var np = $('.pm-psm', body); np.value = psmV; np.focus(); }
     var nd = $('.pm-input', body); if (nd) { nd.value = dv; if (focused) nd.focus(); }
     var ms = $('.pm-msgs', body); if (ms && (atBottom || !keepScroll || S._jump)) { ms.scrollTop = ms.scrollHeight; S._jump = false; }
   }
@@ -129,29 +134,71 @@
     return null;
   }
   function badge(t) { return t && t.unread ? '<em class="pm-n">' + t.unread + '</em>' : ''; }
+  var STATUS = { online: ['Online', '#3ec42e'], away: ['Ausente', '#f0a020'], busy: ['Ocupado', '#e2263b'], invisible: ['Aparecer offline', '#9aa'], offline: ['Offline', '#9aa'] };
+  function stOf(x, isNpc) { if (isNpc) return x.status || 'online'; return x.online ? (x.status || 'online') : 'offline'; }
+  function buddy(st) { return '<i class="pm-buddy st-' + st + '" aria-hidden="true">' + (st === 'away' || st === 'busy' ? '<b></b>' : '') + '</i>'; }
+  var FONTS = { pixel: 'Silkscreen,"Press Start 2P",monospace', normal: 'Tahoma,Verdana,sans-serif', mono: '"Lucida Console",Consolas,monospace', hand: 'Caveat,"Comic Sans MS",cursive' };
+  function linkify(t) { return E(t).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'); }
   function listHTML() {
     var me = S.me, groups = S.threads.filter(function (t) { return t.kind === 'group'; });
-    var ps = Object.keys(S.players).map(function (k) { return S.players[k]; }).sort(function (a, b) { return (b.online - a.online) || a.name.localeCompare(b.name); });
-    var ns = Object.keys(S.npcs).map(function (k) { return S.npcs[k]; }).sort(function (a, b) { return a.name.localeCompare(b.name); });
-    function row(key, av, name, sub, t, online) {
-      return '<button type="button" class="pm-c' + (S.cur === key ? ' on' : '') + (t && t.unread ? ' unread' : '') + '" data-pm-open="' + E(key) + '">' + av +
-        '<span class="pm-c-t"><b>' + E(name) + '</b><small>' + sub + '</small></span>' + (online != null ? '<i class="pm-dot' + (online ? ' on' : '') + '"></i>' : '') + badge(t) + '</button>';
+    var all = Object.keys(S.players).map(function (k) { var p = S.players[k]; return { key: 'p:' + p.id, x: p, npc: false, st: stOf(p), t: threadFor('dm', p.id) }; })
+      .concat(Object.keys(S.npcs).map(function (k) { var n = S.npcs[k]; return { key: 'n:' + n.id, x: n, npc: true, st: stOf(n, true), t: threadFor('npc', n.id) }; }))
+      .sort(function (a, b) { return a.x.name.localeCompare(b.x.name); });
+    var on = all.filter(function (r) { return r.st !== 'offline'; }), off = all.filter(function (r) { return r.st === 'offline'; });
+    function row(r) {
+      var st = r.st, msg = r.x.status_msg;
+      return '<div class="pm-crow"><button type="button" class="pm-c' + (S.cur === r.key ? ' on' : '') + (r.t && r.t.unread ? ' unread' : '') + (st === 'offline' ? ' off' : '') + '" data-pm-open="' + E(r.key) + '">' + buddy(st) +
+        '<span class="pm-c-t"><b>' + E(r.x.name) + '</b>' + (msg ? ' <i>- ' + E(msg) + '</i>' : '') + (st !== 'online' && st !== 'offline' ? ' <small>(' + STATUS[st][0] + ')</small>' : '') + (r.npc ? ' <span class="pm-npc" title="Contato">★</span>' : '') + '</span>' + badge(r.t) + '</button>' +
+        '<button type="button" class="pm-info" data-pm-prof="' + E(r.key) + '" title="Ver perfil de ' + E(r.x.name) + '">perfil</button></div>';
     }
-    var h = '<aside class="pm-list"><header class="pm-me">' + avatar(S.avatars[me.id] || me.avatar, me.name, me.color, 'lg') +
-      '<span><b>' + E(me.name) + '</b><small><i class="pm-dot on"></i> Online</small></span><button type="button" data-pm="logout" title="Sair desta conta">Sair</button></header>';
+    var myst = me.status || 'online', unread = totalUnread();
+    var h = '<aside class="pm-list"><nav class="pm-strip" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="s4"></i><i class="s5"></i></nav><div class="pm-listmain">' +
+      '<header class="pm-me"><button type="button" class="pm-me-av" data-pm-prof="me" title="Meu perfil">' + avatar(S.avatars[me.id] || me.avatar, me.name, me.color, 'xl') + '</button>' +
+      '<div class="pm-me-t"><small class="pm-me-k">Meu status:</small><div class="pm-me-name"><b>' + E(me.name) + '</b><button type="button" class="pm-st-btn" data-pm="stmenu" aria-haspopup="true">(' + STATUS[myst][0] + ') ▾</button></div>' +
+      '<input class="pm-psm" maxlength="80" placeholder="&lt;Digite uma mensagem pessoal&gt;" value="' + E(me.status_msg || '') + '" aria-label="Mensagem pessoal">' +
+      '<div class="pm-me-mail"><span class="pm-mail">✉ (' + unread + ')</span><button type="button" data-pm-prof="me">Meu perfil</button><button type="button" data-pm="logout">Sair</button></div></div>' +
+      '<div class="pm-stmenu" hidden>' + ['online', 'away', 'busy', 'invisible'].map(function (k) { return '<button type="button" data-pm-st="' + k + '"' + (k === myst ? ' class="on"' : '') + '>' + buddy(k === 'invisible' ? 'offline' : k) + STATUS[k][0] + '</button>'; }).join('') + '</div></header>';
     h += '<div class="pm-scroll">';
-    if (groups.length) h += '<h5>Grupos (' + groups.length + ')</h5>' + groups.map(function (t) { return row('g:' + t.id, '<span class="pm-av grp"><b>☰</b></span>', t.title || 'Grupo', (t.members.length) + ' participantes', t); }).join('');
-    h += '<h5>Jogadores (' + ps.filter(function (p) { return p.online; }).length + '/' + ps.length + ' online)</h5>' +
-      (ps.length ? ps.map(function (p) { return row('p:' + p.id, avatar(S.avatars[p.id] || p.avatar, p.name, p.color), p.name, p.online ? 'Online' : 'Offline', threadFor('dm', p.id), p.online); }).join('') : '<p class="pm-empty">Nenhum outro jogador.</p>');
-    h += '<h5>Contatos (' + ns.length + ')</h5>' + (ns.length ? ns.map(function (n) { return row('n:' + n.id, avatar(S.avatars['n' + n.id] || n.avatar, n.name, n.color), n.name, E(n.bio ? n.bio.slice(0, 40) : 'contato'), threadFor('npc', n.id)); }).join('') : '<p class="pm-empty">Nenhum contato liberado ainda.</p>');
-    return h + '</div></aside>';
+    if (groups.length) h += '<h5>▾ Grupos (' + groups.length + ')</h5>' + groups.map(function (t) {
+      return '<div class="pm-crow"><button type="button" class="pm-c' + (S.cur === 'g:' + t.id ? ' on' : '') + (t.unread ? ' unread' : '') + '" data-pm-open="g:' + t.id + '"><i class="pm-buddy grp"></i><span class="pm-c-t"><b>' + E(t.title || 'Grupo') + '</b> <i>- ' + t.members.length + ' participantes</i></span>' + badge(t) + '</button></div>';
+    }).join('');
+    h += '<h5>▾ Online (' + on.length + ')</h5>' + (on.length ? on.map(row).join('') : '<p class="pm-empty">Ninguém online agora.</p>');
+    h += '<h5>▾ Offline (' + off.length + ')</h5>' + (off.length ? off.map(row).join('') : '');
+    if (!all.length) h += '<p class="pm-empty">Nenhum contato ainda. O Narrador libera os contatos.</p>';
+    return h + '</div></div></aside>';
+  }
+  function profInfo(key) {
+    if (key === 'me') return { me: true, x: S.me, st: S.me.status || 'online', av: S.avatars[S.me.id] || S.me.avatar, text: S.me.profile };
+    var k = key.slice(0, 1), id = key.slice(2);
+    if (k === 'p') { var p = S.players[id]; return p && { x: p, st: stOf(p), av: S.avatars[id] || p.avatar, text: p.profile }; }
+    if (k === 'n') { var n = S.npcs[id]; return n && { x: n, st: stOf(n, true), av: S.avatars['n' + id] || n.avatar, text: n.bio, npc: true }; }
+    return null;
+  }
+  function profileHTML() {
+    if (!S.prof) return '';
+    var P = profInfo(S.prof); if (!P) return '';
+    var x = P.x, bg = x.profile_bg || '#e9e4d6', fg = x.profile_fg || '#111', font = x.profile_font || 'normal';
+    if (S.profEdit && P.me) {
+      return '<div class="pm-prof"><div class="pm-prof-card edit"><div class="cb-win-t"><span>Editar meu perfil</span><button type="button" data-pm="profclose">×</button></div>' +
+        '<form class="pm-prof-form">' +
+        '<label>Mensagem pessoal<input name="msg" maxlength="80" value="' + E(x.status_msg || '') + '" placeholder="Ex.: feliz que é sexta"></label>' +
+        '<label>Perfil pessoal (humor, música, frases…)<textarea name="text" rows="6" maxlength="1200" placeholder="current mood: …">' + E(x.profile || '') + '</textarea></label>' +
+        '<div class="pm-prof-row"><label>Fundo<input type="color" name="bg" value="' + E(bg) + '"></label><label>Texto<input type="color" name="fg" value="' + E(fg) + '"></label>' +
+        '<label>Letra<select name="font">' + [['pixel', 'Pixel'], ['normal', 'Normal'], ['mono', 'Máquina'], ['hand', 'À mão']].map(function (f) { return '<option value="' + f[0] + '"' + (f[0] === font ? ' selected' : '') + '>' + f[1] + '</option>'; }).join('') + '</select></label></div>' +
+        '<small>Prévia</small><div class="pm-pbox prev" style="--pbg:' + E(bg) + ';--pfg:' + E(fg) + ';--pff:' + E(FONTS[font]) + '">' + (x.profile ? linkify(x.profile) : '<i>(vazio)</i>') + '</div>' +
+        '<div class="pm-prof-act"><button type="button" class="pm-btn" data-pm="profcancel">Cancelar</button><button type="submit" class="pm-btn go">Salvar</button></div></form></div></div>';
+    }
+    return '<div class="pm-prof" data-pm-bg><div class="pm-prof-card"><div class="cb-win-t"><span>Perfil de ' + E(x.name) + '</span><button type="button" data-pm="profclose">×</button></div>' +
+      '<div class="pm-prof-top">' + avatar(P.av, x.name, x.color, 'xxl') + '<div><b>' + E(x.name) + '</b><span>' + buddy(P.st) + ' ' + STATUS[P.st][0] + (P.npc ? ' · contato' : '') + '</span>' + (x.status_msg ? '<em>“' + E(x.status_msg) + '”</em>' : '') + '</div></div>' +
+      '<h6>Perfil pessoal</h6><div class="pm-pbox" style="--pbg:' + E(bg) + ';--pfg:' + E(fg) + ';--pff:' + E(FONTS[font]) + '">' + (P.text ? linkify(P.text) : '<i>' + (P.me ? 'Você ainda não escreveu nada no seu perfil.' : 'Nada por aqui ainda.') + '</i>') + '</div>' +
+      '<div class="pm-prof-act">' + (P.me ? '<button type="button" class="pm-btn go" data-pm="profedit">Editar perfil</button>' : '<button type="button" class="pm-btn go" data-pm-open="' + E(S.prof) + '">Enviar mensagem</button>') + '</div></div></div>';
   }
   function curInfo() {
     if (!S.cur) return null;
     var k = S.cur.slice(0, 1), id = S.cur.slice(2), t = null, name = '', av = '', sub = '';
     if (k === 'g') { t = threadFor('group', id); name = t ? t.title || 'Grupo' : 'Grupo'; av = '<span class="pm-av grp lg"><b>☰</b></span>'; sub = t ? t.members.map(function (m) { return m === S.me.id ? 'você' : (S.players[m] || {}).name || '?'; }).join(', ') : ''; }
-    if (k === 'p') { var p = S.players[id] || {}; t = threadFor('dm', id); name = p.name; av = avatar(S.avatars[id] || p.avatar, p.name, p.color, 'lg'); sub = p.online ? 'Online' : 'Offline'; }
-    if (k === 'n') { var n = S.npcs[id] || {}; t = threadFor('npc', id); name = n.name; av = avatar(S.avatars['n' + id] || n.avatar, n.name, n.color, 'lg'); sub = n.bio || ''; }
+    if (k === 'p') { var p = S.players[id] || {}; t = threadFor('dm', id); name = p.name; av = avatar(S.avatars[id] || p.avatar, p.name, p.color, 'lg'); var st0 = stOf(p); sub = STATUS[st0][0] + (p.status_msg ? ' · ' + p.status_msg : ''); }
+    if (k === 'n') { var n = S.npcs[id] || {}; t = threadFor('npc', id); name = n.name; av = avatar(S.avatars['n' + id] || n.avatar, n.name, n.color, 'lg'); sub = n.status_msg || n.bio || ''; }
     return { k: k, id: id, t: t, name: name, av: av, sub: sub };
   }
   function who(m) {
@@ -175,8 +222,8 @@
       prev = w;
     });
     if (!list.length) h = '<p class="pm-empty center">' + (c.t && !S.loaded[c.t.id] ? 'Carregando…' : 'Nenhuma mensagem ainda. Diga oi!') + '</p>';
-    return '<section class="pm-conv"><header class="pm-head"><button type="button" class="pm-back" data-pm="back" aria-label="Voltar">◀</button>' + c.av +
-      '<span><b>' + E(c.name) + '</b><small>' + E(c.sub) + '</small></span></header>' +
+    return '<section class="pm-conv"><header class="pm-head"><button type="button" class="pm-back" data-pm="back" aria-label="Voltar">◀</button>' +
+      (c.k === 'g' ? c.av + '<span><b>' + E(c.name) + '</b><small>' + E(c.sub) + '</small></span>' : '<button type="button" class="pm-head-who" data-pm-prof="' + E(S.cur) + '" title="Ver perfil">' + c.av + '<span><b>' + E(c.name) + '</b><small>' + E(c.sub) + '</small></span></button>') + '</header>' +
       '<div class="pm-msgs" aria-live="polite">' + h + '</div>' +
       '<form class="pm-compose"><textarea class="pm-input" rows="2" maxlength="2000" placeholder="Escreva uma mensagem… (Enter envia, Shift+Enter quebra linha)"></textarea><button type="submit" class="pm-btn send">Enviar</button></form></section>';
   }
@@ -189,14 +236,44 @@
     if (k === 'max') { desk && desk.classList.toggle('xl'); return; }
     if (k === 'logout') { var tk = S.sess && S.sess.token; S.sess = null; S.me = null; saveSess(); if (tk) rpc('phobia_logout', { p_token: tk }).catch(function () {}); render(); paintBadge(); return; }
     if (k === 'back') { S.cur = null; render(); return; }
-    if (b.dataset.pmOpen) { openConv(b.dataset.pmOpen); return; }
+    if (b.dataset.pmProf) { S.prof = b.dataset.pmProf; S.profEdit = false; render(); sfx('open'); return; }
+    if (k === 'profclose' || k === 'profcancel') { S.prof = null; S.profEdit = false; render(); return; }
+    if (k === 'profedit') { S.profEdit = true; render(); bindProfForm(); return; }
+    if (k === 'stmenu') { var m = $('.pm-stmenu', win); m.hidden = !m.hidden; return; }
+    if (b.dataset.pmSt) { setProfile({ p_status: b.dataset.pmSt }); S.me.status = b.dataset.pmSt; render(); sfx(b.dataset.pmSt === 'online' ? 'on' : 'off'); return; }
+    if (b.dataset.pmOpen) { S.prof = null; openConv(b.dataset.pmOpen); return; }
     if (b.classList.contains('send')) { e.preventDefault(); send(); }
   }
+  function savePsm(i) { var v = i.value.trim(); if ((S.me.status_msg || '') === v) return; S.me.status_msg = v || null; setProfile({ p_status_msg: v }); }
   function onKey(e) {
+    if (e.target.classList.contains('pm-psm') && e.key === 'Enter') { e.preventDefault(); savePsm(e.target); e.target.blur(); return; }
     if (e.target.classList.contains('pm-input') && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-    if (e.key === 'Escape') e.stopPropagation();
+    if (e.key === 'Escape') { e.stopPropagation(); if (S.prof) { S.prof = null; S.profEdit = false; render(); } }
   }
-  function onInput() {}
+  function onInput(e) {
+    var f = e.target.closest('.pm-prof-form'); if (!f) return;
+    var pv = $('.pm-pbox.prev', f);
+    pv.style.setProperty('--pbg', f.bg.value); pv.style.setProperty('--pfg', f.fg.value); pv.style.setProperty('--pff', FONTS[f.font.value]);
+    pv.innerHTML = f.text.value.trim() ? linkify(f.text.value) : '<i>(vazio)</i>';
+  }
+  function setProfile(o) {
+    var a = { p_token: S.sess.token, p_status: null, p_status_msg: null, p_profile: null, p_bg: null, p_fg: null, p_font: null };
+    for (var k in o) a[k] = o[k];
+    return rpc('phobia_set_profile', a).catch(handle);
+  }
+  function bindProfForm() {
+    var f = $('.pm-prof-form', win); if (!f) return;
+    f.font.addEventListener('change', function () { onInput({ target: f.font }); });
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var o = { p_status_msg: f.msg.value, p_profile: f.text.value, p_bg: f.bg.value, p_fg: f.fg.value, p_font: f.font.value };
+      setProfile(o).then(function () {
+        S.me.status_msg = f.msg.value.trim() || null; S.me.profile = f.text.value.trim() || null;
+        S.me.profile_bg = f.bg.value; S.me.profile_fg = f.fg.value; S.me.profile_font = f.font.value;
+        S.profEdit = false; render(); sfx('confirm'); say('Perfil salvo.');
+      });
+    });
+  }
   async function openConv(key) {
     S.cur = key; S._jump = true; render();
     var c = curInfo(); if (!c) return;

@@ -148,7 +148,8 @@ label{display:grid;gap:2px}
 .item:hover{background:#e8eef9;border-color:#c3d3f0}
 .item .t{flex:1;min-width:0}
 .item .t b{display:block;font:700 12px Tahoma,Arial,sans-serif}
-.item .t span{color:var(--mute);font-size:11px}
+.item .t span{display:block;color:var(--mute);font-size:11px}
+.item .t .psm{color:#556;font-size:11px}
 .item.off{opacity:.5}
 .dot{display:inline-block;width:8px;height:8px;margin-right:4px;border-radius:50%;background:#bbb;vertical-align:0}
 .dot.on{background:var(--g)}
@@ -273,8 +274,8 @@ async function refresh(full){
   try{
     const withAv=full||Date.now()-S.avatarsAt>60000;
     const [pl,np,ac,th]=await Promise.all([
-      sb.from('phobia_players').select(withAv?'id,name,color,active,last_seen,avatar,locked_until':'id,name,color,active,last_seen,locked_until').order('name'),
-      sb.from('phobia_npcs').select(withAv?'id,name,color,bio,avatar':'id,name,color,bio').order('name'),
+      sb.from('phobia_players').select(withAv?'id,name,color,active,last_seen,avatar,locked_until,status,status_msg,profile':'id,name,color,active,last_seen,locked_until,status,status_msg,profile').order('name'),
+      sb.from('phobia_npcs').select(withAv?'id,name,color,bio,avatar,status,status_msg,profile_bg,profile_fg,profile_font':'id,name,color,bio,status,status_msg,profile_bg,profile_fg,profile_font').order('name'),
       sb.from('phobia_npc_access').select('npc_id,player_id'),
       sb.from('phobia_threads').select('id,kind,title,npc_id,members,last_msg_id,gm_read_id,updated_at').order('updated_at',{ascending:false})
     ]);
@@ -362,11 +363,13 @@ function renderPanel(){
     <div class="row"><label><small>Nome</small><input name="name" maxlength="32" required placeholder="Ex.: Hana"></label><label style="flex:0 0 46px"><small>Cor</small><input class="color" type="color" name="color" value="#ef2b97"></label></div>
     <label><small>PIN (4 a 8 números)</small><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" required placeholder="1234"></label>
     <button class="btn pri">CRIAR</button><span class="hint">Passe o nome e o PIN ao jogador. Ele entra pelo Phobia Messenger no PC das Notas.</span></form>`+
-    (ps.length?ps.map(p=>`<div class="item${p.active?'':' off'}" style="--c:${E(p.color)}" data-pid="${p.id}">${av(p.avatar,p.name,p.color,'sm')}<div class="t"><b>${E(p.name)}</b><span><i class="dot${online(p)?' on':''}"></i>${online(p)?'online':p.last_seen?'visto '+new Date(p.last_seen).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'nunca entrou'}${p.locked_until&&new Date(p.locked_until)>new Date()?' · 🔒 bloqueado':''}</span></div>
+    (ps.length?ps.map(p=>`<div class="item${p.active?'':' off'}" style="--c:${E(p.color)}" data-pid="${p.id}">${av(p.avatar,p.name,p.color,'sm')}<div class="t"><b>${E(p.name)}</b>${p.status_msg?`<i class="psm">- ${E(p.status_msg)}</i>`:''}<span><i class="dot${online(p)?' on':''}"></i>${online(p)?'online':p.last_seen?'visto '+new Date(p.last_seen).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'nunca entrou'}${p.locked_until&&new Date(p.locked_until)>new Date()?' · 🔒 bloqueado':''}</span></div>
       <button class="btn sm" data-act="pin">Novo PIN</button><button class="btn sm" data-act="active">${p.active?'Desativar':'Ativar'}</button></div>`).join(''):'<p class="empty">Nenhum jogador ainda.</p>');
   $('#p-npcs').innerHTML=`<form class="card" id="npcForm"><h4 id="npcTitle">NOVO NPC</h4><input type="hidden" name="id">
     <div class="row"><label><small>Nome</small><input name="name" maxlength="40" required placeholder="Ex.: Número desconhecido"></label><label style="flex:0 0 46px"><small>Cor</small><input class="color" type="color" name="color" value="#46d9ff"></label></div>
-    <label><small>Descrição curta (aparece para o jogador)</small><textarea name="bio" maxlength="600" rows="2"></textarea></label>
+    <div class="row"><label><small>Status</small><select name="status"><option value="online">Online</option><option value="away">Ausente</option><option value="busy">Ocupado</option><option value="offline">Offline</option></select></label><label style="flex:2"><small>Mensagem pessoal</small><input name="smsg" maxlength="80" placeholder="Ex.: miau"></label></div>
+    <label><small>Perfil pessoal (o jogador vê ao clicar no contato)</small><textarea name="bio" maxlength="600" rows="3"></textarea></label>
+    <div class="row"><label><small>Fundo do perfil</small><input class="color" type="color" name="pbg" value="#e9e4d6"></label><label><small>Texto</small><input class="color" type="color" name="pfg" value="#111111"></label><label style="flex:2"><small>Letra</small><select name="pfont"><option value="normal">Normal</option><option value="pixel">Pixel</option><option value="mono">Máquina</option><option value="hand">À mão</option></select></label></div>
     <div class="photo"><span id="npcPrev">${av('', '?', '#46d9ff')}</span><label class="btn sm" style="flex:0 0 auto">FOTO<input type="file" accept="image/*" name="photo" hidden></label><button type="button" class="btn sm" data-act="nophoto">Sem foto</button></div>
     <div><small>Quem tem este contato</small><div class="checks">${ps.map(p=>`<label><input type="checkbox" name="acc" value="${p.id}">${E(p.name)}</label>`).join('')||'<span class="hint">Crie jogadores primeiro.</span>'}</div></div>
     <div class="row"><button class="btn pri">SALVAR NPC</button><button type="button" class="btn" data-act="npcnew" style="flex:0 0 auto">LIMPAR</button></div></form>`+
@@ -397,7 +400,7 @@ function bindPanel(){
   nf.photo.onchange=async()=>{const f=nf.photo.files[0];if(!f)return;npcPhoto=await shrink(f,160);$('#npcPrev').innerHTML=av(npcPhoto,'',nf.color.value)};
   nf.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='nophoto'){npcPhoto=null;$('#npcPrev').innerHTML=av('',nf.name.value||'?',nf.color.value)}if(b.dataset.act==='npcnew')renderPanel()};
   nf.onsubmit=async e=>{e.preventDefault();const id=nf.id.value||null;
-    const row={name:nf.name.value.trim(),color:nf.color.value,bio:nf.bio.value.trim()||null};if(npcPhoto!==undefined)row.avatar=npcPhoto;
+    const row={name:nf.name.value.trim(),color:nf.color.value,bio:nf.bio.value.trim()||null,status:nf.status.value,status_msg:nf.smsg.value.trim()||null,profile_bg:nf.pbg.value,profile_fg:nf.pfg.value,profile_font:nf.pfont.value};if(npcPhoto!==undefined)row.avatar=npcPhoto;
     let r=id?await sb.from('phobia_npcs').update(row).eq('id',id).select('id').single():await sb.from('phobia_npcs').insert(row).select('id').single();
     if(r.error)return toast('Erro: '+r.error.message);const nid=r.data.id;
     const want=[...nf.querySelectorAll('[name=acc]:checked')].map(i=>i.value);
@@ -405,7 +408,7 @@ function bindPanel(){
     if(want.length)await sb.from('phobia_npc_access').insert(want.map(p=>({npc_id:nid,player_id:p})));
     toast('NPC salvo.');await refresh(true)};
   $('#p-npcs').addEventListener('click',async e=>{const b=e.target.closest('[data-act]');if(!b||!b.closest('[data-nid]'))return;const id=b.closest('[data-nid]').dataset.nid,n=S.npcs[id];
-    if(b.dataset.act==='edit'){nf.id.value=id;nf.name.value=n.name;nf.color.value=n.color;nf.bio.value=n.bio||'';npcPhoto=undefined;$('#npcPrev').innerHTML=av(n.avatar,n.name,n.color);$('#npcTitle').textContent='EDITAR NPC';
+    if(b.dataset.act==='edit'){nf.id.value=id;nf.name.value=n.name;nf.color.value=n.color;nf.bio.value=n.bio||'';nf.status.value=n.status||'online';nf.smsg.value=n.status_msg||'';nf.pbg.value=n.profile_bg||'#e9e4d6';nf.pfg.value=n.profile_fg||'#111111';nf.pfont.value=n.profile_font||'normal';npcPhoto=undefined;$('#npcPrev').innerHTML=av(n.avatar,n.name,n.color);$('#npcTitle').textContent='EDITAR NPC';
       nf.querySelectorAll('[name=acc]').forEach(i=>i.checked=S.access.some(a=>a.npc_id===id&&a.player_id===i.value));nf.scrollIntoView({behavior:'smooth'})}
     if(b.dataset.act==='delnpc'){if(!confirmTwice(b))return;const {error}=await sb.from('phobia_npcs').delete().eq('id',id);toast(error?'Erro ao apagar.':'NPC apagado (e as conversas dele).');await refresh(true)}});
   $('#npcChat').onsubmit=async e=>{e.preventDefault();const f=e.target,npc=f.npc.value,pl=f.player.value;if(!npc||!pl)return toast('Crie um NPC e um jogador primeiro.');
