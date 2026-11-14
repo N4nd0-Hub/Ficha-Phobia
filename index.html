@@ -13118,7 +13118,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 <link rel="stylesheet" href="assets/deck-p5.css?v=4">
 <link rel="stylesheet" href="assets/fichas.css?v=4">
 <link rel="stylesheet" href="assets/persona-page.css?v=5">
-<link rel="stylesheet" href="assets/dossie.css?v=3">
+<link rel="stylesheet" href="assets/dossie.css?v=4">
 <script src="assets/phobia-deck.js?v=3"></script>
 <script src="assets/map-roads.js?v=1"></script>
 <script src="assets/map-camera.js?v=20261023"></script>
@@ -14576,7 +14576,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
                     <span>CLICK TO ATTACH</span>
                   </div>
                 </div>
-                <div class="record-polaroid-caption" id="sheetPolaroidCaption">NO NAME // 2000</div>
+                <div class="record-polaroid-caption" id="sheetPolaroidCaption">Sem nome</div>
                 <div class="record-polaroid-id">PROMOTIONAL MATERIAL // TOKYO</div>
               </button>
               <input id="sheetPhotoInput" type="file" accept="image/*" hidden>
@@ -19372,7 +19372,7 @@ function renderPhoto(){
   if(img){img.src=data;img.style.display=data?'block':'none'}
   if(ph)ph.style.display=data?'none':'grid';
   const cap=document.getElementById('sheetPolaroidCaption');
-  if(cap)cap.textContent=((state.charSheet.profile.name||'NO NAME')+' // 2000').toUpperCase()
+  if(cap)cap.textContent=String(state.charSheet.profile.name||'').trim()||'Sem nome'
 }
 function renderExclusiveAbilityShowcase(){
   const natural=state.charSheet.naturalAbility||{};

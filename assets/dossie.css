@@ -138,3 +138,6 @@ body.hud.workspace-sheet #characterPage:not(#_z) #sheet-panel-record .record-sta
 }
 body.hud.workspace-sheet #characterPage:not(#_z) #sheet-panel-record .record-layout{position:relative!important;z-index:3!important}
 body.hud.workspace-sheet #characterPage:not(#_z) #sheet-panel-record .record-polaroid-caption{text-transform:none!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:21px!important;line-height:1.05!important}
+/* legenda da polaroide: só o nome, como assinatura */
+body.hud.workspace-sheet #characterPage:not(#_z) #sheet-panel-record .record-polaroid-id{display:none!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheet-panel-record .record-polaroid-caption{margin:10px 0 2px!important;font:400 34px/1 Allura,"Segoe Script","Brush Script MT",cursive!important;text-transform:none!important;letter-spacing:0!important;color:#1d2a5a!important;transform:rotate(-3deg);white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;padding:0 4px 4px!important}
