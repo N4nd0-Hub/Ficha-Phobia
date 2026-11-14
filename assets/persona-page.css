@@ -80,3 +80,33 @@ body.hud.workspace-sheet #characterPage:not(#_z) .instrument-special-title{font:
 body.hs-calm .pp-card.pp-r-weak .pp-ico{animation:none}
 body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .affinity-hud-name{justify-self:start;text-align:left!important;width:100%}
 body.hud.workspace-sheet #characterPage:not(#_z) .pp-card .pp-tag{display:none!important}
+/* respiro interno do painel da Persona (nada encosta nas bordas) */
+body.hud.workspace-sheet #characterPage:not(#_z) .persona-v2-profile{padding:22px 28px 26px!important;box-sizing:border-box}
+@media (max-width:760px){body.hud.workspace-sheet #characterPage:not(#_z) .persona-v2-profile{padding:16px 14px 18px!important}}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid{grid-template-columns:repeat(auto-fill,minmax(158px,1fr))!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))!important}
+@media (max-width:760px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid,
+  body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+/* grade equilibrada pela largura do painel (sem cartão sobrando sozinho) */
+body.hud.workspace-sheet #characterPage:not(#_z) #personaAffinitySection{container-type:inline-size;container-name:ppaff}
+body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+@container ppaff (max-width:1000px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@container ppaff (max-width:860px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card{grid-template-columns:1fr;grid-template-rows:auto auto auto;justify-items:center;text-align:center!important;padding:10px 6px!important;row-gap:6px}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-ico{grid-row:auto}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-name{grid-column:auto;justify-self:center;text-align:center!important;font-size:12.5px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-badge{grid-column:auto;justify-self:center}
+}
+@container ppaff (max-width:560px){
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid,
+  body.hud.workspace-sheet #characterPage:not(#_z) #personaInstrumentPane #sheetInstrumentAffinityGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card{grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;justify-items:stretch;text-align:left!important;padding:10px!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-ico{grid-row:1/3}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-name{grid-column:2;justify-self:start;text-align:left!important}
+  body.hud.workspace-sheet #characterPage:not(#_z) #sheetAffinityGrid .pp-card .affinity-hud-badge{grid-column:2;justify-self:start}
+}
