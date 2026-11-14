@@ -13005,7 +13005,6 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
 #sheetTraitsPage .tr-budget-note{display:flex;gap:9px 18px;justify-content:space-between;flex-wrap:wrap;margin:15px 0;padding:12px 14px;border:1px solid var(--tr-line);background:var(--tr-panel);font:750 11px/1.55 var(--phobia-ui-font,Arial,sans-serif)}
 #sheetTraitsPage .tr-budget-note b{color:var(--tr-ink)}
 #sheetTraitsPage .tr-extra-points{display:flex;align-items:center;gap:8px;font-size:11px}
-body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
 #sheetTraitsPage .tr-extra-points input{width:68px;min-height:34px;padding:5px 7px;border:1px solid var(--tr-line);background:var(--tr-input);color:var(--tr-input-ink);font-size:13px}
 #sheetTraitsPage .tr-alert{border:2px solid var(--tr-flaw);padding:12px 14px;margin:12px 0;background:var(--tr-input);color:var(--tr-input-ink);font:750 12px/1.6 var(--phobia-ui-font,Arial,sans-serif)}
 #sheetTraitsPage .tr-alert[hidden]{display:none}
@@ -14484,7 +14483,7 @@ body:not(.master) #sheetTraitsPage .tr-extra-points{display:none!important}
             <div id="traitBudgetSegments" aria-hidden="true"></div>
             <span id="traitLimitsNote">Defeitos: <b>0 pontos</b> · <b>0 / 3 escolhas</b></span>
             <span>Uma Dissonante concede <b>5 pontos</b> e ocupa uma escolha de Defeito.</span>
-            <label class="tr-extra-points master-only">Pontos concedidos pelo Mestre <input id="traitExtraPoints" type="number" min="0" max="99" step="1" value="0"></label>
+            <label class="tr-extra-points" title="Pontos de Vantagem extras que o Mestre te deu">Pontos extras <input id="traitExtraPoints" type="number" min="0" max="99" step="1" value="0"></label>
           </div>
           <div id="traitBudgetAlert" class="tr-alert" role="status" hidden></div>
           <p class="tr-dissonant-note" id="traitArchiveNote" hidden></p>
@@ -20688,7 +20687,6 @@ function bindTraitsUI(){
   root.querySelector('#traitAvailableOnly')?.addEventListener('change',event=>{ensureTraitState().availableOnly=event.target.checked;renderTraitsPage();saveState(true);});
   root.querySelector('#traitExtraPoints')?.addEventListener('change',event=>{
     const value=ensureTraitState(),before=value.extraPoints;
-    if(!document.body.classList.contains('master')){renderTraitsPage();return;}
     value.extraPoints=Math.max(0,Math.min(99,Math.floor(Number(event.target.value)||0)));
     if(traitBudget().available<0){value.extraPoints=before;toast('Libere pontos em Vantagens antes de reduzir a concessão.');}
     renderTraitsPage();saveState(true);
