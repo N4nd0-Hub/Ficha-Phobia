@@ -20,10 +20,10 @@ function sourceFunction(name){
   return source.slice(start,source.indexOf('\n}',start)+2);
 }
 
-test('the current catalogue contains exactly the 55 approved advantages across four categories',()=>{
+test('the current catalogue contains exactly the 63 approved advantages across four categories',()=>{
   const box=fixture();
   const groups=vm.runInContext('ADVANTAGE_CATEGORIES.map(({id})=>[id,ADVANTAGE_CATALOG.filter(item=>item.category_id===id).length])',box);
-  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',14],['ATT',12],['SOC',18],['PER',11]]);
+  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',18],['ATT',12],['SOC',19],['PER',14]]);
   assert.equal(box.traitById('V-REL-01'),null);
   assert.equal(box.traitById('V2-CBT-02').name,'Impacto Inicial');
   assert.equal(box.traitById('V2-PER-09').name,'Batida Final');
@@ -31,6 +31,36 @@ test('the current catalogue contains exactly the 55 approved advantages across f
   assert.equal(box.traitById('V2-ATT-12').points,5);
   assert.equal(vm.runInContext('FLAW_CATALOG.length',box),60);
   assert.equal(vm.runInContext('DISSONANT_TRAIT_CATALOG.length',box),20);
+});
+
+test('the eight former tier abilities require both the social tier and the purchase points',()=>{
+  const newAdvantages=[
+    ['V2-CBT-15','Coragem',2,3],
+    ['V2-CBT-16','Expressão',2,2],
+    ['V2-CBT-17','Expressão',3,3],
+    ['V2-CBT-18','Charme',4,5],
+    ['V2-SOC-19','Disciplina',3,2],
+    ['V2-PER-12','Empatia',3,4],
+    ['V2-PER-13','Conhecimento',1,2],
+    ['V2-PER-14','Conhecimento',2,5],
+  ];
+  const tiers=['0','I','II','III','IV','V'];
+  for(const [id,skill,minimum,points] of newAdvantages){
+    const box=fixture();
+    const sheet=box.state.charSheet;
+    sheet.traits.extraPoints=points-1;
+    sheet.social[skill]=minimum-1;
+    assert.equal(acquire(box,id).error,`Requer ${skill} Tier ${tiers[minimum]}.`);
+    sheet.social[skill]=minimum;
+    assert.equal(box.traitIsOwned(box.traitById(id)),false);
+    sheet.traits.extraPoints=points-2;
+    assert.equal(acquire(box,id).error,'Falta 1 ponto de Vantagem.');
+    sheet.traits.extraPoints=points-1;
+    assert.equal(acquire(box,id).ok,true);
+    assert.equal(box.traitBudget().spent,points);
+    assert.equal(box.removeCharacterTrait(id).ok,true);
+    assert.equal(box.traitBudget().available,points);
+  }
 });
 
 test('the catalogue renders the right filters and offers a selector for configured bonuses',()=>{
