@@ -161,6 +161,7 @@ label{display:grid;gap:2px}
 .hint{color:var(--mute);font-size:11px}
 
 /* barra de tarefas */
+.task-link{color:#fff;text-decoration:none;opacity:.9}.task-link:hover{opacity:1;filter:brightness(1.15)}.rw-ic{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px;border-radius:3px;background:linear-gradient(#ff4fa8,#d0006f);position:relative}.rw-ic::after{content:"";position:absolute;inset:3px 2px;background:#fff;clip-path:polygon(50% 0,50% 38%,100% 0,100% 100%,50% 62%,50% 100%,0 50%)}
 .taskbar{display:flex;align-items:center;gap:6px;height:40px;background:linear-gradient(#3168d5,#2456c4 40%,#1d48ad 92%,#1a3f97);border-top:1px solid #5d8fe8;color:#fff;z-index:5}
 .start{display:flex;align-items:center;gap:6px;height:100%;padding:0 22px 0 12px;border:0;border-radius:0 12px 12px 0;background:linear-gradient(#4cb24c,#3c9a3c 40%,#2b7f2b);color:#fff;font:italic 700 17px/1 Trebuchet MS,Tahoma,sans-serif;text-shadow:1px 1px 1px rgba(0,0,0,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
 .start i{width:18px;height:18px;background:conic-gradient(#e2412a 0 25%,#62d26f 0 50%,#2a5fd0 0 75%,#f2c14e 0);border-radius:3px;transform:skewY(-6deg)}
@@ -234,7 +235,7 @@ label{display:grid;gap:2px}
       <footer class="status"><span id="stLeft">Pronto</span><span>Rede da campanha</span></footer>
     </div>
   </div>
-  <div class="taskbar"><button class="start" type="button" id="startBtn"><i></i>INICIAR</button><span class="task-app"><i class="pm-ic"></i>Phobia Messenger — Narrador</span><span class="tray"><span id="clock"></span></span></div>
+  <div class="taskbar"><button class="start" type="button" id="startBtn"><i></i>INICIAR</button><span class="task-app"><i class="pm-ic"></i>Phobia Messenger — Narrador</span><a class="task-app task-link" href="rewind/" target="_blank" rel="noopener" title="Abrir o Rewind (você pode agir como NPC lá)"><i class="rw-ic"></i>Rewind</a><span class="tray"><span id="clock"></span></span></div>
 </section>
 <div class="toast" id="toast" hidden></div>
 

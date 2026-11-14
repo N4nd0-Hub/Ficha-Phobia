@@ -14,7 +14,12 @@
   var W = 5200, H = 3400;
   var SHOP = 'https://n4nd0-hub.github.io/Tanaka-Undergrounds/';
   /* sempre a versão mais nova da loja (evita a cópia antiga guardada pelo navegador) */
-  function shopUrl() { return SHOP + '?pc=' + Date.now().toString(36); }
+  var SITES = {
+    shop: { url: SHOP, title: 'Tanaka\'s Undergrounds', host: 'tanaka.undergrounds' },
+    rewind: { url: new URL('rewind/', location.href).href, title: 'Rewind', host: 'www.rewind.com' }
+  };
+  var webSite = 'shop';
+  function shopUrl() { var u = SITES[webSite].url; return u + (u.indexOf('?') < 0 ? '?' : '&') + 'pc=' + Date.now().toString(36); }
   var NOTE_COLORS = { yellow: '#ffe873', pink: '#ff9ec7', blue: '#9fdcff', green: '#b6f29a', orange: '#ffbf7a' };
   var STR_COLORS = { red: '#d4142a', blue: '#1f6fe0', yellow: '#f2b705', black: '#1a1a1a', white: '#f4f1e8' };
   var TYPES = {
@@ -531,15 +536,16 @@
           '<button type="button" class="cb-icon" data-desk="pc"><i class="d-pc"></i><span>Meu computador</span></button>' +
           '<button type="button" class="cb-icon cb-net" data-desk="net" hidden><i class="d-net"></i><span>NET//TRACE</span></button>' +
           '<button type="button" class="cb-icon" data-desk="shop"><i class="d-shop"></i><span>Tanaka\'s Undergrounds</span></button>' +
+          '<button type="button" class="cb-icon" data-desk="rewind"><i class="d-rewind"></i><span>Rewind</span></button>' +
           '<button type="button" class="cb-icon" data-desk="trash"><i class="d-trash"></i><span>Lixeira</span></button>' +
         '</div>' +
         '<div class="cb-win cb-cmd" hidden><div class="cb-win-t"><span>C:\\WINDOWS\\system32\\cmd.exe</span><button type="button" data-desk-close="cmd">×</button></div>' +
           '<div class="cb-term" tabindex="0"><pre></pre><label><span>C:\\PHOBIA&gt;</span><input type="text" spellcheck="false" autocomplete="off" aria-label="Comando"></label></div></div>' +
         '<div class="cb-win cb-pcw" hidden><div class="cb-win-t"><span>Meu computador</span><button type="button" data-desk-close="pc">×</button></div><div class="cb-pc-body"></div></div>' +
-        '<div class="cb-win cb-web" hidden><div class="cb-win-t"><span><i class="d-ie"></i>Tanaka\'s Undergrounds — Internet Explorer</span><button type="button" data-desk="xl" class="cb-wmax" aria-label="Maximizar" title="Maximizar">□</button><button type="button" data-desk-close="web">×</button></div>' +
+        '<div class="cb-win cb-web" hidden><div class="cb-win-t"><span><i class="d-ie"></i><b class="cb-web-title">Tanaka\'s Undergrounds</b> — Internet Explorer</span><button type="button" data-desk="xl" class="cb-wmax" aria-label="Maximizar" title="Maximizar">□</button><button type="button" data-desk-close="web">×</button></div>' +
           '<div class="cb-web-bar"><button type="button" data-web="back" title="Voltar">◀ Voltar</button><button type="button" data-web="fwd" title="Avançar">▶</button><button type="button" data-web="reload" title="Atualizar">⟳</button><button type="button" data-web="home" title="Página inicial">⌂</button>' +
           '<label><span>Endereço</span><input type="text" readonly value="' + SHOP + '"></label><button type="button" data-web="tab" title="Abrir numa aba nova">Abrir ↗</button></div>' +
-          '<div class="cb-web-view"><iframe title="Tanaka\'s Undergrounds" referrerpolicy="no-referrer-when-downgrade" allow="autoplay; clipboard-write"></iframe><div class="cb-dialup"><i></i><b>Conectando a tanaka.undergrounds...</b><small>Discando 56K · verificando nome de usuário e senha</small><span><em></em></span></div></div>' +
+          '<div class="cb-web-view"><iframe title="Tanaka\'s Undergrounds" referrerpolicy="no-referrer-when-downgrade" allow="autoplay; clipboard-write"></iframe><div class="cb-dialup"><i></i><b class="cb-web-host">Conectando a tanaka.undergrounds...</b><small>Discando 56K · verificando nome de usuário e senha</small><span><em></em></span></div></div>' +
           '<div class="cb-web-st"><span class="cb-web-msg">Pronto</span><span>Internet</span></div></div>' +
         '<div class="cb-task"><button type="button" class="cb-start" data-desk="start">INICIAR</button><span class="cb-task-apps"></span><time></time></div>' +
       '</div></div></div>' +
@@ -561,7 +567,7 @@
     if (np && np.classList.contains('open') && np.parentElement && np.parentElement.classList.contains('cb-screen')) apps.push('Bloco de notas');
     if (!$('.cb-cmd', desk).hidden) apps.push('cmd.exe');
     if (!$('.cb-pcw', desk).hidden) apps.push('Meu computador');
-    if (!$('.cb-web', desk).hidden) apps.push('Tanaka\'s Undergrounds');
+    if (!$('.cb-web', desk).hidden) apps.push(SITES[webSite].title);
     $('.cb-task-apps', desk).innerHTML = apps.map(function (a) { return '<span>' + E(a) + '</span>'; }).join('');
   }
   function openNotepad() {
@@ -612,10 +618,15 @@
     w.hidden = false; paintDesk();
   }
   /* ---------- navegador com a loja do Tanaka ---------- */
-  function openShop() {
+  function openShop(site) {
     var w = $('.cb-web', desk), fr = $('iframe', w), dl = $('.cb-dialup', w);
+    site = SITES[site] ? site : 'shop';
+    var changed = site !== webSite; webSite = site;
+    var S = SITES[site];
+    $('.cb-web-title', w).textContent = S.title; $('.cb-web-bar input', w).value = S.url; fr.title = S.title;
+    $('.cb-web-host', w).textContent = 'Conectando a ' + S.host + '...';
     w.hidden = false; desk.classList.add('xl');
-    if (!fr.getAttribute('src')) {
+    if (!fr.getAttribute('src') || changed) {
       dl.hidden = false; $('.cb-web-msg', w).textContent = 'Conectando...';
       sfx('dice');
       setTimeout(function () {
@@ -628,7 +639,7 @@
   }
   function webCmd(c) {
     var w = $('.cb-web', desk), fr = $('iframe', w);
-    if (c === 'tab') { window.open(SHOP, '_blank', 'noopener'); return; }
+    if (c === 'tab') { window.open(SITES[webSite].url, '_blank', 'noopener'); return; }
     try {
       if (c === 'back') fr.contentWindow.history.back();
       else if (c === 'fwd') fr.contentWindow.history.forward();
@@ -653,7 +664,8 @@
       if (k === 'cmd') return openCmd();
       if (k === 'pc') return openPc();
       if (k === 'net') return openNet();
-      if (k === 'shop') return openShop();
+      if (k === 'shop') return openShop('shop');
+      if (k === 'rewind') return openShop('rewind');
       if (k === 'xl') { desk.classList.toggle('xl'); return; }
       if (t.dataset.web) return webCmd(t.dataset.web);
       if (k === 'trash') { toast('A Lixeira está vazia.'); return; }
