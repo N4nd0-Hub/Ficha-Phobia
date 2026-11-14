@@ -30,18 +30,23 @@
     if (!box) { box = document.createElement('section'); box.id = 'personaMagicTypes'; box.className = 'pt-box'; anchor.parentNode.insertBefore(box, anchor); box.addEventListener('click', onClick); }
     var ch = chosenMagicTypes(), full = ch.length >= MAGIC_TYPE_LIMIT;
     var slots = ''; for (var i = 0; i < MAGIC_TYPE_LIMIT; i++) slots += ch[i] ? '<span class="pt-slot on" style="--tc:' + color(ch[i]) + '"><i>' + icon(ch[i]) + '</i>' + E(label(ch[i])) + '</span>' : '<span class="pt-slot">' + (i + 1) + '</span>';
-    box.innerHTML = '<header><strong><span>✦</span> TIPOS MÁGICOS DA PERSONA</strong><span>Escolha <b>4</b> tipos. Miscelânea, Defesa e Passivas são livres para todos. O Grimório só mostra magias desses tipos.</span></header>' +
+    var pref = null; try { pref = localStorage.getItem('pt-collapsed'); } catch (x) {}
+    var shut = pref === null ? ch.length >= MAGIC_TYPE_LIMIT : pref === '1';
+    box.classList.toggle('shut', shut);
+    box.innerHTML = '<header><strong><span>✦</span> TIPOS MÁGICOS DA PERSONA</strong><button type="button" class="pt-toggle" data-pt-toggle aria-expanded="' + !shut + '">' + (shut ? '▾ MOSTRAR' : '▴ OCULTAR') + '</button><span>Escolha <b>4</b> tipos. Miscelânea, Defesa e Passivas são livres para todos. O Grimório só mostra magias desses tipos.</span></header>' +
       '<div class="pt-slots">' + slots + '<span class="pt-plus">+</span><span class="pt-slot free" style="--tc:' + color('Miscelânea') + '">★ Misc.</span><span class="pt-slot free" style="--tc:' + color('Defesa') + '">▣ Defesa</span><span class="pt-slot free" style="--tc:' + color('Passivas Mágicas') + '">◇ Passivas</span><span class="pt-count">' + ch.length + '/' + MAGIC_TYPE_LIMIT + '</span></div>' +
-      '<h4>ELEMENTOS</h4><div class="pt-grid">' + ELEM.map(function (c) { return chip(c, ch.indexOf(c) >= 0, full); }).join('') + '</div>' +
+      '<div class="pt-body"><h4>ELEMENTOS</h4><div class="pt-grid">' + ELEM.map(function (c) { return chip(c, ch.indexOf(c) >= 0, full); }).join('') + '</div>' +
       '<h4>SUPORTE &amp; ESPECIAIS</h4><div class="pt-grid">' + SUP.map(function (c) { return chip(c, ch.indexOf(c) >= 0, full); }).join('') + '</div>' +
-      (warn(ch) || '');
+      (warn(ch) || '') + '</div>';
   }
   function warn(ch) {
     if (!ch.length) return '';
     var bad = ((state.charSheet.magicSlots) || []).filter(function (m) { return m && m.name && m.type && !magicTypeAllowed(m.type); }).map(function (m) { return m.name; });
     return bad.length ? '<p class="pt-warn">⚠ No deck, fora dos tipos escolhidos: <b>' + bad.map(E).join(', ') + '</b>. Elas continuam lá, mas você pode removê-las no Grimório.</p>' : '';
   }
+  function box() { return document.getElementById('personaMagicTypes'); }
   function onClick(e) {
+    if (e.target.closest('[data-pt-toggle]')) { try { localStorage.setItem('pt-collapsed', box().classList.contains('shut') ? '0' : '1'); } catch (x) {} render(); return; }
     var b = e.target.closest('[data-pt]'); if (!b) return;
     var c = b.dataset.pt, ch = chosenMagicTypes(), i = ch.indexOf(c);
     if (i >= 0) ch.splice(i, 1);
