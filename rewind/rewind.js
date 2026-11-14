@@ -239,7 +239,9 @@
       if (self) h += '<span class="' + (i <= val ? 'on' : '') + '">' + icon + '</span>';
       else h += '<button type="button" class="' + (i <= (mine || 0) ? 'on' : '') + '" data-rate="' + k + '" data-v="' + i + '" title="' + label + ' ' + i + '/3">' + icon + '</button>';
     }
-    return h + '</span>' + (self || !mine ? '' : '<span>média: ' + val + '/3</span>') + '</div>';
+    var fixed = S.prof && S.prof.rating && S.prof.rating.fixed && S.prof.rating.fixed[k];
+    return h + '</span>' + (self || !(mine || val) ? '' : '<span>média: ' + val + '/3</span>') +
+      (S.as ? '<span data-rt-box="' + k + '"><button type="button" class="gm-edit" data-rate-edit="' + k + '" title="Narrador: definir ' + label + '">✎</button>' + (fixed ? ' <small class="gm-fixed">fixado: ' + val + '/3</small>' : '') + '</span>' : '') + '</div>';
   }
   async function vProfile(id) {
     var pr = await rpc('rw_profile', { p_id: id }); S.theme = pr.theme; S.prof = pr;
@@ -271,6 +273,19 @@
         var k = b.dataset.rate, v = +b.dataset.v, cur = Object.assign({ fan: false, trusty: 0, cool: 0, sexy: 0 }, pr.my_rating || {});
         cur[k] = cur[k] === v ? 0 : v;
         try { await rpc('rw_rate', { p_to: id, p_fan: cur.fan, p_trusty: cur.trusty, p_cool: cur.cool, p_sexy: cur.sexy }); route(); } catch (x) { toast(msgOf(x)); }
+      };
+    });
+    app.querySelectorAll('[data-rate-edit]').forEach(function (b) {
+      b.onclick = function () {
+        var k = b.dataset.rateEdit, box = app.querySelector('[data-rt-box="' + k + '"]'), fx = pr.rating.fixed && pr.rating.fixed[k];
+        box.innerHTML = '<span class="fans-form"><select aria-label="Valor">' + '<option value="">média dos votos</option>' + [0, 1, 2, 3].map(function (v) { return '<option value="' + v + '"' + (fx && pr.rating[k] === v ? ' selected' : '') + '>' + v + '/3</option>'; }).join('') + '</select><button class="btn sm pri" type="button" data-ok>ok</button><button class="btn sm" type="button" data-c>×</button></span>';
+        box.querySelector('[data-c]').onclick = function () { route(); };
+        box.querySelector('[data-ok]').onclick = async function () {
+          var v = box.querySelector('select').value;
+          var r = await sb.rpc('rw_gm_set_rating', { p_id: id, p_kind: k, p_value: v === '' ? null : Number(v) });
+          if (r.error) return toast('Não deu para mudar.');
+          toast(v === '' ? 'Voltou a usar a média dos votos.' : 'Fixado em ' + v + '/3.'); route();
+        };
       };
     });
     var fe = app.querySelector('[data-fans-edit]');
