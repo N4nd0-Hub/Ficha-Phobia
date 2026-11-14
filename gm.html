@@ -275,7 +275,7 @@ async function refresh(full){
   try{
     const withAv=full||Date.now()-S.avatarsAt>60000;
     const [pl,np,ac,th]=await Promise.all([
-      sb.from('phobia_players').select(withAv?'id,name,color,active,last_seen,avatar,locked_until,status,status_msg,profile':'id,name,color,active,last_seen,locked_until,status,status_msg,profile').order('name'),
+      sb.from('phobia_players').select(withAv?'id,name,color,active,last_seen,avatar,locked_until,status,status_msg,profile,trait_bonus':'id,name,color,active,last_seen,locked_until,status,status_msg,profile,trait_bonus').order('name'),
       sb.from('phobia_npcs').select(withAv?'id,name,color,bio,avatar,status,status_msg,profile_bg,profile_fg,profile_font':'id,name,color,bio,status,status_msg,profile_bg,profile_fg,profile_font').order('name'),
       sb.from('phobia_npc_access').select('npc_id,player_id'),
       sb.from('phobia_threads').select('id,kind,title,npc_id,members,last_msg_id,gm_read_id,updated_at').order('updated_at',{ascending:false})
@@ -365,7 +365,7 @@ function renderPanel(){
     <label><small>PIN (4 a 8 números)</small><input name="pin" inputmode="numeric" pattern="[0-9]{4,8}" required placeholder="1234"></label>
     <button class="btn pri">CRIAR</button><span class="hint">Passe o nome e o PIN ao jogador. Ele entra pelo Phobia Messenger no PC das Notas.</span></form>`+
     (ps.length?ps.map(p=>`<div class="item${p.active?'':' off'}" style="--c:${E(p.color)}" data-pid="${p.id}">${av(p.avatar,p.name,p.color,'sm')}<div class="t"><b>${E(p.name)}</b>${p.status_msg?`<i class="psm">- ${E(p.status_msg)}</i>`:''}<span><i class="dot${online(p)?' on':''}"></i>${online(p)?'online':p.last_seen?'visto '+new Date(p.last_seen).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'nunca entrou'}${p.locked_until&&new Date(p.locked_until)>new Date()?' · 🔒 bloqueado':''}</span></div>
-      <button class="btn sm" data-act="pin">Novo PIN</button><button class="btn sm" data-act="active">${p.active?'Desativar':'Ativar'}</button></div>`).join(''):'<p class="empty">Nenhum jogador ainda.</p>');
+      <button class="btn sm" data-act="pts" title="Pontos de Vantagem extras entregues pelo Mestre">★ Pontos: ${p.trait_bonus||0}</button><button class="btn sm" data-act="pin">Novo PIN</button><button class="btn sm" data-act="active">${p.active?'Desativar':'Ativar'}</button></div>`).join(''):'<p class="empty">Nenhum jogador ainda.</p>');
   $('#p-npcs').innerHTML=`<form class="card" id="npcForm"><h4 id="npcTitle">NOVO NPC</h4><input type="hidden" name="id">
     <div class="row"><label><small>Nome</small><input name="name" maxlength="40" required placeholder="Ex.: Número desconhecido"></label><label style="flex:0 0 46px"><small>Cor</small><input class="color" type="color" name="color" value="#46d9ff"></label></div>
     <div class="row"><label><small>Status</small><select name="status"><option value="online">Online</option><option value="away">Ausente</option><option value="busy">Ocupado</option><option value="offline">Offline</option></select></label><label style="flex:2"><small>Mensagem pessoal</small><input name="smsg" maxlength="80" placeholder="Ex.: miau"></label></div>
@@ -396,6 +396,8 @@ function bindPanel(){
   $('#p-players').onclick=async e=>{const b=e.target.closest('[data-act]');if(!b)return;const id=b.closest('[data-pid]').dataset.pid,p=S.players[id];
     if(b.dataset.act==='pin'){const pin=prompt('Novo PIN para '+p.name+' (4 a 8 números). A sessão atual dele será encerrada.');if(!pin)return;
       const {error}=await sb.rpc('phobia_gm_save_player',{p_id:id,p_name:null,p_pin:pin,p_color:null,p_active:null});toast(error?'PIN inválido.':'PIN trocado.')}
+    if(b.dataset.act==='pts'){const v=prompt('Pontos de Vantagem extras para '+p.name+' (0 a 99). Aparece na ficha dele na próxima sincronização.',p.trait_bonus||0);if(v===null)return;const n=Math.max(0,Math.min(99,parseInt(v,10)||0));
+      const {error}=await sb.rpc('phobia_gm_set_trait_bonus',{p_player:id,p_points:n});if(error)return toast('Erro: '+error.message);toast(p.name+': '+n+' ponto(s) do Mestre.');await refresh(true)}
     if(b.dataset.act==='active'){await sb.rpc('phobia_gm_save_player',{p_id:id,p_name:null,p_pin:null,p_color:null,p_active:!p.active});await refresh(true)}};
   const nf=$('#npcForm');npcPhoto=undefined;
   nf.photo.onchange=async()=>{const f=nf.photo.files[0];if(!f)return;npcPhoto=await shrink(f,160);$('#npcPrev').innerHTML=av(npcPhoto,'',nf.color.value)};

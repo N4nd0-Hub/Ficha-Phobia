@@ -336,6 +336,8 @@
       var r = await rpc('phobia_sync', { p_token: S.sess.token, p_since: S.since, p_full: !!full || !S.me });
       var first = S.since == null;
       S.me = r.me; if (r.me.avatar) S.avatars[r.me.id] = r.me.avatar;
+      /* pontos de Vantagem entregues pelo Mestre (Portal do Narrador) */
+      try { if (r.me && r.me.trait_bonus != null && state.charSheet && state.charSheet.traits) { var tb = Math.max(0, +r.me.trait_bonus || 0); if ((+state.charSheet.traits.gmPoints || 0) !== tb) { state.charSheet.traits.gmPoints = tb; saveState(true); if (typeof renderTraitsPage === 'function') renderTraitsPage(); } } } catch (e) {}
       var P = {}; (r.players || []).forEach(function (p) { P[p.id] = p; if (p.avatar) S.avatars[p.id] = p.avatar; }); S.players = P;
       var N = {}; (r.npcs || []).forEach(function (n) { N[n.id] = n; if (n.avatar) S.avatars['n' + n.id] = n.avatar; }); S.npcs = N;
       S.threads = r.threads || [];

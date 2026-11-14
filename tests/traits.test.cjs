@@ -111,12 +111,11 @@ test('Hunger’s secondary Dissonant does not create another five-point credit',
   assert.equal(box.traitBudget().flawPoints,5);assert.equal(box.traitBudget().flawCount,1);
   assert.equal(box.traitBudget().available,6);
 });
-test('Dissonants and ordinary flaws share the same five-point limit',()=>{
+test('flaw points are no longer capped at five; the GM grant adds to the budget',()=>{
   const box=fixture();assert.equal(acquire(box,'D-AUT-01').ok,true);
-  assert.equal(acquire(box,'D-ARC-IV').ok,false);assert.equal(box.traitBudget().flawPoints,1);
-  assert.equal(box.removeCharacterTrait('D-AUT-01').ok,true);
-  assert.equal(acquire(box,'D-ARC-IV').ok,true);
-  assert.equal(acquire(box,'D-AUT-01').ok,false);assert.equal(box.traitBudget().flawPoints,5);
+  assert.equal(acquire(box,'D-ARC-IV').ok,true);assert.equal(box.traitBudget().flawPoints,6);
+  box.state.charSheet.traits.gmPoints=3;
+  assert.equal(box.traitBudget().gm,3);assert.equal(box.traitBudget().available,1+6+3);
 });
 test('no more than three ordinary flaw choices can be acquired',()=>{
   const box=fixture();
