@@ -154,21 +154,15 @@
   }
   function paintAuto() {
     var box = $('#sfAuto'); if (!box) return;
-    var calc = null; try { calc = calculateSheet(); } catch (e) {}
-    var st = calc && calc.socialTierStats; if (!st) { box.innerHTML = ''; return; }
-    var parts = [];
-    ['FOR', 'MAG', 'TEC', 'AGI', 'VIT', 'SOR'].forEach(function (k) { if (st.attrs[k]) parts.push('<span class="sf-chip">+' + st.attrs[k] + ' ' + k + '</span>'); });
-    if (st.pv) parts.push('<span class="sf-chip pv">+' + st.pv + ' PV MÁX</span>');
-    if (st.pm) parts.push('<span class="sf-chip pm">+' + st.pm + ' PM MÁX</span>');
-    var col = colors();
+    if (box.dataset.keys) return; box.dataset.keys = '1';
     box.innerHTML =
-      '<header class="sf-auto-head"><div><small>AUTOMÁTICO // BÔNUS PERMANENTES DOS TIERS</small><b>O QUE A FAMA JÁ TE DEU</b></div>' +
-      '<label class="sf-switch"><input type="checkbox" id="sfAutoToggle"' + (st.enabled ? ' checked' : '') + '><span></span>Somar na ficha</label></header>' +
-      '<div class="sf-auto-total">' + (st.enabled ? (parts.join('') || '<em>Nenhum bônus permanente liberado ainda.</em>') : '<em>Desligado: os bônus abaixo não estão sendo somados.</em>') + '</div>' +
-      '<div class="sf-auto-list">' + st.rules.map(function (r) {
-        var i = SK.indexOf(r.skill);
-        return '<div class="sf-rule' + (r.on ? ' on' : '') + '" style="--sk:' + (col[i] || '#fff') + '"><span class="sf-rule-tag">' + SHORT[i] + ' ' + ROM[r.tier] + '</span><span class="sf-rule-text">' + E(r.text) + '</span><span class="sf-rule-state">' + (r.on ? (st.enabled ? '✓ SOMADO' : 'LIBERADO') : '🔒 TIER ' + ROM[r.tier]) + '</span></div>';
-      }).join('') + '</div>';
+      '<header class="sf-auto-head"><div><small>REGRA DO PLAYTEST // TIERS SOCIAIS</small><b>OS TIERS ABREM PORTAS. OS VÍNCULOS DÃO AS RECOMPENSAS.</b></div></header>' +
+      '<div class="sf-auto-list">' +
+        '<div class="sf-rule on"><span class="sf-rule-tag">ROLAGENS</span><span class="sf-rule-text">O Tier continua dando o bônus no teste e valendo como pré-requisito de Vantagens e habilidades de Arcana.</span></div>' +
+        '<div class="sf-rule on"><span class="sf-rule-tag">CHAVES</span><span class="sf-rule-text">Cada Tier abre abordagens, cenas, pistas e oportunidades no Mundo Real. Com risco, o teste resolve.</span></div>' +
+        '<div class="sf-rule on"><span class="sf-rule-tag">VÍNCULOS</span><span class="sf-rule-text">Contatos, lugares para ensaiar e habilidades próprias vêm dos Vínculos. Vantagens compradas seguem como outra via.</span></div>' +
+        '<div class="sf-rule"><span class="sf-rule-tag">FORA</span><span class="sf-rule-text">Poderes automáticos por subir de Tier, incluindo bônus de atributos, PV e PM.</span></div>' +
+      '</div>';
   }
 
   /* ---------- habilidades dos Tiers (lista de faixas) ---------- */
@@ -192,7 +186,7 @@
       var r = rows.filter(function (x) { return String(x.tier) === ROM[k]; })[0] || { title: '—', effect: '' };
       var txt = String(r.effect || '').replace(/\s*=+\s*$/, '').trim();
       var st = k < t ? 'got' : k === t ? 'now' : 'lock';
-      var tag = st === 'now' ? 'TIER ATUAL' : st === 'got' ? 'LIBERADA' : 'BLOQUEADA';
+      var tag = st === 'now' ? 'TIER ATUAL' : st === 'got' ? 'ABERTA' : 'FECHADA';
       return '<article class="sf-track ' + st + (k <= ab ? ' arc' : '') + '" style="--d:' + (k - 1) * 55 + 'ms">' +
         '<div class="sf-track-num"><small>TIER</small><b>' + ROM[k] + '</b></div>' +
         '<div class="sf-track-body"><header><b>' + E(r.title) + '</b><span class="sf-track-tag">' + (st === 'lock' ? '<i class="sf-lock"></i>' : '') + tag + (k <= ab ? ' · ARCANA' : '') + '</span></header>' +
@@ -200,10 +194,10 @@
     }).join('');
     box.style.setProperty('--sk', col[i]);
     box.innerHTML =
-      '<header class="sf-tiers-head"><div><small>LADO A // HABILIDADES DOS TIERS</small><b>' + E(act).toUpperCase() + '</b></div>' +
+      '<header class="sf-tiers-head"><div><small>LADO A // CHAVES DOS TIERS</small><b>' + E(act).toUpperCase() + '</b></div>' +
       '<div class="sf-tiers-now"><span>' + (t ? 'TIER ' + ROM[t] : 'TIER 0') + '</span><em>' + E(titleOf(act, t) || '') + '</em></div></header>' +
       '<nav class="sf-tabs" role="tablist">' + tabs + '</nav>' +
-      (t === 0 && base ? '<p class="sf-tiers-zero">TIER 0 · ' + E(base.title) + ' — nenhuma habilidade liberada ainda. Suba o Tier lá em cima para destravar a primeira faixa.</p>' : '') +
+      (t === 0 && base ? '<p class="sf-tiers-zero">TIER 0 · ' + E(base.title) + ' — nenhuma chave aberta ainda. Suba o Tier lá em cima para abrir a primeira.</p>' : '') +
       '<div class="sf-tracks' + (animate && !reduced() ? ' is-in' : '') + '">' + list + '</div>';
   }
 

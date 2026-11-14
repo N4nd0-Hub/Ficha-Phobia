@@ -23,7 +23,7 @@ function sourceFunction(name){
 test('the current catalogue contains exactly the 63 approved advantages across four categories',()=>{
   const box=fixture();
   const groups=vm.runInContext('ADVANTAGE_CATEGORIES.map(({id})=>[id,ADVANTAGE_CATALOG.filter(item=>item.category_id===id).length])',box);
-  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',18],['ATT',12],['SOC',19],['PER',14]]);
+  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',18],['ATT',14],['SOC',19],['PER',14]]);
   assert.equal(box.traitById('V-REL-01'),null);
   assert.equal(box.traitById('V2-CBT-02').name,'Impacto Inicial');
   assert.equal(box.traitById('V2-PER-09').name,'Batida Final');
@@ -163,22 +163,23 @@ test('new purchases, definitions, notes and usage records survive a JSON round t
 });
 test('static advantages recalculate maximum resources and effective stats as levels and purchases change',()=>{
   const box=fixture();
-  Object.assign(box.state.charSheet,{cnv:5,pnv:5,attrs:{FOR:1,AGI:2,MAG:5,TEC:3,VIT:4,SOR:3},progress:{pmChoices:2}});
+  Object.assign(box.state.charSheet,{cnv:5,pnv:5,attrs:{FOR:1,AGI:2,MAG:6,TEC:3,VIT:6,SOR:3},progress:{pmChoices:2}});
   box.state.charSheet.traits.extraPoints=40;
   vm.runInContext(`
     const CNV_PV_LEVELS=[3,5,7,9,10,11,13,15,17,19,20];
     const getEquippedModifiers=()=>({attrs:{AGI:1},dodge:1});
     const socialTierStatBonuses=()=>({attrs:{},pv:10,pm:20});
     const awakeningPointBudget=()=>({});const currentArcanaData=()=>null;
+    const resourceCurve=()=>({id:'padrao',name:'Padrão',pv1:28,pm1:20,pvLv:6,pmLv:6});
   `+['countReached','integrityInfo','calculateSheet'].map(sourceFunction).join('\n'),box);
   const c=()=>box.calculateSheet();
-  assert.deepEqual([c().pvMax,c().pmMax],[100,95]);
+  assert.deepEqual([c().pvMax,c().pmMax],[96,96]);
   for(const id of ['ATT-01','ATT-02','ATT-03','ATT-04','ATT-05','ATT-06','ATT-07','ATT-10','ATT-11','ATT-12','PER-04']){
     assert.equal(acquire(box,'V2-'+id).ok,true,id);
   }
   assert.equal(acquire(box,'V2-ATT-09',{attribute:'VIT'}).ok,true);
   assert.deepEqual([c().pvMax,c().pmMax,c().VIT,c().carry,c().movement,c().traitStats.dodge,c().escape,c().recovery,c().traitStats.combat,c().traitStats.extraSpell],
-    [125,110,5,15,7,2,12.5,8,1,1]);
+    [118,111,7,17,7,2,12.5,8,1,1]);
   box.state.charSheet.cnv=8;box.state.charSheet.pnv=10;
   assert.deepEqual([c().traitStats.pv,c().traitStats.pm,c().traitStats.combat],[29,25,2]);
   assert.equal(box.removeCharacterTrait('V2-ATT-11').ok,true);
