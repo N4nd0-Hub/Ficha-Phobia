@@ -147,7 +147,7 @@
     var on = all.filter(function (r) { return r.st !== 'offline'; }), off = all.filter(function (r) { return r.st === 'offline'; });
     function row(r) {
       var st = r.st, msg = r.x.status_msg;
-      return '<div class="pm-crow"><button type="button" class="pm-c' + (S.cur === r.key ? ' on' : '') + (r.t && r.t.unread ? ' unread' : '') + (st === 'offline' ? ' off' : '') + '" data-pm-open="' + E(r.key) + '">' + buddy(st) +
+      return '<div class="pm-crow"><button type="button" class="pm-c' + (S.cur === r.key ? ' on' : '') + (r.t && r.t.unread ? ' unread' : '') + (st === 'offline' ? ' off' : '') + '" data-pm-open="' + E(r.key) + '"><span class="pm-av-wrap">' + avatar(S.avatars[r.npc ? 'n' + r.x.id : r.x.id] || r.x.avatar, r.x.name, r.x.color) + '<i class="pm-st-dot st-' + st + '"></i></span>' +
         '<span class="pm-c-t"><b>' + E(r.x.name) + '</b>' + (msg ? ' <i>- ' + E(msg) + '</i>' : '') + (st !== 'online' && st !== 'offline' ? ' <small>(' + STATUS[st][0] + ')</small>' : '') + (r.npc ? ' <span class="pm-npc" title="Contato">★</span>' : '') + '</span>' + badge(r.t) + '</button>' +
         '<button type="button" class="pm-info" data-pm-prof="' + E(r.key) + '" title="Ver perfil de ' + E(r.x.name) + '">perfil</button></div>';
     }

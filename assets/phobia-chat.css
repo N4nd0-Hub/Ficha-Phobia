@@ -189,3 +189,13 @@
 #cbRoot .pm-me .pm-st-btn:hover{border-color:#7f9db9;background:#fff}
 #cbRoot .pm-me .pm-me-mail button{height:auto;border:0;background:none;color:#0033cc}
 .pm-me-k{color:#5f6f88}
+/* foto + bolinha de status na lista */
+.pm-av-wrap{position:relative;flex:none}
+.pm-av-wrap .pm-av{width:30px;height:30px}
+.pm-st-dot{position:absolute;right:-4px;bottom:-3px;width:11px;height:11px;border:2px solid #fff;border-radius:50%;background:#3ec42e;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.pm-st-dot.st-away{background:#f0a020}
+.pm-st-dot.st-busy{background:#e2263b}
+.pm-st-dot.st-offline{background:#a8b0bc}
+.pm-c.off .pm-av{filter:grayscale(1);opacity:.6}
+.pm-c{gap:8px;padding:3px 5px;min-height:38px}
+.pm-c-t i{font-style:normal;color:#445}
