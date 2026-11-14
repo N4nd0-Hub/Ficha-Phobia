@@ -227,12 +227,16 @@
     return ok ? terms : null;
   }
   function rnd(n) { var a = new Uint32Array(1); crypto.getRandomValues(a); return 1 + (a[0] % n); }
-  function crit() { try { return calculateSheet().critStart || 20; } catch (e) { return 20; } }
+  /* Margem Crítica (Sorte) só vale para ataques e magias; testes de atributo e sociais só criticam no 20 natural */
+  function critCombat() { try { return calculateSheet().critStart || 20; } catch (e) { return 20; } }
+  function isCombatRoll(label, opts) { return !!(opts && opts.attack) || /ACERTO|ATAQUE|OFENSIVA|MAGIA|ALL-OUT/i.test(label || ''); }
+  function crit() { return current && current.critAt ? current.critAt : 20; }
 
   function roll(expr, label, opts) {
     opts = opts || {};
     if ((!opts.mode || opts.mode === 'normal') && /ACERTO/i.test(label || '') && window.PhobiaCombat && PhobiaCombat.attackMode && PhobiaCombat.attackMode() !== 'normal') opts.mode = PhobiaCombat.attackMode();
     var terms = parseExpr(expr); if (!terms) return;
+    var critAt = isCombatRoll(label, opts) ? critCombat() : 20;
     ensureStage(); size();
     var rolls = [], bonus = 0, mode = opts.mode || 'normal';
     terms.forEach(function (t) {
@@ -248,7 +252,7 @@
       (keep === extra ? d20s[0] : extra).drop = true;
     }
     var sum = rolls.reduce(function (s, r) { return s + (r.drop ? 0 : r.sign * r.val); }, 0) + bonus;
-    current = { expr: expr, label: label || 'ROLAGEM', opts: opts, rolls: rolls, bonus: bonus, total: sum, mode: mode };
+    current = { expr: expr, label: label || 'ROLAGEM', opts: opts, rolls: rolls, bonus: bonus, total: sum, mode: mode, critAt: critAt };
     /* layout */
     var vis = rolls.slice(0, 14), n = vis.length;
     var cols = Math.min(n, W < 600 ? 3 : 7), rows = Math.ceil(n / cols);
