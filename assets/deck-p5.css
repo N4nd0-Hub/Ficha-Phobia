@@ -130,3 +130,65 @@ body.hud .site{grid-template-rows:minmax(0,1fr) 66px}
   #phobiaDeckBar .deck-date{margin-top:0;height:50px}
 }
 @media (prefers-reduced-motion:reduce){#phobiaDeckBar .deck-dl.urgent{animation:none}}
+
+/* ---------- Notas + Arquivo (repaginados) ---------- */
+#phobiaDeckBar .deck-tool.df-note,#phobiaDeckBar .deck-tool.df-file{position:relative;width:52px;height:46px;padding:0;border:0;background:none;transform:none;overflow:visible}
+#phobiaDeckBar .deck-tool.df-note:hover,#phobiaDeckBar .deck-tool.df-file:hover{background:none;transform:translateY(-2px)}
+#phobiaDeckBar .deck-tool em{position:absolute;left:50%;bottom:-3px;transform:translateX(-50%) rotate(-4deg);padding:1px 5px;background:var(--dk-paper,#fff0d8);color:var(--dk-black,#0d0c10);font:800 8.5px/1.2 "Barlow Condensed",Arial,sans-serif;letter-spacing:1px;font-style:normal;white-space:nowrap;z-index:2}
+/* bloco de notas: papel preso com alfinete */
+.df-paper{position:absolute;left:12px;top:3px;width:28px;height:32px;padding:7px 5px 0;background:#fff6d8;border:2px solid var(--dk-black,#0d0c10);transform:rotate(-7deg);box-shadow:3px 3px 0 var(--dk-acc,var(--hud-acc,#ef2b97));display:grid;align-content:start;gap:4px;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.df-paper i{display:block;height:2px;background:color-mix(in srgb,var(--dk-black,#0d0c10) 55%,transparent)}
+.df-paper i:nth-child(2){width:70%}
+.df-pin{position:absolute;left:23px;top:0;width:9px;height:9px;border-radius:50%;background:var(--dk-acc,var(--hud-acc,#ef2b97));border:2px solid var(--dk-black,#0d0c10);z-index:1}
+#phobiaDeckBar .df-note:hover .df-paper{transform:rotate(3deg) scale(1.08)}
+/* arquivo: disquete */
+.df-disk{position:absolute;left:12px;top:4px;width:28px;height:28px;background:var(--dk-acc,var(--hud-acc,#ef2b97));border:2px solid var(--dk-black,#0d0c10);clip-path:polygon(0 0,82% 0,100% 18%,100% 100%,0 100%);transform:rotate(5deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.df-disk::before{content:"";position:absolute;left:5px;right:7px;top:0;height:9px;background:var(--dk-paper,#fff0d8);border:2px solid var(--dk-black,#0d0c10);border-top:0}
+.df-disk i{position:absolute;left:4px;right:4px;bottom:3px;height:9px;background:var(--dk-black,#0d0c10)}
+#phobiaDeckBar .df-file:hover .df-disk,#phobiaDeckBar .df-file[aria-expanded="true"] .df-disk{transform:rotate(-6deg) scale(1.08)}
+
+/* menu */
+#phobiaDeckBar .footer-file-menu{width:300px;bottom:calc(100% + 14px);padding:12px;background:var(--dk-black,#0d0c10);color:var(--dk-paper,#fff0d8);border:3px solid var(--dk-paper,#fff0d8);box-shadow:8px 8px 0 var(--dk-acc,var(--hud-acc,#ef2b97));transform-origin:bottom right}
+#phobiaDeckBar .footer-file-menu.open{display:grid;gap:6px;animation:dfIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes dfIn{from{opacity:0;transform:translateY(10px) scale(.94) rotate(2deg)}}
+#phobiaDeckBar .file-menu-title{display:flex;align-items:baseline;gap:8px;margin:-2px 0 4px;padding:0;background:none;color:var(--dk-paper,#fff0d8);font:inherit}
+#phobiaDeckBar .file-menu-title small{font:800 10px "Barlow Condensed",Arial,sans-serif;letter-spacing:2px;color:var(--dk-acc,var(--hud-acc,#ef2b97))}
+#phobiaDeckBar .file-menu-title b{font:400 24px/1 "Archivo Black","Arial Black",sans-serif;font-style:italic;letter-spacing:-1px}
+#phobiaDeckBar .footer-file-menu .df-row{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;background:color-mix(in srgb,var(--dk-paper,#fff0d8) 8%,var(--dk-black,#0d0c10));color:var(--dk-paper,#fff0d8);text-align:left;cursor:pointer;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:background-color .15s,transform .2s cubic-bezier(.34,1.56,.64,1),color .15s}
+#phobiaDeckBar .footer-file-menu .df-row i{display:grid;place-items:center;width:30px;height:30px;flex:none;background:var(--dk-paper,#fff0d8);color:var(--dk-black,#0d0c10);font-style:normal;font-size:15px;transform:rotate(-6deg)}
+#phobiaDeckBar .footer-file-menu .df-row span{display:grid;gap:1px;min-width:0}
+#phobiaDeckBar .footer-file-menu .df-row b{font:400 14px/1.1 "Archivo Black","Arial Black",sans-serif;letter-spacing:.2px}
+#phobiaDeckBar .footer-file-menu .df-row small{font:600 11.5px/1.25 Barlow,Arial,sans-serif;color:color-mix(in srgb,var(--dk-paper,#fff0d8) 70%,transparent)}
+#phobiaDeckBar .footer-file-menu .df-row:hover{background:var(--dk-acc,var(--hud-acc,#ef2b97));color:var(--dk-black,#0d0c10);transform:translateX(4px)}
+#phobiaDeckBar .footer-file-menu .df-row:hover small{color:var(--dk-black,#0d0c10)}
+#phobiaDeckBar .footer-file-menu .df-row:hover i{background:var(--dk-black,#0d0c10);color:var(--dk-paper,#fff0d8)}
+#phobiaDeckBar .footer-file-menu .df-fichas i{background:var(--dk-acc2,#6ce6ff)}
+#phobiaDeckBar .df-info{margin-top:4px;padding:10px 12px;background:none;border:0;border-top:2px dashed color-mix(in srgb,var(--dk-paper,#fff0d8) 25%,transparent);color:var(--dk-paper,#fff0d8)}
+#phobiaDeckBar .df-info > span{font:800 10px "Barlow Condensed",Arial,sans-serif;letter-spacing:2px;color:var(--dk-acc,var(--hud-acc,#ef2b97))}
+#phobiaDeckBar .df-info > b{display:block;font:400 12px "Archivo Black",sans-serif;margin:2px 0 6px}
+#phobiaDeckBar .df-info #largeSaveUsage{display:none}
+#phobiaDeckBar .df-info small{display:block;font:600 11px/1.35 Barlow,Arial,sans-serif;color:color-mix(in srgb,var(--dk-paper,#fff0d8) 65%,transparent)}
+.df-meter{margin-bottom:6px}
+.df-meter > span{display:block;height:10px;background:color-mix(in srgb,var(--dk-paper,#fff0d8) 14%,transparent);transform:skewX(-20deg);overflow:hidden}
+.df-meter > span i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,var(--dk-acc2,#6ce6ff) 0 5px,color-mix(in srgb,var(--dk-acc2,#6ce6ff) 65%,#000) 5px 10px);transition:width .6s cubic-bezier(.22,1,.36,1)}
+.df-meter > span.warn i{background:repeating-linear-gradient(-45deg,#ff4d55 0 5px,#b3121c 5px 10px)}
+.df-meter small{margin-top:4px;color:var(--dk-paper,#fff0d8)!important;font-weight:800!important}
+/* no menu do celular */
+body.hud .hud-menu-extra .deck-tool.df-note,body.hud .hud-menu-extra .deck-tool.df-file{position:relative;width:52px;height:46px;border:0;background:none}
+body.hud .hud-menu-extra .footer-file-menu{width:auto;background:var(--hud-black,#0d0c10);color:var(--hud-paper,#fff0d8);border:3px solid var(--hud-paper,#fff0d8);padding:12px}
+body.hud .hud-menu-extra .footer-file-menu .df-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:0;background:rgba(255,255,255,.08);color:var(--hud-paper,#fff0d8);text-align:left}
+body.hud .hud-menu-extra .footer-file-menu .df-row i{display:grid;place-items:center;width:30px;height:30px;background:var(--hud-paper,#fff0d8);color:#0d0c10;font-style:normal}
+body.hud .hud-menu-extra .footer-file-menu .df-row span{display:grid}
+body.hud .hud-menu-extra .footer-file-menu .df-row small{font:600 11.5px Barlow,Arial,sans-serif;opacity:.75}
+body.hud .hud-menu-extra .file-menu-title{display:flex;gap:8px;align-items:baseline;background:none;color:inherit}
+body.hud .hud-menu-extra .file-menu-title b{font:400 22px "Archivo Black",sans-serif;font-style:italic}
+body.hud .hud-menu-extra .file-menu-title small{font:800 10px "Barlow Condensed",sans-serif;letter-spacing:2px;color:var(--hud-acc,#ef2b97)}
+body.hud .hud-menu-extra .deck-tool em{position:absolute;left:50%;bottom:-3px;transform:translateX(-50%) rotate(-4deg);padding:1px 5px;background:var(--hud-paper,#fff0d8);color:#0d0c10;font:800 8.5px/1.2 "Barlow Condensed",Arial,sans-serif;letter-spacing:1px;font-style:normal}
+#phobiaDeckBar .footer-file-menu .df-row i,body.hud .hud-menu-extra .footer-file-menu .df-row i{font-family:"Archivo Black","Segoe UI Emoji","Apple Color Emoji",sans-serif}
+body.hud .hud-menu-extra .deck-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+body.hud .hud-menu-extra .file-menu-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px;flex:1}
+body.hud .hud-menu-extra .footer-file-menu{flex-basis:100%;order:2}
+body.hud .hud-menu-extra .file-menu-title small{white-space:nowrap}
+body.hud .hud-menu-extra .footer-file-menu .df-row b{font:400 13px "Archivo Black",sans-serif}
+body.hud .hud-menu-extra .footer-file-menu.open{display:grid;gap:6px}
+body.hud .hud-menu-extra .deck-tools{align-items:flex-start}
