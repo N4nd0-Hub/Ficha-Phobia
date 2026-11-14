@@ -367,12 +367,19 @@
   async function pushAvatar() {
     try {
       var src = state.charSheet && state.charSheet.photoData; if (!okImg(src) || !S.sess) return;
+      /* só manda a foto da ficha quando ELA mudou: não pisa na foto escolhida no Rewind */
+      var hk = 'phobia-avatar-src:' + S.sess.id, hv = 0;
+      for (var q = 0; q < src.length; q += 97) hv = (hv * 31 + src.charCodeAt(q)) >>> 0;
+      hv = hv + ':' + src.length;
+      var last = null; try { last = localStorage.getItem(hk); } catch (e) {}
+      if (last === hv) return;
+      if (last === null && S.avatars[S.sess.id]) { try { localStorage.setItem(hk, hv); } catch (e) {} return; }
       var img = new Image(); img.src = src; await img.decode();
       var c = document.createElement('canvas'), s = 96; c.width = c.height = s;
       var k = Math.max(s / img.naturalWidth, s / img.naturalHeight), w = img.naturalWidth * k, h = img.naturalHeight * k;
       c.getContext('2d').drawImage(img, (s - w) / 2, (s - h) / 4, w, h);
       var d = c.toDataURL('image/webp', .8); if (d.indexOf('data:image/webp') !== 0) d = c.toDataURL('image/jpeg', .8);
-      if (d.length < 60000) { await rpc('phobia_set_avatar', { p_token: S.sess.token, p_avatar: d }); S.avatars[S.sess.id] = d; if (win && !win.hidden) render(); }
+      if (d.length < 60000) { await rpc('phobia_set_avatar', { p_token: S.sess.token, p_avatar: d }); S.avatars[S.sess.id] = d; try { localStorage.setItem(hk, hv); } catch (e) {} if (win && !win.hidden) render(); }
     } catch (e) {}
   }
 
