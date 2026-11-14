@@ -18836,7 +18836,7 @@ const GRIMOIRE_ICONS={
 };
 const grimoireUi={query:'',category:'all',tier:'all',availableOnly:true,limit:12};
 /* tipos mágicos da Persona: Miscelânea e Defesa são livres; o resto só nos 4 tipos escolhidos */
-const MAGIC_FREE_TYPES=['Miscelânea','Defesa'],MAGIC_TYPE_LIMIT=4;
+const MAGIC_FREE_TYPES=['Miscelânea','Defesa','Passivas Mágicas'],MAGIC_TYPE_LIMIT=4;
 function chosenMagicTypes(){let a;try{a=state.charSheet.personaMagicTypes}catch(e){}return Array.isArray(a)?a.filter((c,i)=>a.indexOf(c)===i&&!MAGIC_FREE_TYPES.includes(c)&&PERSONA_SPELL_CATEGORIES.some(x=>x.name===c)).slice(0,MAGIC_TYPE_LIMIT):[]}
 function magicTypeAllowed(c){const ch=chosenMagicTypes();return !ch.length||MAGIC_FREE_TYPES.includes(c)||ch.includes(c)}
 
@@ -19230,7 +19230,7 @@ function renderGrimoire(){
   rows.sort((a,b)=>(Number(a.tier)-Number(b.tier))||a.category.localeCompare(b.category,'pt-BR')||a.name.localeCompare(b.name,'pt-BR'));
   const total=rows.length,shown=rows.slice(0,grimoireUi.limit),counter=document.getElementById('grimoireResultCount');
   if(counter)counter.textContent=`${total} MAGIA${total===1?'':'S'} ENCONTRADA${total===1?'':'S'}`;
-  const note=document.getElementById('grimoireSourceNote');if(note)note.textContent=`${grimoireUi.availableOnly?'DISPONÍVEIS PARA PNv.':'CATÁLOGO COMPLETO'} // TIER ${romanTier(available)} LIBERADO${chosenMagicTypes().length?' // '+chosenMagicTypes().map(grimoireCategoryLabel).join(' · ').toUpperCase()+' + MISC. & DEFESA':' // ESCOLHA SEUS 4 TIPOS NA PÁGINA PERSONA'}`;
+  const note=document.getElementById('grimoireSourceNote');if(note)note.textContent=`${grimoireUi.availableOnly?'DISPONÍVEIS PARA PNv.':'CATÁLOGO COMPLETO'} // TIER ${romanTier(available)} LIBERADO${chosenMagicTypes().length?' // '+chosenMagicTypes().map(grimoireCategoryLabel).join(' · ').toUpperCase()+' + MISC., DEFESA & PASSIVAS':' // ESCOLHA SEUS 4 TIPOS NA PÁGINA PERSONA'}`;
   box.innerHTML=shown.length?shown.map(s=>{
     const locked=Number(s.tier)>available,equipped=spellInDeck(s.id),selected=deckLabUi.source==='library'&&deckLabUi.spellId===s.id;
     return `<article class="deck-library-spell ${locked?'locked':''} ${equipped?'equipped':''} ${selected?'selected':''}" style="--spell-color:${deckLabColor(s)}" draggable="${!locked&&!equipped}" data-deck-library-id="${esc(s.id)}">
@@ -22080,7 +22080,7 @@ initializePhobiaLargeSave();
 <script src="assets/fichas.js?v=4"></script>
 <script src="assets/deck-file.js?v=2"></script>
 <script src="assets/persona-page.js?v=1"></script>
-<script src="assets/persona-types.js?v=1"></script>
+<script src="assets/persona-types.js?v=2"></script>
 <script src="assets/dossie.js?v=1"></script>
 </body>
 </html>

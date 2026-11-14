@@ -7,7 +7,7 @@
   'use strict';
   function E(v) { return String(v == null ? '' : v).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); }
   var ELEM = ['Físico', 'Fogo', 'Gelo', 'Vento', 'Raio', 'Nuclear', 'PSY', 'Luz e Bênção', 'Trevas e Maldição', 'Intel', 'Onipotente'];
-  var SUP = ['Cura e Recuperação', 'Buffs (Aprimoramentos)', 'Debuffs (Enfraquecimentos)', 'Controle Mental e Status', 'Passivas Mágicas'];
+  var SUP = ['Cura e Recuperação', 'Buffs (Aprimoramentos)', 'Debuffs (Enfraquecimentos)', 'Controle Mental e Status'];
   var EKEY = { 'Físico': 'fisico', 'Fogo': 'fogo', 'Gelo': 'gelo', 'Vento': 'vento', 'Raio': 'raio', 'Nuclear': 'nuclear', 'PSY': 'psy', 'Luz e Bênção': 'luz', 'Trevas e Maldição': 'trevas', 'Intel': 'intel' };
   function ok() { try { return typeof state !== 'undefined' && state.charSheet && typeof PERSONA_SPELL_CATEGORIES !== 'undefined'; } catch (e) { return false; } }
   function count(c) { var x = PERSONA_SPELL_CATEGORIES.filter(function (k) { return k.name === c; })[0]; return x ? x.count : 0; }
@@ -30,8 +30,8 @@
     if (!box) { box = document.createElement('section'); box.id = 'personaMagicTypes'; box.className = 'pt-box'; anchor.parentNode.insertBefore(box, anchor); box.addEventListener('click', onClick); }
     var ch = chosenMagicTypes(), full = ch.length >= MAGIC_TYPE_LIMIT;
     var slots = ''; for (var i = 0; i < MAGIC_TYPE_LIMIT; i++) slots += ch[i] ? '<span class="pt-slot on" style="--tc:' + color(ch[i]) + '"><i>' + icon(ch[i]) + '</i>' + E(label(ch[i])) + '</span>' : '<span class="pt-slot">' + (i + 1) + '</span>';
-    box.innerHTML = '<header><strong><span>✦</span> TIPOS MÁGICOS DA PERSONA</strong><span>Escolha <b>4</b> tipos. Miscelânea e Defesa são livres para todos. O Grimório só mostra magias desses 6.</span></header>' +
-      '<div class="pt-slots">' + slots + '<span class="pt-plus">+</span><span class="pt-slot free" style="--tc:' + color('Miscelânea') + '">★ Misc.</span><span class="pt-slot free" style="--tc:' + color('Defesa') + '">▣ Defesa</span><span class="pt-count">' + ch.length + '/' + MAGIC_TYPE_LIMIT + '</span></div>' +
+    box.innerHTML = '<header><strong><span>✦</span> TIPOS MÁGICOS DA PERSONA</strong><span>Escolha <b>4</b> tipos. Miscelânea, Defesa e Passivas são livres para todos. O Grimório só mostra magias desses tipos.</span></header>' +
+      '<div class="pt-slots">' + slots + '<span class="pt-plus">+</span><span class="pt-slot free" style="--tc:' + color('Miscelânea') + '">★ Misc.</span><span class="pt-slot free" style="--tc:' + color('Defesa') + '">▣ Defesa</span><span class="pt-slot free" style="--tc:' + color('Passivas Mágicas') + '">◇ Passivas</span><span class="pt-count">' + ch.length + '/' + MAGIC_TYPE_LIMIT + '</span></div>' +
       '<h4>ELEMENTOS</h4><div class="pt-grid">' + ELEM.map(function (c) { return chip(c, ch.indexOf(c) >= 0, full); }).join('') + '</div>' +
       '<h4>SUPORTE &amp; ESPECIAIS</h4><div class="pt-grid">' + SUP.map(function (c) { return chip(c, ch.indexOf(c) >= 0, full); }).join('') + '</div>' +
       (warn(ch) || '');
