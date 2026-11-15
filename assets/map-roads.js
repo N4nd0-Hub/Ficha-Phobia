@@ -347,8 +347,6 @@
       /* pontilhado que sobe do rodapé */
       '<rect class="pm-halftone" x="-2000" y="-1500" width="5400" height="3700" fill="url(#pmDots)" mask="url(#pmFadeMask)"/>' +
       /* corte diagonal duplo logo abaixo da faixa rosa do topo */
-      slash('pm-slash-black', 12, 24) +
-      slash('pm-slash-cream', 29, 33) +
       star(620, 300, 1.15) + star(660, 120, .8) + star(975, 300, 1) + star(250, 455, .85) + star(1240, 470, .7) +
       star(-420, 160, 1.3) + star(-260, 760, 1) + star(1620, 260, 1.2) + star(420, 980, 1.1) + star(1500, -60, .9) + star(-700, 460, .8) +
       compass(1262, 610);

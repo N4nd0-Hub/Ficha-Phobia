@@ -137,3 +137,14 @@ body.cognition #mapPage .pm-slash-cream{fill:var(--theme-accent-2,#6ce6ff)}
 .pm-legend-ways .pm-lg-river{height:9px;background:#8fd8ea;box-shadow:0 0 0 2px #141217}
 .pm-legend-ways .pm-lg-park{width:18px;height:12px;border-radius:50%;background:radial-gradient(circle,#3f9a52 2px,transparent 2.5px) 0 0/6px 6px,#9fd88a;box-shadow:0 0 0 2px #141217}
 .legend.pm-legend-ways{grid-template-columns:1fr;font-size:10px}
+
+/* faixa do topo agora é efeito do HUD (fica parada na tela, não anda com o mapa) */
+#mapPage .map-hud-band{position:absolute;left:0;right:0;top:0;height:clamp(150px,25%,210px);pointer-events:none;z-index:2}
+#mapPage .map-hud-band svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 0 rgba(0,0,0,.18))}
+#mapPage .mhb-fill{fill:var(--theme-accent,#ef2b97)}
+#mapPage .mhb-black{fill:#141217}
+#mapPage .mhb-cream{fill:#fff3d9}
+body.time-night #mapPage .mhb-cream{fill:var(--theme-accent-2,#6ce6ff)}
+body.cognition #mapPage .mhb-fill{fill:color-mix(in srgb,var(--theme-accent-3,#96ff45) 70%,#10262c)}
+body.cognition #mapPage .mhb-cream{fill:var(--theme-accent-2,#6ce6ff)}
+#mapPage .map-shell.local-mode .map-hud-band,#mapPage[data-map-mode="local"] .map-hud-band{display:none}
