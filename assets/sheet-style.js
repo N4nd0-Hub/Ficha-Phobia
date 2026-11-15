@@ -21,6 +21,7 @@
     paper: ['Texto', 'Letras e números']
   };
   var PRESETS = [
+    { id: 'p6', site: 'makoto', name: 'PERSONA 6', tag: 'Mãos do além', fx: 'p6', c: { acc: '#3dff86', acc2: '#b6ffcf', acc3: '#e4ffd6', bg: '#030906', card: '#0b1a10', card2: '#08140c', black: '#020503', paper: '#e4ffe9' } },
     { id: 'naoya', site: 'midnight', name: 'NAOYA', tag: 'A linha do espelho', fx: 'naoya', c: { acc: '#a77bff', acc2: '#dfe3ee', acc3: '#c9b6ff', bg: '#101218', card: '#1c1f28', card2: '#171a22', black: '#08090d', paper: '#eef0f7' } },
     { id: 'tatsuya', site: 'joker', name: 'TATSUYA', tag: 'Borboletas e chamas', fx: 'tatsuya', c: { acc: '#e3242b', acc2: '#f5a524', acc3: '#ff7a2e', bg: '#120707', card: '#241111', card2: '#1c0c0c', black: '#070303', paper: '#fff1e2' } },
     { id: 'maya', site: 'violet', name: 'MAYA', tag: 'Neon e corações cósmicos', fx: 'maya', c: { acc: '#ff2fa8', acc2: '#2fe3ea', acc3: '#fff27a', bg: '#100a1c', card: '#21163a', card2: '#1a1130', black: '#090511', paper: '#fff0fa' } },
@@ -179,7 +180,22 @@
     var back = fxLayer('hsFxBack'), top = fxLayer('hsFxTop', true);
     if (fxBuilt.kind === kind) return;
     fxBuilt.kind = kind; back.innerHTML = ''; top.innerHTML = '';
-    if (kind === 'makoto') {
+    if (kind === 'p6') {
+      var HP = 'M42 220C40 182 35 152 31 130C23 120 15 106 10 90C7 81 14 78 19 86L29 106C26 80 22 52 20 27C19 18 27 17 29 25L37 92C37 60 37 32 38 11C38 2 47 2 47 11L49 90C51 62 53 37 56 19C57 10 66 11 64 20L59 95C62 73 66 55 70 41C72 33 80 35 77 44L69 104C66 130 62 152 60 176C59 196 61 210 66 220Z';
+      var hand = function (cls, st) { return '<svg class="p6-hand ' + cls + '" style="' + st + '" viewBox="0 0 100 220"><defs><linearGradient id="p6g' + cls + '" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#3dff86" stop-opacity="0"/><stop offset=".45" stop-color="#3dff86" stop-opacity=".35"/><stop offset="1" stop-color="#d9ffe6" stop-opacity=".7"/></linearGradient></defs><path d="' + HP + '" fill="url(#p6g' + cls + ')"/></svg>'; };
+      back.innerHTML = '<i class="p6-base"></i><i class="p6-moon"></i>' +
+        '<svg class="p6-branch" viewBox="0 0 1200 260" preserveAspectRatio="none"><path d="M0 0C60 40 90 30 130 90C150 120 140 160 175 200M130 90C170 70 200 90 240 60M60 30C40 70 70 110 40 150M240 60C280 40 300 0 340 10M420 0C430 50 470 70 460 120C455 150 480 170 470 210M460 120C500 100 520 120 560 90M760 0C740 40 700 60 720 110C730 140 700 170 720 220M720 110C680 100 650 120 620 100M960 0C990 50 1040 60 1030 120C1025 150 1060 180 1050 230M1030 120C1070 100 1100 120 1140 90M1200 30C1160 60 1150 100 1180 150"/></svg>' +
+        '<i class="p6-fog a"></i><i class="p6-fog b"></i>' +
+        hand('h1', 'left:3vw;bottom:-6vh;height:62vh;transform:rotate(14deg)') +
+        hand('h2', 'right:5vw;bottom:-8vh;height:70vh;transform:rotate(-12deg) scaleX(-1)') +
+        hand('h3', 'left:-4vw;top:34vh;height:40vh;transform:rotate(68deg)') +
+        hand('h4', 'right:-3vw;top:8vh;height:36vh;transform:rotate(-118deg) scaleX(-1)') +
+        hand('h5', 'left:44vw;bottom:-14vh;height:46vh;transform:rotate(-4deg)') +
+        '<i class="p6-rain"></i><i class="p6-scan"></i><i class="p6-vig"></i>';
+      var wi = '';
+      for (var o = 0; o < 12; o++) { var d6 = 14 + Math.random() * 14; wi += '<span class="p6-wisp" style="left:' + (Math.random() * 96).toFixed(1) + '%;animation-duration:' + d6.toFixed(1) + 's;animation-delay:-' + (Math.random() * d6).toFixed(1) + 's"><i style="--s:' + (6 + Math.random() * 10).toFixed(0) + 'px;animation-duration:' + (2 + Math.random() * 3).toFixed(1) + 's"></i></span>'; }
+      top.innerHTML = wi;
+    } else if (kind === 'makoto') {
       back.innerHTML = '<i class="mk-sky"></i><i class="mk-moon"></i><i class="mk-mist a"></i><i class="mk-mist b"></i><i class="mk-scan"></i><i class="mk-clock">00:00</i>';
     } else if (kind === 'narukami') {
       back.innerHTML = '<i class="nk-fog a"></i><i class="nk-fog b"></i><i class="nk-static"></i>';

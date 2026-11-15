@@ -268,3 +268,41 @@ body.hs-calm #hsFxTop{display:none!important}
   #hsFxBack .jk-cut,#hsFxBack .mk-clock{display:none}
   #hsFxTop .nk-fall:nth-child(n+11){display:none}
 }
+
+/* ---- PERSONA 6 // Mãos do além (tema verde fantasmagórico, arte original) ---- */
+.hs-preset.fx-p6 .hs-preset-art{background:radial-gradient(60% 50% at 50% 0,rgba(61,255,134,.45),transparent 70%),
+  radial-gradient(14px 30px at 30% 95%,rgba(182,255,207,.5),transparent 70%),radial-gradient(14px 34px at 72% 100%,rgba(182,255,207,.45),transparent 70%),linear-gradient(180deg,#0e3a1d,#030906 70%)}
+#hsFxBack .p6-base{inset:0;background:
+  radial-gradient(90% 55% at 50% -8%,rgba(61,255,134,.34),rgba(20,90,45,.18) 40%,transparent 72%),
+  radial-gradient(70% 40% at 50% 105%,rgba(40,140,80,.18),transparent 70%),
+  linear-gradient(180deg,#0a2a15 0,#04120a 40%,#020503 100%)}
+#hsFxBack .p6-moon{left:50%;top:-14vh;width:min(70vw,900px);height:44vh;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(190,255,210,.22),rgba(61,255,134,.08) 60%,transparent);filter:blur(10px);animation:p6Breath 9s ease-in-out infinite}
+#hsFxBack .p6-branch{position:absolute;left:0;top:0;width:100%;height:34vh;fill:none;stroke:#020a05;stroke-width:9;stroke-linecap:round;opacity:.85;filter:drop-shadow(0 0 6px rgba(61,255,134,.25))}
+#hsFxBack .p6-fog{left:-30%;width:160%;height:40vh;bottom:-6vh;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(120,255,170,.12),transparent);filter:blur(24px);animation:p6Drift 26s ease-in-out infinite alternate}
+#hsFxBack .p6-fog.b{bottom:30vh;opacity:.55;animation-duration:38s;animation-direction:alternate-reverse}
+#hsFxBack .p6-hand{position:absolute;width:auto;transform-origin:50% 100%;filter:blur(1.5px) drop-shadow(0 0 18px rgba(61,255,134,.45));opacity:.38;mix-blend-mode:screen}
+#hsFxBack .p6-hand path{animation:p6Grab 7s ease-in-out infinite;transform-origin:50% 100%;transform-box:fill-box}
+#hsFxBack .p6-hand.h2 path{animation-delay:-2.4s;animation-duration:8.5s}
+#hsFxBack .p6-hand.h3{opacity:.24}#hsFxBack .p6-hand.h3 path{animation-delay:-4s}
+#hsFxBack .p6-hand.h4{opacity:.2}#hsFxBack .p6-hand.h4 path{animation-delay:-1s;animation-duration:10s}
+#hsFxBack .p6-hand.h5{opacity:.16;filter:blur(4px)}
+#hsFxBack .p6-hand{animation:p6Fade 11s ease-in-out infinite}
+#hsFxBack .p6-hand.h2{animation-delay:-3s}#hsFxBack .p6-hand.h3{animation-delay:-6s}#hsFxBack .p6-hand.h4{animation-delay:-8s}
+#hsFxBack .p6-rain{inset:-20%;background:repeating-linear-gradient(100deg,transparent 0 22px,rgba(190,255,210,.06) 22px 23px,transparent 23px 61px);animation:p6Rain .9s linear infinite;opacity:.8}
+#hsFxBack .p6-scan{inset:0;background:repeating-linear-gradient(0deg,rgba(61,255,134,.03) 0 1px,transparent 1px 3px);animation:p6Flick 6s steps(1) infinite}
+#hsFxBack .p6-vig{inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.75) 100%)}
+#hsFxTop .p6-wisp{position:absolute;bottom:-40px;animation:p6Rise linear infinite}
+#hsFxTop .p6-wisp i{width:var(--s);height:calc(var(--s) * 1.5);border-radius:50% 50% 45% 45%;background:radial-gradient(circle at 50% 35%,#f0fff4,rgba(61,255,134,.6) 45%,transparent 72%);
+  filter:blur(1px) drop-shadow(0 0 8px #3dff86);opacity:.55;animation:p6Sway ease-in-out infinite alternate}
+body.workspace-sheet[data-hs-fx="p6"] #characterPage::before{box-shadow:0 0 70px rgba(61,255,134,.22)}
+body.workspace-sheet[data-hs-fx="p6"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ){box-shadow:0 0 0 1px rgba(61,255,134,.14),0 0 24px rgba(61,255,134,.07)!important}
+@keyframes p6Grab{0%,100%{transform:scaleY(1) rotate(0)}40%{transform:scaleY(1.06) rotate(-3deg)}60%{transform:scaleY(.95) rotate(2deg) skewX(3deg)}}
+@keyframes p6Fade{0%,100%{opacity:var(--o,.38)}50%{opacity:.12}}
+@keyframes p6Breath{0%,100%{opacity:.8}50%{opacity:1}}
+@keyframes p6Drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+@keyframes p6Rain{from{transform:translate(0,0)}to{transform:translate(-11px,61px)}}
+@keyframes p6Flick{0%,100%{opacity:1}47%{opacity:.4}49%{opacity:1}83%{opacity:.7}}
+@keyframes p6Rise{from{transform:translateY(0)}to{transform:translateY(-115vh)}}
+@keyframes p6Sway{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
