@@ -356,8 +356,9 @@
 
   /* rios estilizados: Sumida (leste) e Kanda (corta o centro) */
   function rivers() {
-    var sumida = 'M 1330 -900 C 1300 -300 1270 -60 1235 60 S 1200 250 1110 330 S 1050 420 1060 520',
-        kanda = 'M -1400 270 C -600 250 -100 300 260 255 S 560 280 640 300 S 900 330 1005 300 S 1140 300 1205 245';
+    /* Sumida passa à direita de Asakusa e desce reto até a baía; o Kanda deságua nele */
+    var sumida = 'M 1340 -900 C 1318 -300 1290 0 1268 150 S 1236 380 1196 560',
+        kanda = 'M -1400 270 C -600 250 -100 300 260 255 S 560 280 640 300 S 900 330 1010 312 S 1170 300 1252 262';
     var r = function (d) { return '<path class="pm-river-edge" d="' + d + '"/><path class="pm-river" d="' + d + '"/><path class="pm-river-flow" d="' + d + '"/>'; };
     return '<g class="pm-rivers">' + r(kanda) + r(sumida) + '</g>';
   }
