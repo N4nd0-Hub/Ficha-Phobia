@@ -66,12 +66,23 @@
     var cityB = svg.querySelector('.dl-block, .dl-tower');
     if (cityB && cityB.parentNode) cityB.parentNode.appendChild(win);
 
+    /* linhas da grade que já têm pista/avenida/ligação por cima */
+    var busy = {};
+    svg.querySelectorAll('.dl-road .r-inner').forEach(function (p) {
+      var q = polyPts(p.getAttribute('d'));
+      for (var i = 1; i < q.length; i++) {
+        if (Math.abs(q[i][0] - q[i - 1][0]) < .5) busy['V' + Math.round(q[i][0])] = 1;
+        if (Math.abs(q[i][1] - q[i - 1][1]) < .5) busy['H' + Math.round(q[i][1])] = 1;
+      }
+    });
+
     /* ruas da grade */
     var street = svg.querySelector('.dl-street');
     if (street) {
       var m0 = matrixOf(svg, street);
       segments(street.getAttribute('d')).forEach(function (s) {
         var vert = s[0] === s[2];
+        if (busy[vert ? 'V' + Math.round(s[0]) : 'H' + Math.round(s[1])]) return;
         if (rnd() > .55) {
           var off = rnd() > .5 ? 4 : -4, pts = vert ? [[s[0] + off, s[1]], [s[2] + off, s[3]]] : [[s[0], s[1] + off], [s[2], s[3] + off]];
           movers.push({ k: 'car', t: track(pts, m0), d: rnd() * 2000, v: (38 + rnd() * 30) * (off < 0 ? -1 : 1), c: CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], sc: .82 });
@@ -84,13 +95,17 @@
     }
 
     /* avenidas, ligações e via expressa */
-    svg.querySelectorAll('.dl-road .r-inner, .dl-highway .h-deck').forEach(function (p) {
+    var spurSeen = {};
+    svg.querySelectorAll('.dl-road.is-avenue .r-inner, .dl-road.is-spur .r-inner, .dl-highway .h-deck').forEach(function (p) {
       var avenue = p.closest('.is-avenue, .dl-highway'), m = matrixOf(svg, p), pts = polyPts(p.getAttribute('d'));
       if (pts.length < 2) return;
-      var t0 = track(pts, m), n = Math.max(1, Math.round(t0.L / (avenue ? 120 : 260)));
+      var key = pts.map(function (q) { return Math.round(q[0]) + ',' + Math.round(q[1]); }).join(';');
+      if (spurSeen[key]) return; spurSeen[key] = 1;
+      var t0 = track(pts, m), n = Math.max(1, Math.round(t0.L / (avenue ? 150 : 320)));
       for (var i = 0; i < n; i++) {
-        var rev = i % 2 === 1, lane = track(pts.map(function (q, qi) { return q; }), m);
-        movers.push({ k: 'car', t: t0, d: rnd() * t0.L, v: (avenue ? 70 + rnd() * 40 : 45 + rnd() * 25) * (rev ? -1 : 1), c: CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], sc: 1, lane: rev ? 5 : -5 });
+        var rev = i % 2 === 1;
+        /* espalha os carros por igual ao longo da via */
+        movers.push({ k: 'car', t: t0, d: (t0.L * i / n + rnd() * 20), v: (avenue ? 70 + rnd() * 30 : 45 + rnd() * 20) * (rev ? -1 : 1), c: CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], sc: 1, lane: rev ? 5 : -5 });
       }
       if (avenue) for (var tt = 30; tt < t0.L; tt += 90) {
         var q = at(t0, tt); svg.appendChild(el('circle', { cx: q.x.toFixed(1), cy: (q.y - 12).toFixed(1), r: 16, 'class': 'dlf-lamp' }));
@@ -111,7 +126,11 @@
     var vb = svg.viewBox.baseVal, R = 1.5;
     cv.width = Math.round(vb.width * R); cv.height = Math.round(vb.height * R);
     var acc = (getComputedStyle(svg).getPropertyValue('--dl-a') || '').trim() || '#ef2b97';
-    LIFE = { cv: cv, ctx: cv.getContext('2d'), movers: movers, night: night, R: R, last: 0, acc: acc };
+    /* filas: carros na mesma via e no mesmo sentido mantêm distância */
+    var qmap = new Map(), queues = [];
+    movers.forEach(function (m) { if (m.k !== 'car') return; var k = m.t; if (!qmap.has(k)) qmap.set(k, { a: [], b: [] }); qmap.get(k)[m.v > 0 ? 'a' : 'b'].push(m); m.q = 1; });
+    qmap.forEach(function (o) { if (o.a.length) queues.push(o.a); if (o.b.length) queues.push(o.b); });
+    LIFE = { queues: queues, cv: cv, ctx: cv.getContext('2d'), movers: movers, night: night, R: R, last: 0, acc: acc };
   }
 
   function drawCar(ctx, c, night) {
@@ -129,8 +148,19 @@
       if (now - L.last >= 33) {                 // ~30 fps é suficiente e bem mais leve
         var dt = Math.min(.1, (now - (L.last || now)) / 1000); L.last = now;
         var ctx = L.ctx; ctx.setTransform(L.R, 0, 0, L.R, 0, 0); ctx.clearRect(0, 0, L.cv.width, L.cv.height);
+        for (var g = 0; g < L.queues.length; g++) {
+          var Q = L.queues[g], sg = Q[0].v > 0 ? 1 : -1, TL = Q[0].t.L;
+          for (var qi = 0; qi < Q.length; qi++) Q[qi].d += Q[qi].v * dt;
+          if (Q.length > 1) {
+            Q.sort(function (a, b) { return (((a.d * sg) % TL) + TL) % TL - (((b.d * sg) % TL) + TL) % TL; });
+            for (var qj = 0; qj < Q.length; qj++) {
+              var me = Q[qj], ah = Q[(qj + 1) % Q.length], gap = ((((ah.d - me.d) * sg) % TL) + TL) % TL;
+              if (gap < 30) me.d = ah.d - 30 * sg;
+            }
+          }
+        }
         for (var i = 0; i < L.movers.length; i++) {
-          var m = L.movers[i]; m.d += m.v * dt;
+          var m = L.movers[i]; if (!m.q) m.d += m.v * dt;
           if (m.k === 'train') {
             var dd = ((m.d % m.cycle) + m.cycle) % m.cycle; if (dd > m.t.L + 130) continue;
             for (var k = 0; k < 4; k++) {
