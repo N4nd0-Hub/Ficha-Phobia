@@ -20,16 +20,16 @@ function sourceFunction(name){
   return source.slice(start,source.indexOf('\n}',start)+2);
 }
 
-test('the current catalogue contains exactly the 63 approved advantages across four categories',()=>{
+test('the current catalogue includes the financial and physical choices alongside the retained options',()=>{
   const box=fixture();
   const groups=vm.runInContext('ADVANTAGE_CATEGORIES.map(({id})=>[id,ADVANTAGE_CATALOG.filter(item=>item.category_id===id).length])',box);
-  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',18],['ATT',14],['SOC',19],['PER',14]]);
+  assert.deepEqual(JSON.parse(JSON.stringify(groups)),[['CBT',18],['ATT',14],['SOC',19],['PER',14],['ECO',3]]);
   assert.equal(box.traitById('V-REL-01'),null);
   assert.equal(box.traitById('V2-CBT-02').name,'Impacto Inicial');
   assert.equal(box.traitById('V2-PER-09').name,'Batida Final');
   assert.equal(box.traitById('V2-ATT-11').points,5);
   assert.equal(box.traitById('V2-ATT-12').points,5);
-  assert.equal(vm.runInContext('FLAW_CATALOG.length',box),60);
+  assert.equal(vm.runInContext('FLAW_CATALOG.length',box),48);
   assert.equal(vm.runInContext('DISSONANT_TRAIT_CATALOG.length',box),20);
 });
 
@@ -86,10 +86,20 @@ test('the catalogue renders the right filters and offers a selector for configur
   assert.doesNotMatch(node('traitCategoryFilter').innerHTML,/Relações e vínculos/);
   assert.match(node('traitGrid').innerHTML,/data-trait-id="V2-CBT-02"/);
   assert.doesNotMatch(node('traitGrid').innerHTML,/data-trait-id="V-REL-01"/);
+  assert.match(node('traitFinances').textContent,/Padrão.*¥25\.000.*¥6\.000/);
+  assert.equal(acquire(box,'D-ECO-02').ok,true);
+  traits.purchases['D-REL-02']={owned:true};
   traits.view='defeitos';
   box.renderTraitsPage();
   assert.match(node('traitCategoryFilter').innerHTML,/Relações e vínculos/);
   assert.doesNotMatch(node('traitCategoryFilter').innerHTML,/Combate \/ Instrumentos/);
+  assert.match(node('traitFinances').textContent,/Pobreza II.*¥8\.333.*¥2\.000/);
+  assert.doesNotMatch(node('traitGrid').innerHTML,/Ciúme de Atenção/);
+  assert.equal(node('traitRetiredFlawsNote').hidden,false);
+  traits.view='owned';
+  box.renderTraitsPage();
+  assert.match(node('traitGrid').innerHTML,/Ciúme de Atenção/);
+  assert.match(node('traitGrid').innerHTML,/CATÁLOGO ANTIGO/);
   box.openTraitDialog('V2-ATT-09','purchase');
   assert.match(node('traitDetailDialog').innerHTML,/<select[^>]+data-trait-config="attribute"/);
   assert.match(node('traitDetailDialog').innerHTML,/<option value="VIT"/);
@@ -119,8 +129,8 @@ test('flaw points are no longer capped at five; the GM grant adds to the budget'
 });
 test('no more than three ordinary flaw choices can be acquired',()=>{
   const box=fixture();
-  for(const id of ['D-AUT-01','D-COM-02','D-REL-01'])assert.equal(acquire(box,id).ok,true,id);
-  assert.equal(acquire(box,'D-AUT-02').ok,false);
+  for(const id of ['D-AUT-01','D-FIS-01','D-REL-01'])assert.equal(acquire(box,id).ok,true,id);
+  assert.equal(acquire(box,'D-AUT-11').error,'Limite de três escolhas de Defeito.');
   assert.equal(box.traitBudget().flawCount,3);assert.equal(box.traitBudget().available,4);
 });
 test('an advantage can only be purchased once',()=>{
@@ -136,8 +146,40 @@ test('required selections and flaw conditions are checked before committing poin
   assert.equal(box.traitBudget().available,4);
   assert.equal(acquire(box,'V2-ATT-09',{attribute:'VIT'}).ok,true);
   assert.equal(box.traitBudget().available,0);
-  assert.equal(acquire(box,'D-REC-06',{fonte_de_renda:'Trabalho temporário'},false).ok,false);
-  assert.equal(acquire(box,'D-REC-06',{fonte_de_renda:'Trabalho temporário'},true).ok,true);
+  assert.equal(acquire(box,'D-REP-11',{meio_social:'Escola'},false).ok,false);
+  assert.equal(acquire(box,'D-REP-11',{},true).ok,false);
+  assert.equal(acquire(box,'D-REP-11',{meio_social:'Escola'},true).ok,true);
+});
+test('financial grades are mutually exclusive and use the correct rounded yen amounts',()=>{
+  const profiles=[
+    ['V2-ECO-01',2,50000,12000],['V2-ECO-02',3,75000,18000],['V2-ECO-03',4,100000,24000],
+    ['D-ECO-01',1,12500,3000],['D-ECO-02',2,8333,2000],['D-ECO-03',3,6250,1500],
+  ];
+  for(const [id,points,initial,weekly] of profiles){
+    const box=fixture();
+    box.state.charSheet.traits.extraPoints=4;
+    const result=acquire(box,id);
+    assert.equal(result.ok,true,id);
+    assert.deepEqual([result.item.points,result.item.startingYen,result.item.weeklyYen],[points,initial,weekly]);
+    for(const [other] of profiles.filter(([other])=>other!==id))assert.match(acquire(box,other).error,/^Incompatível/);
+    assert.equal(box.traitBudget().available,5+(id.startsWith('D-')?points:-points));
+    assert.equal(box.removeCharacterTrait(id).ok,true);
+    assert.equal(box.traitBudget().available,5);
+  }
+});
+test('retired flaws keep existing credits and conflicts but cannot be acquired again',()=>{
+  const box=fixture();
+  const traits=box.state.charSheet.traits;
+  assert.match(acquire(box,'D-REL-02').error,/retirado do catálogo/);
+  traits.purchases['D-REL-02']={owned:true,configuration:{pessoa_do_vinculo:'Saki'},notes:'Nota original'};
+  traits.purchases['D-AUT-09']={owned:true};
+  assert.equal(box.traitBudget().flawPoints,5);
+  assert.equal(box.traitBudget().flawCount,2);
+  assert.match(acquire(box,'D-AUT-13',{gatilho:'Altura'},true).error,/Medo Enraizado/);
+  assert.equal(traits.purchases['D-REL-02'].notes,'Nota original');
+  assert.equal(box.removeCharacterTrait('D-REL-02').ok,true);
+  assert.equal(box.traitBudget().flawPoints,4);
+  assert.match(acquire(box,'D-REL-02').error,/retirado do catálogo/);
 });
 test('spent flaw credit cannot be removed and advantage refunds unblock removal',()=>{
   const box=fixture();box.state.charSheet.social={Empatia:2,Charme:1,Disciplina:1};
