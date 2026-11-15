@@ -1,0 +1,33 @@
+/* PERSONA // PHOBIA — district-life.css (vida nos mapas dos distritos) */
+.dl-scene .dlf-car .dlf-body{stroke:var(--dl-ink,#141217);stroke-width:1.2}
+.dl-scene .dlf-car .dlf-glass{fill:#9fd6ff;opacity:.85}
+.dl-scene .dlf-beam{fill:url(#dlfBeam);fill:rgba(255,240,180,.35);filter:blur(2px)}
+.dl-scene .dlf-tail{fill:#ff3344}
+.dl-scene .dlf-walker{fill:hsl(var(--h) 70% 62%);stroke:var(--dl-ink,#141217);stroke-width:.8}
+.dl-scene .dlf-train rect{fill:#f4f1e8;stroke:var(--dl-ink,#141217);stroke-width:2}
+.dl-scene .dlf-train rect:nth-child(odd){fill:var(--dl-a,#ef2b97)}
+.dl-scene .dlf-train .dlf-train-nose{fill:#ffe27a}
+.dl-scene .dlf-windows,.dl-scene .dlf-lamp{display:none}
+.dl-scene .dlf-win{fill:#ffd86b;animation:dlfWin 9s steps(1) infinite}
+@keyframes dlfWin{0%,100%{opacity:.95}62%{opacity:.25}70%{opacity:.95}}
+.dl-scene .dlf-lamp{fill:rgba(255,224,140,.22);filter:blur(5px)}
+body.time-night .dl-scene .dlf-windows,body.time-night .dl-scene .dlf-lamp{display:inline}
+
+/* céu sobre o mapa (fica parado na tela) */
+#subDistrictMap .dlf-sky{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+#subDistrictMap .dlf-tint{position:absolute;inset:0;transition:background .8s}
+#subDistrictMap .dl-surface[data-tod="morning"] .dlf-tint{background:linear-gradient(120deg,rgba(255,214,150,.18),transparent 55%)}
+#subDistrictMap .dl-surface[data-tod="afternoon"] .dlf-tint{background:linear-gradient(300deg,rgba(255,170,90,.14),transparent 60%)}
+#subDistrictMap .dl-surface[data-tod="night"] .dlf-tint{background:radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(6,10,30,.42) 100%),rgba(10,16,48,.22)}
+#subDistrictMap .dlf-cloud{position:absolute;left:0;display:block;opacity:.55;animation:dlfCloud linear infinite;image-rendering:pixelated}
+#subDistrictMap .dlf-cloud svg{display:block;fill:#fffaf2}
+#subDistrictMap .dlf-cloud-shadow{position:absolute;left:34px;top:46px;opacity:.28}
+#subDistrictMap .dlf-cloud-shadow svg{fill:#0b0a10}
+#subDistrictMap .dl-surface[data-tod="night"] .dlf-cloud{opacity:.22}
+#subDistrictMap .dl-surface[data-tod="night"] .dlf-cloud svg{fill:#9aa7d6}
+#subDistrictMap .dl-surface[data-season="summer"] .dlf-cloud{opacity:.62}
+#subDistrictMap .dl-surface[data-season="summer"] .dlf-cloud svg{fill:#d7dde6}
+@keyframes dlfCloud{from{transform:translateX(-320px)}to{transform:translateX(calc(100vw + 40px))}}
+#subDistrictMap .dlf-weather{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+@media (prefers-reduced-motion:reduce){#subDistrictMap .dlf-cloud{animation:none}}
+body.hs-calm #subDistrictMap .dlf-cloud{animation:none}
