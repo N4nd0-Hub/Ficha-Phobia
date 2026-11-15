@@ -177,3 +177,13 @@ body.hud.workspace-sheet #characterPage .hs-extra{background:none!important;bord
 }
 @media (prefers-reduced-motion:reduce){#characterPage .sf-spin{animation:none}}
 body.hs-calm #characterPage .sf-spin{animation:none}
+
+/* regra do playtest ao lado, embaixo das habilidades (deixa o disco livre) */
+body.hud.workspace-sheet #characterPage .sf-top{align-items:start}
+body.hud.workspace-sheet #characterPage .sf-side .sf-auto-side{margin-top:14px;padding:12px 14px}
+body.hud.workspace-sheet #characterPage .sf-auto-side .sf-auto-head b{font-size:16px;line-height:1.1}
+body.hud.workspace-sheet #characterPage .sf-auto-side .sf-auto-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+body.hud.workspace-sheet #characterPage .sf-auto-side .sf-rule{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:8px 10px}
+body.hud.workspace-sheet #characterPage .sf-auto-side .sf-rule-tag{padding:2px 6px;background:var(--hud-acc3,#96ff45);color:var(--hud-black,#0d0c10)}
+body.hud.workspace-sheet #characterPage .sf-auto-side .sf-rule-text{font-size:12.5px;line-height:1.35}
+@media (max-width:900px){body.hud.workspace-sheet #characterPage .sf-auto-side .sf-auto-list{grid-template-columns:1fr}}
