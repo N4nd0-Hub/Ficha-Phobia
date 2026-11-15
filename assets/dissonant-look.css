@@ -73,3 +73,47 @@ body.hud #characterPage .dz-recap>details p{margin:8px 0 0;font:500 13.5px/1.6 v
   body.hud #characterPage .dz-recap .dissonant-recap-pair::after{display:none}
 }
 body.hud #characterPage .dz-on .persona-v2-dissonant-code{display:inline-block!important;visibility:visible!important}
+
+/* ===== "Regras completas" e "Regras gerais": botão-pílula + caixa de leitura ===== */
+body.hud #characterPage .dz-recap .dissonant-recap-effect details{margin-top:auto;padding-top:10px!important;border:0!important}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary{
+  display:inline-flex!important;align-items:center;gap:8px;width:max-content;padding:6px 12px 6px 10px;margin:0!important;border:0!important;
+  list-style:none;cursor:pointer;user-select:none;opacity:1!important;
+  background:color-mix(in srgb,var(--hud-paper,#fff0d8) 8%,transparent);border-radius:999px;
+  font:800 11px/1 var(--hud-cond,"Barlow Condensed"),sans-serif!important;letter-spacing:1.6px;color:var(--hud-paper,#fff0d8)!important;
+  font-size:0!important;transition:background .15s,color .15s
+}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary::-webkit-details-marker{display:none}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary::before{content:"";width:16px;height:16px;border-radius:50%;flex:none;
+  background:var(--dz-tag) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 6l3 3 3-3' fill='none' stroke='%230d0c10' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary::after{content:"LER REGRA COMPLETA";font-size:11px}
+body.hud #characterPage .dz-recap .dissonant-recap-effect details[open] summary::before{transform:rotate(180deg)}
+body.hud #characterPage .dz-recap .dissonant-recap-effect details[open] summary::after{content:"FECHAR"}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary:hover{background:var(--dz-tag);color:#0d0c10!important}
+body.hud #characterPage .dz-recap .benefit{--dz-tag:var(--hud-acc3,#96ff45)}
+body.hud #characterPage .dz-recap .complication{--dz-tag:#ff3b5c}
+body.hud #characterPage .dz-recap .dissonant-recap-full{
+  margin-top:10px;padding:12px 14px!important;border:0!important;
+  background:color-mix(in srgb,#000 35%,transparent);border-left:3px solid var(--dz-tag)!important;
+  animation:dzOpen .3s ease both
+}
+body.hud #characterPage .dz-recap .dissonant-recap-full p{margin:0!important}
+body.hud #characterPage .dz-recap .dissonant-recap-full::before{content:"REGRA COMPLETA";display:block;margin-bottom:6px;font:800 10px var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:var(--dz-tag)}
+@keyframes dzOpen{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+body.hud #characterPage .dz-recap>details{padding:0!important;border:0!important;background:none!important}
+body.hud #characterPage .dz-recap>details>summary{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;list-style:none;
+  background:color-mix(in srgb,var(--hud-acc2,#6ce6ff) 10%,#0c0b12);box-shadow:inset 3px 0 0 var(--hud-acc2,#6ce6ff);
+  color:var(--hud-paper,#fff0d8);transition:background .15s
+}
+body.hud #characterPage .dz-recap>details>summary::-webkit-details-marker{display:none}
+body.hud #characterPage .dz-recap>details>summary::before{content:"i";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--hud-acc2,#6ce6ff);color:#0d0c10;font:900 12px/1 Georgia,serif;font-style:italic}
+body.hud #characterPage .dz-recap>details>summary::after{content:"+";margin-left:auto;font:900 18px/1 var(--hud-body,Barlow),sans-serif;transition:transform .25s}
+body.hud #characterPage .dz-recap>details[open]>summary::after{transform:rotate(45deg)}
+body.hud #characterPage .dz-recap>details>summary:hover{background:color-mix(in srgb,var(--hud-acc2,#6ce6ff) 18%,#0c0b12)}
+body.hud #characterPage .dz-recap>details>p{margin:0!important;padding:10px 16px 0 46px;background:color-mix(in srgb,var(--hud-acc2,#6ce6ff) 5%,#0c0b12);animation:dzOpen .3s ease both}
+body.hud #characterPage .dz-recap>details>p:last-child{padding-bottom:14px}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary{letter-spacing:0!important;word-spacing:0;gap:0!important;white-space:nowrap}
+body.hud #characterPage .dz-recap .dissonant-recap-effect summary::after{margin-left:8px;letter-spacing:1.6px}
