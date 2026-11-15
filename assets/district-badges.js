@@ -380,7 +380,16 @@
     c.clearRect(0, 0, 1, 1); c.fillStyle = '#000'; c.fillStyle = v; c.fillRect(0, 0, 1, 1);
     var d = c.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2]];
   }
+  /* cache curto: evita recalcular estilos dezenas de vezes no carregamento */
+  var tvCache = {}, tvStamp = 0;
   function themeVar(name, fb) {
+    var now = Date.now();
+    if (now - tvStamp > 400) { tvCache = {}; tvStamp = now; }
+    var ck = name + '|' + fb + '|' + document.body.className;
+    if (tvCache[ck]) return tvCache[ck];
+    return (tvCache[ck] = themeVarRaw(name, fb));
+  }
+  function themeVarRaw(name, fb) {
     var v = ''; try { v = getComputedStyle(document.body).getPropertyValue(name).trim(); } catch (e) {}
     if (!v) return cssColor(fb);
     var el = document.createElement('i'); el.style.cssText = 'position:absolute;width:0;height:0;color:' + v;
@@ -449,14 +458,39 @@
     sx.fillStyle = pal.cog ? 'rgba(' + pal.b.join(',') + ',.45)' : 'rgba(8,7,12,.5)'; sx.fillRect(0, 0, w, h);
     var out = document.createElement('canvas'); out.width = w + PAD; out.height = h + PAD;
     var ox = out.getContext('2d'); ox.drawImage(sh, pal.cog ? 5 : 7, pal.cog ? 5 : 8); ox.drawImage(cv, 0, 0);
-    var url = ''; try { url = out.toDataURL('image/webp', .92); } catch (x) {}
-    if (url.indexOf('data:image/webp') !== 0) url = out.toDataURL('image/png');
-    return { url: url, w: out.width, h: out.height };
+    return { canvas: out, w: out.width, h: out.height };
+  }
+  /* fila: pinta uma ilustração por vez, nos intervalos livres do navegador (não trava o carregamento) */
+  var queue = [], busy = false, pending = {};
+  var idle = window.requestIdleCallback ? function (f) { requestIdleCallback(f, { timeout: 300 }); } : function (f) { setTimeout(f, 16); };
+  function pump() {
+    if (busy || !queue.length) return;
+    busy = true;
+    idle(function () {
+      var job = queue.shift();
+      try {
+        var r = paintArt(job.img, job.pal);
+        r.canvas.toBlob(function (blob) {
+          var a = { url: blob ? URL.createObjectURL(blob) : r.canvas.toDataURL('image/png'), w: r.w, h: r.h };
+          artCache[job.key] = a;
+          (pending[job.key] || []).splice(0).forEach(function (f) { try { f(a, job.key); } catch (x) {} });
+          delete pending[job.key];
+          busy = false; pump();
+        }, 'image/png');
+      } catch (e) { delete pending[job.key]; busy = false; pump(); }
+    });
   }
   function artFor(id, st, cb) {
     var pal = artPalette(st), key = id + '|' + palKey(pal);
     if (artCache[key]) return cb(artCache[key], key);
-    loadArt(id, function (img) { if (!artCache[key]) { try { artCache[key] = paintArt(img, pal); } catch (e) { return; } } cb(artCache[key], key); });
+    if (pending[key]) { pending[key].push(cb); return; }
+    pending[key] = [cb];
+    loadArt(id, function (img) {
+      if (artCache[key]) { (pending[key] || []).splice(0).forEach(function (f) { f(artCache[key], key); }); delete pending[key]; return; }
+      /* a ilustração visível do distrito atual vem primeiro na fila */
+      queue[id === (window.state && state.currentDistrict) ? 'unshift' : 'push']({ img: img, pal: pal, key: key });
+      pump();
+    });
   }
   function fillArt(svg, id, st) {
     var tilt = +st.tilt || 0;
