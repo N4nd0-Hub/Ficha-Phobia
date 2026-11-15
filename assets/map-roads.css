@@ -139,12 +139,22 @@ body.cognition #mapPage .pm-slash-cream{fill:var(--theme-accent-2,#6ce6ff)}
 .legend.pm-legend-ways{grid-template-columns:1fr;font-size:10px}
 
 /* faixa do topo agora é efeito do HUD (fica parada na tela, não anda com o mapa) */
-#mapPage .map-hud-band{position:absolute;left:0;right:0;top:0;height:clamp(105px,16%,145px);pointer-events:none;z-index:2}
-#mapPage .map-hud-band svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 0 rgba(0,0,0,.18))}
+#mapPage .map-hud-band{position:absolute;left:0;right:0;top:0;height:clamp(84px,12.5%,118px);pointer-events:none;z-index:2}
+#mapPage .map-hud-band svg{width:100%;height:100%;display:block;overflow:visible}
+#mapPage .mhb-shadow{fill:#141217;opacity:.55}
 #mapPage .mhb-fill{fill:var(--theme-accent,#ef2b97)}
+#mapPage .mhb-dots{fill:#000;opacity:.13}
+#mapPage .mhb-dots{color:#000}#mapPage #mhbDots circle{fill:#141217}
+#mapPage .mhb-shine{animation:mhbShine 7s ease-in-out infinite}
+@keyframes mhbShine{0%,55%{transform:translateX(0)}100%{transform:translateX(1600px)}}
 #mapPage .mhb-black{fill:#141217}
 #mapPage .mhb-cream{fill:#fff3d9}
+#mapPage .mhb-dash{fill:none;stroke:var(--theme-accent-2,#6ce6ff);stroke-width:1.4;stroke-dasharray:14 9;vector-effect:non-scaling-stroke;animation:mhbDash 3s linear infinite;opacity:.9}
+@keyframes mhbDash{to{stroke-dashoffset:-46}}
+#mapPage .mhb-shard{fill:var(--theme-accent,#ef2b97);stroke:#141217;stroke-width:1;vector-effect:non-scaling-stroke}
 body.time-night #mapPage .mhb-cream{fill:var(--theme-accent-2,#6ce6ff)}
-body.cognition #mapPage .mhb-fill{fill:color-mix(in srgb,var(--theme-accent-3,#96ff45) 70%,#10262c)}
+body.time-night #mapPage .mhb-dash{stroke:#fff3d9}
+body.cognition #mapPage .mhb-fill,body.cognition #mapPage .mhb-shard{fill:color-mix(in srgb,var(--theme-accent-3,#96ff45) 70%,#10262c)}
 body.cognition #mapPage .mhb-cream{fill:var(--theme-accent-2,#6ce6ff)}
+@media (prefers-reduced-motion:reduce){#mapPage .mhb-shine,#mapPage .mhb-dash{animation:none}}
 #mapPage .map-shell.local-mode .map-hud-band,#mapPage[data-map-mode="local"] .map-hud-band{display:none}
