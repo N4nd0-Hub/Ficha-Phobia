@@ -194,8 +194,8 @@ function openPlaceInSubmap(did,pid){
   setMapMode('local',did);if(pid)focusSubmapPlace(pid);
 }
 function bindAtlasExplorer(){
-  atlasTokyoCamera=new PhobiaMapCamera.Camera(document.getElementById('atlasTokyoViewport'),document.getElementById('mapSvg'),{width:1280,height:700,disabled:()=>state.mapMode==='local'||cognitivePlacementMode||!!cognitiveDraggingId,onChange:percent=>{
-    document.getElementById('atlasTokyoZoom').textContent=percent+'%';document.getElementById('zoomIn').disabled=percent>=400;document.getElementById('zoomOut').disabled=percent<=100;
+  atlasTokyoCamera=new PhobiaMapCamera.Camera(document.getElementById('atlasTokyoViewport'),document.getElementById('mapSvg'),{width:1280,height:700,minZoom:.45,maxZoom:4,overscroll:.32,disabled:()=>state.mapMode==='local'||cognitivePlacementMode||!!cognitiveDraggingId,onChange:percent=>{
+    document.getElementById('atlasTokyoZoom').textContent=percent+'%';document.getElementById('zoomIn').disabled=percent>=400;document.getElementById('zoomOut').disabled=percent<=45;
   }});
   document.getElementById('zoomIn').onclick=()=>atlasTokyoCamera.zoomBy(1.25);document.getElementById('zoomOut').onclick=()=>atlasTokyoCamera.zoomBy(.8);document.getElementById('resetView').onclick=()=>atlasTokyoCamera.fit();
   document.getElementById('atlasSidebarToggle').setAttribute('aria-expanded',String(!matchMedia('(max-width:900px)').matches));

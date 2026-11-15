@@ -1,13 +1,13 @@
 /* Shared camera for Tokyo and district maps. Coordinates stay in map units. */
 (function (root) {
   'use strict';
-  function constrain(view, size) {
-    const w = size.width * view.k, h = size.height * view.k;
-    return {
-      k: view.k,
-      x: w <= size.vw ? (size.vw - w) / 2 : Math.min(0, Math.max(size.vw - w, view.x)),
-      y: h <= size.vh ? (size.vh - h) / 2 : Math.min(0, Math.max(size.vh - h, view.y))
-    };
+  /* over: folga (px) para arrastar além da borda do conteúdo */
+  function constrain(view, size, over = 0) {
+    const w = size.width * view.k, h = size.height * view.k, ox = over * size.vw, oy = over * size.vh;
+    const axis = (len, vp, v, o) => len <= vp
+      ? (o ? Math.min((vp - len) / 2 + o, Math.max((vp - len) / 2 - o, v)) : (vp - len) / 2)
+      : Math.min(o, Math.max(vp - len - o, v));
+    return { k: view.k, x: axis(w, size.vw, view.x, ox), y: axis(h, size.vh, view.y, oy) };
   }
   function anchoredZoom(view, k, from, to = from) {
     return {k, x: to.x - (from.x - view.x) * k / view.k, y: to.y - (from.y - view.y) * k / view.k};
@@ -77,7 +77,7 @@
       const [a,b] = [...this.points.values()];
       return {center: {x:(a.x+b.x)/2,y:(a.y+b.y)/2},distance:Math.hypot(a.x-b.x,a.y-b.y)};
     }
-    limitScale(k) { return Math.max(this.fitScale, Math.min(this.fitScale * 4, k)); }
+    limitScale(k) { return Math.max(this.fitScale * (this.options.minZoom || 1), Math.min(this.fitScale * (this.options.maxZoom || 4), k)); }
     resize() {
       const vw = this.viewport.clientWidth, vh = this.viewport.clientHeight;
       if (!vw || !vh) return;
@@ -90,7 +90,7 @@
     }
     paint() {
       if (!this.fitScale) return;
-      this.view = constrain(this.view, {width:this.width,height:this.height,vw:this.vw,vh:this.vh});
+      this.view = constrain(this.view, {width:this.width,height:this.height,vw:this.vw,vh:this.vh}, this.options.overscroll || 0);
       const {x,y,k} = this.view;
       this.content.style.transform = `translate(${x}px,${y}px) scale(${k})`;
       this.options.onChange?.(Math.round(k / this.fitScale * 100), this.view);

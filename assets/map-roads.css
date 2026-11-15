@@ -26,18 +26,35 @@ body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fil
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-#mapPage svg .district-link-shadow{stroke:#0b0a0e;stroke-width:26;opacity:.32}
-#mapPage svg .district-link-outer {stroke:#141217;stroke-width:26;opacity:1}
-#mapPage svg .district-link-edge  {stroke:var(--theme-accent,#ef2b97);stroke-width:18;opacity:1}
-#mapPage svg .district-link-inner {stroke:#fff3d9;stroke-width:9;opacity:1}
-#mapPage svg .district-link-lane  {stroke:#141217;stroke-width:3;stroke-dasharray:2 11;opacity:.85}
+/* PISTAS (asfalto): contorno preto, faixa de acento, meio-fio creme, asfalto e faixa central tracejada */
+#mapPage svg .district-link-shadow{stroke:#0b0a0e;stroke-width:32;opacity:.3}
+#mapPage svg .district-link-outer {stroke:#141217;stroke-width:32}
+#mapPage svg .district-link-edge  {stroke:var(--theme-accent,#ef2b97);stroke-width:27}
+#mapPage svg .district-link-inner {stroke:#fff3d9;stroke-width:21}
+#mapPage svg .district-link-lane  {stroke:#2b2833;stroke-width:16;stroke-dasharray:none;opacity:1}
+#mapPage svg .district-link-lane + .district-link-lane{}
+/* faixa central (desenhada como sombra interna do asfalto via outro traço) */
+#mapPage svg .pm-road-dash{fill:none;stroke:#ffd54a;stroke-width:2.4;stroke-dasharray:12 10;stroke-linecap:butt;animation:pmRoadDash 2.4s linear infinite}
+@keyframes pmRoadDash{to{stroke-dashoffset:-44}}
 
-/* linhas secundárias: mais finas, acento ciano */
-#mapPage svg .district-link-shadow.is-minor{stroke-width:17}
-#mapPage svg .district-link-outer.is-minor {stroke-width:17}
-#mapPage svg .district-link-edge.is-minor  {stroke:var(--theme-accent-2,#6ce6ff);stroke-width:11}
-#mapPage svg .district-link-inner.is-minor {stroke-width:4}
-#mapPage svg .district-link-lane.is-minor  {display:none}
+/* METRÔ: trilho com cor da linha, contorno branco/preto, fluxo animado, estações e trem */
+#mapPage svg :is(.pm-metro-shadow,.pm-metro-case,.pm-metro-white,.pm-metro-line,.pm-metro-flow){fill:none;stroke-linecap:round;stroke-linejoin:round}
+#mapPage svg .pm-metro-shadow{stroke:#0b0a0e;stroke-width:15;opacity:.28}
+#mapPage svg .pm-metro-case {stroke:#141217;stroke-width:15}
+#mapPage svg .pm-metro-white{stroke:#fffaf0;stroke-width:11}
+#mapPage svg .pm-metro-line {stroke:var(--line);stroke-width:7}
+#mapPage svg .pm-metro-flow {stroke:#fffaf0;stroke-width:2;stroke-dasharray:1 9;opacity:.9;animation:pmFlow 1.6s linear infinite}
+@keyframes pmFlow{to{stroke-dashoffset:-20}}
+#mapPage svg .pm-station{fill:#fffaf0;stroke:#141217;stroke-width:3.5}
+#mapPage svg .pm-station{filter:drop-shadow(0 0 0 var(--line))}
+#mapPage svg .pm-train rect:first-child{fill:var(--line);stroke:#141217;stroke-width:2}
+#mapPage svg .pm-train-win{fill:#fffaf0}
+#mapPage svg .pm-metro-badge circle{fill:var(--line);stroke:#141217;stroke-width:3}
+#mapPage svg .pm-metro-badge text{font:900 11px "Archivo Black","Barlow",sans-serif;fill:#fffaf0;paint-order:stroke;stroke:#141217;stroke-width:2}
+
+/* halo atrás de cada distrito */
+#mapPage svg .pm-halo{fill:var(--theme-accent,#ef2b97);opacity:.1;filter:blur(10px)}
+#mapPage svg .pm-halo-ring{fill:none;stroke:#141217;stroke-width:2;stroke-dasharray:3 9;opacity:.22}
 
 /* losangos nas curvas */
 #mapPage svg .district-link-node{
@@ -58,11 +75,39 @@ body:not(.cognition):not(.time-night) .map-shell.season-winter svg .map-base{fil
 #mapPage .pm-slash-black{fill:#141217}
 #mapPage .pm-slash-cream{fill:#fff3d9}
 #mapPage .pm-star     {fill:#fff3d9;stroke:#141217;stroke-width:2.2;stroke-linejoin:miter}
+#mapPage .pm-block    {fill:#141217;opacity:.06}
+#mapPage .pm-grid     {fill:none;stroke:#141217;stroke-width:1;opacity:.07}
+#mapPage .pm-river-edge{fill:none;stroke:#141217;stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+#mapPage .pm-river    {fill:none;stroke:#8fd8ea;stroke-width:22;stroke-linecap:round;stroke-linejoin:round}
+#mapPage .pm-river-flow{fill:none;stroke:#e9fbff;stroke-width:2.5;stroke-dasharray:3 16;stroke-linecap:round;opacity:.8;animation:pmRiver 5s linear infinite}
+@keyframes pmRiver{to{stroke-dashoffset:-80}}
+#mapPage .pm-park-shadow{fill:#141217;opacity:.5}
+#mapPage .pm-park     {fill:#9fd88a;stroke:#141217;stroke-width:3}
+#mapPage .pm-park-trees{fill:url(#pmTrees)}
+#mapPage .pm-tree     {fill:#3f9a52}
+#mapPage .pm-compass-ring{fill:#fff3d9;stroke:#141217;stroke-width:3}
+#mapPage .pm-compass-in{fill:none;stroke:#141217;stroke-width:1.5;stroke-dasharray:2 4}
+#mapPage .pm-compass-n{fill:var(--theme-accent,#ef2b97);stroke:#141217;stroke-width:1.5}
+#mapPage .pm-compass-s{fill:#141217}
+#mapPage .pm-compass-t,#mapPage .pm-scale-t{font:900 12px "Archivo Black","Barlow",sans-serif;fill:#141217}
+#mapPage .pm-scale-a{fill:#fff3d9;stroke:#141217;stroke-width:2}
+#mapPage .pm-scale-b{fill:#141217}
+@media (prefers-reduced-motion:reduce){#mapPage svg :is(.pm-road-dash,.pm-metro-flow,.pm-river-flow){animation:none}#mapPage svg .pm-train{display:none}}
 
 /* ---------- Noite ---------- */
 body.time-night #mapPage svg .district-link-inner{stroke:#e9f7ff}
 body.time-night #mapPage svg .district-link-edge.is-minor{stroke:#58d9ff}
 body.time-night #mapPage .pm-bay{fill:#1c3550}
+body.time-night #mapPage .pm-river{stroke:#24557f}
+body.time-night #mapPage .pm-river-flow{stroke:#a8dcff;stroke-dasharray:2 16;stroke-width:3;opacity:.7}
+body.time-night #mapPage .pm-river-edge{stroke:#0b1624}
+body.time-night #mapPage .pm-park{fill:#264a33}
+body.time-night #mapPage .pm-tree{fill:#3d7a50}
+body.time-night #mapPage svg .district-link-lane{stroke:#1a1822}
+body.time-night #mapPage svg .pm-road-dash{stroke:var(--theme-accent-2,#6ce6ff)}
+body.time-night #mapPage .pm-block{fill:var(--theme-accent-2,#6ce6ff);opacity:.05}
+body.time-night #mapPage .pm-grid{stroke:var(--theme-accent-2,#6ce6ff);opacity:.06}
+body.time-night #mapPage svg .pm-halo{opacity:.2}
 body.time-night #mapPage .pm-dot-bay{fill:var(--theme-accent-2,#6ce6ff)}
 body.time-night #mapPage .pm-halftone{opacity:.22}
 body.time-night #mapPage .pm-star{fill:var(--theme-accent-2,#6ce6ff)}
@@ -72,10 +117,23 @@ body.time-night #mapPage .pm-slash-cream{fill:var(--theme-accent,#ef2b97)}
 body.cognition #mapPage svg .district-link-edge{stroke:var(--theme-accent-3,#96ff45);opacity:.9}
 body.cognition #mapPage svg .district-link-edge.is-minor{stroke:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage svg .district-link-inner{stroke:#14252b}
-body.cognition #mapPage svg .district-link-lane{stroke:var(--theme-accent-2,#6ce6ff);stroke-width:3;stroke-dasharray:10 8;opacity:.95}
+body.cognition #mapPage svg .district-link-lane{stroke:#0f1d22;stroke-width:16;stroke-dasharray:none;opacity:1}
+body.cognition #mapPage svg .pm-road-dash{stroke:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage .pm-dot{fill:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage .pm-bay{fill:#10262c}
+body.cognition #mapPage .pm-river{stroke:#10262c}
+body.cognition #mapPage .pm-park{fill:#16302a}
+body.cognition #mapPage .pm-tree{fill:var(--theme-accent-3,#96ff45)}
+body.cognition #mapPage svg .pm-metro-line{stroke:color-mix(in srgb,var(--line) 50%,var(--theme-accent-2,#6ce6ff))}
 body.cognition #mapPage .pm-dot-bay{fill:var(--theme-accent-3,#96ff45)}
 body.cognition #mapPage .pm-bay-line{stroke:var(--theme-accent-2,#6ce6ff)}
 body.cognition #mapPage .pm-star{fill:var(--theme-accent-3,#96ff45)}
 body.cognition #mapPage .pm-slash-cream{fill:var(--theme-accent-2,#6ce6ff)}
+
+/* legenda de vias */
+.pm-legend-ways i{display:inline-block;width:30px;height:10px;margin-right:8px;vertical-align:middle;border-radius:6px;flex:none}
+.pm-legend-ways .pm-lg-road{background:linear-gradient(0deg,#141217 0 2px,#fff3d9 2px 3px,#2b2833 3px 7px,#fff3d9 7px 8px,#141217 8px);background-image:linear-gradient(90deg,#ffd54a 0 6px,transparent 6px 10px),linear-gradient(0deg,#141217 0 1px,#fff3d9 1px 2px,#2b2833 2px 8px,#fff3d9 8px 9px,#141217 9px);background-size:10px 2px,100% 100%;background-position:0 4px,0 0;background-repeat:repeat-x,no-repeat;height:10px}
+.pm-legend-ways .pm-lg-metro{height:8px;background:var(--line);box-shadow:0 0 0 2px #fffaf0,0 0 0 3.5px #141217}
+.pm-legend-ways .pm-lg-river{height:9px;background:#8fd8ea;box-shadow:0 0 0 2px #141217}
+.pm-legend-ways .pm-lg-park{width:18px;height:12px;border-radius:50%;background:radial-gradient(circle,#3f9a52 2px,transparent 2.5px) 0 0/6px 6px,#9fd88a;box-shadow:0 0 0 2px #141217}
+.legend.pm-legend-ways{grid-template-columns:1fr;font-size:10px}

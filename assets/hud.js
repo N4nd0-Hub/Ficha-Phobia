@@ -185,6 +185,8 @@
     if (vis) { vis.open = true; body.appendChild(vis); }
     var legend = document.querySelector('#mapPage .sidebar .legend');
     if (legend) { body.appendChild(el('span', 'hud-label', 'LEGENDA')); body.appendChild(legend); }
+    var ways = document.querySelector('#mapPage .sidebar .pm-legend-ways');
+    if (ways) { body.appendChild(el('span', 'hud-label', 'VIAS')); body.appendChild(ways); }
     var themeBtn = el('button', 'hud-opts-theme', 'Trocar o tema do site');
     themeBtn.type = 'button';
     themeBtn.addEventListener('click', function () { closeAll(); var t = $('#siteThemeButton'); if (t) t.click(); });

@@ -99,7 +99,7 @@
     /* rotas: o traço "se desenha" */
     var linkLayer = $('#districtLinks');
     if(linkLayer){
-      var drawn = linkLayer.querySelectorAll('.district-link-shadow, .district-link-outer, .district-link-inner, .district-link-edge');
+      var drawn = linkLayer.querySelectorAll('.district-link-shadow, .district-link-outer, .district-link-inner, .district-link-edge, .pm-metro-shadow, .pm-metro-case, .pm-metro-white, .pm-metro-line');
       [].forEach.call(drawn, function(p, i){
         if(!canAnimate(p) || typeof p.getTotalLength !== 'function') return;
         /* cada pista traz data-route; sem ele (desenho antigo), 3 camadas por pista */
@@ -115,7 +115,7 @@
         a.onfinish = clean; a.oncancel = clean;
       });
 
-      [].forEach.call(linkLayer.querySelectorAll('.district-link-lane'), function(p, i){
+      [].forEach.call(linkLayer.querySelectorAll('.district-link-lane, .pm-road-dash, .pm-metro-flow, .pm-station, .pm-metro-badge, .pm-train'), function(p, i){
         var r = p.getAttribute('data-route'), n = r !== null ? Number(r) : i;
         if(canAnimate(p)) p.animate([{ opacity:0 }],
           { duration:500, delay:900 + n * 130 - elapsed, easing:EASE_OUT, fill:'backwards' });
@@ -393,7 +393,7 @@
       var t = Math.min(1, (now - t0) / dur);
       var e = t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;   // power3.inOut
       var k = Math.exp(ln0 + (ln1 - ln0) * e) * (1 - arc * Math.sin(Math.PI * e));
-      k = Math.max(cam.fitScale, Math.min(cam.fitScale * 4, k));
+      k = cam.limitScale(k);
       var x = c0.x + (cx - c0.x) * e, y = c0.y + (cy - c0.y) * e;
       cam.view = { k:k, x:cam.vw/2 - x*k, y:cam.vh/2 - y*k };
       cam.paint();
@@ -408,7 +408,19 @@
     if(!b.width || !b.height) return;
     var k1 = Math.min(cam.vw / (b.width * 2.1), cam.vh / (b.height * 2.1));
     k1 = Math.min(cam.fitScale * 4, Math.max(cam.limitScale(k1), cam.view.k));
-    flyTo(cam, b.x + b.width/2, b.y + b.height/2, k1);
+    /* o dossiê flutua por cima do mapa à direita: centraliza o distrito no espaço livre */
+    var cx = b.x + b.width/2, cy = b.y + b.height/2;
+    try{
+      var vr = cam.viewport.getBoundingClientRect(), pn = document.getElementById('districtDossierPanel');
+      if(pn && pn.offsetParent){
+        var pr = pn.getBoundingClientRect(), cover = Math.max(0, Math.min(vr.right, pr.right) - Math.max(vr.left, pr.left));
+        if(cover > 0 && cover < vr.width * .7 && pr.top < vr.bottom && pr.bottom > vr.top){
+          var right = pr.left > vr.left + vr.width/2;
+          cx += (right ? 1 : -1) * (cover / 2 + 12) / k1;
+        }
+      }
+    }catch(e){}
+    flyTo(cam, cx, cy, k1);
   }
 
   /* fundo com parallax: acompanha o arraste/zoom, só que bem mais devagar */

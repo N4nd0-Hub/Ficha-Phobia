@@ -24,12 +24,15 @@
   var CORNER = 24;    // raio das curvas
 
   /* Linhas do mapa. kind: main = pista grossa, minor = fina */
+  /* type: road = pista (asfalto), metro = linha de metrô (cor própria, estações e trem) */
   var ROUTES = [
-    { id: 'chuo', kind: 'main',  ids: ['kichijoji', 'nakano', 'shinjuku', 'harajuku', 'shibuya', 'meguro'] },
-    { id: 'ike',  kind: 'minor', ids: ['nakano', 'ikebukuro', 'shinjuku'] },
-    { id: 'aki',  kind: 'main',  ids: ['shinjuku', 'akihabara', 'asakusa'] },
-    { id: 'bay',  kind: 'main',  ids: ['shibuya', 'roppongi', 'ginza', 'odaiba'] },
-    { id: 'ring', kind: 'minor', ids: ['akihabara', 'ginza'] }
+    { id: 'chuo', kind: 'main',  type: 'road',  ids: ['kichijoji', 'nakano', 'shinjuku', 'harajuku', 'shibuya', 'meguro'] },
+    { id: 'aki',  kind: 'main',  type: 'road',  ids: ['shinjuku', 'akihabara', 'asakusa'] },
+    { id: 'bay',  kind: 'main',  type: 'road',  ids: ['shibuya', 'roppongi', 'ginza', 'odaiba'] },
+    { id: 'ike',  kind: 'minor', type: 'metro', code: 'M1', name: 'Linha Oeste', color: '#2fbf71', ids: ['nakano', 'ikebukuro', 'shinjuku'] },
+    { id: 'ring', kind: 'minor', type: 'metro', code: 'M2', name: 'Linha Leste', color: '#f5a623', ids: ['akihabara', 'ginza'] },
+    { id: 'nort', kind: 'minor', type: 'metro', code: 'M3', name: 'Linha Norte', color: '#8b6cff', ids: ['ikebukuro', 'akihabara'] },
+    { id: 'sul',  kind: 'minor', type: 'metro', code: 'M4', name: 'Linha Sul', color: '#e8344a', ids: ['meguro', 'roppongi'] }
   ];
 
   /* ---------- fila de prioridade (A*) ---------- */
@@ -193,7 +196,7 @@
     if (cache.sig === sig) return cache.routes;
     var routes = ROUTES.map(function (rt, i) {
       var r = buildRoute(rt, layout);
-      return { index: i, id: rt.id, kind: rt.kind, points: r.points, bends: r.bends, d: pathD(r.points, CORNER) };
+      return { index: i, id: rt.id, kind: rt.kind, type: rt.type || 'road', code: rt.code, name: rt.name, color: rt.color, ids: rt.ids, points: r.points, bends: r.bends, d: pathD(r.points, rt.type === 'metro' ? 14 : CORNER) };
     });
     cache = { sig: sig, routes: routes };
     return routes;
@@ -206,22 +209,52 @@
     return n;
   }
 
-  /* camadas por tipo (todas as pistas juntas), então cruzamentos viram cruzamentos de verdade */
+  /* pontos onde a linha sai/entra na caixa de um distrito (para as estações) */
+  function stations(path, r, layout) {
+    var out = [];
+    try {
+      var L = path.getTotalLength(), prev = null;
+      var inside = function (p) {
+        for (var i = 0; i < r.ids.length; i++) {
+          var b = layout[r.ids[i]]; if (!b) continue;
+          if (Math.abs(p.x - b.cx) <= b.w / 2 + 4 && Math.abs(p.y - b.cy) <= b.h / 2 + 4) return true;
+        }
+        return false;
+      };
+      for (var t = 0; t <= L; t += 3) {
+        var p = path.getPointAtLength(t), ins = inside(p);
+        if (prev !== null && ins !== prev) out.push(ins ? path.getPointAtLength(Math.max(0, t - 3)) : p);
+        prev = ins;
+      }
+      return { pts: out, len: L, mid: path.getPointAtLength(L / 2) };
+    } catch (e) { return { pts: out, len: 0, mid: null }; }
+  }
+
+  /* pistas (asfalto) primeiro, metrô por cima; camadas juntas para os cruzamentos ficarem limpos */
   function draw(layer, layout) {
     if (!layer) return;
     var routes = build(layout);
+    var roads = routes.filter(function (r) { return r.type !== 'metro'; });
+    var metro = routes.filter(function (r) { return r.type === 'metro'; });
+
+    /* halo de cada distrito */
+    var halo = el('g', { 'class': 'pm-halos' });
+    Object.keys(layout).forEach(function (id) {
+      var b = layout[id];
+      halo.appendChild(el('ellipse', { 'class': 'pm-halo', cx: b.cx, cy: b.cy, rx: b.w * .78, ry: b.h * .8 }));
+      halo.appendChild(el('ellipse', { 'class': 'pm-halo-ring', cx: b.cx, cy: b.cy + 4, rx: b.w * .66, ry: b.h * .64 }));
+    });
+    layer.appendChild(halo);
+
     ['shadow', 'outer', 'edge', 'inner', 'lane'].forEach(function (part) {
-      routes.forEach(function (r) {
-        var attrs = {
-          'class': 'district-link-' + part + (r.kind === 'minor' ? ' is-minor' : ''),
-          'd': r.d,
-          'data-route': r.index
-        };
+      roads.forEach(function (r) {
+        var attrs = { 'class': 'district-link-' + part + ' is-road', 'd': r.d, 'data-route': r.index };
         if (part === 'shadow') attrs.transform = 'translate(6 7)';
         layer.appendChild(el('path', attrs));
       });
     });
-    routes.forEach(function (r) {
+    roads.forEach(function (r) { layer.appendChild(el('path', { 'class': 'pm-road-dash', 'd': r.d, 'data-route': r.index })); });
+    roads.forEach(function (r) {
       r.bends.forEach(function (b) {
         layer.appendChild(el('path', {
           'class': 'district-link-node',
@@ -229,6 +262,36 @@
           'data-route': r.index
         }));
       });
+    });
+
+    ['case', 'white', 'line', 'flow'].forEach(function (part) {
+      metro.forEach(function (r) {
+        var a = { 'class': 'pm-metro-' + part, 'd': r.d, 'data-route': r.index, 'style': '--line:' + r.color };
+        if (part === 'case') { var sh = el('path', { 'class': 'pm-metro-shadow', 'd': r.d, transform: 'translate(4 5)' }); layer.appendChild(sh); }
+        layer.appendChild(el('path', a));
+      });
+    });
+    metro.forEach(function (r) {
+      var probe = layer.querySelector('.pm-metro-line[data-route="' + r.index + '"]');
+      var st = stations(probe, r, layout);
+      st.pts.forEach(function (p) {
+        layer.appendChild(el('circle', { 'class': 'pm-station', cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: 7.5, style: '--line:' + r.color }));
+      });
+      /* trem indo e voltando */
+      var train = el('g', { 'class': 'pm-train', style: '--line:' + r.color });
+      train.appendChild(el('rect', { x: -11, y: -4.5, width: 22, height: 9, rx: 4.5 }));
+      train.appendChild(el('rect', { 'class': 'pm-train-win', x: -6, y: -2, width: 12, height: 4, rx: 2 }));
+      var dur = Math.max(6, (st.len || 400) / 45).toFixed(1) + 's';
+      var am = el('animateMotion', { dur: dur, repeatCount: 'indefinite', rotate: 'auto', path: r.d, keyPoints: '0;1;0', keyTimes: '0;.5;1', calcMode: 'spline', keySplines: '.45 0 .55 1;.45 0 .55 1' });
+      train.appendChild(am);
+      layer.appendChild(train);
+      if (st.mid) {
+        var bd = el('g', { 'class': 'pm-metro-badge', transform: 'translate(' + st.mid.x.toFixed(1) + ' ' + st.mid.y.toFixed(1) + ')', style: '--line:' + r.color });
+        bd.appendChild(el('circle', { r: 13 }));
+        var tx = el('text', { 'text-anchor': 'middle', dy: '4.5' }); tx.textContent = r.code; bd.appendChild(tx);
+        var tl = el('title', {}); tl.textContent = 'Metrô ' + r.code + ' · ' + r.name; bd.appendChild(tl);
+        layer.appendChild(bd);
+      }
     });
   }
 
@@ -266,11 +329,17 @@
     return '' +
       '<defs>' +
         '<pattern id="pmDots" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle class="pm-dot" cx="7" cy="7" r="2.6"/></pattern>' +
+        '<pattern id="pmBlocks" width="64" height="64" patternUnits="userSpaceOnUse" patternTransform="rotate(-2.8)"><rect class="pm-block" x="4" y="4" width="26" height="18" rx="2"/><rect class="pm-block" x="34" y="4" width="26" height="18" rx="2"/><rect class="pm-block" x="4" y="28" width="56" height="12" rx="2"/><rect class="pm-block" x="4" y="44" width="18" height="16" rx="2"/><rect class="pm-block" x="26" y="44" width="34" height="16" rx="2"/></pattern>' +
+        '<pattern id="pmTrees" width="18" height="18" patternUnits="userSpaceOnUse"><circle class="pm-tree" cx="5" cy="6" r="3.2"/><circle class="pm-tree" cx="13" cy="13" r="2.6"/></pattern>' +
         '<pattern id="pmDotsBay" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle class="pm-dot-bay" cx="6" cy="6" r="2.1"/></pattern>' +
         '<linearGradient id="pmFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>' +
         '<mask id="pmFadeMask" maskUnits="userSpaceOnUse" x="-2000" y="-1500" width="5400" height="3700"><rect x="-2000" y="-1500" width="5400" height="3700" fill="url(#pmFade)"/></mask>' +
       '</defs>' +
       /* baía de Tokyo: sombra dura, água, pontilhado e contorno */
+      '<rect class="pm-blocks" x="-2000" y="-1500" width="5400" height="3700" fill="url(#pmBlocks)"/>' +
+      gridLines() +
+      parks() +
+      rivers() +
       '<path class="pm-bay-shadow" d="' + bay + '" transform="translate(7 8)"/>' +
       '<path class="pm-bay" d="' + bay + '"/>' +
       '<path class="pm-bay-dots" d="' + bay + '"/>' +
@@ -280,7 +349,40 @@
       /* corte diagonal duplo logo abaixo da faixa rosa do topo */
       slash('pm-slash-black', 12, 24) +
       slash('pm-slash-cream', 29, 33) +
-      star(620, 300, 1.15) + star(660, 120, .8) + star(975, 300, 1) + star(250, 455, .85) + star(1240, 470, .7);
+      star(620, 300, 1.15) + star(660, 120, .8) + star(975, 300, 1) + star(250, 455, .85) + star(1240, 470, .7) +
+      star(-420, 160, 1.3) + star(-260, 760, 1) + star(1620, 260, 1.2) + star(420, 980, 1.1) + star(1500, -60, .9) + star(-700, 460, .8) +
+      compass(52, 118);
+  }
+
+  /* rios estilizados: Sumida (leste) e Kanda (corta o centro) */
+  function rivers() {
+    var sumida = 'M 1330 -900 C 1300 -300 1270 -60 1235 60 S 1200 250 1110 330 S 1050 420 1060 520',
+        kanda = 'M -1400 270 C -600 250 -100 300 260 255 S 560 280 640 300 S 900 330 1005 300 S 1140 300 1205 245';
+    var r = function (d) { return '<path class="pm-river-edge" d="' + d + '"/><path class="pm-river" d="' + d + '"/><path class="pm-river-flow" d="' + d + '"/>'; };
+    return '<g class="pm-rivers">' + r(kanda) + r(sumida) + '</g>';
+  }
+  /* parques: manchas verdes com árvores */
+  function parks() {
+    var blob = function (cx, cy, rx, ry, rot) {
+      return '<g transform="translate(' + cx + ' ' + cy + ') rotate(' + rot + ')"><ellipse class="pm-park-shadow" rx="' + rx + '" ry="' + ry + '" transform="translate(5 6)"/><ellipse class="pm-park" rx="' + rx + '" ry="' + ry + '"/><ellipse class="pm-park-trees" rx="' + (rx - 6) + '" ry="' + (ry - 6) + '"/></g>';
+    };
+    return '<g class="pm-parks">' + blob(255, 470, 64, 40, -12) + blob(950, 110, 70, 36, 8) + blob(905, 330, 48, 34, 0) + blob(-260, 520, 140, 70, 10) + blob(640, -40, 110, 50, -6) + blob(-620, 300, 90, 52, 18) + blob(260, 880, 120, 60, -8) + blob(-380, 980, 80, 46, 4) + blob(1480, 120, 70, 40, -14) + '</g>';
+  }
+  /* grade de coordenadas bem fraquinha */
+  function gridLines() {
+    var g = '';
+    for (var x = -1920; x <= 3200; x += 160) g += 'M ' + x + ' -1500 L ' + x + ' 2200 ';
+    for (var y = -1440; y <= 2160; y += 160) g += 'M -2000 ' + y + ' L 3280 ' + y + ' ';
+    return '<path class="pm-grid" d="' + g + '"/>';
+  }
+  function compass(x, y) {
+    return '<g class="pm-compass" transform="translate(' + x + ' ' + y + ')"><circle r="30" class="pm-compass-ring"/><circle r="22" class="pm-compass-in"/>' +
+      '<path class="pm-compass-n" d="M0 -27 L7 0 L0 -4 L-7 0Z"/><path class="pm-compass-s" d="M0 27 L7 0 L0 4 L-7 0Z"/>' +
+      '<text class="pm-compass-t" y="-34" text-anchor="middle">N</text></g>';
+  }
+  function scaleBar(x, y) {
+    return '<g class="pm-scale" transform="translate(' + x + ' ' + y + ')"><rect width="120" height="8" class="pm-scale-a"/><rect width="60" height="8" class="pm-scale-b"/><rect x="60" width="30" height="8" class="pm-scale-b" transform="translate(30 0)"/>' +
+      '<text y="-6" class="pm-scale-t">0</text><text x="120" y="-6" text-anchor="end" class="pm-scale-t">2 KM</text></g>';
   }
 
   function ensureDecor(svg) {
