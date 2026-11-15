@@ -21,7 +21,6 @@
     paper: ['Texto', 'Letras e números']
   };
   var PRESETS = [
-    { id: 'p6', site: 'makoto', name: 'PERSONA 6', tag: 'Mãos do além', fx: 'p6', c: { acc: '#3dff86', acc2: '#b6ffcf', acc3: '#e4ffd6', bg: '#030906', card: '#0b1a10', card2: '#08140c', black: '#020503', paper: '#e4ffe9' } },
     { id: 'naoya', site: 'midnight', name: 'NAOYA', tag: 'A linha do espelho', fx: 'naoya', c: { acc: '#a77bff', acc2: '#dfe3ee', acc3: '#c9b6ff', bg: '#101218', card: '#1c1f28', card2: '#171a22', black: '#08090d', paper: '#eef0f7' } },
     { id: 'tatsuya', site: 'joker', name: 'TATSUYA', tag: 'Borboletas e chamas', fx: 'tatsuya', c: { acc: '#e3242b', acc2: '#f5a524', acc3: '#ff7a2e', bg: '#120707', card: '#241111', card2: '#1c0c0c', black: '#070303', paper: '#fff1e2' } },
     { id: 'maya', site: 'violet', name: 'MAYA', tag: 'Neon e corações cósmicos', fx: 'maya', c: { acc: '#ff2fa8', acc2: '#2fe3ea', acc3: '#fff27a', bg: '#100a1c', card: '#21163a', card2: '#1a1130', black: '#090511', paper: '#fff0fa' } },
@@ -29,6 +28,7 @@
     { id: 'kotone', site: 'sakura', name: 'KOTONE', tag: 'Pôr do sol e fones', fx: 'kotone', c: { acc: '#ff86b8', acc2: '#ffab52', acc3: '#ffd98a', bg: '#26120e', card: '#3a1e1b', card2: '#301815', black: '#170a08', paper: '#fff4ec' } },
     { id: 'narukami', site: 'graphite', name: 'NARUKAMI', tag: 'Flores ao vento', fx: 'narukami', c: { acc: '#f7c51e', acc2: '#c3c7cf', acc3: '#ffe36b', bg: '#17181c', card: '#26282e', card2: '#1f2126', black: '#0b0c0e', paper: '#f7f3e6' } },
     { id: 'joker', site: 'joker', name: 'JOKER', tag: 'Ladrão de corações', fx: 'joker', c: { acc: '#e5101c', acc2: '#ffffff', acc3: '#ff3a44', bg: '#0a0909', card: '#171313', card2: '#110e0e', black: '#000000', paper: '#ffffff' } },
+    { id: 'p6', site: 'makoto', name: 'PERSONA 6', tag: 'Mãos do além', fx: 'p6', c: { acc: '#3dff86', acc2: '#b6ffcf', acc3: '#e4ffd6', bg: '#030906', card: '#0b1a10', card2: '#08140c', black: '#020503', paper: '#e4ffe9' } },
     { id: 'phobia', site: 'cream', name: 'PHOBIA', tag: 'Padrão', c: { acc: '#ef2b97', acc2: '#6ce6ff', acc3: '#96ff45', bg: '#141523', card: '#1b1e33', card2: '#151729', black: '#0d0c10', paper: '#fff0d8' } },
     { id: 'rubro', site: 'joker', name: 'RUBRO', tag: 'Vermelho e preto', c: { acc: '#e8202a', acc2: '#f4ece2', acc3: '#ffcc33', bg: '#0e0b0b', card: '#1d1515', card2: '#160f10', black: '#060505', paper: '#f7efe6' } },
     { id: 'mare', site: 'makoto', name: 'MARÉ', tag: 'Azul profundo', c: { acc: '#2f8cff', acc2: '#8fe9ff', acc3: '#c6ff5c', bg: '#08132a', card: '#122242', card2: '#0d1a34', black: '#040a17', paper: '#e9f6ff' } },
