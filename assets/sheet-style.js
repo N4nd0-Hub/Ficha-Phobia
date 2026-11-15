@@ -197,6 +197,8 @@
       top.innerHTML = wi;
     } else if (kind === 'makoto') {
       back.innerHTML = '<i class="mk-sky"></i><i class="mk-moon"></i><i class="mk-mist a"></i><i class="mk-mist b"></i><i class="mk-scan"></i><i class="mk-clock">00:00</i>';
+      var mq = ''; for (var mb = 0; mb < 56; mb++) mq += '<b style="animation-duration:' + (0.45 + Math.random() * 0.7).toFixed(2) + 's;animation-delay:-' + (Math.random() * 1.2).toFixed(2) + 's"></b>';
+      back.innerHTML += '<i class="mk-pulse"></i><div class="mk-eq">' + mq + '</div><svg class="mk-wave" viewBox="0 0 1200 120" preserveAspectRatio="none"><path class="a" d="M0 60Q150 14 300 60T600 60T900 60T1200 60"/><path class="b" d="M0 66Q150 112 300 66T600 66T900 66T1200 66"/></svg>';
     } else if (kind === 'narukami') {
       back.innerHTML = '<i class="nk-fog a"></i><i class="nk-fog b"></i><i class="nk-static"></i>';
       var cols = [['#ffd84a', '#fff4c2'], ['#fff6dc', '#f7c51e'], ['#c9ccd4', '#ffe36b'], ['#ffe36b', '#fffbe9']], html = '';
@@ -253,6 +255,14 @@
       top.innerHTML = '<i class="jk-slash"></i>';
     }
   }
+  /* música tocando na ficha → body.hs-music-on (os temas reagem) */
+  (function watchMusic() {
+    var last = null;
+    setInterval(function () {
+      var bar = document.getElementById('phobiaDeckBar'), on = !!(bar && bar.classList.contains('is-playing'));
+      if (on !== last) { last = on; document.body.classList.toggle('hs-music-on', on); }
+    }, 400);
+  })();
   function applyFx(h) {
     var kind = h.fx === 'off' ? '' : (preset(h.preset).fx || '');
     document.body.dataset.hsFx = kind;

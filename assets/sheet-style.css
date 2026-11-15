@@ -306,3 +306,21 @@ body.workspace-sheet[data-hs-fx="p6"] #characterPage :is(.hs-bar,.hs-attr,.deriv
 @keyframes p6Flick{0%,100%{opacity:1}47%{opacity:.4}49%{opacity:1}83%{opacity:.7}}
 @keyframes p6Rise{from{transform:translateY(0)}to{transform:translateY(-115vh)}}
 @keyframes p6Sway{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+
+/* ---- MAKOTO: equalizador que reage à música + quinas arredondadas ---- */
+#hsFxBack .mk-eq{position:absolute;left:0;right:0;bottom:0;height:20vh;display:flex;align-items:flex-end;gap:4px;padding:0 6px;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+#hsFxBack .mk-eq b{flex:1;height:100%;border-radius:6px 6px 0 0;transform-origin:50% 100%;transform:scaleY(.06);
+  background:linear-gradient(0deg,rgba(109,255,194,.55),rgba(61,139,255,.35));transition:transform .6s ease;animation:mkBar 1s ease-in-out infinite alternate;animation-play-state:paused}
+#hsFxBack .mk-eq b:nth-child(odd){background:linear-gradient(0deg,rgba(61,139,255,.5),rgba(157,255,214,.3))}
+#hsFxBack .mk-wave{position:absolute;left:0;bottom:18vh;width:200%;height:70px;fill:none;stroke-width:2;opacity:.25;transition:opacity .6s;animation:ktWave 14s linear infinite;animation-play-state:paused}
+#hsFxBack .mk-wave .a{stroke:rgba(109,255,194,.6)}#hsFxBack .mk-wave .b{stroke:rgba(61,139,255,.55)}
+#hsFxBack .mk-pulse{left:50%;bottom:-30vh;width:120vw;height:60vh;margin-left:-60vw;border-radius:50%;background:radial-gradient(closest-side,rgba(109,255,194,.16),transparent);opacity:0;transition:opacity .8s}
+body.hs-music-on #hsFxBack .mk-eq b{animation-play-state:running}
+body.hs-music-on #hsFxBack .mk-wave{opacity:1;animation-play-state:running}
+body.hs-music-on #hsFxBack .mk-pulse{opacity:1;animation:mkBeat .52s ease-out infinite}
+body.hs-music-on #hsFxBack .mk-moon{animation:mkMoon 7s ease-in-out infinite alternate,mkBeatMoon .52s ease-out infinite}
+@keyframes mkBeatMoon{0%{filter:brightness(1.4)}100%{filter:brightness(1)}}
+@keyframes mkBar{0%{transform:scaleY(.1)}35%{transform:scaleY(.62)}65%{transform:scaleY(.28)}100%{transform:scaleY(.9)}}
+@keyframes mkBeat{0%{transform:scale(1.06);filter:brightness(1.35)}100%{transform:scale(1);filter:brightness(1)}}
+body.workspace-sheet[data-hs-fx="makoto"] #characterPage :is(.hs-bar,.hs-attr,.derived-editor,.hs-integ,.hs-skill){border-radius:14px!important}
