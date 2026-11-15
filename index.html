@@ -14493,7 +14493,7 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
           </header>
           <div class="tr-budget-note">
             <div id="traitBudgetSegments" aria-hidden="true"></div>
-            <span id="traitLimitsNote">Defeitos: <b>0 pontos</b> · <b>0 / 3 escolhas</b></span>
+            <span id="traitLimitsNote">Defeitos: <b>0 pontos</b> · <b>0 escolhas</b></span>
             <span>Uma Dissonante concede <b>5 pontos</b> e ocupa uma escolha de Defeito.</span>
             <label class="tr-extra-points" title="Pontos de Vantagem extras que o Mestre te deu">Pontos extras <input id="traitExtraPoints" type="number" min="0" max="99" step="1" value="0"></label>
           </div>
@@ -14522,7 +14522,7 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
           </div>
           <details class="tr-rules"><summary>Regras de aquisição e pontos</summary><ul>
             <li>Você começa com 1 Ponto de Vantagem. Cada Defeito concede sua pontuação uma única vez.</li>
-            <li>Escolha até três Defeitos. Uma Arcana Dissonante vale 5 pontos e conta como uma dessas escolhas.</li>
+            <li>Escolha quantos Defeitos quiser, sem limite. Uma Arcana Dissonante vale 5 pontos.</li>
             <li>Os pré-requisitos precisam ser atendidos na aquisição. Pontos podem ser guardados para uma compra futura.</li>
             <li>Uma escolha pode ser adquirida uma única vez. Escolhas incompatíveis não podem coexistir.</li>
             <li>Antes de remover um Defeito ou Dissonante, libere os pontos que já foram gastos em Vantagens.</li>
@@ -20477,7 +20477,7 @@ const RETIRED_FLAW_CATALOG=[
   {"id":"D-AUT-09","kind":"defeito","name":"Medo Enraizado","category_id":"AUT","category":"Autocontrole e rotina","points":4,"requirement":"O gatilho ser concreto e aparecer recorrentemente na campanha","prerequisites":{"mode":"all","conditions":[{"type":"narrative","text":"O gatilho ser concreto e aparecer recorrentemente na campanha"}]},"description":"Escolha um gatilho concreto, como espaços fechados, alturas ou uma situação associada ao seu passado. Recebe Desvantagem em Coragem e Disciplina para se aproximar, permanecer ou agir diante dele no mundo real. A limitação não determina sua ação nem se estende automaticamente a criaturas ou efeitos com o mesmo nome no mundo cognitivo.","frequency":"Enquanto enfrentar diretamente o gatilho no mundo real","configuration":[{"key":"gatilho","label":"Gatilho","type":"text","required":true}],"incompatible_with":[],"retired":true}
 ];
 const FLAW_CATEGORIES=[{"id":"REL","name":"Relações e vínculos","order":1},{"id":"COM","name":"Comunicação e convivência","order":2},{"id":"EST","name":"Estudo e trabalho","order":3},{"id":"REC","name":"Recursos e acesso","order":4},{"id":"REP","name":"Reputação e identidade","order":5},{"id":"AUT","name":"Autocontrole e rotina","order":6},{"id":"FIS","name":"Físicos e sensoriais","order":7},FINANCIAL_CATEGORY];
-const TRAIT_POINT_RULES={initial:1,maxFlawPoints:Infinity,maxFlawCount:3,dissonantPoints:5};
+const TRAIT_POINT_RULES={initial:1,maxFlawPoints:Infinity,maxFlawCount:Infinity,dissonantPoints:5};
 const DISSONANT_TRAIT_CATALOG=PERSONA_PHOBIA_DISSONANT_ARCANAS.map(arcana=>({
   id:'D-ARC-'+arcana.romano,kind:'dissonante',name:arcana.nome,roman:arcana.romano,
   category:'Arcanas Dissonantes',category_id:'ARC',points:5,requirement:'Nenhum',
@@ -20571,7 +20571,6 @@ function traitChangeError(item,remove=false){
     return '';
   }
   const replacing=item.kind==='dissonante'&&budget.hasDissonant;
-  if(budget.flawCount+(replacing?0:1)>TRAIT_POINT_RULES.maxFlawCount&&!replacing)return 'Limite de três escolhas de Defeito.';
   return '';
 }
 function traitDefinitionError(item,configuration,confirmed){
@@ -20672,10 +20671,9 @@ function renderTraitsPage(){
   }
   document.getElementById('traitBalanceTile')?.classList.toggle('is-negative',budget.available<0);
   const limit=document.getElementById('traitLimitsNote');
-  if(limit)limit.innerHTML=`Defeitos: <b>${budget.flawPoints} pontos</b> · <b>${budget.flawCount} / 3 escolhas</b>`+(budget.gm?` · <b class="tr-gm-points">+${budget.gm} do Mestre</b>`:'');
+  if(limit)limit.innerHTML=`Defeitos: <b>${budget.flawPoints} pontos</b> · <b>${budget.flawCount} ${budget.flawCount===1?'escolha':'escolhas'}</b>`+(budget.gm?` · <b class="tr-gm-points">+${budget.gm} do Mestre</b>`:'');
   const alert=document.getElementById('traitBudgetAlert'),warnings=[];
   if(budget.available<0)warnings.push('Há '+Math.abs(budget.available)+' ponto(s) além do orçamento. Remova Vantagens para regularizar o saldo.');
-  if(budget.flawCount>3)warnings.push('As escolhas carregadas excedem o limite de Defeitos. Revise-as em Minhas escolhas.');
   if(alert){alert.hidden=!warnings.length;alert.textContent=warnings.join(' ');}
   const owned=ALL_CHARACTER_TRAITS.filter(item=>traitIsOwned(item));
   const retiredFlawsNote=document.getElementById('traitRetiredFlawsNote');
@@ -22228,7 +22226,7 @@ initializePhobiaLargeSave();
 <script src="assets/equip-rig.js?v=4"></script>
 <link rel="stylesheet" href="assets/traits-cards.css?v=4">
 <script src="assets/traits-cards.js?v=3"></script>
-<script src="assets/traits-deck.js?v=3"></script>
+<script src="assets/traits-deck.js?v=4"></script>
 <script src="assets/bonds-net.js?v=5"></script>
 <script src="assets/instrument-skills-data.js?v=1"></script>
 <script src="assets/instrument-skills.js?v=2"></script>

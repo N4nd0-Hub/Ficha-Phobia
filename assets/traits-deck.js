@@ -44,7 +44,7 @@
     return '<div class="trw" id="trWallet">' +
       '<div class="trw-big' + (b.available < 0 ? ' is-neg' : b.available === 0 ? ' is-zero' : '') + '"><small>PONTOS LIVRES</small><b>' + b.available + '</b></div>' +
       '<div class="trw-body"><div class="trw-coins">' + coins + '</div>' +
-      '<div class="trw-legend"><span><i class="lg">I</i>inicial</span><span><i class="lg">D</i>de Defeitos · ' + b.flawPoints + '/5</span>' + (b.extra ? '<span><i class="lg">M</i>do Mestre</span>' : '') + '<span><i class="lg sp"></i>gastos · ' + b.spent + '</span><span class="trw-lim">' + b.flawCount + '/3 Defeitos</span></div></div>' +
+      '<div class="trw-legend"><span><i class="lg">I</i>inicial</span><span><i class="lg">D</i>de Defeitos · ' + b.flawPoints + '</span>' + (b.extra ? '<span><i class="lg">M</i>do Mestre</span>' : '') + '<span><i class="lg sp"></i>gastos · ' + b.spent + '</span><span class="trw-lim">' + b.flawCount + '/3 Defeitos</span></div></div>' +
     '</div>';
   }
 

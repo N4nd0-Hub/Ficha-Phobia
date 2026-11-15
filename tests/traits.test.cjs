@@ -127,11 +127,10 @@ test('flaw points are no longer capped at five; the GM grant adds to the budget'
   box.state.charSheet.traits.gmPoints=3;
   assert.equal(box.traitBudget().gm,3);assert.equal(box.traitBudget().available,1+6+3);
 });
-test('no more than three ordinary flaw choices can be acquired',()=>{
+test('there is no limit on how many flaws can be acquired',()=>{
   const box=fixture();
-  for(const id of ['D-AUT-01','D-FIS-01','D-REL-01'])assert.equal(acquire(box,id).ok,true,id);
-  assert.equal(acquire(box,'D-AUT-11').error,'Limite de três escolhas de Defeito.');
-  assert.equal(box.traitBudget().flawCount,3);assert.equal(box.traitBudget().available,4);
+  for(const id of ['D-AUT-01','D-FIS-01','D-REL-01','D-AUT-11'])assert.equal(acquire(box,id).ok,true,id);
+  assert.equal(box.traitBudget().flawCount,4);
 });
 test('an advantage can only be purchased once',()=>{
   const box=fixture();
