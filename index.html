@@ -13127,7 +13127,22 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
 <script src="assets/map-explorer.js?v=20261115"></script>
 <script defer src="assets/map-motion.js?v=4"></script>
 </head>
+<style id="bootGate">
+/* enquanto a ficha monta, mostra só a tela de carregamento (evita o "visual antigo" piscando) */
+body:not(.hud):not(.boot-timeout)>*:not(#bootSplash){visibility:hidden!important}
+#bootSplash{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:#0d0c10;color:#fff0d8;transition:opacity .45s ease,visibility .45s;font-family:"Archivo Black","Arial Black",sans-serif}
+body.hud #bootSplash,body.boot-timeout #bootSplash{opacity:0;visibility:hidden;pointer-events:none}
+#bootSplash .bs-in{display:grid;justify-items:center;gap:14px;transform:skewX(-6deg)}
+#bootSplash b{font-size:clamp(26px,4vw,44px);letter-spacing:-1px;font-style:italic;text-shadow:4px 4px 0 #ef2b97}
+#bootSplash small{font:800 11px/1 "Barlow Condensed",Arial,sans-serif;letter-spacing:3px;color:#a39db5}
+#bootSplash i{display:block;width:min(260px,60vw);height:6px;background:#2a2733;overflow:hidden;position:relative}
+#bootSplash i::after{content:"";position:absolute;inset:0;width:40%;background:#ef2b97;animation:bsLoad 1s ease-in-out infinite alternate}
+@keyframes bsLoad{from{transform:translateX(-10%)}to{transform:translateX(160%)}}
+@media (prefers-reduced-motion:reduce){#bootSplash i::after{animation:none;width:100%}}
+</style>
 <body class="time-afternoon" data-site-theme="cream">
+<div id="bootSplash" aria-hidden="true"><div class="bs-in"><b>PERSONA // PHOBIA</b><i></i><small>CARREGANDO A FICHA...</small></div></div>
+<script>setTimeout(function(){document.body.classList.add('boot-timeout')},12000);</script>
 
 <div class="site">
   <header class="paper-panel topbar">
