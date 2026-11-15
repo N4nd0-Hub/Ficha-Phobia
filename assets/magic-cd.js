@@ -21,6 +21,25 @@
     for (var i = 0; i < KANJI.length; i++) if (KANJI[i][0].test(t)) return KANJI[i];
     return [null, '創', 'オリジナル'];
   }
+  var SHORT = [[/debuffs?\s*\(/i, 'Debuffs'], [/buffs?\s*\(/i, 'Buffs'], [/cura e recupera/i, 'Cura'], [/controle mental/i, 'Controle'], [/passivas m/i, 'Passiva'], [/luz e b/i, 'Luz'], [/trevas e m/i, 'Trevas']];
+  function shortType(t) { t = String(t || '').trim(); for (var i = 0; i < SHORT.length; i++) if (SHORT[i][0].test(t)) return SHORT[i][1]; return t; }
+  /* ajusta o tamanho do nome para caber sem quebrar palavra no meio */
+  function fitName(n) {
+    var box = n.parentNode; if (!box || !n.offsetWidth) return;
+    var words = n.textContent.trim().split(/\s+/), longest = words.reduce(function (a, w) { return w.length > a ? w.length : a; }, 0);
+    var max = 26, min = 11, size = Math.min(max, Math.max(min, Math.floor((n.clientWidth - 6) / (longest * .74))));
+    n.style.setProperty('font-size', size + 'px', 'important');
+    var guard = 0;
+    var tooWide = function () {
+      var r = n.getBoundingClientRect(), over = false;
+      [].forEach.call(n.childNodes, function () {});
+      var range = document.createRange(); range.selectNodeContents(n);
+      [].forEach.call(range.getClientRects(), function (c) { if (c.right > r.right - 2 || c.left < r.left) over = true; });
+      return over || n.scrollWidth > n.clientWidth + 1 || n.scrollHeight > n.clientHeight + 1;
+    };
+    while (tooWide() && size > min && guard++ < 24) { size--; n.style.setProperty('font-size', size + 'px', 'important'); }
+  }
+  function fitAll() { document.querySelectorAll('#sheetMagicDeck .cd-copy .deck-card-name').forEach(fitName); }
   function el(tag, cls, html) { var e = document.createElement(tag); e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function txt(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); }
 
@@ -48,12 +67,19 @@
       obi.setAttribute('aria-hidden', 'true');
       cover.appendChild(obi);
       var copy = el('span', 'cd-copy');
-      copy.appendChild(el('span', 'cd-track', 'TRACK ' + String(i + 1).padStart(2, '0')));
-      if (type) copy.appendChild(type);
-      if (name) copy.appendChild(name);
-      if (meta) copy.appendChild(meta);
+      var head = el('span', 'cd-head');
+      head.appendChild(el('span', 'cd-track', 'TRACK ' + String(i + 1).padStart(2, '0')));
+      head.appendChild(el('span', 'cd-logo', '<i></i>CD'));
+      copy.appendChild(head);
+      if (type) { type.title = type.textContent; type.textContent = shortType(type.textContent); copy.appendChild(type); }
+      if (name) { name.title = nm; copy.appendChild(name); }
+      if (meta) {
+        var tn = { I: 1, II: 2, III: 3, IV: 4, V: 5 }[String(tier).trim()] || 0, dots = '';
+        for (var d = 1; d <= 5; d++) dots += '<i class="' + (d <= tn ? 'on' : '') + '"></i>';
+        meta.insertAdjacentHTML('afterbegin', '<span class="cd-tier-dots" aria-hidden="true">' + dots + '</span>');
+        copy.appendChild(meta);
+      }
       cover.appendChild(copy);
-      cover.appendChild(el('span', 'cd-logo', '<i></i>COMPACT<br>MAGIC'));
       cover.appendChild(el('span', 'cd-glare'));
       cover.appendChild(el('span', 'cd-hinge'));
 
@@ -61,7 +87,10 @@
       win.appendChild(disc);
       win.appendChild(cover);
     });
+    requestAnimationFrame(fitAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
   }
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(fitAll, 150); });
 
   function init() {
     if (typeof renderMagicDeck !== 'function') { setTimeout(init, 200); return; }
