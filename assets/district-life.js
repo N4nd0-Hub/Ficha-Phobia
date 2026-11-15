@@ -33,91 +33,126 @@
     }
     return out;
   }
-  function car(color, night) {
-    var g = el('g', { 'class': 'dlf-car' });
-    if (night) g.appendChild(el('path', { 'class': 'dlf-beam', d: 'M7 -3 L34 -11 L34 11 L7 3Z' }));
-    g.appendChild(el('rect', { x: -8, y: -4.5, width: 16, height: 9, rx: 2.5, fill: color, 'class': 'dlf-body' }));
-    g.appendChild(el('rect', { x: 1, y: -3.2, width: 4, height: 6.4, rx: 1, 'class': 'dlf-glass' }));
-    g.appendChild(el('rect', { x: -6, y: -3.2, width: 3, height: 6.4, rx: 1, 'class': 'dlf-glass' }));
-    if (night) { g.appendChild(el('rect', { x: -8.5, y: -4, width: 1.6, height: 2, 'class': 'dlf-tail' })); g.appendChild(el('rect', { x: -8.5, y: 2, width: 1.6, height: 2, 'class': 'dlf-tail' })); }
-    return g;
+  /* ---------- tráfego desenhado num canvas por cima do SVG ----------
+     (o SVG fica parado; só o canvas é redesenhado → bem mais leve) */
+  function polyPts(d) { var a = [], re = /(-?[\d.]+)[ ,]+(-?[\d.]+)/g, m; while ((m = re.exec(d))) a.push([+m[1], +m[2]]); return a; }
+  function track(pts, m) {
+    var P = pts.map(function (p) { return [m.a * p[0] + m.c * p[1] + m.e, m.b * p[0] + m.d * p[1] + m.f]; }), cum = [0];
+    for (var i = 1; i < P.length; i++) cum.push(cum[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+    return { P: P, cum: cum, L: cum[cum.length - 1] };
   }
-  function move(node, d, dur, delay, reverse, extra) {
-    var a = el('animateMotion', Object.assign({ path: d, dur: dur.toFixed(1) + 's', begin: '-' + delay.toFixed(1) + 's', repeatCount: 'indefinite', rotate: reverse ? 'auto-reverse' : 'auto' },
-      reverse ? { keyPoints: '1;0', keyTimes: '0;1', calcMode: 'linear' } : {}, extra || {}));
-    node.appendChild(a);
-    return node;
+  function at(t, d) {
+    d = ((d % t.L) + t.L) % t.L;
+    var i = 1; while (i < t.cum.length - 1 && t.cum[i] < d) i++;
+    var a = t.P[i - 1], b = t.P[i], seg = (t.cum[i] - t.cum[i - 1]) || 1, k = (d - t.cum[i - 1]) / seg;
+    return { x: a[0] + (b[0] - a[0]) * k, y: a[1] + (b[1] - a[1]) * k, ang: Math.atan2(b[1] - a[1], b[0] - a[0]) };
   }
-  function len(d) { try { var p = el('path', { d: d }); var s = el('svg', {}); s.appendChild(p); document.body.appendChild(s); var L = p.getTotalLength(); s.remove(); return L; } catch (e) { return 600; } }
+  function matrixOf(svg, node) { try { return svg.getScreenCTM().inverse().multiply(node.getScreenCTM()); } catch (e) { return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }; } }
 
+  var LIFE = null;
   function decorate(svg) {
     svg.dataset.life = '1';
-    var night = tod() === 'night', id = (document.querySelector('#subDistrictMap [data-district]') || {}).dataset;
+    var night = tod() === 'night';
     seed = 7 + (svg.innerHTML.length % 9973);
-    var life = el('g', { 'class': 'dlf-life' });
+    var movers = [];
 
-    /* janelas acesas (só aparecem à noite, via CSS) */
+    /* janelas acesas (estáticas, só à noite via CSS) */
     var win = el('g', { 'class': 'dlf-windows' });
     svg.querySelectorAll('.dl-block, .dl-tower').forEach(function (b) {
       var x = +b.getAttribute('x'), y = +b.getAttribute('y'), w = +b.getAttribute('width'), h = +b.getAttribute('height');
-      var k = Math.floor(w * h / 900);
-      for (var i = 0; i < k; i++) if (rnd() > .45) win.appendChild(el('rect', { x: (x + 4 + rnd() * (w - 10)).toFixed(1), y: (y + 4 + rnd() * (h - 9)).toFixed(1), width: 3.4, height: 3.4, 'class': 'dlf-win', style: 'animation-delay:-' + (rnd() * 9).toFixed(1) + 's' }));
+      var k = Math.floor(w * h / 1100);
+      for (var i = 0; i < k; i++) if (rnd() > .45) win.appendChild(el('rect', { x: (x + 4 + rnd() * (w - 10)).toFixed(1), y: (y + 4 + rnd() * (h - 9)).toFixed(1), width: 3.4, height: 3.4, 'class': rnd() > .8 ? 'dlf-win dim' : 'dlf-win' }));
     });
-    var cityG = svg.querySelector('.dl-block, .dl-tower');
-    if (cityG && cityG.parentNode) cityG.parentNode.appendChild(win);
+    var cityB = svg.querySelector('.dl-block, .dl-tower');
+    if (cityB && cityB.parentNode) cityB.parentNode.appendChild(win);
 
-    /* ruas da grade: carros pequenos e pedestres */
+    /* ruas da grade */
     var street = svg.querySelector('.dl-street');
     if (street) {
-      var segs = segments(street.getAttribute('d')), host = street.parentNode;
-      var traffic = el('g', { 'class': 'dlf-traffic' }), walkers = el('g', { 'class': 'dlf-walkers' });
-      segs.forEach(function (s, i) {
-        var d = 'M' + s[0] + ' ' + s[1] + 'L' + s[2] + ' ' + s[3], L = Math.hypot(s[2] - s[0], s[3] - s[1]);
+      var m0 = matrixOf(svg, street);
+      segments(street.getAttribute('d')).forEach(function (s) {
+        var vert = s[0] === s[2];
         if (rnd() > .55) {
-          var c = car(CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], night);
-          c.setAttribute('transform', 'scale(.82)');
-          var w = el('g', {}); w.appendChild(c);
-          var off = rnd() > .5 ? 1 : -1, dd = s[0] === s[2] ? 'M' + (s[0] + 4 * off) + ' ' + s[1] + 'L' + (s[2] + 4 * off) + ' ' + s[3] : 'M' + s[0] + ' ' + (s[1] + 4 * off) + 'L' + s[2] + ' ' + (s[3] + 4 * off);
-          traffic.appendChild(move(w, dd, L / (38 + rnd() * 30), rnd() * 20, off < 0));
+          var off = rnd() > .5 ? 4 : -4, pts = vert ? [[s[0] + off, s[1]], [s[2] + off, s[3]]] : [[s[0], s[1] + off], [s[2], s[3] + off]];
+          movers.push({ k: 'car', t: track(pts, m0), d: rnd() * 2000, v: (38 + rnd() * 30) * (off < 0 ? -1 : 1), c: CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], sc: .82 });
         }
         for (var p = 0; p < 2; p++) if (rnd() > .55) {
-          var side = rnd() > .5 ? 11 : -11, wd = s[0] === s[2] ? 'M' + (s[0] + side) + ' ' + s[1] + 'L' + (s[2] + side) + ' ' + s[3] : 'M' + s[0] + ' ' + (s[1] + side) + 'L' + s[2] + ' ' + (s[3] + side);
-          var dot = el('circle', { r: 2.3, 'class': 'dlf-walker', style: '--h:' + Math.floor(rnd() * 360) });
-          walkers.appendChild(move(dot, wd, L / (6 + rnd() * 5), rnd() * 120, rnd() > .5));
+          var side = rnd() > .5 ? 11 : -11, wp = vert ? [[s[0] + side, s[1]], [s[2] + side, s[3]]] : [[s[0], s[1] + side], [s[2], s[3] + side]];
+          movers.push({ k: 'walk', t: track(wp, m0), d: rnd() * 2000, v: (6 + rnd() * 5) * (rnd() > .5 ? 1 : -1), c: 'hsl(' + Math.floor(rnd() * 360) + ' 70% 62%)' });
         }
       });
-      host.appendChild(walkers); host.appendChild(traffic);
     }
 
-    /* avenidas, ligações e via expressa: mais carros, nos dois sentidos */
+    /* avenidas, ligações e via expressa */
     svg.querySelectorAll('.dl-road .r-inner, .dl-highway .h-deck').forEach(function (p) {
-      var d = p.getAttribute('d'), L = len(d), avenue = p.closest('.is-avenue, .dl-highway');
-      var n = Math.max(1, Math.round(L / (avenue ? 120 : 260))), host = p.parentNode;
-      var g = el('g', { 'class': 'dlf-traffic is-main' });
+      var avenue = p.closest('.is-avenue, .dl-highway'), m = matrixOf(svg, p), pts = polyPts(p.getAttribute('d'));
+      if (pts.length < 2) return;
+      var t0 = track(pts, m), n = Math.max(1, Math.round(t0.L / (avenue ? 120 : 260)));
       for (var i = 0; i < n; i++) {
-        var rev = i % 2 === 1, c = car(CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], night), w = el('g', {});
-        var lane = el('g', { transform: 'translate(0 ' + (rev ? 5 : -5) + ')' });
-        lane.appendChild(c); w.appendChild(lane);
-        g.appendChild(move(w, d, L / (avenue ? 70 + rnd() * 40 : 45 + rnd() * 25), rnd() * 40, rev));
+        var rev = i % 2 === 1, lane = track(pts.map(function (q, qi) { return q; }), m);
+        movers.push({ k: 'car', t: t0, d: rnd() * t0.L, v: (avenue ? 70 + rnd() * 40 : 45 + rnd() * 25) * (rev ? -1 : 1), c: CAR_COLORS[Math.floor(rnd() * CAR_COLORS.length)], sc: 1, lane: rev ? 5 : -5 });
       }
-      host.appendChild(g);
-      /* postes de luz (brilham à noite) */
-      if (avenue) for (var t = 30; t < L; t += 90) {
-        try { var pt = p.getPointAtLength(t); host.appendChild(el('circle', { cx: pt.x.toFixed(1), cy: (pt.y - 15).toFixed(1), r: 16, 'class': 'dlf-lamp' })); } catch (e) {}
+      if (avenue) for (var tt = 30; tt < t0.L; tt += 90) {
+        var q = at(t0, tt); svg.appendChild(el('circle', { cx: q.x.toFixed(1), cy: (q.y - 12).toFixed(1), r: 16, 'class': 'dlf-lamp' }));
       }
     });
-
-    /* trem no trilho */
-    var rail = svg.querySelector('.dl-rail .t-steel');
-    if (rail) {
-      var rd = rail.getAttribute('d'), RL = len(rd), train = el('g', { 'class': 'dlf-train' });
-      for (var k = 0; k < 4; k++) train.appendChild(el('rect', { x: -k * 30 - 14, y: -7, width: 27, height: 14, rx: 4 }));
-      train.appendChild(el('rect', { x: 10, y: -5, width: 4, height: 10, rx: 1.5, 'class': 'dlf-train-nose' }));
-      move(train, rd, Math.max(6, RL / 160) * 2.4, rnd() * 10, false, { keyPoints: '0;1;1', keyTimes: '0;.45;1', calcMode: 'linear' });
-      rail.parentNode.appendChild(train);
+    if (!svg.querySelector('#dlfLampGrad')) {
+      var defs = svg.querySelector('defs') || svg.insertBefore(el('defs', {}), svg.firstChild);
+      defs.insertAdjacentHTML('beforeend', '<radialGradient id="dlfLampGrad"><stop offset="0" stop-color="#ffe08c" stop-opacity=".55"/><stop offset="1" stop-color="#ffe08c" stop-opacity="0"/></radialGradient>');
     }
-    svg.appendChild(life);
+
+    /* trem */
+    var rail = svg.querySelector('.dl-rail .t-steel');
+    if (rail) { var rp = polyPts(rail.getAttribute('d')); if (rp.length > 1) { var rt = track(rp, matrixOf(svg, rail)); movers.push({ k: 'train', t: rt, d: -rt.L * .6, v: 170, cycle: rt.L * 2.2 }); } }
+
+    /* canvas no mesmo "mundo" do mapa (anda e dá zoom junto) */
+    var world = svg.parentNode, cv = world.querySelector('canvas.dlf-traffic');
+    if (!cv) { cv = document.createElement('canvas'); cv.className = 'dlf-traffic'; svg.insertAdjacentElement('afterend', cv); }
+    var vb = svg.viewBox.baseVal, R = 1.5;
+    cv.width = Math.round(vb.width * R); cv.height = Math.round(vb.height * R);
+    var acc = (getComputedStyle(svg).getPropertyValue('--dl-a') || '').trim() || '#ef2b97';
+    LIFE = { cv: cv, ctx: cv.getContext('2d'), movers: movers, night: night, R: R, last: 0, acc: acc };
   }
+
+  function drawCar(ctx, c, night) {
+    ctx.fillStyle = c.c; ctx.strokeStyle = '#141217'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(-8, -4.5, 16, 9, 2.5); else ctx.rect(-8, -4.5, 16, 9); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(159,214,255,.85)'; ctx.fillRect(1, -3.2, 4, 6.4); ctx.fillRect(-6, -3.2, 3, 6.4);
+    if (night) {
+      ctx.fillStyle = 'rgba(255,240,180,.28)'; ctx.beginPath(); ctx.moveTo(8, -3); ctx.lineTo(32, -10); ctx.lineTo(32, 10); ctx.lineTo(8, 3); ctx.fill();
+      ctx.fillStyle = '#ff3344'; ctx.fillRect(-8.6, -4, 1.6, 2); ctx.fillRect(-8.6, 2, 1.6, 2);
+    }
+  }
+  function frame(now) {
+    var L = LIFE;
+    if (L && L.cv.isConnected && !document.hidden && L.cv.offsetWidth && !reduced()) {
+      if (now - L.last >= 33) {                 // ~30 fps é suficiente e bem mais leve
+        var dt = Math.min(.1, (now - (L.last || now)) / 1000); L.last = now;
+        var ctx = L.ctx; ctx.setTransform(L.R, 0, 0, L.R, 0, 0); ctx.clearRect(0, 0, L.cv.width, L.cv.height);
+        for (var i = 0; i < L.movers.length; i++) {
+          var m = L.movers[i]; m.d += m.v * dt;
+          if (m.k === 'train') {
+            var dd = ((m.d % m.cycle) + m.cycle) % m.cycle; if (dd > m.t.L + 130) continue;
+            for (var k = 0; k < 4; k++) {
+              var q = at(m.t, Math.max(0, Math.min(m.t.L - .01, dd - k * 31)));
+              ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.ang);
+              ctx.fillStyle = k % 2 ? '#f4f1e8' : L.acc;
+              ctx.strokeStyle = '#141217'; ctx.lineWidth = 2; ctx.fillRect(-14, -7, 27, 14); ctx.strokeRect(-14, -7, 27, 14); ctx.restore();
+            }
+            continue;
+          }
+          var p = at(m.t, m.d);
+          if (m.k === 'walk') { ctx.fillStyle = m.c; ctx.beginPath(); ctx.arc(p.x, p.y, 2.3, 0, 6.283); ctx.fill(); continue; }
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.ang + (m.v < 0 ? Math.PI : 0));
+          if (m.lane) ctx.translate(0, m.v < 0 ? -m.lane : m.lane);
+          if (m.sc !== 1) ctx.scale(m.sc, m.sc);
+          drawCar(ctx, m, L.night); ctx.restore();
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 
   /* ---------- céu: nuvens em pixel art + clima (canvas) ---------- */
   function cloudSVG(w) {
@@ -163,9 +198,12 @@
       return { x: Math.random() * cv.width, y: top ? -4 : Math.random() * cv.height, v: k === 'summer' ? 3 + Math.random() * 2 : k === 'winter' ? .25 + Math.random() * .35 : .35 + Math.random() * .4,
         sw: Math.random() * 6.28, c: k === 'spring' ? (Math.random() > .5 ? '#ffc2d9' : '#ff9cc0') : k === 'autumn' ? ['#e8743b', '#c9452f', '#f2b134'][Math.floor(Math.random() * 3)] : k === 'winter' ? '#ffffff' : '#bfe3ff' };
     }
-    (function loop() {
+    var lastT = 0;
+    (function loop(now) {
       if (me !== wx) return;
       if (!cv.isConnected) { wx = null; return; }
+      if (document.hidden || (now && now - lastT < 33)) { me.raf = requestAnimationFrame(loop); return; }
+      lastT = now || 0;
       if (cv.width !== Math.round(cv.getBoundingClientRect().width / 3)) size();
       var k = me.kind, target = k === 'summer' ? 110 : k === 'winter' ? 90 : k === 'spring' ? 40 : 34;
       if (reduced()) target = 0;
@@ -190,7 +228,7 @@
     if (!svg) return;
     var surface = svg.closest('.dl-surface');
     if (!svg.dataset.life || svg.dataset.lifeTod !== tod()) {
-      if (svg.dataset.life) svg.querySelectorAll('.dlf-traffic, .dlf-walkers, .dlf-windows, .dlf-lamp, .dlf-train, .dlf-life').forEach(function (n) { n.remove(); });
+      if (svg.dataset.life) svg.querySelectorAll('.dlf-windows, .dlf-lamp').forEach(function (n) { n.remove(); });
       svg.dataset.lifeTod = tod();
       if (!reduced()) decorate(svg); else svg.dataset.life = '1';
     }

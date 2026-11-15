@@ -8,9 +8,8 @@
 .dl-scene .dlf-train rect:nth-child(odd){fill:var(--dl-a,#ef2b97)}
 .dl-scene .dlf-train .dlf-train-nose{fill:#ffe27a}
 .dl-scene .dlf-windows,.dl-scene .dlf-lamp{display:none}
-.dl-scene .dlf-win{fill:#ffd86b;animation:dlfWin 9s steps(1) infinite}
-@keyframes dlfWin{0%,100%{opacity:.95}62%{opacity:.25}70%{opacity:.95}}
-.dl-scene .dlf-lamp{fill:rgba(255,224,140,.22);filter:blur(5px)}
+.dl-scene .dlf-win{fill:#ffd86b;opacity:.95}.dl-scene .dlf-win.dim{opacity:.4}
+.dl-scene .dlf-lamp{fill:url(#dlfLampGrad)}
 body.time-night .dl-scene .dlf-windows,body.time-night .dl-scene .dlf-lamp{display:inline}
 
 /* céu sobre o mapa (fica parado na tela) */
@@ -31,3 +30,6 @@ body.time-night .dl-scene .dlf-windows,body.time-night .dl-scene .dlf-lamp{displ
 #subDistrictMap .dlf-weather{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
 @media (prefers-reduced-motion:reduce){#subDistrictMap .dlf-cloud{animation:none}}
 body.hs-calm #subDistrictMap .dlf-cloud{animation:none}
+
+#subDistrictMap canvas.dlf-traffic{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;display:block}
+#subDistrictMap .dlf-cloud{will-change:transform}
