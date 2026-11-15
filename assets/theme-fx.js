@@ -155,7 +155,7 @@
     else if (k === 'p6') {
       var hp = '<svg viewBox="0 0 100 220"><path d="M42 220C40 182 35 152 31 130C23 120 15 106 10 90C7 81 14 78 19 86L29 106C26 80 22 52 20 27C19 18 27 17 29 25L37 92C37 60 37 32 38 11C38 2 47 2 47 11L49 90C51 62 53 37 56 19C57 10 66 11 64 20L59 95C62 73 66 55 70 41C72 33 80 35 77 44L69 104C66 130 62 152 60 176C59 196 61 210 66 220Z"/></svg>', ws = '';
       for (var w = 0; w < 8; w++) ws += '<i class="pw" style="left:' + (6 + w * 12 + Math.random() * 6).toFixed(0) + '%;animation-delay:' + (80 + Math.random() * 260).toFixed(0) + 'ms;--s:' + (8 + Math.random() * 10).toFixed(0) + 'px"></i>';
-      t.innerHTML = '<i class="veil"></i><i class="mist"></i><span class="ph l">' + hp + '</span><span class="ph r">' + hp + '</span><span class="ph c">' + hp + '</span>' + ws;
+      t.innerHTML = '<div class="pull"><i class="veil"></i><i class="edge"></i><span class="ph l">' + hp + '</span><span class="ph c">' + hp + '</span><span class="ph r">' + hp + '</span></div>' + ws;
     }
     document.body.appendChild(t);
     if (k === 'tatsuya') burn(t.querySelector('.burn'));
