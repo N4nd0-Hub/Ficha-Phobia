@@ -17712,6 +17712,7 @@ function dissonantRuleHTML(text=''){
   return String(text||'').split(/\n\s*\n/).filter(Boolean).map(p=>`<p>${arcanaRuleHTML(p)}</p>`).join('')
 }
 function dissonantGeneralRulesHTML(){
+  return ''; /* removido da ficha a pedido */
   return `<details>
     <summary>Regras gerais das Dissonantes</summary>
     <p>As Dissonantes usam o valor inicial comum de Integridade. Registre as perdas em pontos da barra. Se o mesmo acontecimento causar uma perda pela Dissonante e outra pela cena, aplique a maior das duas.</p>
