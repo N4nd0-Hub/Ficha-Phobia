@@ -83,6 +83,15 @@
       cover.appendChild(el('span', 'cd-glare'));
       cover.appendChild(el('span', 'cd-hinge'));
 
+      /* controles: bandeja compacta (cor · ◀ ▶ · ×) */
+      var ctr = card.querySelector('.deck-cassette-controls');
+      if (ctr) {
+        ctr.classList.add('cd-tray');
+        var pt = ctr.querySelector('.deck-palette-toggle');
+        if (pt) { [].slice.call(pt.childNodes).forEach(function (n) { if (n.nodeType === 3) n.remove(); }); pt.title = 'Cores do CD'; }
+        ctr.querySelectorAll('[data-deck-move]').forEach(function (b) { var up = /:-1$/.test(b.dataset.deckMove); b.textContent = up ? '◀' : '▶'; b.title = up ? 'Mover para trás' : 'Mover para frente'; });
+        var rm = ctr.querySelector('.deck-remove'); if (rm) rm.title = 'Remover do deck';
+      }
       win.innerHTML = '';
       win.appendChild(disc);
       win.appendChild(cover);

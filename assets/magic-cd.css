@@ -146,3 +146,32 @@ body.hud.workspace-sheet #characterPage .cd-copy .deck-card-meta small:first-of-
 body.hud.workspace-sheet #characterPage .cd-kanji{opacity:.32}
 body.hud.workspace-sheet #characterPage .cd-case:hover .cd-cover{box-shadow:inset 0 0 0 3px color-mix(in srgb,#fff 50%,transparent),inset 0 0 0 5px var(--hud-black),7px 9px 0 var(--hud-black)}
 @media (max-width:700px){body.hud.workspace-sheet #characterPage #sheetMagicDeck.cd-rack{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* ===== bandeja de controles compacta embaixo do CD ===== */
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls.cd-tray{
+  display:flex!important;justify-content:center;align-items:center;gap:4px;width:max-content;max-width:100%;
+  margin:-4px auto 0!important;padding:4px 6px!important;position:relative;z-index:1;
+  background:var(--hud-black)!important;border-radius:0 0 12px 12px;clip-path:none;
+  box-shadow:0 3px 0 color-mix(in srgb,var(--c3) 60%,#000);opacity:.72;transform:translateY(-2px);
+  transition:opacity .2s,transform .25s var(--hud-back,cubic-bezier(.34,1.56,.64,1))
+}
+body.hud.workspace-sheet #characterPage .cd-case:hover .deck-cassette-controls.cd-tray,
+body.hud.workspace-sheet #characterPage .cd-case.selected .deck-cassette-controls.cd-tray,
+body.hud.workspace-sheet #characterPage .cd-case:focus-within .deck-cassette-controls.cd-tray{opacity:1;transform:translateY(2px)}
+body.hud.workspace-sheet #characterPage .cd-tray button{
+  width:26px!important;min-height:26px!important;height:26px;padding:0!important;border-radius:50%!important;
+  display:grid!important;place-items:center;font:900 10px/1 var(--hud-body,Barlow),sans-serif!important;
+  background:color-mix(in srgb,var(--hud-paper) 10%,transparent)!important;color:var(--hud-paper)!important;border:0!important;
+  transition:transform .18s,background .15s,color .15s
+}
+body.hud.workspace-sheet #characterPage .cd-tray button:hover:not(:disabled){transform:scale(1.14);background:var(--c3)!important;color:var(--hud-black)!important}
+body.hud.workspace-sheet #characterPage .cd-tray button:disabled{opacity:.25!important}
+body.hud.workspace-sheet #characterPage .cd-tray .deck-palette-toggle{margin:0 4px 0 0!important;padding:0!important;gap:0!important}
+body.hud.workspace-sheet #characterPage .cd-tray .deck-palette-preview{width:16px!important;height:16px!important;box-shadow:0 0 0 2px var(--hud-paper)}
+body.hud.workspace-sheet #characterPage .cd-tray .deck-remove{margin-left:4px!important;font-size:14px!important}
+body.hud.workspace-sheet #characterPage .cd-tray .deck-remove:hover:not(:disabled){background:#ff4b5c!important;color:#140608!important}
+@media (hover:none){body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls.cd-tray{opacity:1}}
+body.hud.workspace-sheet #characterPage .cd-case .deck-cassette-controls.cd-tray{flex-wrap:nowrap!important}
+body.hud.workspace-sheet #characterPage .cd-case .cd-tray button,body.hud.workspace-sheet #characterPage .cd-case .cd-tray .deck-palette-toggle{flex:0 0 26px!important}
+body.hud.workspace-sheet #characterPage #sheetMagicDeck .deck-lab-cassette.cd-case,
+body.hud.workspace-sheet #characterPage #sheetMagicDeck .deck-lab-cassette.cd-case.selected{background:none!important;box-shadow:none!important;border:0!important}
