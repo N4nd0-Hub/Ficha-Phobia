@@ -2,7 +2,7 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
-const roads=require('../assets/map-roads.js');
+const roads=require('../assets/map/map-roads.js');
 
 const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
 const layoutSource=html.match(/const DISTRICT_ART_LAYOUT=(\{[\s\S]*?\n\});/)[1];
@@ -21,8 +21,8 @@ function samples(points){
 test('map world matches the camera and the svg',()=>{
   assert.equal(roads.WORLD.w,1280);
   assert.match(html,/id="mapSvg" viewBox="0 0 1280 700"/);
-  assert.match(fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.js'),'utf8'),/width:1280,height:700/);
-  assert.match(fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.css'),'utf8'),/width:1280px!important/);
+  assert.match(fs.readFileSync(path.join(__dirname,'..','assets','map','map-explorer.js'),'utf8'),/width:1280,height:700/);
+  assert.match(fs.readFileSync(path.join(__dirname,'..','assets','map','map-explorer.css'),'utf8'),/width:1280px!important/);
 });
 
 test('districts keep clear space between each other',()=>{

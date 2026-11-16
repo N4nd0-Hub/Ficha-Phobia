@@ -3,11 +3,11 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
-const hud=fs.readFileSync(path.join(__dirname,'..','assets','hud.js'),'utf8');
+const hud=fs.readFileSync(path.join(__dirname,'..','assets','core','hud.js'),'utf8');
 
 test('the HUD loads after the page scripts',()=>{
-  assert.match(html,/assets\/hud\.css/);
-  assert.ok(html.lastIndexOf('assets/hud.js')>html.lastIndexOf('<script>'),'hud.js must come after the inline scripts');
+  assert.match(html,/assets\/core\/hud\.css/);
+  assert.ok(html.lastIndexOf('assets/core/hud.js')>html.lastIndexOf('<script>'),'hud.js must come after the inline scripts');
 });
 
 test('every control the HUD moves still exists in the page',()=>{
@@ -22,27 +22,27 @@ test('every control the HUD moves still exists in the page',()=>{
 test('the HUD only wraps functions the site defines',()=>{
   const wrapped=[...hud.matchAll(/wrap\('([A-Za-z]+)'/g)].map(m=>m[1]);
   assert.ok(wrapped.length>=5);
-  const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.js'),'utf8');
+  const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map','map-explorer.js'),'utf8');
   for(const name of wrapped)assert.match(sources,new RegExp(`function ${name}\\(`),name);
 });
 
 test('the redesigned pages only call functions the site defines',()=>{
-  const pages=fs.readFileSync(path.join(__dirname,'..','assets','hud-pages.js'),'utf8');
-  assert.ok(html.indexOf('assets/hud-pages.js')>html.indexOf('assets/hud.js'));
+  const pages=fs.readFileSync(path.join(__dirname,'..','assets','core','hud-pages.js'),'utf8');
+  assert.ok(html.indexOf('assets/core/hud-pages.js')>html.indexOf('assets/core/hud.js'));
   const called=[...pages.matchAll(/call\('([A-Za-z]+)'/g)].map(m=>m[1]);
   const wrapped=[...pages.matchAll(/wrap\('([A-Za-z]+)'/g)].map(m=>m[1]);
-  const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map-explorer.js'),'utf8');
+  const sources=html+fs.readFileSync(path.join(__dirname,'..','assets','map','map-explorer.js'),'utf8');
   for(const name of new Set([...called,...wrapped]))assert.match(sources,new RegExp(`function ${name}\\(`),name);
   for(const id of ['areaSearch','sheetPhotoInput','sheetPVMaxText','sheetPMMaxText','sheetCarry','sheetMovement','sheetIntegrityState'])
     assert.match(html,new RegExp(`id="${id}"`),id);
 });
 
 test('the Ficha Base hero moves the real inputs instead of copying them',()=>{
-  const pages=fs.readFileSync(path.join(__dirname,'..','assets','hud-pages.js'),'utf8');
+  const pages=fs.readFileSync(path.join(__dirname,'..','assets','core','hud-pages.js'),'utf8');
   for(const sel of ['.level-unit.cnv','.level-unit.pnv','[data-sheet="resources.pvCurrent"]','[data-sheet="resources.pmCurrent"]','.derived-ribbon','.combat-status-pods','.integrity-game-range','#sheetIntegrityEffects'])
     assert.ok(pages.includes(`mv('${sel}'`),sel);
   assert.match(pages,/\[data-sheet="attrs\.' \+ a \+ '"\]/);
   for(const cls of ['level-unit cnv','level-unit pnv','derived-ribbon','combat-status-pods','integrity-game-range'])
     assert.match(html,new RegExp(cls.replace(' ','\\s')),cls);
-  assert.match(html,/assets\/hud-sheet\.css/);
+  assert.match(html,/assets\/core\/hud-sheet\.css/);
 });

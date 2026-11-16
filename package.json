@@ -1,0 +1,9 @@
+{
+  "name": "ficha-phobia",
+  "private": true,
+  "description": "Ficha de personagem e mapa de Tokyo da campanha Persona — Phobia (site estático, sem build).",
+  "scripts": {
+    "start": "python3 -m http.server 8765",
+    "test": "node --test tests/*.test.cjs"
+  }
+}

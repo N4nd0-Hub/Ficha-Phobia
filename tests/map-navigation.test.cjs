@@ -2,7 +2,7 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const {constrain,anchoredZoom,Camera}=require('../assets/map-camera.js');
+const {constrain,anchoredZoom,Camera}=require('../assets/map/map-camera.js');
 
 test('zoom keeps the map point underneath the cursor, without accumulating drift',()=>{
   let view={x:-100,y:-80,k:1.5};const anchor={x:275,y:220};
@@ -40,7 +40,7 @@ const defaults=source.slice(source.indexOf('const DEFAULT ='),source.indexOf('co
 const coords=source.slice(source.indexOf('const PUBLIC_PLACE_COORDS='),source.indexOf('const PT_DISTRICT_LABELS='));
 const context=vm.createContext({window:{},console});
 vm.runInContext(defaults+coords+'\nlet state=JSON.parse(JSON.stringify(DEFAULT));',context);
-vm.runInContext(fs.readFileSync(require.resolve('../assets/map-explorer.js'),'utf8'),context);
+vm.runInContext(fs.readFileSync(require.resolve('../assets/map/map-explorer.js'),'utf8'),context);
 test('all districts and 40 custom places fit without overlapping cards',()=>{
   vm.runInContext(`
     const checkGeometry=places=>{
@@ -65,7 +65,7 @@ test('player search and dossier do not disclose locked names or photographs',()=
   assert.ok(elements.districtList.innerHTML.includes('Nenhum local revelado'));
 });
 test('image manifest covers every district and all bundled files are nonempty',()=>{
-  vm.runInContext(fs.readFileSync(require.resolve('../assets/map-photos.js'),'utf8'),context);
+  vm.runInContext(fs.readFileSync(require.resolve('../assets/map/map-photos.js'),'utf8'),context);
   const ids=vm.runInContext('Object.values(ATLAS_DISTRICT_PHOTO)',context);
   for(const id of ids){const p=context.window.PHOBIA_MAP_PHOTOS[id];assert.ok(p,id);assert.ok(p.author);assert.ok(p.source.startsWith('https://commons.wikimedia.org/'));assert.ok(p.license);assert.ok(fs.statSync(require('node:path').join(__dirname,'..',p.src)).size>1000)}
 });

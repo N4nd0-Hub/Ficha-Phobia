@@ -1,17 +1,55 @@
-# Ficha — Phobia
+# Ficha — Persona // Phobia
 
-Ficha de personagem e navegação de Tokyo para a campanha Persona — Phobia.
+Ficha de personagem, mapa de Tokyo e ferramentas de mesa para a campanha
+**Persona — Phobia** (TTRPG). Site estático, publicado no GitHub Pages:
+<https://n4nd0-hub.github.io/Ficha-Phobia/>
 
-A página Vantagens e Defeitos reúne 55 Vantagens em Combate / Instrumentos, Atributos, Sociais e Persona & Combos Musicais, além de 60 Defeitos e 20 Arcanas Dissonantes. O personagem começa com 1 ponto e pode receber até 5 pontos por defeitos, incluindo uma Dissonante de 5 pontos. As compras verificam pontos, atributos, Tiers sociais e incompatibilidades; definições e condições de história ficam registradas em cada escolha. O catálogo possui busca, filtros e uma área de escolhas adquiridas. Os bônus permanentes aplicáveis aos cálculos da ficha são atualizados após a compra e com a progressão dos níveis.
+> Projeto pessoal, sem fins lucrativos.
 
-As escolhas e suas anotações fazem parte do save completo e dos backups JSON. Saves anteriores preservam os dados do personagem, arquivam as antigas seleções de Feitos e registram as Vantagens retiradas do catálogo em traits.retiredAdvantages. Os custos das Vantagens arquivadas voltam ao saldo. Os seletores de Dissonante de Persona e Despertares compartilham o mesmo orçamento; a segunda Dissonante de A Fome não concede outro crédito.
+## Como rodar
 
-As imagens de interface e cartas ficam em arquivos separados em `assets/`, com carregamento sob demanda nas áreas ocultas. Os ícones foram redimensionados para a resolução de uso; as cartas de Arcana mantêm os arquivos originais. As fontes externas são opcionais e só são solicitadas após a abertura do documento.
+Não há build. Qualquer servidor estático serve:
 
-O save completo usa IndexedDB. A abertura e as transações têm limite de tempo. Se a leitura inicial falhar, a ficha interrompe o estado de carregamento e impede que uma cópia incompleta sobrescreva os saves existentes. Recarregar permite tentar a leitura novamente. O nome do banco e o formato dos backups foram mantidos.
+```bash
+python3 -m http.server 8765        # e abra http://localhost:8765/
+node --test tests/*.test.cjs       # testes (Node 18+)
+```
 
-A barra inferior reúne o player, a data da história e a área atual. O player aceita várias músicas (MP3, M4A, OGG, WAV), com playlist, ordem aleatória, repetição, capa por faixa e teclas de mídia. Os arquivos de áudio ficam no navegador (IndexedDB) e não entram no backup JSON; em outro navegador a faixa aparece como ausente e pode ser reanexada.
+## Estrutura
 
-A interface segue o estilo HUD (assets/hud.css e assets/hud.js): o mapa ocupa a tela, e período, camada, busca, ferramentas do mestre, fundo e legenda ficam em painéis flutuantes. O hud.js move os controles existentes para esses painéis sem mudar a lógica deles, e anima as trocas de página e de aba da ficha.
+```
+index.html            Ficha + mapa (página principal; HTML, estilos e lógica base)
+gm.html               Portal do Narrador (contas dos jogadores, NPCs, pontos)
+rewind/               Rewind: rede social estilo Orkut aberta pelo PC da ficha
+assets/
+  core/               Casca da interface (HUD, temas, sons, barra inferior, várias fichas)
+  sheet/              Abas da ficha (Persona, Magias, Social, Vantagens, Combate, Dados…)
+  map/                Mapa de Tokyo e mapas internos dos distritos
+  pc/                 Coisas do "PC" do personagem (NET//TRACE, Quadro de Investigação)
+  player-chat/        Player de música da barra inferior e Phobia Messenger
+  arcana/ builtin/ district-badges/ map-icons/ map-photos/   Imagens (webp)
+tests/                Testes com node:test
+docs/ARQUITETURA.md   Como as peças se encaixam (leia antes de mexer)
+```
 
-Execute as verificações com `node --test tests/*.test.cjs`.
+O mapa completo de cada arquivo está em [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md).
+
+## Convenções
+
+- **Sem framework e sem build.** JavaScript puro (ES2018+), um arquivo por funcionalidade,
+  cada um dentro de uma IIFE (`(function(){ 'use strict'; … })()`).
+- **Camadas.** O `index.html` é a base e é dono do estado (`state`) e do save.
+  Os arquivos em `assets/` são camadas por cima: remontam a interface, embrulham
+  funções globais (`window.nome = wrapper`) e nunca mudam o formato do save.
+- **Cache dos navegadores.** Todo `<script>`/`<link>` usa `?v=N`. Ao alterar um arquivo,
+  aumente o `N` correspondente no `index.html`.
+- **Textos da interface em português**, comentários em português.
+- **Formatação:** ver `.editorconfig` (2 espaços, UTF-8, LF).
+
+## Dados e saves
+
+- Save principal no **IndexedDB** (`PersonaPhobiaLargeSave` → `saves` → `main`), com
+  espelho em `localStorage` (`phobiaTokyoV2`). Várias fichas ficam em `slot:<id>`.
+- Músicas do player ficam no IndexedDB e não vão para o backup JSON.
+- Recursos online (Messenger, Rewind, Portal do Narrador) usam **Supabase** via RPCs
+  `security definer` com token de sessão; a chave usada no front é a chave pública.

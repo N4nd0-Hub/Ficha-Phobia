@@ -2,8 +2,8 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const {Camera}=require('../assets/map-camera.js');
-const script=fs.readFileSync(require.resolve('../assets/map-motion.js'),'utf8');
+const {Camera}=require('../assets/map/map-camera.js');
+const script=fs.readFileSync(require.resolve('../assets/map/map-motion.js'),'utf8');
 
 function fixture(){
   const events=new Map(),queue=new Map(),documentEvents=new Map();

@@ -1,4 +1,3 @@
-<!-- Updated: added remaining district badge arts for Kichijoji, Roppongi, and Odaiba -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13093,40 +13092,40 @@ body[data-site-theme] #characterPage #socialTierMonitorSection .social-monitor-c
 @media(prefers-reduced-motion:reduce){#characterPage .sheet-page-tabs .sheet-page-tab{transition:none}}
 
 </style>
-<link rel="stylesheet" href="assets/map-explorer.css?v=20261106">
-<link rel="stylesheet" href="assets/map-motion.css?v=3">
-<link rel="stylesheet" href="assets/map-roads.css?v=9">
-<link rel="stylesheet" href="assets/district-badges.css?v=5">
-<link rel="stylesheet" href="assets/district-local.css?v=10">
-<link rel="stylesheet" href="assets/district-life.css?v=2">
-<link rel="stylesheet" href="assets/magic-cd.css?v=8">
-<link rel="stylesheet" href="assets/social-fame.css?v=3">
-<link rel="stylesheet" href="assets/equip-rig.css?v=4">
-<link rel="stylesheet" href="assets/traits-deck.css?v=5">
-<link rel="stylesheet" href="assets/bonds-net.css?v=4">
-<link rel="stylesheet" href="assets/instrument-skills.css?v=2">
-<link rel="stylesheet" href="assets/combat-mode.css?v=16">
-<link rel="stylesheet" href="assets/dice3d.css?v=4">
-<link rel="stylesheet" href="assets/phobia-deck.css?v=3">
-<link rel="stylesheet" href="assets/hud.css?v=5">
-<link rel="stylesheet" href="assets/hud-pages.css?v=5">
-<link rel="stylesheet" href="assets/integrity-bar.css?v=3">
-<link rel="stylesheet" href="assets/hud-sheet.css?v=4">
-<link rel="stylesheet" href="assets/sheet-editorial.css?v=2">
-<link rel="stylesheet" href="assets/sheet-fixes.css?v=16">
-<link rel="stylesheet" href="assets/sheet-style.css?v=9">
-<link rel="stylesheet" href="assets/theme-fx.css?v=6">
-<link rel="stylesheet" href="assets/deck-p5.css?v=4">
-<link rel="stylesheet" href="assets/fichas.css?v=4">
-<link rel="stylesheet" href="assets/persona-page.css?v=7">
-<link rel="stylesheet" href="assets/dissonant-look.css?v=4">
-<link rel="stylesheet" href="assets/dossie.css?v=4">
-<script src="assets/phobia-deck.js?v=3"></script>
-<script src="assets/map-roads.js?v=7"></script>
-<script src="assets/map-camera.js?v=20261115"></script>
-<script src="assets/map-photos.js?v=20261023"></script>
-<script src="assets/map-explorer.js?v=20261115"></script>
-<script defer src="assets/map-motion.js?v=4"></script>
+<link rel="stylesheet" href="assets/map/map-explorer.css?v=20261106">
+<link rel="stylesheet" href="assets/map/map-motion.css?v=3">
+<link rel="stylesheet" href="assets/map/map-roads.css?v=9">
+<link rel="stylesheet" href="assets/map/district-badges.css?v=5">
+<link rel="stylesheet" href="assets/map/district-local.css?v=10">
+<link rel="stylesheet" href="assets/map/district-life.css?v=2">
+<link rel="stylesheet" href="assets/sheet/magic-cd.css?v=8">
+<link rel="stylesheet" href="assets/sheet/social-fame.css?v=3">
+<link rel="stylesheet" href="assets/sheet/equip-rig.css?v=4">
+<link rel="stylesheet" href="assets/sheet/traits-deck.css?v=5">
+<link rel="stylesheet" href="assets/sheet/bonds-net.css?v=4">
+<link rel="stylesheet" href="assets/sheet/instrument-skills.css?v=2">
+<link rel="stylesheet" href="assets/sheet/combat-mode.css?v=16">
+<link rel="stylesheet" href="assets/sheet/dice3d.css?v=4">
+<link rel="stylesheet" href="assets/player-chat/phobia-deck.css?v=3">
+<link rel="stylesheet" href="assets/core/hud.css?v=5">
+<link rel="stylesheet" href="assets/core/hud-pages.css?v=5">
+<link rel="stylesheet" href="assets/sheet/integrity-bar.css?v=3">
+<link rel="stylesheet" href="assets/core/hud-sheet.css?v=4">
+<link rel="stylesheet" href="assets/core/sheet-editorial.css?v=2">
+<link rel="stylesheet" href="assets/core/sheet-fixes.css?v=16">
+<link rel="stylesheet" href="assets/core/sheet-style.css?v=9">
+<link rel="stylesheet" href="assets/core/theme-fx.css?v=6">
+<link rel="stylesheet" href="assets/core/deck-p5.css?v=4">
+<link rel="stylesheet" href="assets/core/fichas.css?v=4">
+<link rel="stylesheet" href="assets/sheet/persona-page.css?v=7">
+<link rel="stylesheet" href="assets/sheet/dissonant-look.css?v=4">
+<link rel="stylesheet" href="assets/sheet/dossie.css?v=4">
+<script src="assets/player-chat/phobia-deck.js?v=3"></script>
+<script src="assets/map/map-roads.js?v=7"></script>
+<script src="assets/map/map-camera.js?v=20261115"></script>
+<script src="assets/map/map-photos.js?v=20261023"></script>
+<script src="assets/map/map-explorer.js?v=20261115"></script>
+<script defer src="assets/map/map-motion.js?v=4"></script>
 </head>
 <style id="bootGate">
 /* enquanto a ficha monta, mostra só a tela de carregamento (evita o "visual antigo" piscando) */
@@ -15055,7 +15054,7 @@ RETURN key AS HEX</code></pre>
   </section>
 
 
-  <!-- PHOBIA DECK // barra inferior + player (assets/phobia-deck.js) -->
+  <!-- PHOBIA DECK // barra inferior + player (assets/player-chat/phobia-deck.js) -->
   <audio id="phobiaAudio" preload="metadata"></audio>
 
   <footer class="bottom phobia-deck-bar" id="phobiaDeckBar">
@@ -17810,17 +17809,7 @@ function arcanaSocialModifiers(){
   }
   return mods
 }
-/* Playtest: os Tiers Sociais não concedem mais bônus automáticos (atributos, PV, PM).
-   Mantido vazio para compatibilidade. */
-const SOCIAL_TIER_STAT_RULES_OLD=[
-  {skill:'Disciplina',tier:1,pv:10,pm:10,text:'+10 PV Máximo e +10 PM Máximo'},
-  {skill:'Disciplina',tier:2,pmPerLevel:2,text:'+2 PM por Nível (PNv)'},
-  {skill:'Coragem',tier:2,pv:25,attrs:{VIT:1},text:'+25 PV Máximo e +1 VIT'},
-  {skill:'Coragem',tier:3,attrs:{FOR:1,VIT:1},text:'+1 FOR e +1 VIT'},
-  {skill:'Conhecimento',tier:3,attrs:{MAG:1,TEC:1},text:'+1 MAG e +1 TEC'},
-  {skill:'Charme',tier:2,attrs:{MAG:1},text:'+1 MAG'},
-  {skill:'Charme',tier:5,attrs:{MAG:2},text:'+2 MAG'}
-];
+/* Playtest: os Tiers Sociais não concedem mais bônus automáticos (atributos, PV, PM). Mantido vazio para compatibilidade. */
 const SOCIAL_TIER_STAT_RULES=[];
 function socialTierStatBonuses(pnv){
   const out={attrs:{},pv:0,pm:0,rules:[],enabled:state.charSheet?.ui?.socialAutoStats!==false};
@@ -21947,7 +21936,7 @@ function bindLevelConsole(){
 }
 
 
-/* Player: assets/phobia-deck.js (PhobiaDeck) */
+/* Player: assets/player-chat/phobia-deck.js (PhobiaDeck) */
 
 /* PAGE NAV */
 function updateWorkspaceUI(){
@@ -22288,41 +22277,41 @@ initializePhobiaLargeSave();
 })();
 </script>
 
-<script src="assets/hud.js?v=5"></script>
-<script src="assets/hud-pages.js?v=8"></script>
-<script src="assets/integrity-bar.js?v=2"></script>
-<script src="assets/sheet-style.js?v=10"></script>
-<script src="assets/theme-fx.js?v=7"></script>
-<link rel="stylesheet" href="assets/ui-sfx.css?v=1">
-<script src="assets/ui-sfx.js?v=6"></script>
-<script src="assets/district-badges.js?v=5"></script>
-<script src="assets/district-local.js?v=6"></script>
-<script src="assets/district-life.js?v=3"></script>
-<script src="assets/magic-cd.js?v=5"></script>
-<link rel="stylesheet" href="assets/awaken-deck.css?v=3">
-<script src="assets/awaken-deck.js?v=2"></script>
-<link rel="stylesheet" href="assets/case-board.css?v=8">
-<script src="assets/case-board.js?v=8"></script>
-<link rel="stylesheet" href="assets/net-os.css?v=2">
-<script src="assets/net-os.js?v=2"></script>
-<link rel="stylesheet" href="assets/phobia-chat.css?v=6">
-<script src="assets/phobia-chat.js?v=7"></script>
-<script src="assets/social-fame.js?v=6"></script>
-<script src="assets/equip-rig.js?v=4"></script>
-<link rel="stylesheet" href="assets/traits-cards.css?v=4">
-<script src="assets/traits-cards.js?v=3"></script>
-<script src="assets/traits-deck.js?v=4"></script>
-<script src="assets/bonds-net.js?v=5"></script>
-<script src="assets/instrument-skills-data.js?v=1"></script>
-<script src="assets/instrument-skills.js?v=2"></script>
-<script src="assets/combat-mode.js?v=14"></script>
-<script src="assets/attr-formulas.js?v=1"></script>
-<script src="assets/dice3d.js?v=10"></script>
-<script src="assets/fichas.js?v=4"></script>
-<script src="assets/deck-file.js?v=2"></script>
-<script src="assets/persona-page.js?v=1"></script>
-<script src="assets/persona-types.js?v=3"></script>
-<script src="assets/dissonant-look.js?v=1"></script>
-<script src="assets/dossie.js?v=1"></script>
+<script src="assets/core/hud.js?v=5"></script>
+<script src="assets/core/hud-pages.js?v=8"></script>
+<script src="assets/sheet/integrity-bar.js?v=2"></script>
+<script src="assets/core/sheet-style.js?v=10"></script>
+<script src="assets/core/theme-fx.js?v=7"></script>
+<link rel="stylesheet" href="assets/core/ui-sfx.css?v=1">
+<script src="assets/core/ui-sfx.js?v=6"></script>
+<script src="assets/map/district-badges.js?v=5"></script>
+<script src="assets/map/district-local.js?v=6"></script>
+<script src="assets/map/district-life.js?v=3"></script>
+<script src="assets/sheet/magic-cd.js?v=5"></script>
+<link rel="stylesheet" href="assets/sheet/awaken-deck.css?v=3">
+<script src="assets/sheet/awaken-deck.js?v=2"></script>
+<link rel="stylesheet" href="assets/pc/case-board.css?v=8">
+<script src="assets/pc/case-board.js?v=8"></script>
+<link rel="stylesheet" href="assets/pc/net-os.css?v=2">
+<script src="assets/pc/net-os.js?v=2"></script>
+<link rel="stylesheet" href="assets/player-chat/phobia-chat.css?v=6">
+<script src="assets/player-chat/phobia-chat.js?v=7"></script>
+<script src="assets/sheet/social-fame.js?v=6"></script>
+<script src="assets/sheet/equip-rig.js?v=4"></script>
+<link rel="stylesheet" href="assets/sheet/traits-cards.css?v=4">
+<script src="assets/sheet/traits-cards.js?v=3"></script>
+<script src="assets/sheet/traits-deck.js?v=4"></script>
+<script src="assets/sheet/bonds-net.js?v=5"></script>
+<script src="assets/sheet/instrument-skills-data.js?v=1"></script>
+<script src="assets/sheet/instrument-skills.js?v=2"></script>
+<script src="assets/sheet/combat-mode.js?v=14"></script>
+<script src="assets/core/attr-formulas.js?v=1"></script>
+<script src="assets/sheet/dice3d.js?v=10"></script>
+<script src="assets/core/fichas.js?v=4"></script>
+<script src="assets/core/deck-file.js?v=2"></script>
+<script src="assets/sheet/persona-page.js?v=1"></script>
+<script src="assets/sheet/persona-types.js?v=3"></script>
+<script src="assets/sheet/dissonant-look.js?v=1"></script>
+<script src="assets/sheet/dossie.js?v=1"></script>
 </body>
 </html>

@@ -6,9 +6,9 @@ const path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
 
 function freshDeck(mediaPlayer){
-  delete require.cache[require.resolve('../assets/phobia-deck.js')];
+  delete require.cache[require.resolve('../assets/player-chat/phobia-deck.js')];
   globalThis.state={mediaPlayer};
-  return require('../assets/phobia-deck.js');
+  return require('../assets/player-chat/phobia-deck.js');
 }
 
 test('an old single-track save becomes the first playlist entry',()=>{
