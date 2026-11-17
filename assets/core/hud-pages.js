@@ -440,7 +440,7 @@
           var pips = ''; for (var t = 1; t <= 5; t++) pips += '<button type="button" data-hs-tier="' + t + '" aria-label="' + s + ' Tier ' + ROMAN[t] + '"></button>';
           return '<div class="hs-skill" data-s="' + s + '"><div><span>' + s + '</span><b></b></div><div class="hs-pips">' + pips + '</div></div>';
         }).join('') + '</div>' +
-        '<details class="hs-extra"><summary>Recursos, combate e efeitos de integridade</summary><div class="hs-res"><div class="hs-res-meta"></div><div class="hs-res-meta"></div></div><div class="hs-derived-wrap"><div class="hs-more-combat"></div></div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></details>' +
+        '<details class="hs-extra"><summary>Recursos e combate</summary><div class="hs-res"><div class="hs-res-meta"></div><div class="hs-res-meta"></div></div><div class="hs-derived-wrap"><div class="hs-more-combat"></div></div><p class="hs-integ-flavor"></p><div class="hs-integ-effects"></div></details>' +
       '</div>';
     panel.insertBefore(hero.root, panel.firstChild);
 
