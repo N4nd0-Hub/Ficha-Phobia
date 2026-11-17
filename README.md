@@ -21,6 +21,8 @@ node --test tests/*.test.cjs       # testes (Node 18+)
 index.html            Ficha + mapa (página principal; HTML, estilos e lógica base)
 gm.html               Portal do Narrador (contas dos jogadores, NPCs, pontos)
 rewind/               Rewind: rede social estilo Orkut aberta pelo PC da ficha
+livro/                Livro de Regras (revista). livro-data.js é GERADO: node tools/build-livro-data.cjs
+tools/                Scripts de apoio (gerar os dados do livro)
 assets/
   core/               Casca da interface (HUD, temas, sons, barra inferior, várias fichas)
   sheet/              Abas da ficha (Persona, Magias, Social, Vantagens, Combate, Dados…)

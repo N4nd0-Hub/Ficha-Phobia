@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persona RPG — Phobia · Livro de Regras</title>
+<meta name="description" content="Livro de regras de Persona RPG — Phobia: criação de personagem, progressão, magias, Arcanas, Integridade e compêndios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="livro.css?v=2">
+</head>
+<body>
+<header class="lv-bar">
+  <button type="button" class="lv-btn toc-toggle" data-toc-toggle aria-label="Abrir sumário">☰ Sumário</button>
+  <b>PERSONA RPG <span>//</span> PHOBIA</b>
+  <span class="sp"></span>
+  <input type="search" id="lvSearch" placeholder="Buscar no livro (ex.: Integridade, Agilao)…" aria-label="Buscar no livro">
+  <a class="lv-btn" href="../">↩ Ficha</a>
+  <i class="lv-progress" id="lvProgress"></i>
+</header>
+
+<div class="lv-wrap">
+<nav class="lv-toc" aria-label="Sumário"><h3>SUMÁRIO // ISSUE 01</h3><ol id="lvToc"></ol></nav>
+
+<main class="lv-main" id="lvMain">
+
+<!-- ======================= CAPA ======================= -->
+<section class="pg cover" id="capa" data-toc="Capa" data-toc-n="★">
+  <div class="cv-top"><span>VOL. 01 // TOKYO // ABRIL <b>2000</b></span><span>LIVRO DE REGRAS OFICIAL DA MESA</span><span>¥ 980</span></div>
+  <div class="cv-mid">
+    <span class="cv-kick">O RPG de mesa da campanha</span>
+    <h1 class="cv-title">Persona<small>RPG</small></h1>
+    <div><span class="cv-dash">— PHOBIA</span></div>
+    <div class="cv-by">Ressalvas <b>by N4nd0_0</b></div>
+    <p class="cv-quote">De um fã de Persona para outro e que sua história seja magnífica.</p>
+  </div>
+  <div class="cv-bot">
+    <div class="cv-list"><span>Criação de personagem</span><span>Progressão 1–20</span><span>Arcanas I–XX</span><span>434 magias</span><span>Integridade</span><span>Dissonantes</span><span>Vantagens &amp; Defeitos</span><span>Instrumentos</span></div>
+    <div class="barcode"><i></i><small>4 902000 041700</small></div>
+  </div>
+  <div class="sticker">EDIÇÃO<br>PLAYTEST<br>2026!</div>
+</section>
+
+<!-- ======================= 01 INTRODUÇÃO ======================= -->
+<section class="pg" id="intro" data-toc="Bem-vindo a Phobia" data-toc-n="01">
+  <div class="ch-head"><span class="ch-num">01</span><span class="ch-kick">Capítulo um // leia primeiro</span><h2>Bem-vindo a <span>Phobia</span></h2></div>
+  <p class="lead">Tokyo, primavera de 2000. Durante o dia, vocês são estudantes, trabalhadores e músicos tentando fazer uma banda dar certo. Quando o outro lado da cidade se abre, a música vira arma, o medo ganha forma e cada um precisa encarar quem realmente é.</p>
+  <div class="cols">
+    <h3 class="t">Os dois mundos</h3>
+    <p><span class="term">Mundo Real</span> é a rotina: escola, trabalho, ensaios, amizades e contas para pagar. Ali o personagem cresce pelo <span class="k">Nível de Personagem (CNv.)</span>, usa as <span class="term">Habilidades Sociais</span> e cria <span class="term">Vínculos</span>.</p>
+    <p><span class="term">Cognição</span> é o lado distorcido da cidade, onde as Sombras vivem. Ali o personagem luta com seu instrumento e com a sua <span class="term">Persona</span>, que cresce pelo <span class="k">Nível de Persona (PNv.)</span>.</p>
+    <h3 class="t">Dois níveis, duas fichas numa só</h3>
+    <p>Todo personagem tem <b>dois níveis independentes</b>, de 1 a 20:</p>
+    <ul class="dot">
+      <li><b>CNv. (Personagem):</b> controla os PV, o Avanço Social e as Habilidades de Combate.</li>
+      <li><b>PNv. (Persona):</b> controla os PM, as magias, os Tiers de magia, os Bônus de Persona e os Pontos de Despertar.</li>
+    </ul>
+    <h3 class="t">O que você precisa</h3>
+    <ul class="dot">
+      <li>A <b>ficha online</b> (ela faz as contas por você).</li>
+      <li>Dados: <b>d20</b> para testes e d4, d6, d8, d10 e d12 para dano e cura. A ficha tem um rolador.</li>
+      <li>Uma banda, uma Arcana e algo de que você tem medo.</li>
+    </ul>
+    <h3 class="t">Como ler este livro</h3>
+    <p>Os capítulos 02 a 05 ensinam a <b>criar e evoluir</b> o personagem. Do 06 ao 11 estão as <b>regras do jogo</b>. Do 12 em diante ficam os <b>compêndios</b>: Arcanas, Dissonantes, magias, Vantagens, Defeitos e Habilidades de Instrumento, com busca e filtros.</p>
+    <div class="box tip"><h5>Termos entre colchetes e parênteses</h5><p>Nos textos de habilidade, <span class="term">[colchetes]</span> marcam valores e termos de regra, e <span class="freq">(parênteses)</span> marcam frequência ou condição, como <span class="freq">(1x por Cena)</span>.</p></div>
+  </div>
+  <div class="pg-foot"><span>PERSONA RPG — PHOBIA</span><b>01</b></div>
+</section>
+
+<!-- ======================= 02 CRIAÇÃO ======================= -->
+<section class="pg" id="criacao" data-toc="Criação de Personagem" data-toc-n="02">
+  <div class="ch-head"><span class="ch-num">02</span><span class="ch-kick">Capítulo dois // passo a passo</span><h2>Criação de <span>Personagem</span></h2></div>
+  <p class="lead">Todo personagem começa no <b>Nível 1 de Personagem</b> e no <b>Nível 1 de Persona</b>. Siga os passos na ordem: cada escolha alimenta a próxima, e a ficha calcula PV, PM e valores derivados sozinha.</p>
+
+  <h3 class="t">Parte A — Quem você é (Nível 1 de Personagem)</h3>
+  <div class="steps">
+    <div class="step"><div><h4>Conceito e Dossiê</h4>
+      <p>Defina nome, idade, ocupação, a banda, a sua função nela e o seu instrumento. Escreva quem o personagem é, de onde veio e o que procura. Tudo isso vai no <b>Dossiê</b> da ficha.</p></div></div>
+    <div class="step"><div><h4>Atributos — 18 pontos</h4>
+      <p>São seis Atributos: <b>FOR, MAG, TEC, AGI, VIT e SOR</b>. Você tem <span class="k">18 pontos</span> no total, e <b>cada Atributo já começa com 1</b> (o mínimo). Sobram <span class="k">12 pontos</span> para distribuir como quiser.</p>
+      <p>O que cada Atributo faz está no <a href="#atributos">Capítulo 05</a>.</p></div></div>
+    <div class="step"><div><h4>Habilidade Social inicial</h4>
+      <p>Escolha <b>1 Habilidade Social</b> para começar em <span class="k">Tier I</span>: Conhecimento, Disciplina, Empatia, Charme, Coragem ou Expressão. As outras começam em Tier 0. Algumas Arcanas concedem Tiers extras (Passo 06).</p></div></div>
+    <div class="step"><div><h4>Habilidades de Combate iniciais e Instrumento</h4>
+      <p>Defina suas <b>Habilidades de Combate iniciais</b> e o seu instrumento. Cada instrumento tem <b>2 espaços</b> para <span class="term">Habilidades Básicas de Instrumento</span> (veja o <a href="#instrumentos">Capítulo 17</a>). Você também recebe a <b>Habilidade de Combate</b> e a <b>Habilidade Natural</b> da sua Arcana.</p></div></div>
+    <div class="step"><div><h4>Vantagens e Defeitos</h4>
+      <p>Você começa com <span class="k">1 ponto</span> de Vantagem. Defeitos dão pontos extras, sem limite de quantidade, e uma <span class="term">Arcana Dissonante</span> vale 5 pontos. Veja o <a href="#vantagens">Capítulo 15</a>.</p></div></div>
+  </div>
+
+  <h3 class="t">Parte B — Sua Persona (Nível 1 de Persona)</h3>
+  <div class="steps" style="counter-reset:s 5">
+    <div class="step"><div><h4>Escolha a Arcana</h4>
+      <p>A Arcana é o coração da Persona. Ela define a <b>curva de PV e PM</b> (Padrão, Sacrificial ou Conjurador), as <b>Habilidades Base</b> do Nível 1, alguns <b>Tiers Sociais</b> iniciais e os <b>Despertares</b> que você poderá comprar. Veja o <a href="#arcanas">Capítulo 12</a>.</p></div></div>
+    <div class="step"><div><h4>Afinidades elementais</h4>
+      <p>Escolha <b>pelo menos 1 Fraqueza</b> e <b>pelo menos 1 Resistir</b>. Os outros elementos começam em Normal.</p>
+      <p>Com o <b>aval do Mestre</b>, pode pegar <b>mais Fraquezas</b>. Cada Fraqueza extra paga <b>uma melhoria de Reação</b>, por exemplo:</p>
+      <ul class="dot"><li>transformar o Resistir que já tinha em <b>Anular</b>;</li><li>ganhar um <b>Resistir</b> em outro elemento.</li></ul></div></div>
+    <div class="step"><div><h4>Os 4 tipos mágicos</h4>
+      <p>Escolha os <span class="k">4 tipos de magia</span> que a sua Persona pode aprender (Fogo, Gelo, Cura, Buffs…). <b>Miscelânea, Defesa e Passivas Mágicas</b> são livres para todos e não contam nesse limite.</p></div></div>
+    <div class="step"><div><h4>Magias iniciais</h4>
+      <p>Você desbloqueia as <b>magias de Tier I</b> e escolhe <span class="k">MAG + 2</span> magias iniciais dentro dos seus tipos. Com MAG 4, por exemplo, começa com 6 magias.</p></div></div>
+    <div class="step"><div><h4>Toques finais</h4>
+      <ul class="dot">
+        <li><b>Integridade</b> começa em <span class="k">50%</span> (Estável).</li>
+        <li><b>Dinheiro:</b> ¥25.000 iniciais e ¥6.000 por semana de jogo (muda com Riqueza ou Pobreza).</li>
+        <li>Equipe o instrumento principal, o reserva, a vestimenta e até 2 acessórios.</li>
+        <li>Confira PV e PM: a ficha calcula pela curva da sua Arcana.</li>
+      </ul></div></div>
+  </div>
+  <div class="box gm"><h5>Resumo rápido da ficha nova</h5>
+    <p>18 pontos de Atributo (1 em cada + 12 livres) · 1 Habilidade Social em Tier I · Arcana · 1+ Fraqueza e 1+ Resistir · 4 tipos mágicos · MAG + 2 magias Tier I · 1 ponto de Vantagem · Integridade 50% · ¥25.000.</p></div>
+  <div class="pg-foot"><span>CRIAÇÃO DE PERSONAGEM</span><b>02</b></div>
+</section>
+
+<!-- ======================= 03 PROGRESSÃO PERSONAGEM ======================= -->
+<section class="pg" id="prog-personagem" data-toc="Progressão de Personagem" data-toc-n="03">
+  <div class="ch-head"><span class="ch-num">03</span><span class="ch-kick">Capítulo três // CNv. 1–20</span><h2>Progressão de <span>Personagem</span></h2></div>
+  <p class="lead">O Nível de Personagem representa o desenvolvimento no Mundo Real. Sempre que subir de nível, recebe imediatamente tudo o que aquele nível indica.</p>
+  <div class="cols">
+    <h4 class="t">❤ Crescimento de PV</h4>
+    <p>A cada nível, o PV e o PM Máximos são recalculados. Além disso, alguns níveis dão <span class="k">+5 PV Máximo</span> extra: <b id="pvMilestones"></b>.</p>
+    <h4 class="t">💬 Avanço Social</h4>
+    <p>Ao receber <b>+1 Avanço Social</b>, escolha uma Habilidade Social e suba o Tier dela em 1. O Tier dá bônus no teste e abre portas (veja o <a href="#social">Capítulo 09</a>).</p>
+    <h4 class="t">⚔ Habilidade de Combate</h4>
+    <p>Ao receber <b>+1 Habilidade de Combate</b>, aumente em +1 uma Habilidade de Combate à sua escolha.</p>
+    <div class="box warn"><h5>Mudanças do playtest</h5><p><b>Feitos foram removidos do sistema</b>: ignore qualquer menção a eles. Os marcos de vida dão <b>+5 PV</b> (antes eram +10).</p></div>
+  </div>
+  <div class="tbl-wrap"><table id="tblCnv"><thead><tr><th>Nível</th><th>Recebe</th></tr></thead><tbody></tbody></table></div>
+  <div class="pg-foot"><span>PROGRESSÃO DE PERSONAGEM</span><b>03</b></div>
+</section>
+
+<!-- ======================= 04 PROGRESSÃO PERSONA ======================= -->
+<section class="pg" id="prog-persona" data-toc="Progressão de Persona" data-toc-n="04">
+  <div class="ch-head"><span class="ch-num">04</span><span class="ch-kick">Capítulo quatro // PNv. 1–20</span><h2>Progressão de <span>Persona</span></h2></div>
+  <p class="lead">Sempre que a Persona sobe de nível, você escolhe entre mais energia ou mais repertório. Alguns níveis trazem extras, e a cada cinco níveis um novo Tier de magia se abre.</p>
+  <div class="cols">
+    <h4 class="t">Todo nível: escolha um</h4>
+    <ul class="dot"><li>💜 <b>+10 PM Máximo</b>, <b>ou</b></li><li>🔮 aprender <b>+1 Magia</b>.</li></ul>
+    <p>Esses +10 PM somam com o PM que a curva da Arcana já dá por nível (Capítulo 06).</p>
+    <h4 class="t">Níveis 3 / 6 / 9 / 12 / 15 / 18 — Bônus de Persona</h4>
+    <p>Recebe também <b>1 Bônus de Persona</b>, escolhendo:</p>
+    <ul class="dot"><li>🔮 aprender <b>+1 Magia adicional</b>; ou</li><li>⚔ <b>+1 Habilidade de Combate</b> enquanto aquela Persona estiver ativa.</li></ul>
+    <h4 class="t">Níveis pares — Ponto de Despertar</h4>
+    <p>Nos níveis <b>2, 4, 6 … 20</b>, recebe <b>1 Ponto de Despertar</b>, que compra um <b>Despertar de Trama</b> ou uma <b>Amplificação</b> de um Despertar que você já conhece (<a href="#despertares">Capítulo 13</a>).</p>
+    <h4 class="t">Níveis 1 / 5 / 10 / 15 / 20 — Tiers de magia</h4>
+    <p>Desbloqueiam as magias de <b>Tier I, II, III, IV e V</b>. Desbloquear um Tier <b>não dá</b> uma magia daquele Tier sozinho: você ainda precisa aprendê-la.</p>
+  </div>
+  <div class="tbl-wrap"><table id="tblPnv"><thead><tr><th>Nível</th><th>Recebe</th></tr></thead><tbody></tbody></table></div>
+  <h3 class="t">Substituindo e evoluindo magias</h3>
+  <div class="cols">
+    <p>Sempre que puder <b>Aprender uma Magia</b>, você pode, em vez disso, <b>sacrificar</b> uma magia do seu Deck e trocá-la por outra dentro do seu <b>Tier Máximo</b>. A magia sacrificada sai do Deck para sempre e a nova ocupa o lugar dela.</p>
+    <div class="box tip"><h5>Exemplo</h5><p>Você tem 🔥 <b>Agi</b> (Tier I) e já desbloqueou o Tier II. Pode sacrificar Agi e colocar 🔥 <b>Agilao</b> (Tier II) no lugar.</p></div>
+    <h4 class="t">Evolução natural</h4>
+    <p>Quando possível, a magia pode ser trocada pela <b>evolução direta</b>: Agi → Agilao; cura inferior → cura superior equivalente; debuff inferior → versão superior equivalente.</p>
+    <p>Mudar a função conta como <b>magia nova</b>: uma magia de <b>alvo único</b> não vira de graça a versão em <b>área</b> só por ser do mesmo elemento.</p>
+    <div class="box warn"><p>Toda magia aprendida ou usada como substituição precisa respeitar o <b>Tier Máximo</b> já desbloqueado e os <b>4 tipos</b> da sua Persona.</p></div>
+  </div>
+  <div class="pg-foot"><span>PROGRESSÃO DE PERSONA</span><b>04</b></div>
+</section>
+
+<!-- ======================= 05 ATRIBUTOS ======================= -->
+<section class="pg" id="atributos" data-toc="Atributos e testes" data-toc-n="05">
+  <div class="ch-head"><span class="ch-num">05</span><span class="ch-kick">Capítulo cinco // números que importam</span><h2>Atributos <span>e testes</span></h2></div>
+  <p class="lead">Seis Atributos medem o corpo, a mente e a sorte do personagem. Deles saem os valores derivados que a ficha calcula sozinha.</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Atributo</th><th>Para que serve</th></tr></thead>
+    <tbody>
+      <tr><td><b>FOR</b> · Força</td><td>Força física. Rola os dados e soma no dano das <b>magias físicas</b>. Entra na <b>Carga</b>.</td></tr>
+      <tr><td><b>MAG</b> · Magia</td><td>Poder da Persona. Rola os dados e soma no dano das <b>magias</b>. Define o <b>PM</b> inicial e quantas magias você começa (MAG + 2).</td></tr>
+      <tr><td><b>TEC</b> · Técnica</td><td>Precisão e habilidade técnica. Usada em testes técnicos (1d20 + TEC) e em habilidades que contam usos pela TEC.</td></tr>
+      <tr><td><b>AGI</b> · Agilidade</td><td>Velocidade e reflexos. Define o <b>Movimento</b> e a <b>Reação</b>.</td></tr>
+      <tr><td><b>VIT</b> · Vitalidade</td><td>Resistência. Define o <b>PV</b> e entra na Carga.</td></tr>
+      <tr><td><b>SOR</b> · Sorte</td><td>Sorte e acaso. Melhora a <b>Margem Crítica</b>, a <b>Fuga</b> e a <b>Recuperação</b>.</td></tr>
+    </tbody></table></div>
+  <h3 class="t">Valores derivados</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Valor</th><th>Fórmula</th></tr></thead>
+    <tbody>
+      <tr><td><b>Carga</b></td><td>FOR × 5 + VIT</td></tr>
+      <tr><td><b>Movimento</b></td><td>AGI + 3</td></tr>
+      <tr><td><b>Reação</b></td><td>AGI</td></tr>
+      <tr><td><b>Margem Crítica</b></td><td>20 − (SOR ÷ 3, para baixo). SOR 6 critica em 18–20.</td></tr>
+      <tr><td><b>Fuga</b></td><td>SOR × 2,5 + modificador da Integridade</td></tr>
+      <tr><td><b>Recuperação</b></td><td>SOR + modificador da Integridade</td></tr>
+    </tbody></table></div>
+  <div class="cols">
+    <h3 class="t">Testes</h3>
+    <ul class="dot">
+      <li><b>Teste de Atributo:</b> 1d20 + Atributo.</li>
+      <li><b>Teste Social:</b> 1d20 + bônus do Tier da Habilidade Social.</li>
+      <li><b>Vantagem:</b> role 2d20 e fique com o maior. <b>Desvantagem:</b> fique com o menor.</li>
+    </ul>
+    <h3 class="t">Crítico</h3>
+    <p>A <b>Margem Crítica</b> da Sorte vale <b>só para ataques e magias</b>. Testes de Atributo e Sociais só são críticos no <b>20 natural</b>.</p>
+    <h3 class="t">Teto de 12 e equipamento</h3>
+    <p>Bônus de Atributo vindos de <b>equipamento</b> contam nos efeitos de combate, mas o valor efetivo não passa de <span class="k">12</span>. O <b>PV e o PM Máximos</b> usam o Atributo <b>sem</b> o bônus do equipamento.</p>
+  </div>
+  <div class="pg-foot"><span>ATRIBUTOS E TESTES</span><b>05</b></div>
+</section>
+
+<!-- ======================= 06 PV E PM ======================= -->
+<section class="pg" id="recursos" data-toc="PV e PM" data-toc-n="06">
+  <div class="ch-head"><span class="ch-num">06</span><span class="ch-kick">Capítulo seis // vida e energia</span><h2>PV <span>e PM</span></h2></div>
+  <p class="lead">PV cresce com o Nível de Personagem; PM cresce com o Nível de Persona. O quanto cresce depende da curva da sua Arcana.</p>
+  <div class="tbl-wrap"><table id="tblCurves"><thead><tr><th>Curva</th><th>Nível 1</th><th>A partir do nível 2</th><th>Arcanas</th></tr></thead><tbody></tbody></table></div>
+  <div class="cols">
+    <p>Arredonde <b>VIT ÷ 2</b> para baixo. Os marcos de vida do Capítulo 03 somam +5 PV cada.</p>
+    <p>A curva <b>Sacrificial</b> substitui os antigos bônus de +15% (Carruagem, Força, Temperança) e +25% (Enforcado).</p>
+    <h3 class="t">Vantagens de PV e PM</h3>
+    <ul class="dot">
+      <li><b>Fôlego Extra</b> (1 pt): +5 PV Máximo.</li>
+      <li><b>Reserva Mental</b> (1 pt): +5 PM Máximo.</li>
+      <li><b>Vitalidade Crescente</b> (5 pts, VIT 6): +3 PV por CNv.</li>
+      <li><b>Reserva Crescente</b> (5 pts, MAG 6): +2 PM por PNv.</li>
+      <li><b>Vitalidade Superior</b> (5 pts, VIT 8 e Disciplina III ou Coragem III): +5 PV por CNv.</li>
+      <li><b>Reserva Superior</b> (5 pts, MAG 8 e Disciplina III ou Conhecimento III): +3 PM por PNv.</li>
+    </ul>
+    <p>As de crescimento contam desde o nível 1. A <b>Superior</b> ocupa o lugar da <b>Crescente</b> do mesmo recurso e combina com a compra fixa de +5. Os requisitos usam o valor <b>permanente</b> do Atributo.</p>
+    <div class="box tip"><h5>Fichas de referência</h5>
+      <p><b>Força 5/5</b> (VIT 4, MAG 5): 92 PV / 32 PM.<br><b>Eremita 6/6</b> (VIT 1, MAG 5): 41 PV / 76 PM.<br><b>Sacrificial 20/20</b> (VIT 12, MAG 4, Vitalidade Crescente, Fôlego Extra): 444 PV / 60 PM.<br><b>Conjurador 20/20</b> (VIT 4, MAG 12, Reserva Crescente, Reserva Mental): 144 PV / 247 PM.</p></div>
+  </div>
+  <div class="pg-foot"><span>PV E PM</span><b>06</b></div>
+</section>
+
+<!-- ======================= 07 MAGIAS ======================= -->
+<section class="pg" id="magias-regras" data-toc="Magias" data-toc-n="07">
+  <div class="ch-head"><span class="ch-num">07</span><span class="ch-kick">Capítulo sete // o poder da Persona</span><h2><span>Magias</span></h2></div>
+  <p class="lead">Magias ficam no Deck da Persona. Cada uma tem tipo, Tier, custo, alvo e efeito. O catálogo completo, com busca, está no <a href="#compendio-magias">Capítulo 16</a>.</p>
+  <div class="cols">
+    <h3 class="t">Tipos permitidos</h3>
+    <p>A Persona só aprende magias dos <b>4 tipos</b> escolhidos na criação, mais os tipos livres: <b>Miscelânea, Defesa e Passivas Mágicas</b>.</p>
+    <h3 class="t">Dados por Tier</h3>
+    <p>Magias de dano e cura rolam a <b>menor</b> quantidade entre o <b>Atributo efetivo</b> e o <b>teto do Tier</b>:</p>
+    <div class="tbl-wrap"><table id="tblCap"><thead><tr><th>Tier</th><th>Teto de dados</th></tr></thead><tbody></tbody></table></div>
+    <p>O Atributo inteiro continua entrando no <b>Acerto</b>. Bônus fixos e dados extras de habilidades seguem as próprias regras.</p>
+    <h3 class="t">Dano bônus</h3>
+    <p>Magias de dano <b>somam MAG</b> como dano bônus. <b>Magias físicas somam FOR</b>. Em magias de vários golpes, o bônus entra <b>uma vez</b>.</p>
+    <div class="box tip"><h5>Exemplo</h5><p>Com MAG 8: <b>Garu</b> = 4d6 + 8; <b>Garula</b> = 6d8 + 8.</p></div>
+    <h3 class="t">Curas</h3>
+    <p><b>D</b> = menor valor entre MAG efetiva e o teto do Tier.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Magia</th><th>Tier · Custo</th><th>Cura</th></tr></thead>
+      <tbody>
+        <tr><td>Dia</td><td>I · 3 PM</td><td>D d6 + 2 × PNv.</td></tr>
+        <tr><td>Ha Dia</td><td>I · 5 PM</td><td>D d4 + PNv. por alvo</td></tr>
+        <tr><td>Diarama</td><td>II · 6 PM</td><td>D d8 + 4 × PNv.</td></tr>
+        <tr><td>Ha Diarama</td><td>II · 9 PM</td><td>D d6 + 2 × PNv. por alvo</td></tr>
+        <tr><td>Diaraja</td><td>III · 10 PM</td><td>D d10 + 5 × PNv.</td></tr>
+        <tr><td>Ha Diaraja</td><td>III · 14 PM</td><td>D d8 + 3 × PNv. por alvo</td></tr>
+      </tbody></table></div>
+    <p>As <b>Mediaras</b> seguem as próprias fórmulas e respeitam o teto quando os dados vêm de MAG. Curas percentuais seguem as próprias regras: <b>Diarahan</b> restaura 100% dos PV por 18 PM.</p>
+    <h3 class="t">Magias físicas</h3>
+    <p>O custo é pago em <b>PV</b> (curáveis), não em PM. A aposta é pagar com a vida antes que o suporte consiga agir.</p>
+  </div>
+  <div class="pg-foot"><span>MAGIAS</span><b>07</b></div>
+</section>
+
+<!-- ======================= 08 AFINIDADES ======================= -->
+<section class="pg" id="afinidades" data-toc="Afinidades elementais" data-toc-n="08">
+  <div class="ch-head"><span class="ch-num">08</span><span class="ch-kick">Capítulo oito // fraco, resiste, reflete</span><h2>Afinidades <span>elementais</span></h2></div>
+  <p class="lead">Cada Persona reage de um jeito a cada elemento. A reação muda o que acontece quando um golpe daquele tipo atinge você.</p>
+  <div class="cols">
+    <h3 class="t">Os elementos</h3>
+    <p><b>Físico, Fogo, Gelo, Vento, Raio, Nuclear, PSY, Luz, Trevas</b> e <b>Intel</b>. Onipotente atravessa as afinidades.</p>
+    <h3 class="t">As reações</h3>
+    <p>Da pior para a melhor: <span id="reactList"></span>.</p>
+    <ul class="dot">
+      <li><b>Fraqueza:</b> o golpe é mais perigoso para você.</li>
+      <li><b>Normal:</b> sem alteração.</li>
+      <li><b>Resistir:</b> você aguenta melhor o golpe.</li>
+      <li><b>Anular:</b> o golpe não tem efeito.</li>
+      <li><b>Refletir:</b> o golpe volta para quem atacou.</li>
+      <li><b>Drenar:</b> o golpe vira cura para você.</li>
+    </ul>
+    <h3 class="t">Na criação</h3>
+    <p>Pelo menos <b>1 Fraqueza</b> e <b>1 Resistir</b>. Com o aval do Mestre, cada Fraqueza extra paga uma melhoria de Reação (por exemplo, Resistir → Anular, ou um Resistir novo).</p>
+  </div>
+  <div class="pg-foot"><span>AFINIDADES ELEMENTAIS</span><b>08</b></div>
+</section>
+
+<!-- ======================= 09 SOCIAL ======================= -->
+<section class="pg" id="social" data-toc="Habilidades Sociais e Vínculos" data-toc-n="09">
+  <div class="ch-head"><span class="ch-num">09</span><span class="ch-kick">Capítulo nove // o Mundo Real</span><h2>Social <span>&amp; Vínculos</span></h2></div>
+  <p class="lead">Os Tiers Sociais abrem oportunidades na mesa. Os Vínculos dão as recompensas.</p>
+  <div class="tbl-wrap"><table id="tblSocial"><thead><tr><th>Habilidade</th><th>Área</th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><table id="tblTier"><thead><tr><th>Tier</th><th>Bônus no teste</th></tr></thead><tbody></tbody></table></div>
+  <div class="cols">
+    <h3 class="t">O que o Tier faz</h3>
+    <ul class="dot">
+      <li>Soma o <b>bônus</b> nos Testes Sociais (1d20 + bônus).</li>
+      <li>Vale como <b>pré-requisito</b> de Vantagens e de habilidades de Arcana.</li>
+      <li>Funciona como <b>chave</b>: abre abordagens, cenas, pistas e oportunidades no Mundo Real. Se a abordagem tiver risco, o teste resolve.</li>
+    </ul>
+    <div class="box warn"><h5>Mudança do playtest</h5><p>Subir de Tier <b>não dá mais poderes automáticos</b>, nem bônus de Atributo, PV ou PM.</p></div>
+    <h3 class="t">Vínculos</h3>
+    <p>Os <b>Vínculos</b> são as relações do personagem. Eles entregam os benefícios: acesso a contatos, um lugar para ensaiar ou uma habilidade própria daquele Vínculo. As <b>Vantagens</b> compradas continuam sendo a outra forma de conseguir poderes específicos.</p>
+    <h3 class="t">Tiers vindos da Arcana</h3>
+    <p>Algumas Arcanas já começam com Tier I em certas Habilidades Sociais. A lista está em cada Arcana, no <a href="#arcanas">Capítulo 12</a>.</p>
+  </div>
+  <div class="pg-foot"><span>SOCIAL &amp; VÍNCULOS</span><b>09</b></div>
+</section>
+
+<!-- ======================= 10 INTEGRIDADE ======================= -->
+<section class="pg" id="integridade" data-toc="Integridade" data-toc-n="10">
+  <div class="ch-head"><span class="ch-num">10</span><span class="ch-kick">Capítulo dez // a sanidade da Persona</span><h2><span>Integridade</span></h2></div>
+  <p class="lead">A Integridade mede o equilíbrio entre quem o personagem é e a sua Persona, de 0% a 100%. Ela começa em 50% e muda com as escolhas, os traumas e as Dissonantes.</p>
+  <div id="integrityStages" class="grid"></div>
+  <div class="box tip" style="margin-top:22px"><h5>Na ficha</h5><p>A barra de Integridade fica na Ficha Base. Arraste, clique ou use −5/+5. A cor mostra o estado atual.</p></div>
+  <div class="pg-foot"><span>INTEGRIDADE</span><b>10</b></div>
+</section>
+
+<!-- ======================= 11 EQUIPAMENTO ======================= -->
+<section class="pg" id="equipamento" data-toc="Equipamento e dinheiro" data-toc-n="11">
+  <div class="ch-head"><span class="ch-num">11</span><span class="ch-kick">Capítulo onze // mochila e carteira</span><h2>Equipamento <span>&amp; dinheiro</span></h2></div>
+  <div class="cols">
+    <h3 class="t">Espaços de equipamento</h3>
+    <ul class="dot">
+      <li><b>Instrumento principal</b> e <b>instrumento reserva</b> (suas armas).</li>
+      <li><b>Vestimenta / Proteção</b>.</li>
+      <li><b>2 Acessórios</b>.</li>
+    </ul>
+    <p>Equipamentos podem dar bônus de Atributo (teto efetivo de 12) e outros efeitos.</p>
+    <h3 class="t">Mochila</h3>
+    <p>Itens são <b>Consumíveis</b>, <b>Materiais</b>, <b>Importantes</b> (história) ou <b>Outros</b>. O peso total é comparado com a sua <b>Carga</b> (FOR × 5 + VIT).</p>
+    <h3 class="t">Dinheiro</h3>
+    <p>Começa com <b>¥25.000</b> e recebe <b>¥6.000 por semana</b> de jogo.</p>
+    <div class="tbl-wrap"><table id="tblMoney"><thead><tr><th>Condição</th><th>Pontos</th><th>Inicial</th><th>Por semana</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="pg-foot"><span>EQUIPAMENTO &amp; DINHEIRO</span><b>11</b></div>
+</section>
+
+<!-- ======================= 12 ARCANAS ======================= -->
+<section class="pg" id="arcanas" data-toc="Arcanas I–XX" data-toc-n="12">
+  <div class="ch-head"><span class="ch-num">12</span><span class="ch-kick">Capítulo doze // compêndio</span><h2>As <span>Arcanas</span></h2></div>
+  <p class="lead">Cada Arcana traz Habilidades Base no Nível 1 e quatro caminhos de Despertar. Toque numa Arcana para abrir.</p>
+  <div id="arcanaList"></div>
+  <div class="pg-foot"><span>ARCANAS</span><b>12</b></div>
+</section>
+
+<!-- ======================= 13 DESPERTARES ======================= -->
+<section class="pg" id="despertares" data-toc="Despertares" data-toc-n="13">
+  <div class="ch-head"><span class="ch-num">13</span><span class="ch-kick">Capítulo treze // a trama da Persona</span><h2><span>Despertares</span></h2></div>
+  <p class="lead">Despertares são os caminhos de crescimento da Arcana. Cada um tem uma habilidade principal e Amplificações que a melhoram.</p>
+  <div class="cols">
+    <h3 class="t">Pontos de Despertar</h3>
+    <p>Você ganha <b>1 Ponto de Despertar</b> em cada <b>nível par de Persona</b>. O Mestre pode conceder pontos extras.</p>
+    <p>Cada ponto compra um <b>Despertar de Trama</b> ou uma <b>Amplificação</b> de um Despertar que você já conhece.</p>
+    <h3 class="t">Os caminhos</h3>
+    <ul class="dot" id="awkPaths"></ul>
+    <p>Ímpeto, Autocuidado, Artifício e Cognição são próprios de cada Arcana (veja no Capítulo 12). <b>Elo</b> e <b>Resolução</b> são universais:</p>
+  </div>
+  <div id="awkUniversal"></div>
+  <div class="pg-foot"><span>DESPERTARES</span><b>13</b></div>
+</section>
+
+<!-- ======================= 14 DISSONANTES ======================= -->
+<section class="pg" id="dissonantes" data-toc="Arcanas Dissonantes" data-toc-n="14">
+  <div class="ch-head"><span class="ch-num">14</span><span class="ch-kick">Capítulo catorze // o lado B</span><h2>Arcanas <span>Dissonantes</span></h2></div>
+  <p class="lead">Uma Dissonante é um conflito interno escolhido como Defeito. Vale 5 pontos e traz um benefício (Lado A) e uma complicação (Lado B).</p>
+  <div class="cols">
+    <ul class="dot">
+      <li>As Dissonantes usam o valor inicial comum de Integridade. Registre as perdas em pontos da barra.</li>
+      <li>Se o mesmo acontecimento causar uma perda pela Dissonante e outra pela cena, aplique a maior das duas.</li>
+      <li>Ao tentar de novo, os custos e consequências da primeira tentativa permanecem.</li>
+    </ul>
+  </div>
+  <div id="dissList" class="grid"></div>
+  <div class="pg-foot"><span>ARCANAS DISSONANTES</span><b>14</b></div>
+</section>
+
+<!-- ======================= 15 VANTAGENS ======================= -->
+<section class="pg" id="vantagens" data-toc="Vantagens e Defeitos" data-toc-n="15">
+  <div class="ch-head"><span class="ch-num">15</span><span class="ch-kick">Capítulo quinze // compêndio</span><h2>Vantagens <span>&amp; Defeitos</span></h2></div>
+  <div class="cols">
+    <ul class="dot">
+      <li>Todo personagem começa com <b>1 ponto</b> para Vantagens.</li>
+      <li><b>Defeitos</b> dão pontos extras, <b>sem limite</b> de quantidade ou de pontos. Cada Defeito só pode ser escolhido uma vez.</li>
+      <li>Uma <b>Arcana Dissonante</b> conta como Defeito de 5 pontos.</li>
+      <li>O Mestre pode entregar <b>pontos extras</b>, que os jogadores anotam no campo "Pontos extras".</li>
+      <li>Algumas Vantagens têm <b>pré-requisitos</b> (Atributo permanente ou Tier Social).</li>
+    </ul>
+  </div>
+  <div class="filters" data-filter="traits"><input type="search" placeholder="Buscar Vantagem ou Defeito…" data-q><button type="button" class="fbtn on" data-kind="all">Todos</button><button type="button" class="fbtn" data-kind="vantagem">Vantagens</button><button type="button" class="fbtn" data-kind="defeito">Defeitos</button><select data-cat><option value="">Todas as categorias</option></select></div>
+  <p class="count" id="traitCount"></p>
+  <div id="traitList" class="grid"></div>
+  <div class="pg-foot"><span>VANTAGENS &amp; DEFEITOS</span><b>15</b></div>
+</section>
+
+<!-- ======================= 16 COMPÊNDIO DE MAGIAS ======================= -->
+<section class="pg" id="compendio-magias" data-toc="Compêndio de magias" data-toc-n="16">
+  <div class="ch-head"><span class="ch-num">16</span><span class="ch-kick">Capítulo dezesseis // 434 faixas</span><h2>Compêndio <span>de magias</span></h2></div>
+  <div class="filters" data-filter="spells"><input type="search" placeholder="Buscar magia (nome ou efeito)…" data-q><select data-cat><option value="">Todos os tipos</option></select><select data-tier><option value="">Todos os Tiers</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  <p class="count" id="spellCount"></p>
+  <div id="spellList" class="grid"></div>
+  <div class="more"><button type="button" class="fbtn" id="spellMore">Mostrar mais</button></div>
+  <div class="pg-foot"><span>COMPÊNDIO DE MAGIAS</span><b>16</b></div>
+</section>
+
+<!-- ======================= 17 INSTRUMENTOS ======================= -->
+<section class="pg" id="instrumentos" data-toc="Habilidades de Instrumento" data-toc-n="17">
+  <div class="ch-head"><span class="ch-num">17</span><span class="ch-kick">Capítulo dezessete // a música é a arma</span><h2>Habilidades de <span>Instrumento</span></h2></div>
+  <div class="cols" id="instIntro"></div>
+  <div id="instList"></div>
+  <div class="pg-foot"><span>HABILIDADES DE INSTRUMENTO</span><b>17</b></div>
+</section>
+
+<!-- ======================= 18 COMBATE (a completar) ======================= -->
+<section class="pg" id="combate" data-toc="Combate" data-toc-n="18">
+  <div class="ch-head"><span class="ch-num">18</span><span class="ch-kick">Capítulo dezoito // em construção</span><h2><span>Combate</span></h2></div>
+  <div class="box todo"><h5>⚠ Capítulo em construção</h5>
+    <p>As regras completas de combate (turno, tipos de ação, Ofensiva Instrumental, Esquiva, RD, estado Morrendo, Descansos) ainda não foram passadas para o livro. Por enquanto, este é o resumo do que já está nas outras regras.</p></div>
+  <div class="cols">
+    <ul class="dot">
+      <li><b>Acerto:</b> 1d20 + Atributo da magia ou do instrumento. Críticos usam a Margem Crítica.</li>
+      <li><b>Ações</b> citadas nas habilidades: Ação Padrão, Ação Rápida, Ação Livre e Ação de Interromper.</li>
+      <li><b>Frequências:</b> por Rodada, por Combate, por Cena, por Missão e por Descanso Longo.</li>
+      <li><b>Magias:</b> custam PM; as físicas custam PV. Dados limitados pelo Tier (Capítulo 07).</li>
+      <li><b>Afinidades:</b> Capítulo 08.</li>
+    </ul>
+  </div>
+  <div class="pg-foot"><span>COMBATE</span><b>18</b></div>
+</section>
+
+<section class="pg" id="creditos" data-toc="Créditos" data-toc-n="✦">
+  <div class="ch-head"><span class="ch-num">✦</span><span class="ch-kick">Fim da edição</span><h2><span>Créditos</span></h2></div>
+  <p class="quote">“De um fã de Persona para outro e que sua história seja magnífica.”</p>
+  <p><b>Persona RPG — Phobia</b>, sistema e campanha por <b>N4nd0_0</b>. Base inspirada no <i>Persona — Reminiscência</i> do André.</p>
+  <p>Projeto de fã, pessoal e sem fins lucrativos. Persona é uma marca da ATLUS/SEGA; este livro não é oficial nem afiliado.</p>
+  <p class="count">Tabelas geradas a partir da ficha em <span id="genDate"></span>.</p>
+  <div class="pg-foot"><span>PERSONA RPG — PHOBIA</span><b>FIM</b></div>
+</section>
+
+</main>
+</div>
+
+<script src="livro-data.js?v=1"></script>
+<script src="../assets/sheet/instrument-skills-data.js?v=1"></script>
+<script src="livro.js?v=1"></script>
+</body>
+</html>

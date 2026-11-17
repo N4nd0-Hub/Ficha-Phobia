@@ -94,6 +94,7 @@ Regras do sistema que mais aparecem no código:
 ## Outras páginas
 
 - `gm.html` — Portal do Narrador: jogadores, PINs, NPCs, pontos de Vantagem extras.
+- `livro/` — Livro de Regras em estilo revista. Os capítulos de regra são texto em `livro/index.html`; os compêndios (Arcanas, Dissonantes, magias, Vantagens/Defeitos, Integridade, curvas) vêm de `livro/livro-data.js`, **gerado** a partir das tabelas do `index.html` com `node tools/build-livro-data.cjs`. Rode o script sempre que mudar essas tabelas na ficha.
 - `rewind/` — Rewind (rede social estilo 2000). Usa as RPCs `rw_*` do Supabase.
 
 ## Backend (Supabase)
