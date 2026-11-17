@@ -1,0 +1,15 @@
+/* PERSONA // PHOBIA — death-gates.css (botão da Arcana XIII — Morte) */
+#characterPage .dgx{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 2px;padding:8px 10px;
+  background:linear-gradient(90deg,rgba(120,10,30,.35),transparent 70%);border-left:3px solid #ff3b5c;border-radius:4px}
+#characterPage .dgx[hidden]{display:none}
+#characterPage .dgx-info{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+#characterPage .dgx-info small{font:800 10px/1 var(--hud-cond,"Barlow Condensed"),sans-serif;letter-spacing:2px;color:#ff6b84}
+#characterPage .dgx-info span{font:600 12.5px var(--hud-body,Barlow),sans-serif;color:var(--hud-paper,#fff0d8)}
+#characterPage .dgx-info b{color:#ff8fa3}
+#characterPage .dgx-apply,#characterPage .dgx-undo{padding:7px 12px;border-radius:6px;cursor:pointer;font:800 12px var(--hud-body,Barlow),sans-serif;transition:background .15s,color .15s,transform .15s}
+#characterPage .dgx-apply{border:2px solid #ff3b5c;background:transparent;color:var(--hud-paper,#fff0d8)}
+#characterPage .dgx-apply:hover{background:#ff3b5c;color:#140608}
+#characterPage .dgx-apply.armed{background:#ff3b5c;color:#140608;animation:dgxPulse .8s ease-in-out infinite alternate}
+#characterPage .dgx-undo{border:1.5px solid color-mix(in srgb,var(--hud-paper,#fff0d8) 30%,transparent);background:transparent;color:var(--hud-paper,#fff0d8);opacity:.8}
+#characterPage .dgx-undo:hover{opacity:1;background:color-mix(in srgb,var(--hud-paper,#fff0d8) 12%,transparent)}
+@keyframes dgxPulse{to{box-shadow:0 0 14px #ff3b5c}}
