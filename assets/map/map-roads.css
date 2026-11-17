@@ -158,3 +158,5 @@ body.cognition #mapPage .mhb-fill,body.cognition #mapPage .mhb-shard{fill:color-
 body.cognition #mapPage .mhb-cream{fill:var(--theme-accent-2,#6ce6ff)}
 @media (prefers-reduced-motion:reduce){#mapPage .mhb-shine,#mapPage .mhb-dash{animation:none}}
 #mapPage .map-shell.local-mode .map-hud-band,#mapPage[data-map-mode="local"] .map-hud-band{display:none}
+/* botões do topo: sem corte embaixo */
+body.hud .topbar{overflow:visible!important}
