@@ -20,7 +20,7 @@
   var VENDOR = new URL('../vendor/three/', base).href;
   var KIT = new URL('map-3d-kit.js?v=6', base).href;
   var NAMES = new URL('../map-names/', base).href;
-  var NAME_IMG = ['shibuya', 'ikebukuro', 'shinjuku', 'ginza', 'roppongi', 'akihabara', 'odaiba', 'kichijoji', 'nakano', 'meguro', 'harajuku'];
+  var NAME_IMG = ['asakusa', 'shibuya', 'ikebukuro', 'shinjuku', 'ginza', 'roppongi', 'akihabara', 'odaiba', 'kichijoji', 'nakano', 'meguro', 'harajuku'];
 
   var THREE = null, Orbit = null, K = null, loading = null;
   var on = false, built = false, failed = false, busy = false;
