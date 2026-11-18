@@ -19,6 +19,8 @@
   var base = (function () { var s = document.currentScript; return s ? s.src : location.href; })();
   var VENDOR = new URL('../vendor/three/', base).href;
   var KIT = new URL('map-3d-kit.js?v=6', base).href;
+  var NAMES = new URL('../map-names/', base).href;
+  var NAME_IMG = ['shibuya', 'ikebukuro', 'shinjuku', 'ginza', 'roppongi', 'akihabara', 'odaiba', 'kichijoji', 'nakano', 'meguro', 'harajuku'];
 
   var THREE = null, Orbit = null, K = null, loading = null;
   var on = false, built = false, failed = false, busy = false;
@@ -412,7 +414,12 @@
       scene.add(g);
       rec.spr = spr; rec.plate = plateTex;
       W.d[id] = rec;
-      (function (rc) { if (imgs[rc.id]) tl.load(imgs[rc.id], function (t) { t.colorSpace = THREE.SRGBColorSpace; rc.art = t; applyState(rc, true); }); })(rec);
+      (function (rc) {
+        /* nome do distrito em letreiro (assets/map-names); sem ele, usa a ilustração do 2D */
+        var useBadge = function () { if (imgs[rc.id]) tl.load(imgs[rc.id], function (t) { t.colorSpace = THREE.SRGBColorSpace; rc.art = t; rc.artName = false; applyState(rc, true); }); };
+        if (NAME_IMG.indexOf(rc.id) < 0) return useBadge();
+        tl.load(NAMES + rc.id + '.webp?v=1', function (t) { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; rc.art = t; rc.artName = true; applyState(rc, true); }, undefined, useBadge);
+      })(rec);
       var nm = (!isLocked(id) && S() && S().districts && S().districts[id]) ? String(S().districts[id].name).toUpperCase() : '???';
       progress(.4 + .4 * (di + 1) / ids.length, 'DISTRITOS · ' + nm);
       await frame();
@@ -597,6 +604,7 @@
     if (rec.wheel) rec.wheel.parent.visible = !locked;
     var m = rec.spr.material, b = layout()[rec.id];
     if (locked) { m.map = rec.plate; rec.spr.userData.bs = { x: .062, y: .062 * 112 / 256 }; }
+    else if (rec.art && rec.artName) { m.map = rec.art; var iw = rec.art.image.width, ih = rec.art.image.height, nw = .13; rec.spr.userData.bs = { x: nw, y: nw * ih / iw }; }
     else if (rec.art) { m.map = rec.art; var aw = .05 + b.w / 205 * .035; rec.spr.userData.bs = { x: aw, y: aw * b.h / b.w }; }
     m.needsUpdate = true;
     rec.spr.visible = !!m.map;
