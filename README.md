@@ -29,6 +29,7 @@ assets/
   map/                Mapa de Tokyo e mapas internos dos distritos
   pc/                 Coisas do "PC" do personagem (NET//TRACE, Quadro de Investigação)
   player-chat/        Player de música da barra inferior e Phobia Messenger
+  vendor/three/        Three.js (MIT), usado só pelo mapa 3D
   arcana/ builtin/ district-badges/ map-icons/ map-photos/   Imagens (webp)
 tests/                Testes com node:test
 docs/ARQUITETURA.md   Como as peças se encaixam (leia antes de mexer)

@@ -1,0 +1,14 @@
+/* PERSONA // PHOBIA — map-3d.css · modo 3D do mapa de Tokyo */
+#mapPage .map3d{position:absolute;inset:0;display:none;overflow:hidden;touch-action:none;background:#f6d8e4}
+body.map3d-on #mapPage .map3d{display:block}
+body.map3d-on #mapPage #atlasTokyoViewport{visibility:hidden}
+#mapPage .map-layout.submap-workspace .map3d,body.map3d-on #mapPage .atlas-local-surface .map3d{display:none}
+#mapPage .map3d canvas{display:block;width:100%!important;height:100%!important;outline:0}
+#mapPage .map3d-load{position:absolute;inset:0;display:none;place-items:center;font:900 15px/1 "Arial Black",Arial,sans-serif;letter-spacing:2px;color:#171417;background:repeating-linear-gradient(-28deg,#f6d8e4 0 22px,#f2c9d8 22px 44px)}
+#mapPage .map3d.is-loading .map3d-load{display:grid}
+#mapPage .map3d-help{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) skewX(-8deg);padding:6px 12px;background:#171417;color:#fff8e7;font:800 10px/1.2 Barlow,Arial,sans-serif;letter-spacing:.6px;pointer-events:none;box-shadow:3px 3px 0 var(--theme-accent,#ef2b97);white-space:nowrap;opacity:.9;animation:map3dHelp 6s 2.5s forwards}
+@keyframes map3dHelp{to{opacity:0;visibility:hidden}}
+#mapPage .map-controls .map3d-toggle{width:auto;padding:0 11px;font:1000 12px/1 "Arial Black",Arial,sans-serif;letter-spacing:.5px;border-right:1px solid #b6ad9a;color:#171417}
+#mapPage .map-controls .map3d-toggle[aria-pressed="true"]{background:var(--theme-accent,#ef2b97);color:#fff}
+body.map3d-on #mapPage .map-hint{display:none}
+@media(max-width:760px){#mapPage .map3d-help{font-size:9px;white-space:normal;width:86%;text-align:center}}
