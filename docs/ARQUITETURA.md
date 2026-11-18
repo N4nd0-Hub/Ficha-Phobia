@@ -84,7 +84,8 @@ Regras do sistema que mais aparecem no código:
 | `district-badges.*` | Ilustrações dos distritos recoloridas para o tema |
 | `district-local.*` | Mapa interno de cada distrito (SVG gerado) |
 | `district-life.*` | Vida no mapa interno: trânsito em canvas, clima por estação, dia/noite |
-| `map-3d.*` | Modo 3D de Tokyo (botão 3D). Three.js em `assets/vendor/three/`, carregado só ao ligar |
+| `map-3d.*` | Modo 3D de Tokyo (seletor 2D/3D sob a busca, transição e câmera). Three.js em `assets/vendor/three/`, carregado só ao ligar |
+| `map-3d-kit.js` | Módulo ES com as peças da cidade 3D: prédios por estilo de bairro, marcos de cada distrito (Tokyo de ~2000), céu, Fuji |
 
 ### `pc/` — o PC do personagem
 `net-os.*` (NET//TRACE como "Phobia OS"), `case-board.*` (Quadro de Investigação e atalhos dos sites).
