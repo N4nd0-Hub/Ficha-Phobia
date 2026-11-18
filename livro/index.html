@@ -554,18 +554,53 @@
 
 <!-- ======================= 18 COMBATE (a completar) ======================= -->
 <section class="pg" id="combate" data-toc="Combate" data-toc-n="19">
-  <div class="ch-head"><span class="ch-num">19</span><span class="ch-kick">Capítulo dezenove // em construção</span><h2><span>Combate</span></h2></div>
-  <div class="box todo"><h5>⚠ Capítulo em construção</h5>
-    <p>As regras completas de combate (turno, tipos de ação, Ofensiva Instrumental, Esquiva, RD, estado Morrendo, Descansos) ainda não foram passadas para o livro. Por enquanto, este é o resumo do que já está nas outras regras.</p></div>
+  <div class="ch-head"><span class="ch-num">19</span><span class="ch-kick">Capítulo dezenove // a hora do show</span><h2><span>Combate</span></h2></div>
+  <p class="lead">O combate é dividido em Rodadas. Em cada Rodada, todo mundo age uma vez na ordem da Iniciativa, e cada personagem tem um conjunto de ações para gastar.</p>
+
+  <h3 class="t">1. Iniciativa</h3>
   <div class="cols">
-    <ul class="dot">
-      <li><b>Acerto:</b> 1d20 + Atributo da magia ou do instrumento. Críticos usam a Margem Crítica.</li>
-      <li><b>Ações</b> citadas nas habilidades: Ação Padrão, Ação Rápida, Ação Livre e Ação de Interromper.</li>
-      <li><b>Frequências:</b> por Rodada, por Combate, por Cena, por Missão e por Descanso Longo.</li>
-      <li><b>Magias:</b> custam PM; as físicas custam PV. Dados limitados pelo Tier (Capítulo 07).</li>
-      <li><b>Afinidades:</b> Capítulo 08. <b>Status e Condições:</b> <a href="#status">Capítulo 09</a>.</li>
-    </ul>
+    <p>No começo do combate, cada jogador rola <span class="k">1d20 + AGI</span>. O Narrador rola a dos inimigos do mesmo jeito.</p>
+    <p>Com os resultados em mãos, monte a ordem da Iniciativa do maior para o menor, com jogadores e inimigos juntos na mesma fila. Essa ordem vale para o combate inteiro.</p>
   </div>
+
+  <h3 class="t">2. As ações da Rodada</h3>
+  <p>Todo personagem tem estas ações em cada Rodada:</p>
+  <div class="grid">
+    <article class="card" style="--c:#ef2b97"><h5>⚔ Ação Padrão</h5>
+      <p>A ação principal do turno: conjurar uma magia, fazer um <b>Ataque Básico</b> (inclusive com o instrumento), usar uma habilidade que peça Ação Padrão.</p></article>
+    <article class="card" style="--c:#8b6cff"><h5>⚡ Ação de Poder</h5>
+      <p>Usada para ativar poderes de Arcana, habilidades e outros efeitos que pedem <b>Ação de Poder</b>.</p>
+      <p>Pode ser usada <b>a qualquer momento</b>: no seu turno ou no turno de outro, <b>até no turno de um inimigo</b>.</p>
+      <p>Ela volta no <b>começo da próxima Rodada</b>, não no começo do seu turno.</p></article>
+    <article class="card" style="--c:#4fc3ff"><h5>👟 Ação Rápida</h5>
+      <p>Para se <b>mover</b>, usar uma <b>Habilidade Social</b> ou fazer um teste durante a Rodada.</p></article>
+    <article class="card" style="--c:#ffb020"><h5>🛡 Reação</h5>
+      <p><b>1 por Rodada.</b> Todo efeito que pede Reação gasta esta mesma Reação, então só um deles pode ser usado por Rodada.</p></article>
+  </div>
+  <div class="box tip" style="margin-top:18px"><h5>Ação de Poder no turno do inimigo</h5>
+    <p>Se você guardar a Ação de Poder, ela fica pronta para responder ao que os inimigos fizerem. Se gastar no seu turno, só a recupera quando a próxima Rodada começar.</p></div>
+
+  <h3 class="t">3. Atacar: rolagem contra rolagem</h3>
+  <div class="cols">
+    <p>Todo ataque é uma disputa:</p>
+    <ul class="dot">
+      <li>Quem ataca rola o <b>teste de Ataque</b>: <span class="k">1d20 + o Atributo do ataque</span> (o da magia, da arma ou do instrumento).</li>
+      <li>O alvo rola a <b>Esquiva</b>: <span class="k">1d20 + AGI</span>.</li>
+      <li>Maior resultado vence. <b>Empate: a defesa vence</b> e o ataque erra.</li>
+    </ul>
+    <p>Se o ataque acertar, vem a <b>rolagem de dano</b>: os dados do ataque mais o bônus (MAG nas magias de dano, FOR nas físicas). Depois se aplicam as Afinidades do alvo (Capítulo 08) e a chance de Status e Condições (Capítulo 09).</p>
+    <h4 class="t">Crítico</h4>
+    <p>Se o dado do ataque cair dentro da sua <b>Margem Crítica</b> (Capítulo 05), é um Acerto Crítico. Ele pode Derrubar um alvo sob Status (Capítulo 09).</p>
+  </div>
+
+  <h3 class="t">4. Ataque Básico com instrumento</h3>
+  <div class="cols">
+    <p>O <b>Ataque Básico</b> feito com o instrumento gasta a <b>Ação Padrão</b>. Ele é o jeito de aplicar as <b>notas</b> no inimigo e alimentar a mecânica de música da banda.</p>
+    <p>As habilidades de cada instrumento estão no Capítulo 18.</p>
+  </div>
+
+  <div class="box todo" style="margin-top:18px"><h5>Ainda falta</h5>
+    <p>Redução de Dano, o estado Morrendo e as regras de Descanso ainda serão detalhados aqui.</p></div>
   <div class="pg-foot"><span>COMBATE</span><b>19</b></div>
 </section>
 
@@ -581,8 +616,8 @@
 </main>
 </div>
 
-<script src="livro-data.js?v=1"></script>
-<script src="../assets/sheet/instrument-skills-data.js?v=1"></script>
+<script src="livro-data.js?v=2"></script>
+<script src="../assets/sheet/instrument-skills-data.js?v=2"></script>
 <script src="livro.js?v=1"></script>
 </body>
 </html>

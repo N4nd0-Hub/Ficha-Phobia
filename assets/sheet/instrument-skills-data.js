@@ -51,7 +51,7 @@ window.INSTRUMENT_SKILL_CATEGORIES = [
   { id: 'defesa', name: 'Defesa & Proteção', color: '#96ff45', skills: [
     { name: 'Barreira Harmônica', text: 'Uma vez por (Rodada), quando realizar uma [Etapa Perfeita], escolha você ou um aliado.\nO próximo Dano recebido antes do início de sua próxima Rodada é reduzido em:\n>def [2 × VIT].' },
     { name: 'Ritmo Defensivo', text: 'Após realizar uma Execução Instrumental bem-sucedida:\n>mov Recebe [+2 de Esquiva] até o início de sua próxima Rodada.\nCaso seja uma Etapa Perfeita:\n>mov O bônus aumenta para [+4].' },
-    { name: 'Cobertura Sonora', text: 'Uma vez por (Combate), quando um aliado que participou do último [Sound Combo] receber Dano, utilize uma [Ação de Interromper] para:\n>def Reduzir o Dano recebido em [50%].' },
+    { name: 'Cobertura Sonora', text: 'Uma vez por (Combate), quando um aliado que participou do último [Sound Combo] receber Dano, utilize uma [Ação de Poder] para:\n>def Reduzir o Dano recebido em [50%].' },
     { name: 'Contratempo', text: 'Quando for bem-sucedido em uma [Esquiva]:\n>acc Sua próxima Execução Instrumental recebe [+5 de Acerto].\nCaso seja uma Etapa Perfeita:\n>pm Recupera [10 PM].' },
     { name: 'Postura de Palco', text: 'Enquanto possuir [50% ou mais de seu PV Máximo]:\n>def Recebe [+5 de RD].\nEnquanto possuir [50% ou menos de seu PV Máximo]:\n>acc Recebe [+2 de Acerto Instrumental].' }
   ] },

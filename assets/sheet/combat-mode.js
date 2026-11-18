@@ -25,7 +25,7 @@
     vitoria: { t: 'VITÓRIA!', s: 'Combate encerrado', c: '#ffd84d', k: 'good' }
   };
   var STATUS_TXT = { vantagem: ['VANTAGEM', ''], cercado: ['CERCADO', 'Desvantagem nos seus Ataques · custos +50%'], emboscada: ['EMBOSCADA', 'Vantagem nos seus Ataques'] };
-  var ACTIONS = [['standardSpent', 'Padrão'], ['quickSpent', 'Rápida'], ['reactionSpent', 'Reação'], ['interruptSpent', 'Interromper']];
+  var ACTIONS = [['standardSpent', 'Padrão'], ['quickSpent', 'Rápida'], ['reactionSpent', 'Reação'], ['interruptSpent', 'Poder']];
   var REACT_ORDER = { Fraqueza: 0, Resiste: 1, Anula: 2, Drena: 3, Reflete: 4 };
   function reactName(r) { try { return PERSONA_REACTION_LABEL[r] || r; } catch (e) { return r; } }
 
